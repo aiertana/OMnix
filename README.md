@@ -1,8 +1,6 @@
 # OMniX
 
-鸣潮（WuWa）Mod 管理器，桌面端 Windows 应用。
-
-基于 [JASM](https://github.com/Jorixon/JASM) 二开，按自己的使用习惯改了不少地方：单独的**角色管理**页面、**Mod 预设**、自定义角色与头像、启动器缺失时的下载引导等。
+鸣潮（WuWa）Mod 管理器，Windows 桌面应用，WinUI 3 / .NET 9。
 
 仓库：<https://github.com/aiertana/OMnix>
 
@@ -16,7 +14,7 @@
 - **Mod 开关**：单个 Mod 或整个角色一键启用/禁用，实质是给 Mod 文件夹加 `DISABLED_` 前缀
 - **Mod 预设**：把一套 Mod 组合存成预设，切换时批量应用；预设可保存到文件、可重命名、可复制、可导出
 - **Mod 编辑**：改 Mod 的名称、作者、描述、星级，调整 Mod 内部的分段与优先级，导入/替换预览图和 Mod 文件
-- **Mod 预设与角色回收**：删掉的 Mod 会进回收站，误删可以恢复
+- **Mod 回收**：删掉的 Mod 会进回收站，误删可以恢复
 - **Mod 更新**：本地校验 Mod 文件时间戳，标出有变动的 Mod
 - **Mod 修复**：集成 Wuwa Mod Fixer，可直接在程序内下载并运行
 - **启动器 / 游戏**：配置好路径后可以直接从程序里拉起 XXMI Launcher 和游戏本体；启动器没装会提示下载或手动指定位置
@@ -28,15 +26,13 @@
 OMniX/
 ├─ 启动OMniX.exe        无窗口启动器（图标取自 OMniX.png）
 ├─ README.md
-├─ CHANGELOG.md
+├─ LICENSE               GPL-3.0
 ├─ src/
 │  ├─ OMniX.WinUI/      主程序（WinUI 3 / .NET 9）
 │  ├─ OMniX.Core/       核心逻辑（Mod 处理、GameBanana 客户端、游戏服务等）
 │  ├─ OMniX.AutoUpdater/自动更新器
 │  ├─ OMniXLauncher/    启动器源码
-│  ├─ Elevator/         提权辅助（需要 VS 的 C++ 桌面开发组件才能发布）
-│  └─ ...
-├─ Build/Release.py     官方发布脚本（publish + 7z 打包）
+│  └─ Elevator/         提权辅助（需要 VS 的 C++ 桌面开发组件才能发布）
 └─ .backup/             本地备份（不上传）
 ```
 
@@ -100,4 +96,4 @@ Mod 文件本身**不在**这个目录里，它们在 XXMI Launcher 的 `WWMI\Mo
 
 ## 许可
 
-沿用上游 [JASM](https://github.com/Jorixon/JASM) 的许可：GNU General Public License v3.0，详见 [LICENSE](LICENSE)。
+GNU General Public License v3.0，详见 [LICENSE](LICENSE)。
