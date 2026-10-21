@@ -36,10 +36,20 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock
-                HorizontalAlignment="Left"
-                Style="{StaticResource TitleTextBlockStyle}"
-                Text="首次启动配置" />
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Text="首次启动配置" />
+
+                <!--  二开：署名  -->
+                <TextBlock
+                    Margin="0,0,0,3"
+                    VerticalAlignment="Bottom"
+                    FontSize="12"
+                    Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                    Text="by 是湫" />
+            </StackPanel>
 
             <TextBlock
                 Grid.Column="1"

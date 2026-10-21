@@ -419,6 +419,10 @@ public partial class App : Application
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
+        // 二开：启动时把署名写进日志。这段字符串跟着 dll 一起编译，
+        // 别人改界面文字改不掉它
+        System.Diagnostics.Trace.WriteLine(OMniX.WinUI.Helpers.AppIdentity.Stamp);
+
         Environment.SetEnvironmentVariable("WEBVIEW2_USE_VISUAL_HOSTING_FOR_OWNED_WINDOWS", "1");
         await GetService<ILanguageLocalizer>().InitializeAsync();
         NotImplemented.NotificationManager = GetService<NotificationManager>();

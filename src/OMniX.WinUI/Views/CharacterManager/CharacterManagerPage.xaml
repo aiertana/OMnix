@@ -42,6 +42,14 @@
                 FontSize="28"
                 Style="{StaticResource TitleTextBlockStyle}"
                 Text="角色管理" />
+
+            <!--  二开：署名  -->
+            <TextBlock
+                Margin="0,0,0,4"
+                VerticalAlignment="Bottom"
+                FontSize="12"
+                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                Text="by 是湫" />
         </StackPanel>
 
         <Grid Grid.Row="1">

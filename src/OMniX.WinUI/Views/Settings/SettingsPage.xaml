@@ -425,6 +425,20 @@
                         Style="{ThemeResource BodyTextBlockStyle}"
                         Text="OMniX 的目标是让大量 Mod 的管理变得简单"
                         l:Uids.Uid="Settings_AboutDescription" />
+
+                    <!--  二开：署名  -->
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        IsTextSelectionEnabled="True"
+                        Style="{ThemeResource BodyTextBlockStyle}"
+                        Text="作者：是湫" />
+                    <TextBlock
+                        Margin="0,0,0,4"
+                        FontSize="12"
+                        Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                        IsTextSelectionEnabled="True"
+                        Text="https://github.com/aiertana/OMnix" />
+
                     <HyperlinkButton
                         Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
                         Content="OMniX GitHub"
