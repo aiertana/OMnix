@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="OMniX.WinUI.Views.CharacterManagerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:OMniX.WinUI.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:OMniX.WinUI.ViewModels"
+    xmlns:xaml="using:OMniX.WinUI.Helpers.Xaml"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <xaml:ValueToBoolConverter x:Key="ValueToBoolConverter" />
+        <xaml:BoolToVisibleConverter x:Key="BoolToVisibleConverter" />
+    </Page.Resources>
+
+    <Grid Margin="0,-24,-44,0">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  二开：进编辑页后标题前面多个返回箭头，点了回头像墙  -->
+        <StackPanel
+            HorizontalAlignment="Left"
+            Orientation="Horizontal"
+            Spacing="4">
+            <Button
+                VerticalAlignment="Center"
+                AutomationProperties.Name="返回角色列表"
+                Click="BackToGrid_Click"
+                ToolTipService.ToolTip="返回角色头像列表"
+                Visibility="{x:Bind ViewModel.HasSelectedCharacter, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}">
+                <FontIcon FontSize="16" Glyph="&#xE72B;" />
+            </Button>
+
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="28"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="角色管理" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <AutoSuggestBox
+                x:Name="CharacterSearchBox"
+                MinWidth="320"
+                HorizontalAlignment="Left"
+                Header="搜索角色（也可以输入新名字，再点右边 + 新建）"
+                ItemsSource="{x:Bind ViewModel.Suggestions}"
+                MaxSuggestionListHeight="360"
+                PlaceholderText="输入角色名开始搜索…"
+                QuerySubmitted="CharacterSearchBox_OnQuerySubmitted"
+                SuggestionChosen="CharacterSearchBox_OnSuggestionChosen"
+                TextChanged="CharacterSearchBox_OnTextChanged"
+                Text="{x:Bind ViewModel.SearchBoxText, Mode=TwoWay}">
+                <AutoSuggestBox.KeyboardAccelerators>
+                    <KeyboardAccelerator
+                        Key="F"
+                        Invoked="CharacterSearchBox_Ctrl_F"
+                        Modifiers="Control" />
+                </AutoSuggestBox.KeyboardAccelerators>
+
+                <AutoSuggestBox.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:CharacterSearchResult">
+                        <!--  二开：给下拉项一个最小宽度，否则名字长一点就被裁成「清」这种  -->
+                        <StackPanel
+                            MinWidth="260"
+                            Margin="0,8"
+                            Orientation="Horizontal">
+                            <Image
+                                Width="40"
+                                Height="40">
+                                <Image.Source>
+                                    <BitmapImage DecodePixelHeight="40" UriSource="{x:Bind ImagePath}" />
+                                </Image.Source>
+                            </Image>
+
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                Text="{x:Bind Name}"
+                                TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </DataTemplate>
+                </AutoSuggestBox.ItemTemplate>
+            </AutoSuggestBox>
+
+            <Button
+                Grid.Column="2"
+                Margin="16,0,0,0"
+                VerticalAlignment="Bottom"
+                Command="{x:Bind ViewModel.OpenCreateCharacterFormCommand}"
+                ToolTipService.ToolTip="新建角色">
+                <FontIcon Glyph="&#xE710;" />
+            </Button>
+
+        </Grid>
+
+
+        <!--  二开：没选角色时铺开所有角色的头像，点一下直接进编辑页  -->
+        <GridView
+            Grid.Row="2"
+            Margin="0,12,0,0"
+            IsItemClickEnabled="True"
+            ItemClick="CharacterGrid_ItemClick"
+            ItemsSource="{x:Bind ViewModel.AllCharacters, Mode=OneWay}"
+            SelectionMode="None"
+            Visibility="{x:Bind ViewModel.IsNoCharacterSelected, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="viewModels:CharacterSearchResult">
+                    <Grid
+                        Width="96"
+                        Padding="6"
+                        Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                        CornerRadius="8"
+                        ToolTipService.ToolTip="{x:Bind Name}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Image
+                            Width="84"
+                            Height="84"
+                            Stretch="UniformToFill">
+                            <Image.Source>
+                                <BitmapImage DecodePixelHeight="84" UriSource="{x:Bind ImagePath}" />
+                            </Image.Source>
+                        </Image>
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="0,4,0,2"
+                            HorizontalAlignment="Center"
+                            MaxLines="1"
+                            Text="{x:Bind Name}"
+                            TextAlignment="Center"
+                            TextTrimming="CharacterEllipsis" />
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+
+        <Frame
+            x:Name="EditFrame"
+            Grid.Row="2"
+            Margin="8,12,8,8"
+            IsNavigationStackEnabled="False"
+            Visibility="{x:Bind ViewModel.HasSelectedCharacter, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition />
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+
+
+    </Grid>
+</Page>

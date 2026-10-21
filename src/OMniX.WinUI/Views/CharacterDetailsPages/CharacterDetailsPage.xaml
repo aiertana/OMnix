@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="OMniX.WinUI.Views.CharacterDetailsPages.CharacterDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:characterDetailsPages="using:OMniX.WinUI.Views.CharacterDetailsPages"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls1="using:OMniX.WinUI.Views.Controls"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:OMniX.WinUI.Models"
+    xmlns:notifications="using:OMniX.WinUI.Services.Notifications"
+    xmlns:subViewModels="using:OMniX.WinUI.ViewModels.CharacterDetailsViewModels.SubViewModels"
+    xmlns:viewModels="using:OMniX.WinUI.Models.ViewModels"
+    xmlns:xaml="using:OMniX.WinUI.Helpers.Xaml"
+    x:Name="CharacterDetailsRoot"
+    mc:Ignorable="d">
+
+    <Grid Margin="{StaticResource NegativeNavigationViewPageContentMargin}">
+
+
+        <Grid.Resources>
+            <Flyout
+                x:Name="ModRowFlyout"
+                Closing="ModRowFlyout_OnClosing"
+                Opened="ModRowFlyout_OnOpened"
+                Opening="ModRowFlyout_OnOpening"
+                Placement="RightEdgeAlignedBottom">
+                <Grid MinWidth="200">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid BorderBrush="{ThemeResource ControlElevationBorderBrush}" BorderThickness="0,0,0,4">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+
+                                <TextBlock
+                                    Margin="0,0,4,0"
+                                    HorizontalAlignment="Left"
+                                    Text="已选择 Mod：" />
+                                <TextBlock HorizontalAlignment="Left" Text="{x:Bind ViewModel.ContextMenuVM.SelectedModsCount, Mode=OneWay}" />
+                            </StackPanel>
+                            <Button
+                                Padding="0"
+                                HorizontalAlignment="Right"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Command="{x:Bind ViewModel.DeleteModsCommand}">
+                                <FontIcon FontSize="16" Glyph="&#xE74D;" />
+                            </Button>
+                        </Grid>
+                    </Grid>
+
+                    <StackPanel
+                        Grid.Row="1"
+                        HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                x:Name="MoveModsButton"
+                                Margin="0,8,16,0"
+                                Command="{x:Bind ViewModel.ContextMenuVM.MoveModsCommand}"
+                                Content="移动" />
+                            <StackPanel>
+                                <TextBlock
+                                    FontWeight="SemiBold"
+                                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                    Text="移动到其他角色：" />
+                                <AutoSuggestBox
+                                    x:Name="MoveModSearchBox"
+                                    IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}"
+                                    ItemsSource="{x:Bind ViewModel.ContextMenuVM.SuggestedModdableObjects, Mode=OneWay}"
+                                    PlaceholderText="搜索角色..."
+                                    QuerySubmitted="MoveModSearch_OnQuerySubmitted"
+                                    TextChanged="MoveModSearch_OnTextChanged"
+                                    Text="{x:Bind ViewModel.ContextMenuVM.MoveModsSearchText, Mode=TwoWay}">
+                                    <AutoSuggestBox.ItemTemplate>
+                                        <DataTemplate x:DataType="subViewModels:SuggestedModObject">
+                                            <TextBlock FontFamily="{StaticResource GenshinFont}" Text="{x:Bind DisplayName}" />
+                                        </DataTemplate>
+                                    </AutoSuggestBox.ItemTemplate>
+                                </AutoSuggestBox>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!--  二开：直接按 Mods 目录下的文件夹名移动（大世界 / 武器 / others / 别的角色…）  -->
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBlock
+                                FontWeight="SemiBold"
+                                Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                                Text="移动到其他文件夹：" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ComboBox
+                                    Grid.Column="0"
+                                    MinWidth="180"
+                                    HorizontalAlignment="Stretch"
+                                    DisplayMemberPath="Name"
+                                    IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}"
+                                    ItemsSource="{x:Bind ViewModel.ContextMenuVM.ModFolders, Mode=OneWay}"
+                                    PlaceholderText="Mods 下的文件夹…"
+                                    SelectedItem="{x:Bind ViewModel.ContextMenuVM.SelectedModFolder, Mode=TwoWay}" />
+                                <Button
+                                    Grid.Column="1"
+                                    Margin="8,0,0,0"
+                                    Command="{x:Bind ViewModel.ContextMenuVM.MoveModsToFolderCommand}"
+                                    Content="移动" />
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+
+                </Grid>
+            </Flyout>
+
+        </Grid.Resources>
+
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="10*" />
+            </Grid.ColumnDefinitions>
+
+            <characterDetailsPages:CharacterCard x:Name="CharacterCard" />
+
+
+            <Grid x:Name="PageInitLoader" Grid.Column="1">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="Visible">
+                    <ProgressRing />
+                    <TextBlock>
+                        <Run Text="Loading" />
+                        <Run Text="{x:Bind ViewModel.LoadingItemText, Mode=OneWay}" />
+                        <Run Text="..." />
+
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+
+            <Grid
+                x:Name="RightWorkingArea"
+                Grid.Column="1"
+                Margin="4,0,4,0"
+                Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid x:Name="ToolBarArea" Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal">
+                            <MenuBar IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}">
+                                <MenuBarItem Title="Mod">
+                                    <MenuBarItem.Items>
+                                        <MenuFlyoutItem
+                                            Command="{x:Bind ViewModel.AddModFolderCommand}"
+                                            ToolTipService.ToolTip="添加 Mod 文件夹"
+                                            Text="添加 Mod…" />
+
+                                        <MenuFlyoutItem
+                                            Command="{x:Bind ViewModel.AddModArchiveCommand}"
+                                            ToolTipService.ToolTip="从压缩包中添加 Mod"
+                                            Text="添加压缩包…">
+                                            <MenuFlyoutItem.KeyboardAccelerators>
+                                                <KeyboardAccelerator Key="O" Modifiers="Control" />
+                                            </MenuFlyoutItem.KeyboardAccelerators>
+                                        </MenuFlyoutItem>
+
+                                        <MenuFlyoutSeparator />
+                                        <MenuFlyoutItem Command="{x:Bind ViewModel.RefreshAllModsCommand}" Text="刷新 Mod">
+                                            <MenuFlyoutItem.KeyboardAccelerators>
+                                                <KeyboardAccelerator Key="F5" />
+                                            </MenuFlyoutItem.KeyboardAccelerators>
+                                        </MenuFlyoutItem>
+                                    </MenuBarItem.Items>
+                                </MenuBarItem>
+
+                                <MenuBarItem Title="文件夹">
+                                    <MenuFlyoutItem Command="{x:Bind ViewModel.OpenGIMIRootFolderCommand}" Text="打开 3Dmigoto 根目录…" />
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem Command="{x:Bind ViewModel.OpenCharacterFolderCommand}" Text="打开角色的 Mod 文件夹…" />
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.OpenModFolderCommand}"
+                                        IsEnabled="{x:Bind ViewModel.ModGridVM.IsSingleModSelected, Mode=OneWay}"
+                                        Text="打开选中 Mod 的文件夹…" />
+                                </MenuBarItem>
+
+                                <MenuBarItem Title="视图">
+                                    <ToggleMenuFlyoutItem
+                                        Command="{x:Bind ViewModel.ToggleSingleSelectCommand}"
+                                        IsChecked="{x:Bind ViewModel.IsSingleSelectEnabled, Mode=OneWay}"
+                                        ToolTipService.ToolTip="开启后同一时间只允许启用一个 Mod"
+                                        Text="单选" />
+                                    <ToggleMenuFlyoutItem
+                                        Command="{x:Bind ViewModel.ToggleHideModFolderColumnCommand}"
+                                        IsChecked="{x:Bind ViewModel.IsModFolderNameColumnVisible, Mode=OneWay}"
+                                        Text="显示“Mod 文件夹名”列" />
+                                </MenuBarItem>
+
+                                <MenuBarItem
+                                    Title="Mod 偏好设置"
+                                    IsEnabled="{x:Bind ViewModel.IsSingleModSelected, Mode=OneWay}"
+                                    Visibility="Collapsed">
+                                    <ToggleMenuFlyoutItem ToolTipService.ToolTip="读取选中 Mod 在 d3dx_user.ini 中的 3Dmigoto 偏好设置，并保存到该 Mod 的 .JASM_Config.json" Text="保存选中 Mod 的偏好设置" />
+                                    <MenuFlyoutSeparator />
+                                    <ToggleMenuFlyoutItem ToolTipService.ToolTip="从 .JASM_Config.json 读取选中 Mod 的偏好设置并写入 d3dx_user.ini 供 3Dmigoto 使用" Text="读取选中 Mod 的偏好设置" />
+                                </MenuBarItem>
+                            </MenuBar>
+
+                        </StackPanel>
+
+
+                        <InfoBar
+                            Grid.Column="1"
+                            Height="50"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            IsClosable="False"
+                            IsOpen="{x:Bind ViewModel.ModGridVM.ShowMultipleModsActiveWarning, Mode=OneWay}"
+                            Message="有多个 Mod 同时启用"
+                            Severity="Warning"
+                            Visibility="Visible" />
+
+                    </Grid>
+
+
+
+                    <StackPanel
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="16">
+
+                        <InfoBar
+                            Height="50"
+                            VerticalAlignment="Center"
+                            IsClosable="False"
+                            Visibility="Visible" />
+
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBox
+                                x:Name="SearchModsTextBox"
+                                MinWidth="200"
+                                MaxWidth="500"
+                                IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}"
+                                PlaceholderText="搜索 Mod…"
+                                TextChanged="SearchModsTextBox_OnTextChanged"
+                                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                                <TextBox.KeyboardAccelerators>
+                                    <KeyboardAccelerator
+                                        Key="F"
+                                        Invoked="KeyboardAccelerator_OnInvoked"
+                                        Modifiers="Control" />
+                                </TextBox.KeyboardAccelerators>
+
+                            </TextBox>
+                        </StackPanel>
+
+
+                        <ToggleSwitch
+                            x:Name="ViewToggleSwitch"
+                            IsOn="False"
+                            OffContent="详细视图"
+                            OnContent="画廊视图"
+                            Toggled="ViewToggleSwitch_OnToggled" />
+
+                        <Grid MinWidth="32">
+                            <ProgressRing IsActive="{x:Bind ViewModel.IsWorking, Mode=OneWay}" />
+                        </Grid>
+
+                    </StackPanel>
+
+                </Grid>
+                <!--  二开：外观分区（暂时关闭，用于排查详细视图卡死）  -->
+                <Border
+                    Grid.Row="1"
+                    Margin="0,0,0,8"
+                    Visibility="Collapsed"
+                    Padding="8,4"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    CornerRadius="6">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock VerticalAlignment="Center" Text="外观分区：" />
+
+                        <ComboBox
+                            x:Name="SectionComboBox"
+                            MinWidth="150"
+                            DisplayMemberPath="Name"
+                            ItemsSource="{x:Bind ViewModel.SectionItems, Mode=OneWay}"
+                            SelectedItem="{x:Bind ViewModel.SelectedSectionItem, Mode=OneWay}"
+                            SelectionChanged="SectionComboBox_OnSelectionChanged" />
+
+                        <Button Command="{x:Bind ViewModel.StartAddSectionCommand}" Content="新建分区" />
+
+                        <TextBox
+                            MinWidth="140"
+                            VerticalAlignment="Center"
+                            PlaceholderText="分区名称"
+                            Text="{x:Bind ViewModel.NewSectionName, Mode=TwoWay}"
+                            Visibility="{x:Bind ViewModel.IsAddingSection, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                        <Button
+                            Command="{x:Bind ViewModel.ConfirmAddSectionCommand}"
+                            Content="确定"
+                            Visibility="{x:Bind ViewModel.IsAddingSection, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                        <Button
+                            Command="{x:Bind ViewModel.DeleteSectionCommand}"
+                            Content="删除分区"
+                            IsEnabled="{x:Bind ViewModel.HasSections, Mode=OneWay}" />
+
+                        <Button
+                            Command="{x:Bind ViewModel.AssignSelectedModsToSectionCommand}"
+                            Content="选中的 Mod 归入此分区" />
+
+                        <Button Command="{x:Bind ViewModel.EnableSectionCommand}" Content="只启用此分区" />
+                    </StackPanel>
+                </Border>
+
+                <Grid
+                    x:Name="MainContentArea"
+                    Grid.Row="2"
+                    AllowDrop="False"
+                    Background="Transparent"
+                    DragEnter="ModListArea_OnDragEnter"
+                    Drop="ModListArea_OnDrop">
+
+                    <!--
+                        We need drop handling on both  MainContentArea and ModListArea, but only one is active at the time
+                        This is because of the "This character has no mods" page that is shown if there are no mods
+                    -->
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*" />
+                            <ColumnDefinition Width="3*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid
+                            x:Name="ModListArea"
+                            AllowDrop="True"
+                            Background="Transparent"
+                            CornerRadius="10"
+                            DragEnter="ModListArea_OnDragEnter"
+                            Drop="ModListArea_OnDrop">
+                            <characterDetailsPages:ModGrid x:Name="ModGrid" IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}" />
+
+                        </Grid>
+
+                        <characterDetailsPages:ModPane
+                            x:Name="ModPane"
+                            Grid.Column="1"
+                            IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}" />
+
+                        <controls:GridSplitter
+                            x:Name="ModPaneSplitter"
+                            Grid.Column="1"
+                            Width="8"
+                            Height="40"
+                            HorizontalAlignment="Left"
+                            ResizeBehavior="BasedOnAlignment"
+                            ResizeDirection="Auto">
+                            <controls:GridSplitter.RenderTransform>
+                                <TranslateTransform X="-10" />
+                            </controls:GridSplitter.RenderTransform>
+                        </controls:GridSplitter>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+
+        </Grid>
+    </Grid>
+</Page>

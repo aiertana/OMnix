@@ -1,0 +1,22 @@
+# 编译产物
+[Bb]in/
+[Oo]bj/
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# 本地备份与打包产物（不上传）
+.backup/
+package/
+output/
+_test/
+_test2/
+
+# 别的项目 / 依赖（不上传）
+node_modules/
+.mywork-home/
+
+# 运行日志（不上传）
+logs/

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="OMniX.WinUI.Views.PluginAreaPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Padding="34,26,34,40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  ===== 专区头部 =====  -->
+            <Border Grid.Row="0" Style="{ThemeResource OmniXGlassCardStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border
+                        Grid.Column="0"
+                        Width="54"
+                        Height="54"
+                        Background="{ThemeResource OmniXAccentGradientBrush}"
+                        CornerRadius="15">
+                        <FontIcon
+                            FontSize="24"
+                            Foreground="White"
+                            Glyph="&#xE9F0;" />
+                    </Border>
+
+                    <StackPanel
+                        Grid.Column="1"
+                        Margin="16,0"
+                        VerticalAlignment="Center"
+                        Spacing="3">
+                        <TextBlock
+                            FontSize="19"
+                            FontWeight="SemiBold"
+                            Foreground="{ThemeResource OmniXTextPrimaryBrush}"
+                            Text="插件专区" />
+                        <TextBlock
+                            FontSize="12"
+                            Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                            Text="用插件给 OMniX 增加功能：外部工具、批处理脚本、Mod 处理扩展等。"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+
+                    <Button
+                        Grid.Column="2"
+                        Height="36"
+                        Padding="16,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding OpenPluginsFolderCommand}"
+                        Content="打开插件文件夹"
+                        Style="{ThemeResource OmniXGhostButtonStyle}" />
+                </Grid>
+            </Border>
+
+            <!--  ===== 说明条 =====  -->
+            <Border
+                Grid.Row="1"
+                Margin="0,18,0,0"
+                Padding="16,12"
+                Background="{ThemeResource OmniXCardAltBackgroundBrush}"
+                BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                BorderThickness="1"
+                CornerRadius="14">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <FontIcon
+                        FontSize="15"
+                        Foreground="{ThemeResource OmniXAccentBrush}"
+                        Glyph="&#xE7BA;" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                        Text="专区界面已经搭好，插件加载机制还在开发。下面这些是规划中的示例卡片。"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <!--  ===== 插件卡片列表 =====  -->
+            <ItemsControl Grid.Row="2" Margin="0,18,0,0" ItemsSource="{Binding Plugins}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="0,0,0,14"
+                            Padding="18,16"
+                            Background="{ThemeResource OmniXGlassBackgroundBrush}"
+                            BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                            BorderThickness="1"
+                            CornerRadius="16">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border
+                                    Grid.Column="0"
+                                    Width="44"
+                                    Height="44"
+                                    Background="{ThemeResource OmniXCardAltBackgroundBrush}"
+                                    CornerRadius="13">
+                                    <FontIcon
+                                        FontSize="19"
+                                        Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                        Glyph="{Binding Glyph}" />
+                                </Border>
+
+                                <StackPanel
+                                    Grid.Column="1"
+                                    Margin="15,0"
+                                    VerticalAlignment="Center"
+                                    Spacing="3">
+                                    <TextBlock
+                                        FontSize="14.5"
+                                        FontWeight="SemiBold"
+                                        Foreground="{ThemeResource OmniXTextPrimaryBrush}"
+                                        Text="{Binding Name}" />
+                                    <TextBlock
+                                        FontSize="11.5"
+                                        Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                        Text="{Binding Description}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="10,4"
+                                    VerticalAlignment="Center"
+                                    Background="{ThemeResource OmniXAccentSoftBrush}"
+                                    CornerRadius="9">
+                                    <TextBlock
+                                        FontSize="10.5"
+                                        Foreground="{ThemeResource OmniXAccentBrush}"
+                                        Text="{Binding Status}" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </ScrollViewer>
+</Page>

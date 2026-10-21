@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="OMniX.WinUI.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:OMniX.WinUI.ViewModels"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Padding="34,26,34,40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  ==================== Hero：当前游戏 ====================  -->
+            <Grid Grid.Row="0" Height="186">
+                <Border Background="{ThemeResource OmniXHeroGradientBrush}" CornerRadius="22" />
+                <Border Background="{ThemeResource OmniXHeroGlassBrush}" CornerRadius="22" />
+
+                <!--  装饰：半透明圆  -->
+                <Ellipse
+                    Width="260"
+                    Height="260"
+                    Margin="0,0,-60,-130"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Fill="#14FFFFFF" />
+                <Ellipse
+                    Width="150"
+                    Height="150"
+                    Margin="0,0,120,-80"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Fill="#12FFFFFF" />
+
+                <Grid Padding="28,24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  游戏图标  -->
+                    <Border
+                        Grid.Column="0"
+                        Width="66"
+                        Height="66"
+                        Background="#26FFFFFF"
+                        CornerRadius="16">
+                        <Image
+                            Width="46"
+                            Height="46"
+                            Source="{x:Bind ViewModel.GameIconImage, Mode=OneWay}"
+                            Stretch="Uniform" />
+                    </Border>
+
+                    <StackPanel
+                        Grid.Column="1"
+                        Margin="18,0,0,0"
+                        VerticalAlignment="Center"
+                        Spacing="4">
+                        <TextBlock
+                            FontSize="12.5"
+                            Foreground="#CCFFFFFF"
+                            Text="欢迎使用 OMniX" />
+                        <TextBlock
+                            FontSize="27"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="{x:Bind ViewModel.SelectedGameName, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis" />
+                        <TextBlock
+                            FontSize="12.5"
+                            Foreground="#D9FFFFFF"
+                            Text="{x:Bind ViewModel.ModsSummary, Mode=OneWay}" />
+                    </StackPanel>
+
+                    <!--  右侧操作：切换游戏 / 启动 / 主题  -->
+                    <StackPanel
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <ComboBox
+                            x:Name="GameSelector"
+                            Width="168"
+                            DisplayMemberPath="Name"
+                            ItemsSource="{x:Bind ViewModel.Games, Mode=OneWay}"
+                            SelectedItem="{x:Bind ViewModel.SelectedGame, Mode=TwoWay}"
+                            SelectionChanged="GameSelector_OnSelectionChanged"
+                            ToolTipService.ToolTip="切换当前游戏（会重启应用）" />
+
+                        <Button
+                            Height="40"
+                            Command="{x:Bind ViewModel.LaunchGameCommand}"
+                            Content="{x:Bind ViewModel.LaunchGameText, Mode=OneWay}"
+                            Style="{ThemeResource OmniXHeroButtonStyle}" />
+
+                        <Button
+                            Command="{x:Bind ViewModel.ToggleThemeCommand}"
+                            Style="{ThemeResource OmniXHeroIconButtonStyle}"
+                            ToolTipService.ToolTip="切换浅色 / 深色主题">
+                            <FontIcon FontSize="15" Glyph="&#xE793;" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <!--  ==================== 引导卡（未配置时） ====================  -->
+            <Grid
+                Grid.Row="1"
+                Margin="0,18,0,0"
+                Visibility="{x:Bind ViewModel.SetupHintVisibility, Mode=OneWay}">
+                <Border
+                    Padding="20,16"
+                    Background="{ThemeResource OmniXAccentSoftBrush}"
+                    BorderBrush="{ThemeResource OmniXCardStrokeHoverBrush}"
+                    BorderThickness="1"
+                    CornerRadius="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border
+                            Grid.Column="0"
+                            Width="38"
+                            Height="38"
+                            Background="{ThemeResource OmniXAccentGradientBrush}"
+                            CornerRadius="11">
+                            <FontIcon
+                                FontSize="17"
+                                Foreground="White"
+                                Glyph="&#xE7C3;" />
+                        </Border>
+
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="14,0"
+                            VerticalAlignment="Center">
+                            <TextBlock
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                Foreground="{ThemeResource OmniXTextPrimaryBrush}"
+                                Text="还没配置游戏与 Mods 路径" />
+                            <TextBlock
+                                FontSize="11.5"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="完成配置后才能浏览和启用 Mod，也可以稍后在设置页里配置。" />
+                        </StackPanel>
+
+                        <Button
+                            Grid.Column="2"
+                            Height="36"
+                            Padding="16,0"
+                            Command="{x:Bind ViewModel.OpenSetupCommand}"
+                            Content="开始配置"
+                            Style="{ThemeResource OmniXAccentButtonStyle}" />
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!--  ==================== 功能模块 ====================  -->
+            <StackPanel
+                Grid.Row="2"
+                Margin="2,26,0,12"
+                Orientation="Vertical"
+                Spacing="2">
+                <TextBlock Style="{ThemeResource OmniXSectionTitleStyle}" Text="功能模块" />
+                <TextBlock
+                    Style="{ThemeResource OmniXSectionSubtitleStyle}"
+                    Text="点开就用，常用的都在这里" />
+            </StackPanel>
+
+            <Grid Grid.Row="3" ColumnSpacing="18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  Mod 管理卡  -->
+                <Border Grid.Column="0" Style="{ThemeResource OmniXGlassCardStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Spacing="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Column="0"
+                                    Width="42"
+                                    Height="42"
+                                    Background="{ThemeResource OmniXAccentSoftBrush}"
+                                    CornerRadius="12">
+                                    <FontIcon
+                                        FontSize="19"
+                                        Foreground="{ThemeResource OmniXAccentBrush}"
+                                        Glyph="&#xEA37;" />
+                                </Border>
+                                <Border
+                                    Grid.Column="1"
+                                    Margin="10,0,0,0"
+                                    Padding="8,3"
+                                    VerticalAlignment="Center"
+                                    Background="{ThemeResource OmniXCardAltBackgroundBrush}"
+                                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="10">
+                                    <TextBlock
+                                        FontSize="10.5"
+                                        Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                        Text="{x:Bind ViewModel.ModsSummary, Mode=OneWay}" />
+                                </Border>
+                            </Grid>
+
+                            <TextBlock
+                                FontSize="17"
+                                FontWeight="SemiBold"
+                                Foreground="{ThemeResource OmniXTextPrimaryBrush}"
+                                Text="Mod 管理" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="浏览已安装的 Mod，启用 / 禁用、刷新和整理。"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel
+                            Grid.Row="1"
+                            Margin="0,16,0,0"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <Button
+                                Height="34"
+                                Padding="16,0"
+                                Command="{x:Bind ViewModel.OpenModLibraryCommand}"
+                                Content="Mod 总览"
+                                Style="{ThemeResource OmniXAccentButtonStyle}" />
+                            <Button
+                                Height="34"
+                                Padding="16,0"
+                                Command="{x:Bind ViewModel.OpenCharactersCommand}"
+                                Content="角色管理"
+                                Style="{ThemeResource OmniXGhostButtonStyle}" />
+                            <Button
+                                Height="34"
+                                Padding="16,0"
+                                Command="{x:Bind ViewModel.OpenCharacterGalleryCommand}"
+                                Content="角色图库"
+                                Style="{ThemeResource OmniXGhostButtonStyle}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!--  插件专区卡  -->
+                <Border Grid.Column="1" Style="{ThemeResource OmniXGlassCardStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Spacing="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Column="0"
+                                    Width="42"
+                                    Height="42"
+                                    Background="{ThemeResource OmniXAccentSoftBrush}"
+                                    CornerRadius="12">
+                                    <FontIcon
+                                        FontSize="19"
+                                        Foreground="{ThemeResource OmniXAccentBrush}"
+                                        Glyph="&#xE9F0;" />
+                                </Border>
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="8,3"
+                                    VerticalAlignment="Center"
+                                    Background="{ThemeResource OmniXCardAltBackgroundBrush}"
+                                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="10">
+                                    <TextBlock
+                                        FontSize="10.5"
+                                        Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                        Text="即将开放" />
+                                </Border>
+                            </Grid>
+
+                            <TextBlock
+                                FontSize="17"
+                                FontWeight="SemiBold"
+                                Foreground="{ThemeResource OmniXTextPrimaryBrush}"
+                                Text="插件专区" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="用插件扩展 OMniX：外部工具、批处理、选择器等。"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel
+                            Grid.Row="1"
+                            Margin="0,16,0,0"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <Button
+                                Height="34"
+                                Padding="16,0"
+                                Command="{x:Bind ViewModel.OpenPluginAreaCommand}"
+                                Content="进入专区"
+                                Style="{ThemeResource OmniXAccentButtonStyle}" />
+                            <Button
+                                Height="34"
+                                Padding="16,0"
+                                Command="{x:Bind ViewModel.OpenPresetsCommand}"
+                                Content="预设配置"
+                                Style="{ThemeResource OmniXGhostButtonStyle}" />
+                            <Button
+                                Height="34"
+                                Padding="16,0"
+                                Command="{x:Bind ViewModel.OpenModInstallerCommand}"
+                                Content="安装 Mod"
+                                Style="{ThemeResource OmniXGhostButtonStyle}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!--  ==================== 预留功能区 ====================  -->
+            <StackPanel
+                Grid.Row="4"
+                Margin="2,28,0,12"
+                Orientation="Vertical"
+                Spacing="2">
+                <TextBlock Style="{ThemeResource OmniXSectionTitleStyle}" Text="更多功能区" />
+                <TextBlock
+                    Style="{ThemeResource OmniXSectionSubtitleStyle}"
+                    Text="预留位置，后续功能直接填进这些卡里" />
+            </StackPanel>
+
+            <Grid Grid.Row="5" ColumnSpacing="18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{ThemeResource OmniXPlaceholderCardStyle}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="6">
+                        <FontIcon
+                            FontSize="22"
+                            Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                            Glyph="&#xE8B7;" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="12.5"
+                            Foreground="{ThemeResource OmniXTextPrimaryBrush}"
+                            Text="预留功能区" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="10.5"
+                            Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                            Text="敬请期待" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{ThemeResource OmniXPlaceholderCardStyle}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="6">
+                        <FontIcon
+                            FontSize="22"
+                            Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                            Glyph="&#xE9E9;" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="12.5"
+                            Foreground="{ThemeResource OmniXTextPrimaryBrush}"
+                            Text="预留功能区" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="10.5"
+                            Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                            Text="敬请期待" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Style="{ThemeResource OmniXPlaceholderCardStyle}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="6">
+                        <FontIcon
+                            FontSize="22"
+                            Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                            Glyph="&#xE72E;" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="12.5"
+                            Foreground="{ThemeResource OmniXTextPrimaryBrush}"
+                            Text="预留功能区" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="10.5"
+                            Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                            Text="敬请期待" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</Page>

@@ -1,0 +1,19 @@
+﻿<windowex:WindowEx
+    x:Class="OMniX.WinUI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OMniX.WinUI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:windowex="using:WinUIEx"
+    MinWidth="500"
+    MinHeight="500"
+    PersistenceId="MainWindow"
+    mc:Ignorable="d">
+    <!--  二开：主题改造 —— 亚克力玻璃背景。
+          DesktopAcrylicBackdrop 会实时模糊桌面内容，玻璃感比 Mica 明显得多，
+          这也是「透明亚克力」风格的基础；卡片本身也要跟着半透明才透得出来。  -->
+    <Window.SystemBackdrop>
+        <DesktopAcrylicBackdrop />
+    </Window.SystemBackdrop>
+</windowex:WindowEx>
