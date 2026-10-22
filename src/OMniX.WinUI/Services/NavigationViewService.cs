@@ -77,7 +77,15 @@ public class NavigationViewService : INavigationViewService
             {
                 var parameter = selectedItem?.GetValue(NavigationHelper.NavigateToParameterProperty);
 
-                _navigationService.NavigateTo(pageKey, parameter);
+                try
+                {
+                    _navigationService.NavigateTo(pageKey, parameter);
+                }
+                catch (Exception ex)
+                {
+                    // 某个页面的构造函数炸了不该把整个管理器带走
+                    Serilog.Log.Error(ex, "导航到 {PageKey} 失败", pageKey);
+                }
             }
         }
     }

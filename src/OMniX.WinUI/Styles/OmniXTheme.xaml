@@ -195,6 +195,16 @@
         <GradientStop Offset="1" Color="#FFFF8A92" />
     </LinearGradientBrush>
 
+    <!--
+        二开：Hero 换成插画背景后，左边要有压暗层，不然白字贴在浅色画面上看不清。
+        左边深、右边透，刚好避开右侧的按钮区。
+    -->
+    <LinearGradientBrush x:Key="OmniXHeroScrimBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Offset="0" Color="#B3000000" />
+        <GradientStop Offset="0.45" Color="#66000000" />
+        <GradientStop Offset="1" Color="#1A000000" />
+    </LinearGradientBrush>
+
     <!--  ========== 圆角 ==========  -->
     <CornerRadius x:Key="OmniXCardCornerRadius">16</CornerRadius>
     <CornerRadius x:Key="OmniXControlCornerRadius">10</CornerRadius>

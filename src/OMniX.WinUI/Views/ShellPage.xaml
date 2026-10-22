@@ -124,6 +124,55 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <!--  ===== 二开：插件开关（Mod 加载 / DLSS5 渲染链）  =====  -->
+                <NavigationViewItem
+                    x:Name="ModPluginItem"
+                    SelectsOnInvoked="False"
+                    ToolTipService.ToolTip="{x:Bind ViewModel.ModToolTip, Mode=OneWay}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74C;" />
+                    </NavigationViewItem.Icon>
+                    <StackPanel
+                        MinWidth="132"
+                        Orientation="Horizontal"
+                        Spacing="6">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="13"
+                            Text="Mod" />
+                        <ToggleSwitch
+                            x:Name="ModToggle"
+                            MinWidth="0"
+                            OffContent=""
+                            OnContent=""
+                            Toggled="ModToggle_OnToggled" />
+                    </StackPanel>
+                </NavigationViewItem>
+
+                <NavigationViewItem
+                    x:Name="Dlss5PluginItem"
+                    SelectsOnInvoked="False"
+                    ToolTipService.ToolTip="{x:Bind ViewModel.Dlss5ToolTip, Mode=OneWay}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7FC;" />
+                    </NavigationViewItem.Icon>
+                    <StackPanel
+                        MinWidth="132"
+                        Orientation="Horizontal"
+                        Spacing="6">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="13"
+                            Text="DLSS5" />
+                        <ToggleSwitch
+                            x:Name="Dlss5Toggle"
+                            MinWidth="0"
+                            OffContent=""
+                            OnContent=""
+                            Toggled="Dlss5Toggle_OnToggled" />
+                    </StackPanel>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>

@@ -17,6 +17,7 @@ using OMniX.WinUI.Services.AppManagement.Updating;
 using OMniX.WinUI.Services.ModExport;
 using OMniX.WinUI.Services.ModHandling;
 using OMniX.WinUI.Services.Notifications;
+using OMniX.WinUI.Services.Plugins;
 using OMniX.WinUI.ViewModels;
 using OMniX.WinUI.ViewModels.CharacterDetailsViewModels.SubViewModels;
 using OMniX.WinUI.ViewModels.CharacterGalleryViewModels;
@@ -350,6 +351,13 @@ public partial class App : Application
                 services.AddTransient<HomePage>();
                 services.AddTransient<PluginAreaViewModel>();
                 services.AddTransient<PluginAreaPage>();
+
+                // 二开：DLSS5 渲染链插件（只做检测 + 调部署包脚本，删掉部署包不影响管理器）
+                services.AddSingleton<Dlss5PluginService>();
+                services.AddSingleton<PluginDependencyService>();
+
+                // 二开：首页和左侧栏两个「启动游戏」共用同一套逻辑
+                services.AddSingleton<GameLaunchService>();
 
                 // Configuration
                 services.Configure<LocalSettingsOptions>(

@@ -6,8 +6,12 @@ using OMniX.WinUI.Services;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Services.AppManagement.Updating;
 using OMniX.WinUI.Services.Notifications;
+using OMniX.WinUI.Services.Plugins;
 using OMniX.WinUI.Views;
+using OMniX.WinUI.Views.Dialogs;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using System.Diagnostics;
 
 namespace OMniX.WinUI.ViewModels;
 
@@ -32,11 +36,37 @@ public partial class ShellViewModel : ObservableRecipient
     [ObservableProperty] private string _launchGameText = "启动游戏";
     [ObservableProperty] private string _appVersionText = string.Empty;
 
+    /// <summary>二开：左侧栏的 DLSS5 渲染链插件</summary>
+    public Dlss5PluginService Dlss5Plugin { get; }
+
+    [ObservableProperty] private bool _dlss5Enabled;
+    [ObservableProperty] private bool _dlss5Busy;
+    [ObservableProperty] private string _dlss5StatusText = "未配置";
+    [ObservableProperty] private string _dlss5DetailText = string.Empty;
+    [ObservableProperty] private string _dlss5ToolTip = string.Empty;
+
+    /// <summary>二开：Mod 加载开关（改 scripts\d3d11.asi 的名字）</summary>
+    [ObservableProperty] private bool _modEnabled;
+    [ObservableProperty] private bool _modBusy;
+    [ObservableProperty] private string _modToolTip = string.Empty;
+
+    private readonly IWindowManagerService _windowManagerService;
+    private readonly ThreeDMigtoProcessManager _threeDMigtoProcessManager;
+    private readonly PluginDependencyService _dependencies;
+    private readonly GameLaunchService _gameLaunchService;
+
     public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService,
         NotificationManager notificationManager, ElevatorService elevatorService, UpdateChecker updateChecker,
         IGameService gameService, SelectedGameService selectedGameService, BusyService busyService,
-        GenshinProcessManager genshinProcessManager)
+        GenshinProcessManager genshinProcessManager, Dlss5PluginService dlss5Plugin,
+        IWindowManagerService windowManagerService, ThreeDMigtoProcessManager threeDMigtoProcessManager,
+        PluginDependencyService dependencies, GameLaunchService gameLaunchService)
     {
+        Dlss5Plugin = dlss5Plugin;
+        _windowManagerService = windowManagerService;
+        _threeDMigtoProcessManager = threeDMigtoProcessManager;
+        _dependencies = dependencies;
+        _gameLaunchService = gameLaunchService;
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
@@ -96,7 +126,7 @@ public partial class ShellViewModel : ObservableRecipient
     }
 
     /// <summary>
-    ///     左侧栏底部“启动游戏”按钮
+    ///     左侧栏底部“启动游戏”。和首页 Hero 上的按钮走同一个服务。
     /// </summary>
     [RelayCommand]
     private async Task LaunchGameAsync()
@@ -104,23 +134,227 @@ public partial class ShellViewModel : ObservableRecipient
         if (!IsNotFirstTimeStartupPage)
             return;
 
-        try
-        {
-            await GenshinProcessManager.CheckStatus();
+        await _gameLaunchService.LaunchAsync();
+    }
 
-            if (GenshinProcessManager.ProcessStatus == ProcessStatus.NotInitialized)
+    /// <summary>
+    ///     二开：刷新插件的开关状态（启动时、切换完开关后都调一次）。
+    /// </summary>
+    public async Task RefreshDlss5Async()
+    {
+        await Task.Yield();
+
+        var state = Dlss5Plugin.Detect();
+        Dlss5Enabled = state.Deployed && state.Dlss5AddonActive;
+        ModEnabled = state.ModLoaderActive;
+        Dlss5StatusText = state.StatusText;
+        Dlss5DetailText = state.DetailText;
+        Dlss5ToolTip = !state.Deployed
+            ? state.Ready
+                ? "点右侧开关部署加载链（需要管理员权限）"
+                : "还缺游戏路径或部署包路径，点开关即可配置"
+            : state.Dlss5AddonActive
+                ? $"DLSS5 已启用 · {state.GameDir}"
+                : $"DLSS5 已停用（addon 已改名）· {state.GameDir}";
+
+        ModToolTip = !state.Deployed
+            ? "加载链还没部署，现在启动游戏不会加载 Mod；打开这个开关会顺手把加载链装上"
+            : state.ModLoaderActive
+                ? "Mod 已启用，启动游戏会加载 Mod"
+                : "Mod 已停用（d3d11.asi 改名成 .disabled），启动游戏不加载 Mod";
+    }
+
+    /// <summary>
+    ///     二开：DLSS5 开关。
+    ///     已经部署过加载链时只是给 addon 改名（秒切、不用管理员）；
+    ///     还没部署就打开的话，走一次安装流程。
+    /// </summary>
+    public async Task SetDlss5EnabledAsync(bool enable)
+    {
+        if (Dlss5Busy)
+            return;
+
+        var state = Dlss5Plugin.Detect();
+
+        if (!state.Deployed)
+        {
+            if (!enable)
             {
-                NotificationManager.ShowNotification("尚未设置游戏路径",
-                    "请在角色页面点击“启动游戏”并选择游戏可执行文件", TimeSpan.FromSeconds(8));
-                NavigationService.NavigateTo(typeof(CharactersViewModel).FullName!);
+                await RefreshDlss5Async();
                 return;
             }
 
-            await GenshinProcessManager.StartProcess();
+            // 部署要用部署包，缺了先让用户下载
+            if (!_dependencies.Detect().KitReady)
+            {
+                var dependencyDialog = new PluginDependencyDialog(_dependencies);
+
+                if (await _windowManagerService.ShowDialogAsync(dependencyDialog) != ContentDialogResult.Primary)
+                {
+                    await RefreshDlss5Async();
+                    return;
+                }
+
+                if (!_dependencies.Detect().KitReady)
+                {
+                    NotificationManager.ShowNotification("还没有 DLSS5 部署包",
+                        "点开关重新打开依赖检查，可以在那里直接下载最新版。", TimeSpan.FromSeconds(8));
+                    await RefreshDlss5Async();
+                    return;
+                }
+            }
+
+            await InstallLoaderAsync();
+            return;
         }
-        catch (Exception e)
+
+        Dlss5Busy = true;
+
+        try
         {
-            NotificationManager.ShowNotification("启动游戏失败", e.Message, TimeSpan.FromSeconds(8));
+            var ok = await Dlss5Plugin.SetDlss5AddonAsync(enable);
+            NotificationManager.ShowNotification(enable ? "DLSS5 已启用" : "DLSS5 已停用",
+                ok ? "下次启动游戏生效" : "改文件名失败，检查一下游戏目录的写入权限",
+                TimeSpan.FromSeconds(6));
+        }
+        finally
+        {
+            Dlss5Busy = false;
+            await RefreshDlss5Async();
+        }
+    }
+
+    /// <summary>
+    ///     二开：Mod 开关。就是把 scripts\d3d11.asi 改名，ASI Loader 加载不到自然就不带 Mod。
+    /// </summary>
+    public async Task SetModEnabledAsync(bool enable)
+    {
+        if (ModBusy)
+            return;
+
+        var state = Dlss5Plugin.Detect();
+
+        // 加载链没部署时，两个开关就都是关的。
+        // 想关：本来就是关的，静默回正，别弹提示拦着；
+        // 想开：顺手把加载链装上，装完 Mod 自然就带上了。
+        if (!state.Deployed)
+        {
+            if (!enable)
+            {
+                await RefreshDlss5Async();
+                return;
+            }
+
+            if (!_dependencies.Detect().ModReady)
+            {
+                var dependencyDialog = new PluginDependencyDialog(_dependencies);
+                await _windowManagerService.ShowDialogAsync(dependencyDialog);
+                await RefreshDlss5Async();
+                return;
+            }
+
+            await InstallLoaderAsync();
+            return;
+        }
+
+        // 有加载链但没有 XXMI / WWMI 的话，开关切了也没意义，先引导装
+        if (!_dependencies.Detect().ModReady)
+        {
+            var dependencyDialog = new PluginDependencyDialog(_dependencies);
+            await _windowManagerService.ShowDialogAsync(dependencyDialog);
+            await RefreshDlss5Async();
+            return;
+        }
+
+        ModBusy = true;
+
+        try
+        {
+            var ok = await Dlss5Plugin.SetModLoaderAsync(enable);
+            NotificationManager.ShowNotification(enable ? "Mod 已启用" : "Mod 已停用",
+                ok ? "下次启动游戏生效" : "改文件名失败，检查一下游戏目录的写入权限",
+                TimeSpan.FromSeconds(6));
+        }
+        finally
+        {
+            ModBusy = false;
+            await RefreshDlss5Async();
+        }
+    }
+
+    /// <summary>
+    ///     二开：第一次开启时把加载链部署进游戏目录（会弹配置和确认）。
+    /// </summary>
+    private async Task InstallLoaderAsync()
+    {
+        var state = Dlss5Plugin.Detect();
+
+        if (!state.Ready)
+        {
+            var dialog = new Dlss5SetupDialog(Dlss5Plugin);
+            var picked = await _windowManagerService.ShowDialogAsync(dialog);
+
+            if (picked != ContentDialogResult.Primary)
+            {
+                await RefreshDlss5Async();
+                return;
+            }
+
+            state = Dlss5Plugin.Detect();
+
+            if (!state.Ready)
+            {
+                NotificationManager.ShowNotification("插件还没配好",
+                    "游戏可执行文件或部署包目录不对，再点一次开关重新填。", TimeSpan.FromSeconds(8));
+                await RefreshDlss5Async();
+                return;
+            }
+        }
+
+        // 会动游戏目录，先让人看清楚再动手
+        var confirm = new ContentDialog
+        {
+            Title = "部署渲染链？",
+            Content =
+                $"会把加载器、ReShade、DLSS5 铺进：\n{state.GameDir}\n\n那边的 scripts 会被清空重建，游戏自带的 NVIDIA DLSS 库也会被替换成部署包里的版本。",
+            PrimaryButtonText = "开始部署",
+            CloseButtonText = "取消",
+            DefaultButton = ContentDialogButton.Close
+        };
+
+        if (await _windowManagerService.ShowDialogAsync(confirm) != ContentDialogResult.Primary)
+        {
+            await RefreshDlss5Async();
+            return;
+        }
+
+        Dlss5Busy = true;
+        Dlss5StatusText = "正在部署…";
+
+        try
+        {
+            var result = await Dlss5Plugin.SetEnabledAsync(true);
+
+            if (result.NeedsSetup)
+            {
+                NotificationManager.ShowNotification("插件还没配好",
+                    "游戏可执行文件或部署包目录不对，再点一次开关重新填。", TimeSpan.FromSeconds(8));
+                return;
+            }
+
+            if (result.UserCancelled)
+            {
+                NotificationManager.ShowNotification("已取消", "没有拿到管理员权限，部署没有进行。",
+                    TimeSpan.FromSeconds(6));
+                return;
+            }
+
+            NotificationManager.ShowNotification("渲染链已开启", result.Message, TimeSpan.FromSeconds(10));
+        }
+        finally
+        {
+            Dlss5Busy = false;
+            await RefreshDlss5Async();
         }
     }
 

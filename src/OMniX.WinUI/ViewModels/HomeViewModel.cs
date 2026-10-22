@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Diagnostics;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -28,9 +29,17 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     private readonly NotificationManager _notificationManager;
     private readonly SelectedGameService _selectedGameService;
     private readonly IThemeSelectorService _themeSelectorService;
+    private readonly GameLaunchService _gameLaunchService;
+
+    /// <summary>Hero 背景图存在这个键里；没有就用内置的默认图。</summary>
+    public const string HeroBackgroundKey = "Home.Hero.BackgroundImage";
+
+    private static readonly Uri DefaultHeroBackground = new("ms-appx:///Assets/Heroes/wuthering-waves.png");
 
     [ObservableProperty] private ImageSource? _gameIconImage = null;
     [ObservableProperty] private string _gameIconPath = string.Empty;
+    [ObservableProperty] private ImageSource? _heroBackgroundImage = null;
+    [ObservableProperty] private bool _hasCustomHeroBackground;
     [ObservableProperty] private bool _isBusy;
     [ObservableProperty] private bool _isConfigured;
     [ObservableProperty] private bool _isDarkTheme;
@@ -39,6 +48,10 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty] private string _modsSummary = "尚未配置";
     [ObservableProperty] private GameSwitchItem? _selectedGame = null;
     [ObservableProperty] private string _selectedGameName = "OMniX";
+
+    /// <summary>用户换的背景图都收在这儿，原图移走了也不影响。</summary>
+    public static string HeroBackgroundFolder { get; } = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OMniX", "Heroes");
 
     public ObservableCollection<GameSwitchItem> Games { get; } = new();
 
@@ -52,7 +65,8 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     public HomeViewModel(INavigationService navigationService, IGameService gameService,
         ILocalSettingsService localSettingsService, SelectedGameService selectedGameService,
         GenshinProcessManager genshinProcessManager, IThemeSelectorService themeSelectorService,
-        LifeCycleService lifeCycleService, NotificationManager notificationManager)
+        LifeCycleService lifeCycleService, NotificationManager notificationManager,
+        GameLaunchService gameLaunchService)
     {
         _navigationService = navigationService;
         _gameService = gameService;
@@ -62,6 +76,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         _themeSelectorService = themeSelectorService;
         _lifeCycleService = lifeCycleService;
         _notificationManager = notificationManager;
+        _gameLaunchService = gameLaunchService;
 
         IsDarkTheme = _themeSelectorService.Theme == ElementTheme.Dark;
         _gameService.Initialized += OnGameServiceInitialized;
@@ -143,6 +158,130 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
 
         await LoadSwitchableGamesAsync();
+        await LoadHeroBackgroundAsync();
+    }
+
+    /// <summary>
+    ///     读一下用户换过的背景图，没有就回到内置那张。
+    /// </summary>
+    private async Task LoadHeroBackgroundAsync()
+    {
+        try
+        {
+            var custom = await _localSettingsService.ReadSettingAsync<string>(HeroBackgroundKey);
+
+            if (!string.IsNullOrWhiteSpace(custom) && File.Exists(custom))
+            {
+                HeroBackgroundImage = TryLoadImage(custom);
+                HasCustomHeroBackground = HeroBackgroundImage is not null;
+
+                if (HasCustomHeroBackground)
+                    return;
+            }
+        }
+        catch (Exception)
+        {
+            // 设置读不出来就当没换过
+        }
+
+        HeroBackgroundImage = new BitmapImage(DefaultHeroBackground);
+        HasCustomHeroBackground = false;
+    }
+
+    /// <summary>
+    ///     把选中的图复制到应用自己的目录再记下来，
+    ///     这样原图被删掉或者移动了，首页背景还在。
+    /// </summary>
+    public async Task<bool> SetHeroBackgroundAsync(string sourcePath)
+    {
+        try
+        {
+            if (!File.Exists(sourcePath))
+                return false;
+
+            Directory.CreateDirectory(HeroBackgroundFolder);
+
+            var extension = Path.GetExtension(sourcePath);
+
+            if (string.IsNullOrWhiteSpace(extension))
+                extension = ".png";
+
+            // 换个文件名，避免 BitmapImage 读到旧缓存
+            var target = Path.Combine(HeroBackgroundFolder, $"hero-{DateTime.Now:yyyyMMddHHmmss}{extension}");
+            File.Copy(sourcePath, target, true);
+
+            foreach (var old in Directory.GetFiles(HeroBackgroundFolder, "hero-*"))
+            {
+                if (string.Equals(old, target, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                try
+                {
+                    File.Delete(old);
+                }
+                catch (Exception)
+                {
+                    // 删不掉就留着，不影响
+                }
+            }
+
+            await _localSettingsService.SaveSettingAsync(HeroBackgroundKey, target);
+
+            HeroBackgroundImage = TryLoadImage(target);
+            HasCustomHeroBackground = HeroBackgroundImage is not null;
+
+            return HasCustomHeroBackground;
+        }
+        catch (Exception e)
+        {
+            _notificationManager.ShowNotification("换背景图失败", e.Message, TimeSpan.FromSeconds(8));
+            return false;
+        }
+    }
+
+    /// <summary>清掉自定义背景，回到内置那张。</summary>
+    public async Task ResetHeroBackgroundAsync()
+    {
+        try
+        {
+            await _localSettingsService.SaveSettingAsync<string?>(HeroBackgroundKey, null);
+
+            foreach (var old in Directory.GetFiles(HeroBackgroundFolder, "hero-*"))
+            {
+                try
+                {
+                    File.Delete(old);
+                }
+                catch (Exception)
+                {
+                    // 删不掉就留着
+                }
+            }
+        }
+        catch (Exception)
+        {
+            // 设置写不进去也要把界面恢复成默认
+        }
+
+        HeroBackgroundImage = new BitmapImage(DefaultHeroBackground);
+        HasCustomHeroBackground = false;
+    }
+
+    public void OpenHeroBackgroundFolder()
+    {
+        try
+        {
+            Directory.CreateDirectory(HeroBackgroundFolder);
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = HeroBackgroundFolder,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception e)
+        {
+            _notificationManager.ShowNotification("打不开文件夹", e.Message, TimeSpan.FromSeconds(6));
+        }
     }
 
     private async Task LoadSwitchableGamesAsync()
@@ -243,36 +382,10 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     }
 
     /// <summary>
-    ///     启动当前游戏
+    ///     启动当前游戏。和左侧栏底部那个按钮走同一套逻辑（都只会打开官方启动器）。
     /// </summary>
     [RelayCommand]
-    private async Task LaunchGameAsync()
-    {
-        if (!IsConfigured)
-        {
-            _notificationManager.ShowNotification("尚未配置",
-                "请先在首页上方的引导卡里完成游戏与 Mods 路径配置。", TimeSpan.FromSeconds(8));
-            return;
-        }
-
-        try
-        {
-            await _genshinProcessManager.CheckStatus();
-
-            if (_genshinProcessManager.ProcessStatus == ProcessStatus.NotInitialized)
-            {
-                _notificationManager.ShowNotification("尚未设置游戏路径",
-                    "请在设置页里指定游戏可执行文件。", TimeSpan.FromSeconds(8));
-                return;
-            }
-
-            await _genshinProcessManager.StartProcess();
-        }
-        catch (Exception e)
-        {
-            _notificationManager.ShowNotification("启动游戏失败", e.Message, TimeSpan.FromSeconds(8));
-        }
-    }
+    private Task LaunchGameAsync() => _gameLaunchService.LaunchAsync();
 
     /// <summary>
     ///     浅色 / 深色主题切换

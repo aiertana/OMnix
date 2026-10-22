@@ -1397,21 +1397,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             characters.Insert(0, others);
         }
 
-        var gliders =
-            characters.FirstOrDefault(ch => ch.InternalNameEquals(_gameService.GlidersCharacterInternalName));
-        if (gliders is not null) // Add to end
-        {
-            characters.Remove(gliders);
-            characters.Add(gliders);
-        }
-
-        var weapons =
-            characters.FirstOrDefault(ch => ch.InternalNameEquals(_gameService.WeaponsCharacterInternalName));
-        if (weapons is not null) // Add to end
-        {
-            characters.Remove(weapons);
-            characters.Add(weapons);
-        }
+        // 二开：Gliders / Weapons 两个伪角色已经从游戏服务里移除，这里不用再挪到末尾
 
 
         _characters = characters;
@@ -2510,11 +2496,9 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
     private void InitializeSorters()
     {
-        var lastCharacters = new List<CharacterGridItemModel>
-        {
-            FindCharacterByInternalName(_gameService.GlidersCharacterInternalName)!,
-            FindCharacterByInternalName(_gameService.WeaponsCharacterInternalName)!
-        };
+        // 二开：Gliders / Weapons 两个伪角色已经移除，这里不再引用它们。
+        // 原来是 FindCharacterByInternalName(...)!，一旦取不到就是空引用，现在留空列表即可
+        var lastCharacters = new List<CharacterGridItemModel>();
 
         var othersCharacter = _backendCharacters.FirstOrDefault(ch =>
             ch.Character.InternalName.Id.Contains("Others", StringComparison.OrdinalIgnoreCase));

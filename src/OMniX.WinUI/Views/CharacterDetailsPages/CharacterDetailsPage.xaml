@@ -114,6 +114,26 @@
                         </StackPanel>
                     </StackPanel>
 
+                    <!--  二开：把选中的 Mod 导出成压缩包 / 打开它的文件夹  -->
+                    <StackPanel
+                        Grid.Row="2"
+                        Margin="0,12,0,0"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button Click="ExportSelectedMods_OnClick" Style="{StaticResource AccentButtonStyle}">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon FontSize="14" Glyph="&#xEDE1;" />
+                                <TextBlock Text="导出为压缩包…" />
+                            </StackPanel>
+                        </Button>
+                        <Button Click="OpenSelectedModFolder_OnClick">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon FontSize="14" Glyph="&#xE8B7;" />
+                                <TextBlock Text="打开文件夹" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
                 </Grid>
             </Flyout>
 
@@ -282,6 +302,7 @@
 
                         <ToggleSwitch
                             x:Name="ViewToggleSwitch"
+                            AutomationProperties.Name="切换视图模式"
                             IsOn="False"
                             OffContent="详细视图"
                             OnContent="画廊视图"

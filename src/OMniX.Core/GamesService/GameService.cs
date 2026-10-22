@@ -881,8 +881,12 @@ public class GameService : IGameService
 
 
         _characters.Insert(0, getOthersCharacter());
-        _characters.Add(getGlidersCharacter());
-        _characters.Add(getWeaponsCharacter());
+
+        // 二开：不再内置「Gliders」「Weapons」两个伪角色。
+        // 它们只是用来承载「滑翔翼 / 武器」这类非角色 Mod 的占位格子，
+        // 实际用不到，却在角色管理里一直占两个空位。
+        // 两个类本身（getGlidersCharacter / getWeaponsCharacter）保留，
+        // 内部名仍用于识别这些文件夹，避免影响已有 Mod 的归属判断。
 
         if (LanguageOverrideAvailable())
             await MapDisplayNames(characterFileName, _characters.ToEnumerable()).ConfigureAwait(false);

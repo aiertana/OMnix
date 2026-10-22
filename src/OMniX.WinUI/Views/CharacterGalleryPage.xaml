@@ -204,6 +204,7 @@
 
                 <ToggleSwitch
                     x:Name="ViewToggleSwitch"
+                    AutomationProperties.Name="切换视图模式"
                     IsOn="True"
                     OffContent="详细视图"
                     OnContent="画廊视图"
@@ -261,6 +262,7 @@
 
             <controls:SwitchPresenter Grid.Column="1" Value="{x:Bind ViewModel.IsInitializingMods, Mode=OneWay}">
                 <controls:Case Value="false">
+                    <Grid>
                     <controls:AdaptiveGridView
                         x:Name="GridView"
                         animations:ItemsReorderAnimation.Duration="00:00:00.4460000"
@@ -420,6 +422,50 @@
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </controls:AdaptiveGridView>
+
+                    <!--  二开：一个 Mod 都没有时，跟详细页一样给个拖放提示，别让右边空着  -->
+                    <Grid Visibility="{x:Bind ViewModel.HasNoMods, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="22"
+                                FontWeight="SemiBold"
+                                Text="这个角色还没有 Mod" />
+                            <TextBlock
+                                Margin="0,6,0,18"
+                                HorizontalAlignment="Center"
+                                FontSize="13"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="把 Mod 文件夹拖进来，或从「Mod 安装」导入" />
+
+                            <Border
+                                Width="320"
+                                Height="210"
+                                Padding="16"
+                                HorizontalAlignment="Center"
+                                Background="{ThemeResource OmniXCardAltBackgroundBrush}"
+                                BorderBrush="{ThemeResource OmniXCardStrokeHoverBrush}"
+                                BorderThickness="1.5"
+                                CornerRadius="16">
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Spacing="8">
+                                    <FontIcon
+                                        HorizontalAlignment="Center"
+                                        FontSize="28"
+                                        Foreground="{ThemeResource OmniXAccentBrush}"
+                                        Glyph="&#xE8E5;" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        FontSize="15"
+                                        Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                        Text="拖放到这里" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                    </Grid>
                 </controls:Case>
 
                 <controls:Case Value="true">

@@ -363,6 +363,21 @@ public sealed partial class CharacterDetailsPage : Page
 
     private void ModRowFlyout_OnClosing(FlyoutBase sender, FlyoutBaseClosingEventArgs args) => ViewModel.ContextMenuVM.OnFlyoutClosing();
 
+    /// <summary>
+    ///     二开：右键菜单里的「导出为压缩包…」，把选中的 Mod 交给导出面板（默认存到程序目录的 OMniX Exports）。
+    /// </summary>
+    private async void ExportSelectedMods_OnClick(object sender, RoutedEventArgs e)
+    {
+        ModRowFlyout.Hide();
+        await ModGrid.ExportSelectedModsAsync();
+    }
+
+    private void OpenSelectedModFolder_OnClick(object sender, RoutedEventArgs e)
+    {
+        ModRowFlyout.Hide();
+        ModGrid.OpenSelectedModFolder();
+    }
+
     private void MoveModSearch_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
         if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)

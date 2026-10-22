@@ -1,6 +1,9 @@
 using CommunityToolkit.WinUI.UI.Controls;
 using OMniX.Core.Helpers;
+using OMniX.WinUI.Services;
+using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Services.ModHandling;
+using OMniX.WinUI.Views.Dialogs;
 using OMniX.WinUI.Services.Notifications;
 using OMniX.WinUI.ViewModels.CharacterDetailsViewModels.SubViewModels;
 using Microsoft.UI.Input;
@@ -37,6 +40,47 @@ public sealed partial class ModGrid : UserControl
             SetValue(ViewModelProperty, value);
             OnViewModelSetHandler(ViewModel);
         }
+    }
+
+    /// <summary>
+    ///     右键某一行时把它设为选中，否则导出的是上一次选中的那个 Mod。
+    /// </summary>
+    private void ModListGrid_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
+    {
+        if (e.OriginalSource is FrameworkElement { DataContext: ModRowVM row })
+            ModListGrid.SelectedItem = row;
+    }
+
+    /// <summary>
+    ///     二开：把选中的 Mod 丢给导出面板，默认导出目录是程序目录下的 OMniX Exports。
+    /// </summary>
+    public async Task ExportSelectedModsAsync()
+    {
+        var rows = ViewModel?.SelectedMods?.ToList() ?? new List<ModRowVM>();
+
+        if (rows.Count == 0)
+            return;
+
+        var requests = rows.Select(row => new ModExportRequest
+        {
+            // Mods\{角色}\{Mod 文件夹}，父目录名就是角色目录
+            CharacterName = Path.GetFileName(Path.GetDirectoryName(row.AbsFolderPath) ?? string.Empty),
+            ModName = row.FolderName,
+            FolderPath = row.AbsFolderPath
+        }).ToList();
+
+        await App.GetService<IWindowManagerService>().ShowDialogAsync(new ModExportDialog(requests));
+    }
+
+    /// <summary>打开选中 Mod 的文件夹。</summary>
+    public void OpenSelectedModFolder()
+    {
+        var row = ViewModel?.SelectedMods?.FirstOrDefault();
+
+        if (row is null)
+            return;
+
+        ModExportJob.RevealInExplorer(row.AbsFolderPath);
     }
 
     private void ModListGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

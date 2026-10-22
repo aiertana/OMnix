@@ -246,12 +246,54 @@ public sealed partial class ShellPage : Page
     }
 
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private async void OnLoaded(object sender, RoutedEventArgs e)
     {
         TitleBarHelper.UpdateTitleBar(RequestedTheme);
 
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
+
+        await SyncDlss5ToggleAsync();
+    }
+
+    private bool _dlss5Syncing;
+
+    /// <summary>
+    ///     二开：把插件真实状态同步到开关上（不触发业务逻辑）。
+    /// </summary>
+    private async Task SyncDlss5ToggleAsync()
+    {
+        await ViewModel.RefreshDlss5Async();
+
+        _dlss5Syncing = true;
+        ModToggle.IsOn = ViewModel.ModEnabled;
+        Dlss5Toggle.IsOn = ViewModel.Dlss5Enabled;
+        _dlss5Syncing = false;
+    }
+
+    private async void ModToggle_OnToggled(object sender, RoutedEventArgs e)
+    {
+        if (_dlss5Syncing || sender is not ToggleSwitch toggle)
+            return;
+
+        await ViewModel.SetModEnabledAsync(toggle.IsOn);
+
+        _dlss5Syncing = true;
+        toggle.IsOn = ViewModel.ModEnabled;
+        _dlss5Syncing = false;
+    }
+
+    private async void Dlss5Toggle_OnToggled(object sender, RoutedEventArgs e)
+    {
+        if (_dlss5Syncing || sender is not ToggleSwitch toggle)
+            return;
+
+        await ViewModel.SetDlss5EnabledAsync(toggle.IsOn);
+
+        _dlss5Syncing = true;
+        toggle.IsOn = ViewModel.Dlss5Enabled;
+        ModToggle.IsOn = ViewModel.ModEnabled;
+        _dlss5Syncing = false;
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)

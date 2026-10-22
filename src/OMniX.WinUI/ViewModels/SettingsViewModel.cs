@@ -26,6 +26,7 @@ using OMniX.WinUI.Services.Notifications;
 using OMniX.WinUI.Validators.PreConfigured;
 using OMniX.WinUI.ViewModels.SettingsViewModels;
 using OMniX.WinUI.ViewModels.SubVms;
+using OMniX.WinUI.Views.Dialogs;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
@@ -525,6 +526,15 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         await _updateChecker.IgnoreCurrentVersionAsync();
     }
 
+    /// <summary>
+    ///     二开：新的导出面板 —— 按角色 / 全量选，zip 或文件夹，支持暂停与取消。
+    /// </summary>
+    [RelayCommand]
+    private async Task OpenModExportPanelAsync()
+    {
+        await _windowManagerService.ShowDialogAsync(new ModExportDialog());
+    }
+
     [ObservableProperty] private bool _exportingMods = false;
     [ObservableProperty] private int _exportProgress = 0;
     [ObservableProperty] private string _exportProgressText = string.Empty;
@@ -817,6 +827,80 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         SetCacheString(maxValue);
     }
 
+
+    /// <summary>
+    ///     二开：直接打开 Mods 文件夹，省得从资源管理器一层层点进去。
+    /// </summary>
+    [RelayCommand]
+    private void OpenModsFolder()
+    {
+        var path = PathToModsFolderPicker?.Path;
+
+        if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
+            return;
+
+        try
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = path,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.Warning(ex, "Failed to open mods folder {Path}", path);
+        }
+    }
+
+    /// <summary>
+    ///     二开：打开程序所在目录。
+    /// </summary>
+    [RelayCommand]
+    private void OpenAppFolder()
+    {
+        try
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = App.ROOT_DIR,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.Warning(ex, "Failed to open app folder");
+        }
+    }
+
+    /// <summary>
+    ///     二开：清空下载缓存。只删缓存目录里的文件，不动 Mods 本体。
+    /// </summary>
+    [RelayCommand]
+    private async Task ClearModCacheAsync()
+    {
+        var dir = ArchiveCacheFolderPath?.LocalPath;
+
+        if (string.IsNullOrWhiteSpace(dir) || !Directory.Exists(dir))
+            return;
+
+        await Task.Run(() =>
+        {
+            foreach (var file in Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories))
+            {
+                try
+                {
+                    File.Delete(file);
+                }
+                catch
+                {
+                    // 被占用的文件跳过，不影响其它
+                }
+            }
+        }).ConfigureAwait(false);
+
+        ModCacheSizeGB = _modArchiveRepository.GetTotalCacheSizeInGB().ToString("F");
+    }
 
     [RelayCommand]
     private static Task ShowCleanModsFolderDialogAsync()

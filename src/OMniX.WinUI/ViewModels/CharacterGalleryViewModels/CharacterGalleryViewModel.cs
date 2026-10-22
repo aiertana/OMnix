@@ -126,7 +126,18 @@ public partial class CharacterGalleryViewModel : ObservableRecipient, INavigatio
     private bool _isBusy;
 
     private bool _isNavigating;
+
+    /// <summary>
+    ///     二开：当前角色一个 Mod 都没有（并且不是在搜索过滤）时，右侧显示空状态提示，
+    ///     跟详细页那套保持一样，免得切到画廊视图看到一片空白。
+    /// </summary>
+    [ObservableProperty] private bool _hasNoMods;
+
     [ObservableProperty] private string _isInitializingMods = "true";
+
+    partial void OnSearchTextChanged(string value) => UpdateHasNoModsState();
+
+    private void UpdateHasNoModsState() => HasNoMods = Mods.Count == 0 && SearchText.IsNullOrEmpty();
 
 
     [ObservableProperty] private string _searchText = string.Empty;
@@ -176,6 +187,9 @@ public partial class CharacterGalleryViewModel : ObservableRecipient, INavigatio
         _selectedSortingMethod = settings.SortingMethod ?? "Name";
         _sortByDescending = settings.SortByDescending;
         IsNavPaneVisible = settings.IsNavPaneOpen;
+
+        // 二开：Mod 增删后同步空状态
+        Mods.CollectionChanged += (_, _) => UpdateHasNoModsState();
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -283,6 +297,9 @@ public partial class CharacterGalleryViewModel : ObservableRecipient, INavigatio
 
 
         await ReloadModsAsync();
+
+        // 二开：一个 Mod 都没有的角色也要把空状态顶上，不然切过来右侧一片空白
+        UpdateHasNoModsState();
 
         IsNavigating = false;
         IsInitializingMods = "false";

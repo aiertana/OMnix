@@ -20,9 +20,40 @@
             </Grid.RowDefinitions>
 
             <!--  ==================== Hero：当前游戏 ====================  -->
-            <Grid Grid.Row="0" Height="186">
+            <Grid Grid.Row="0" Height="186" ToolTipService.ToolTip="右键可以换背景图">
+                <Grid.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Click="ChangeHeroBackground_OnClick" Text="更换背景图…">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE91B;" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Click="ResetHeroBackground_OnClick" Text="恢复默认背景">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE777;" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem Click="OpenHeroBackgroundFolder_OnClick" Text="打开背景图文件夹">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xE8B7;" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </Grid.ContextFlyout>
+
+                <!--  底色：图还没加载出来时兜底  -->
                 <Border Background="{ThemeResource OmniXHeroGradientBrush}" CornerRadius="22" />
-                <Border Background="{ThemeResource OmniXHeroGlassBrush}" CornerRadius="22" />
+
+                <!--  背景图  -->
+                <Border CornerRadius="22">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{x:Bind ViewModel.HeroBackgroundImage, Mode=OneWay}" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+
+                <!--  左边压暗，白字才看得清  -->
+                <Border Background="{ThemeResource OmniXHeroScrimBrush}" CornerRadius="22" />
 
                 <!--  装饰：半透明圆  -->
                 <Ellipse

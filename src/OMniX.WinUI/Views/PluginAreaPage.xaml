@@ -3,14 +3,16 @@
     x:Class="OMniX.WinUI.Views.PluginAreaPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Padding="34,26,34,40">
+        <Grid
+            Padding="34,26,34,40"
+            RowSpacing="18">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -49,7 +51,7 @@
                         <TextBlock
                             FontSize="12"
                             Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                            Text="用插件给 OMniX 增加功能：外部工具、批处理脚本、Mod 处理扩展等。"
+                            Text="插件独立于管理器：删掉插件文件不影响 Mod 管理和游戏启动，出问题也只影响它自己。"
                             TextWrapping="Wrap" />
                     </StackPanel>
 
@@ -64,86 +66,184 @@
                 </Grid>
             </Border>
 
-            <!--  ===== 说明条 =====  -->
-            <Border
-                Grid.Row="1"
-                Margin="0,18,0,0"
-                Padding="16,12"
-                Background="{ThemeResource OmniXCardAltBackgroundBrush}"
-                BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
-                BorderThickness="1"
-                CornerRadius="14">
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <FontIcon
-                        FontSize="15"
-                        Foreground="{ThemeResource OmniXAccentBrush}"
-                        Glyph="&#xE7BA;" />
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                        Text="专区界面已经搭好，插件加载机制还在开发。下面这些是规划中的示例卡片。"
-                        TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
+            <!--  ===== 插件格子：定宽卡片，按窗口宽度自动换行 =====  -->
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Plugins}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:WrapPanel
+                            HorizontalSpacing="14"
+                            Orientation="Horizontal"
+                            VerticalSpacing="14" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-            <!--  ===== 插件卡片列表 =====  -->
-            <ItemsControl Grid.Row="2" Margin="0,18,0,0" ItemsSource="{Binding Plugins}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border
-                            Margin="0,0,0,14"
-                            Padding="18,16"
+                            Width="288"
+                            Height="272"
                             Background="{ThemeResource OmniXGlassBackgroundBrush}"
                             BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
                             BorderThickness="1"
                             CornerRadius="16">
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <Border
-                                    Grid.Column="0"
-                                    Width="44"
-                                    Height="44"
-                                    Background="{ThemeResource OmniXCardAltBackgroundBrush}"
-                                    CornerRadius="13">
-                                    <FontIcon
-                                        FontSize="19"
-                                        Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                        Glyph="{Binding Glyph}" />
-                                </Border>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
                                 <StackPanel
-                                    Grid.Column="1"
-                                    Margin="15,0"
+                                    Padding="16,22,16,14"
                                     VerticalAlignment="Center"
-                                    Spacing="3">
+                                    Spacing="10">
+
+                                    <Border
+                                        Width="76"
+                                        Height="76"
+                                        HorizontalAlignment="Center"
+                                        Background="{Binding BadgeBackground}"
+                                        CornerRadius="38">
+                                        <FontIcon
+                                            FontSize="30"
+                                            Foreground="{Binding BadgeForeground}"
+                                            Glyph="{Binding Glyph}" />
+                                    </Border>
+
                                     <TextBlock
-                                        FontSize="14.5"
+                                        HorizontalAlignment="Center"
+                                        FontSize="16.5"
                                         FontWeight="SemiBold"
                                         Foreground="{ThemeResource OmniXTextPrimaryBrush}"
-                                        Text="{Binding Name}" />
+                                        Text="{Binding Name}"
+                                        TextTrimming="CharacterEllipsis" />
+
                                     <TextBlock
-                                        FontSize="11.5"
+                                        HorizontalAlignment="Center"
+                                        FontSize="12"
                                         Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                        MaxLines="3"
                                         Text="{Binding Description}"
-                                        TextWrapping="Wrap" />
+                                        TextAlignment="Center"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="Wrap"
+                                        Visibility="{Binding DescriptionVisibility}" />
+
+                                    <!--  下载 / 部署进度  -->
+                                    <StackPanel
+                                        Margin="0,4,0,0"
+                                        Spacing="6"
+                                        Visibility="{Binding DownloadVisibility}">
+                                        <ProgressBar
+                                            Width="210"
+                                            HorizontalAlignment="Center"
+                                            IsIndeterminate="{Binding DownloadIndeterminate}"
+                                            Maximum="100"
+                                            Value="{Binding DownloadPercent}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            FontSize="11"
+                                            Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                            Text="{Binding DownloadText}"
+                                            TextAlignment="Center"
+                                            TextTrimming="CharacterEllipsis" />
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Spacing="6">
+                                        <Ellipse
+                                            Width="6"
+                                            Height="6"
+                                            VerticalAlignment="Center"
+                                            Fill="{Binding StatusBrush}" />
+                                        <TextBlock
+                                            FontSize="11"
+                                            Foreground="{Binding StatusBrush}"
+                                            Text="{Binding Status}" />
+                                    </StackPanel>
                                 </StackPanel>
 
+                                <!--  底部两个操作  -->
                                 <Border
-                                    Grid.Column="2"
-                                    Padding="10,4"
-                                    VerticalAlignment="Center"
-                                    Background="{ThemeResource OmniXAccentSoftBrush}"
-                                    CornerRadius="9">
-                                    <TextBlock
-                                        FontSize="10.5"
-                                        Foreground="{ThemeResource OmniXAccentBrush}"
-                                        Text="{Binding Status}" />
+                                    Grid.Row="1"
+                                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                                    BorderThickness="0,1,0,0">
+                                    <Grid Height="46">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            AutomationProperties.Name="{Binding PrimaryText}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Command="{Binding PrimaryCommand}"
+                                            CornerRadius="0"
+                                            IsEnabled="{Binding PrimaryEnabled}"
+                                            ToolTipService.ToolTip="{Binding PrimaryText}">
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="{ThemeResource OmniXAccentBrush}"
+                                                Opacity="{Binding PrimaryOpacity}"
+                                                Text="{Binding PrimaryText}" />
+                                        </Button>
+
+                                        <Border
+                                            Grid.Column="1"
+                                            Width="1"
+                                            Background="{ThemeResource OmniXCardStrokeBrush}" />
+
+                                        <Button
+                                            Grid.Column="2"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            AutomationProperties.Name="{Binding SecondaryText}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Command="{Binding SecondaryCommand}"
+                                            CornerRadius="0"
+                                            ToolTipService.ToolTip="{Binding SecondaryText}">
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                                Text="{Binding SecondaryText}" />
+                                        </Button>
+
+                                        <!--  部署 / 卸载 或 启用 / 停用  -->
+                                        <Border
+                                            Grid.Column="3"
+                                            Width="1"
+                                            Background="{ThemeResource OmniXCardStrokeBrush}"
+                                            Visibility="{Binding SwitchVisibility}" />
+
+                                        <Button
+                                            Grid.Column="4"
+                                            MinWidth="74"
+                                            Padding="12,0"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            AutomationProperties.Name="{Binding ToggleText}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Command="{Binding ToggleCommand}"
+                                            CornerRadius="0"
+                                            IsEnabled="{Binding SwitchEnabled}"
+                                            ToolTipService.ToolTip="{Binding SwitchToolTip}"
+                                            Visibility="{Binding SwitchVisibility}">
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                                Text="{Binding ToggleText}" />
+                                        </Button>
+                                    </Grid>
                                 </Border>
                             </Grid>
                         </Border>
