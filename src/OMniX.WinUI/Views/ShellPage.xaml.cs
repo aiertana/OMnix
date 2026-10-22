@@ -3,6 +3,7 @@ using CommunityToolkitWrapper;
 using OMniX.Core.GamesService;
 using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.Helpers;
+using OMniX.WinUI.Services;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.ViewModels;
 using Microsoft.UI.Input;
@@ -11,6 +12,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace OMniX.WinUI.Views;
@@ -246,6 +248,8 @@ public sealed partial class ShellPage : Page
     }
 
 
+    private Storyboard? _flowStoryboard;
+
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
         TitleBarHelper.UpdateTitleBar(RequestedTheme);
@@ -253,7 +257,54 @@ public sealed partial class ShellPage : Page
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
 
+        if (ThemeStyleService.Instance is not null)
+            ThemeStyleService.Instance.Changed += OnThemeStyleChanged;
+
+        ApplyFlowMotion();
+
         await SyncDlss5ToggleAsync();
+    }
+
+    /// <summary>换风格时立刻启停流动光斑</summary>
+    private void OnThemeStyleChanged(object? sender, OmniXThemeStyle style) => ApplyFlowMotion();
+
+    private void ApplyFlowMotion()
+    {
+        var enabled = ThemeStyleService.Instance?.MotionEnabled ?? false;
+
+        _flowStoryboard?.Stop();
+        _flowStoryboard = null;
+
+        if (!enabled)
+            return;
+
+        var storyboard = new Storyboard();
+
+        // 两个光斑走不同周期，看起来才不像在原地晃
+        storyboard.Children.Add(Drift(FlowWarmMove, "X", 120, 22));
+        storyboard.Children.Add(Drift(FlowWarmMove, "Y", -70, 19));
+        storyboard.Children.Add(Drift(FlowCoolMove, "X", -100, 25));
+        storyboard.Children.Add(Drift(FlowCoolMove, "Y", 80, 17));
+
+        storyboard.Begin();
+        _flowStoryboard = storyboard;
+    }
+
+    private static DoubleAnimation Drift(TranslateTransform transform, string property, double to, int seconds)
+    {
+        var animation = new DoubleAnimation
+        {
+            To = to,
+            Duration = new Duration(TimeSpan.FromSeconds(seconds)),
+            AutoReverse = true,
+            RepeatBehavior = RepeatBehavior.Forever,
+            EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut }
+        };
+
+        Storyboard.SetTarget(animation, transform);
+        Storyboard.SetTargetProperty(animation, property);
+
+        return animation;
     }
 
     private bool _dlss5Syncing;

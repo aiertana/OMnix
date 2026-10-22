@@ -25,6 +25,10 @@ public partial class ShellViewModel : ObservableRecipient
     [ObservableProperty] private object? selected;
     [ObservableProperty] private int settingsInfoBadgeOpacity = 0;
     [ObservableProperty] private bool _isEnabled = true;
+
+    /// <summary>标准版才铺那层会飘的光斑</summary>
+    public Microsoft.UI.Xaml.Visibility FlowLayerVisibility =>
+        _themeStyleService.MotionEnabled ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
     public readonly IGameService GameService;
 
     public INavigationService NavigationService { get; }
@@ -54,19 +58,25 @@ public partial class ShellViewModel : ObservableRecipient
     private readonly ThreeDMigtoProcessManager _threeDMigtoProcessManager;
     private readonly PluginDependencyService _dependencies;
     private readonly GameLaunchService _gameLaunchService;
+    private readonly ThemeStyleService _themeStyleService;
 
     public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService,
         NotificationManager notificationManager, ElevatorService elevatorService, UpdateChecker updateChecker,
         IGameService gameService, SelectedGameService selectedGameService, BusyService busyService,
         GenshinProcessManager genshinProcessManager, Dlss5PluginService dlss5Plugin,
         IWindowManagerService windowManagerService, ThreeDMigtoProcessManager threeDMigtoProcessManager,
-        PluginDependencyService dependencies, GameLaunchService gameLaunchService)
+        PluginDependencyService dependencies, GameLaunchService gameLaunchService,
+        ThemeStyleService themeStyleService)
     {
         Dlss5Plugin = dlss5Plugin;
         _windowManagerService = windowManagerService;
         _threeDMigtoProcessManager = threeDMigtoProcessManager;
         _dependencies = dependencies;
         _gameLaunchService = gameLaunchService;
+        _themeStyleService = themeStyleService;
+
+        // 风格一换，流动层跟着显隐
+        _themeStyleService.Changed += (_, _) => OnPropertyChanged(nameof(FlowLayerVisibility));
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;

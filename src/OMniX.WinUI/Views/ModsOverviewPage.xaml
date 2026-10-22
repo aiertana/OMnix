@@ -266,62 +266,374 @@
 
     </Page.Resources>
 
-    <Grid RowSpacing="8">
+    <Grid RowSpacing="14">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!--  顶栏：面包屑 + 搜索  -->
         <Grid>
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <StackPanel>
-                <TextBlock
-                    Margin="0,0,0,12"
-                    FontSize="28"
-                    Style="{StaticResource TitleTextBlockStyle}"
-                    TextTrimming="CharacterEllipsis"
-                    Text="Mod 总览" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="12"
+                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                Text="OMNIX  /  Mod 总览" />
 
-
-                <StackPanel
-                    Orientation="Horizontal"
-                    Spacing="16"
-                    Visibility="Collapsed">
-                    <Button Command="{x:Bind ViewModel.CloseOpenAllCommand}" Content="全部展开" />
-                    <Button
-                        Command="{x:Bind ViewModel.CloseOpenAllCommand}"
-                        CommandParameter="Close"
-                        Content="全部折叠" />
-                </StackPanel>
-            </StackPanel>
-
-
-
-            <StackPanel
+            <AutoSuggestBox
+                x:Name="SearchBox"
                 Grid.Column="1"
+                MinWidth="220"
                 HorizontalAlignment="Right"
-                Orientation="Horizontal"
-                Spacing="16">
-                <AutoSuggestBox
-                    x:Name="SearchBox"
-                    MinWidth="200"
+                VerticalAlignment="Center"
+                PlaceholderText="输入后按回车搜索Mod…"
+                QuerySubmitted="SearchBox_OnQuerySubmitted" />
+        </Grid>
+
+        <!--  Hero 卡  -->
+        <Border
+            Grid.Row="1"
+            Height="260"
+            Background="{ThemeResource OmniXCardBackgroundBrush}"
+            BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+            BorderThickness="1"
+            CornerRadius="24">
+            <Grid>
+
+                <!--  右侧装饰：虚线圈 + 粉点 + 蓝胶囊  -->
+                <Grid
+                    Width="300"
+                    Height="230"
+                    Margin="0,0,30,0"
+                    HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    PlaceholderText="输入后按回车搜索…"
-                    QuerySubmitted="SearchBox_OnQuerySubmitted" />
-            </StackPanel>
+                    IsHitTestVisible="False">
+                    <Ellipse
+                        Width="220"
+                        Height="220"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Opacity="0.5"
+                        Stroke="{ThemeResource OmniXCardStrokeBrush}"
+                        StrokeDashArray="4 6"
+                        StrokeThickness="1" />
+                    <Ellipse
+                        Width="140"
+                        Height="140"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Opacity="0.9">
+                        <Ellipse.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Offset="0" Color="#66FFFFFF" />
+                                <GradientStop Offset="1" Color="#14FFFFFF" />
+                            </LinearGradientBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <Ellipse
+                        Width="26"
+                        Height="26"
+                        Margin="0,0,70,6"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Fill="{ThemeResource OmniXAuxPinkBrush}" />
+                    <Border
+                        Width="104"
+                        Height="26"
+                        Margin="0,0,4,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Background="{ThemeResource OmniXAuxBlueBrush}"
+                        CornerRadius="13"
+                        Opacity="0.8" />
+                    <Ellipse
+                        Width="7"
+                        Height="7"
+                        Margin="58,26,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Fill="{ThemeResource OmniXAuxPurpleBrush}" />
+                </Grid>
 
+                <!--  左侧文案  -->
+                <StackPanel
+                    Margin="40,0,300,0"
+                    VerticalAlignment="Center"
+                    Spacing="12">
+                    <TextBlock FontSize="38" FontWeight="Bold">
+                        <Run Foreground="{ThemeResource OmniXAuxPinkBrush}" Text="Mod" />
+                        <Run Foreground="{ThemeResource OmniXAuxPurpleBrush}" Text=" 总览" />
+                    </TextBlock>
 
+                    <TextBlock
+                        Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                        Text="{x:Bind ViewModel.StatText, Mode=OneWay}"
+                        TextWrapping="Wrap" />
+
+                    <StackPanel
+                        Margin="0,4,0,0"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Border
+                            Padding="12,5"
+                            BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                            BorderThickness="1"
+                            CornerRadius="14">
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="批量管理" />
+                        </Border>
+                        <Border
+                            Padding="12,5"
+                            BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                            BorderThickness="1"
+                            CornerRadius="14">
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="状态监控" />
+                        </Border>
+                        <Border
+                            Padding="12,5"
+                            BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                            BorderThickness="1"
+                            CornerRadius="14">
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="冲突检测" />
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!--  四个快捷卡  -->
+        <Grid Grid.Row="2" ColumnSpacing="14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{x:Bind ViewModel.EnableAllCommand}">
+                <Border
+                    Background="{ThemeResource OmniXCardBackgroundBrush}"
+                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                    BorderThickness="1"
+                    CornerRadius="16">
+                    <Grid>
+                        <Rectangle
+                            Height="2"
+                            Margin="14,0,14,0"
+                            VerticalAlignment="Top"
+                            Fill="{ThemeResource OmniXAuxPinkBrush}"
+                            RadiusX="1"
+                            RadiusY="1" />
+                        <StackPanel
+                            Padding="18,18,18,16"
+                            Spacing="6">
+                            <Border
+                                Width="34"
+                                Height="34"
+                                HorizontalAlignment="Left"
+                                Background="{ThemeResource OmniXAuxPinkBrush}"
+                                CornerRadius="10">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="A" />
+                            </Border>
+                            <TextBlock
+                                Margin="0,6,0,0"
+                                FontWeight="SemiBold"
+                                Text="全部启用" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="一键打开所有可用 Mod"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Button>
+
+            <Button
+                Grid.Column="1"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{x:Bind ViewModel.DisableAllCommand}">
+                <Border
+                    Background="{ThemeResource OmniXCardBackgroundBrush}"
+                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                    BorderThickness="1"
+                    CornerRadius="16">
+                    <Grid>
+                        <Rectangle
+                            Height="2"
+                            Margin="14,0,14,0"
+                            VerticalAlignment="Top"
+                            Fill="{ThemeResource OmniXAuxPurpleBrush}"
+                            RadiusX="1"
+                            RadiusY="1" />
+                        <StackPanel
+                            Padding="18,18,18,16"
+                            Spacing="6">
+                            <Border
+                                Width="34"
+                                Height="34"
+                                HorizontalAlignment="Left"
+                                Background="{ThemeResource OmniXAuxPurpleBrush}"
+                                CornerRadius="10">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="Z" />
+                            </Border>
+                            <TextBlock
+                                Margin="0,6,0,0"
+                                FontWeight="SemiBold"
+                                Text="全部禁用" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="一键关闭所有 Mod"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Button>
+
+            <Button
+                Grid.Column="2"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{x:Bind ViewModel.CheckConflictsCommand}">
+                <Border
+                    Background="{ThemeResource OmniXCardBackgroundBrush}"
+                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                    BorderThickness="1"
+                    CornerRadius="16">
+                    <Grid>
+                        <Rectangle
+                            Height="2"
+                            Margin="14,0,14,0"
+                            VerticalAlignment="Top"
+                            Fill="{ThemeResource OmniXAuxBlueBrush}"
+                            RadiusX="1"
+                            RadiusY="1" />
+                        <StackPanel
+                            Padding="18,18,18,16"
+                            Spacing="6">
+                            <Border
+                                Width="34"
+                                Height="34"
+                                HorizontalAlignment="Left"
+                                Background="{ThemeResource OmniXAuxBlueBrush}"
+                                CornerRadius="10">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="D" />
+                            </Border>
+                            <TextBlock
+                                Margin="0,6,0,0"
+                                FontWeight="SemiBold"
+                                Text="冲突检查" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="扫描同角色多开的情况"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Button>
+
+            <Button
+                Grid.Column="3"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{x:Bind ViewModel.RefreshListCommand}">
+                <Border
+                    Background="{ThemeResource OmniXCardBackgroundBrush}"
+                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                    BorderThickness="1"
+                    CornerRadius="16">
+                    <Grid>
+                        <Rectangle
+                            Height="2"
+                            Margin="14,0,14,0"
+                            VerticalAlignment="Top"
+                            Fill="{ThemeResource OmniXAccentBrush}"
+                            RadiusX="1"
+                            RadiusY="1" />
+                        <StackPanel
+                            Padding="18,18,18,16"
+                            Spacing="6">
+                            <Border
+                                Width="34"
+                                Height="34"
+                                HorizontalAlignment="Left"
+                                Background="{ThemeResource OmniXAccentBrush}"
+                                CornerRadius="10">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="R" />
+                            </Border>
+                            <TextBlock
+                                Margin="0,6,0,0"
+                                FontWeight="SemiBold"
+                                Text="刷新列表" />
+                            <TextBlock
+                                FontSize="12"
+                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                Text="重新读取 Mod 目录"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Button>
         </Grid>
 
         <TreeView
             x:Name="OverviewTreeView"
-            Grid.Row="1"
+            Grid.Row="3"
             AllowDrop="False"
             CanDrag="False"
             CanReorderItems="False"

@@ -26,6 +26,58 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!--
+            二开：标准版的流动光斑。铺在内容底下慢慢飘，
+            不参与命中测试，所以点谁都还是点谁。简易版直接不显示。
+        -->
+        <Grid
+            x:Name="FlowLayer"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Canvas.ZIndex="1"
+            IsHitTestVisible="False"
+            Visibility="{x:Bind ViewModel.FlowLayerVisibility, Mode=OneWay}">
+            <Ellipse
+                x:Name="FlowWarm"
+                Width="720"
+                Height="720"
+                Margin="-120,-160,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Opacity="0.55">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Offset="0" Color="#2EE5484D" />
+                        <GradientStop Offset="0.55" Color="#14E5484D" />
+                        <GradientStop Offset="1" Color="#00E5484D" />
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+                <Ellipse.RenderTransform>
+                    <TranslateTransform x:Name="FlowWarmMove" />
+                </Ellipse.RenderTransform>
+            </Ellipse>
+
+            <Ellipse
+                x:Name="FlowCool"
+                Width="640"
+                Height="640"
+                Margin="0,0,-140,-120"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Opacity="0.5">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Offset="0" Color="#247B8794" />
+                        <GradientStop Offset="0.55" Color="#107B8794" />
+                        <GradientStop Offset="1" Color="#007B8794" />
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+                <Ellipse.RenderTransform>
+                    <TranslateTransform x:Name="FlowCoolMove" />
+                </Ellipse.RenderTransform>
+            </Ellipse>
+        </Grid>
+
         <NavigationView
             x:Name="NavigationViewControl"
             Grid.Row="0"

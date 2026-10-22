@@ -146,6 +146,43 @@
                 <!--  ===== 外观  =====  -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="外观" />
 
+                <!--  二开：界面风格（简易版 / 标准版），只切动效，配色不变  -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="界面风格" />
+                            <TextBlock
+                                Style="{StaticResource CardDescStyle}"
+                                Text="配色两种风格一样，差的是动效：标准版有流动光斑、悬停抬起和按压反馈，简易版是静态玻璃"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="4">
+                            <RadioButton
+                                Command="{x:Bind ViewModel.SwitchStyleCommand}"
+                                CommandParameter="Standard"
+                                Content="标准版"
+                                GroupName="AppStyle"
+                                IsChecked="{x:Bind ViewModel.IsStandardStyle, Mode=OneWay}" />
+                            <RadioButton
+                                Command="{x:Bind ViewModel.SwitchStyleCommand}"
+                                CommandParameter="Simple"
+                                Content="简易版"
+                                GroupName="AppStyle"
+                                IsChecked="{x:Bind ViewModel.IsSimpleStyle, Mode=OneWay}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
                 <Border Style="{StaticResource SettingCardStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>

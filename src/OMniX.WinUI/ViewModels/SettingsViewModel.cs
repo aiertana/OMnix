@@ -107,6 +107,13 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
     [ObservableProperty] private bool _legacyCharacterDetails;
 
+    private readonly ThemeStyleService _themeStyleService;
+
+    /// <summary>界面风格：标准版（带动效）/ 简易版（静态玻璃）</summary>
+    public bool IsStandardStyle => _themeStyleService.Current == OmniXThemeStyle.Standard;
+
+    public bool IsSimpleStyle => !IsStandardStyle;
+
 
     private static bool _showElevatorStartDialog = true;
 
@@ -123,8 +130,9 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         IGameService gameService, AutoUpdaterService autoUpdaterService, ILanguageLocalizer localizer,
         SelectedGameService selectedGameService, ModUpdateAvailableChecker modUpdateAvailableChecker,
         LifeCycleService lifeCycleService, INavigationService navigationService,
-        ModArchiveRepository modArchiveRepository)
+        ModArchiveRepository modArchiveRepository, ThemeStyleService themeStyleService)
     {
+        _themeStyleService = themeStyleService;
         _themeSelectorService = themeSelectorService;
         _localSettingsService = localSettingsService;
         ElevatorService = elevatorService;
@@ -253,6 +261,26 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                 null);
             await RestartAppAsync();
         }
+    }
+
+    /// <summary>
+    ///     二开：切界面风格。不动配色，所以不用重启，流动层和动效立刻跟着变。
+    /// </summary>
+    [RelayCommand]
+    private async Task SwitchStyleAsync(string? param)
+    {
+        var style = string.Equals(param, nameof(OmniXThemeStyle.Simple), StringComparison.OrdinalIgnoreCase)
+            ? OmniXThemeStyle.Simple
+            : OmniXThemeStyle.Standard;
+
+        await _themeStyleService.SetAsync(style);
+
+        OnPropertyChanged(nameof(IsStandardStyle));
+        OnPropertyChanged(nameof(IsSimpleStyle));
+
+        _notificationManager.ShowNotification("界面风格已切换",
+            style == OmniXThemeStyle.Standard ? "标准版：流动光斑、悬停抬起、按压反馈" : "简易版：静态玻璃，不带动画",
+            TimeSpan.FromSeconds(5));
     }
 
     [RelayCommand]

@@ -359,6 +359,9 @@ public partial class App : Application
                 // 二开：首页和左侧栏两个「启动游戏」共用同一套逻辑
                 services.AddSingleton<GameLaunchService>();
 
+                // 二开：界面风格（简易版 / 标准版），只切换动效不动配色
+                services.AddSingleton<ThemeStyleService>();
+
                 // Configuration
                 services.Configure<LocalSettingsOptions>(
                     context.Configuration.GetSection(nameof(LocalSettingsOptions)));
@@ -433,6 +436,7 @@ public partial class App : Application
 
         Environment.SetEnvironmentVariable("WEBVIEW2_USE_VISUAL_HOSTING_FOR_OWNED_WINDOWS", "1");
         await GetService<ILanguageLocalizer>().InitializeAsync();
+        await GetService<ThemeStyleService>().InitializeAsync();
         NotImplemented.NotificationManager = GetService<NotificationManager>();
         base.OnLaunched(args);
         await GetService<IActivationService>().ActivateAsync(args).ConfigureAwait(false);

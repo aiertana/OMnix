@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fx="using:OMniX.WinUI.Helpers.Xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:OMniX.WinUI.ViewModels"
     mc:Ignorable="d">
@@ -219,7 +220,10 @@
                 </Grid.ColumnDefinitions>
 
                 <!--  Mod 管理卡  -->
-                <Border Grid.Column="0" Style="{ThemeResource OmniXGlassCardStyle}">
+                <Border
+                    Grid.Column="0"
+                    fx:GlassFx.Attach="True"
+                    Style="{ThemeResource OmniXGlassCardStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -295,11 +299,27 @@
                                 Content="角色图库"
                                 Style="{ThemeResource OmniXGhostButtonStyle}" />
                         </StackPanel>
+
+                        <!--  二开：顶部流光条，参考稿的 card::after  -->
+                        <Rectangle
+                            Grid.RowSpan="2"
+                            Height="2"
+                            Margin="14,0,14,0"
+                            VerticalAlignment="Top"
+                            Fill="{ThemeResource OmniXCardBeamBrush}"
+                            IsHitTestVisible="False"
+                            Loaded="CardBeam_Loaded"
+                            Opacity="0.85"
+                            RadiusX="1"
+                            RadiusY="1" />
                     </Grid>
                 </Border>
 
                 <!--  插件专区卡  -->
-                <Border Grid.Column="1" Style="{ThemeResource OmniXGlassCardStyle}">
+                <Border
+                    Grid.Column="1"
+                    fx:GlassFx.Attach="True"
+                    Style="{ThemeResource OmniXGlassCardStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -375,6 +395,19 @@
                                 Content="安装 Mod"
                                 Style="{ThemeResource OmniXGhostButtonStyle}" />
                         </StackPanel>
+
+                        <!--  二开：顶部流光条  -->
+                        <Rectangle
+                            Grid.RowSpan="2"
+                            Height="2"
+                            Margin="14,0,14,0"
+                            VerticalAlignment="Top"
+                            Fill="{ThemeResource OmniXCardBeamBrush}"
+                            IsHitTestVisible="False"
+                            Loaded="CardBeam_Loaded"
+                            Opacity="0.85"
+                            RadiusX="1"
+                            RadiusY="1" />
                     </Grid>
                 </Border>
             </Grid>

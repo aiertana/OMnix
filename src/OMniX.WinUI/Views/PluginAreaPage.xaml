@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fx="using:OMniX.WinUI.Helpers.Xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
@@ -82,10 +83,11 @@
                         <Border
                             Width="288"
                             Height="272"
+                            fx:GlassFx.Attach="True"
                             Background="{ThemeResource OmniXGlassBackgroundBrush}"
-                            BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
+                            BorderBrush="{ThemeResource OmniXGlassEdgeBrush}"
                             BorderThickness="1"
-                            CornerRadius="16">
+                            CornerRadius="18">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />

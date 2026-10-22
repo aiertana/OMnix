@@ -51,6 +51,9 @@ public partial class ModsOverviewVM(
 
     [ObservableProperty] private string _targetPath = string.Empty;
 
+    /// <summary>二开：Hero 卡下面那行统计，刷新和批量操作后更新</summary>
+    [ObservableProperty] private string _statText = "查看全部模组状态，批量开关模组资源";
+
     public async void OnNavigatedTo(object parameter)
     {
         await Refresh();
@@ -245,6 +248,130 @@ public partial class ModsOverviewVM(
 
             Categories.Add(categoryNode);
         }
+
+        UpdateStats();
+    }
+
+    /// <summary>二开：统计栏文案</summary>
+    private void UpdateStats()
+    {
+        var mods = GetAllNodes().OfType<ModModelNode>().ToList();
+        var enabled = mods.Count(m => m.IsEnabled);
+        StatText = mods.Count == 0
+            ? "还没读到 Mod，检查一下游戏目录"
+            : $"共 {mods.Count} 个 Mod · 已启用 {enabled} 个";
+    }
+
+    /// <summary>
+    ///     二开：把某个 Mod 设成指定状态（批量操作用，逻辑和单条切换一致）
+    /// </summary>
+    private async Task SetModEnabledAsync(ModModelNode modNode, bool wantEnabled)
+    {
+        if (modNode.IsEnabled == wantEnabled)
+            return;
+
+        var modList = _skinManagerService.GetCharacterModList(modNode.ParentModdableObject.ModdableObject);
+        var entry = modList.Mods.FirstOrDefault(m => m.Id == modNode.SkinEntry.Id);
+        if (entry is null)
+            return;
+
+        if (IsEnabledOnDisk(entry) != wantEnabled)
+            await Task.Run(() => RenameModFolder(entry, wantEnabled));
+
+        modNode.IsEnabled = wantEnabled;
+    }
+
+    private async Task SetAllEnabledAsync(bool enable)
+    {
+        var mods = GetAllNodes().OfType<ModModelNode>().Where(m => m.IsEnabled != enable).ToList();
+
+        if (mods.Count == 0)
+        {
+            _notificationManager.ShowNotification(enable ? "已经全部启用了" : "已经全部停用了",
+                $"当前没有需要改动的 Mod", TimeSpan.FromSeconds(4));
+            return;
+        }
+
+        var done = 0;
+        var failed = 0;
+
+        foreach (var mod in mods)
+        {
+            try
+            {
+                await SetModEnabledAsync(mod, enable);
+                done++;
+            }
+            catch (Exception e)
+            {
+                failed++;
+                _logger.Debug(e, "Batch toggle failed for {ModName}", mod.Mod.Name);
+            }
+        }
+
+        foreach (var moddableObject in GetAllNodes().OfType<ModdableObjectNode>())
+            moddableObject.RefreshEnabledCount();
+
+        UpdateStats();
+
+        _notificationManager.ShowNotification(
+            enable ? "已全部启用" : "已全部停用",
+            failed == 0
+                ? $"处理了 {done} 个 Mod"
+                : $"成功 {done} 个，失败 {failed} 个（多半是文件夹被占用）",
+            TimeSpan.FromSeconds(6));
+    }
+
+    /// <summary>二开：一键启用全部</summary>
+    [RelayCommand]
+    private Task EnableAllAsync() => SetAllEnabledAsync(true);
+
+    /// <summary>二开：一键停用全部</summary>
+    [RelayCommand]
+    private Task DisableAllAsync() => SetAllEnabledAsync(false);
+
+    /// <summary>
+    ///     二开：冲突检查。同一个角色下启用多个 Mod 时，游戏里通常只会生效一个，
+    ///     这里只做提示，不替用户改任何东西。
+    /// </summary>
+    [RelayCommand]
+    private void CheckConflicts()
+    {
+        var conflicts = new List<string>();
+        var multiCount = 0;
+
+        foreach (var moddableObject in GetAllNodes().OfType<ModdableObjectNode>())
+        {
+            var enabledCount = moddableObject.Mods.Count(m => m.IsEnabled);
+            if (enabledCount <= 1)
+                continue;
+
+            multiCount += enabledCount;
+            conflicts.Add($"{moddableObject.ModdableObject.DisplayName}（{enabledCount} 个）");
+        }
+
+        if (conflicts.Count == 0)
+        {
+            _notificationManager.ShowNotification("没有发现冲突", "每个角色最多只启用了一个 Mod",
+                TimeSpan.FromSeconds(5));
+            return;
+        }
+
+        var preview = string.Join("、", conflicts.Take(6));
+        if (conflicts.Count > 6)
+            preview += $" 等 {conflicts.Count} 个角色";
+
+        _notificationManager.ShowNotification("发现可能的冲突",
+            $"{preview} 同时启用了多个 Mod，游戏一般只会加载其中一个",
+            TimeSpan.FromSeconds(10));
+    }
+
+    /// <summary>二开：刷新列表</summary>
+    [RelayCommand]
+    private async Task RefreshListAsync()
+    {
+        await Refresh();
+        _notificationManager.ShowNotification("已刷新", StatText, TimeSpan.FromSeconds(4));
     }
 
 
