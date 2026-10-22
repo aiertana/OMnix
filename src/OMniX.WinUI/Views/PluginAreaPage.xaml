@@ -30,8 +30,8 @@
                         Grid.Column="0"
                         Width="54"
                         Height="54"
-                        Background="{ThemeResource OmniXAccentGradientBrush}"
-                        CornerRadius="15">
+                        Background="{ThemeResource OmniXAccentBrush}"
+                        CornerRadius="16">
                         <FontIcon
                             FontSize="24"
                             Foreground="White"

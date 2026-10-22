@@ -30,23 +30,27 @@
                 <Color x:Key="OmniXAccentSoftHoverColor">#FFFFDDDD</Color>
                 <Color x:Key="OmniXAccentSoftPressedColor">#FFFFCFCF</Color>
                 <Color x:Key="OmniXAccentStrongColor">#FFFF6B75</Color>
-                <!--  卡片 / 面板：带 alpha，让窗口的亚克力背景透上来  -->
-                <Color x:Key="OmniXCardAltBackgroundColor">#7AFFFFFF</Color>
-                <Color x:Key="OmniXCardBackgroundColor">#99FFFFFF</Color>
+                <!--
+                    卡片 / 面板：只留一层很薄的白色填充，靠背景和 1px 高光边出层次。
+                    以前是 60% 白，叠上去跟实心白块一样，才显得"塑料"。
+                -->
+                <Color x:Key="OmniXCardAltBackgroundColor">#1AFFFFFF</Color>
+                <Color x:Key="OmniXCardBackgroundColor">#2EFFFFFF</Color>
                 <!--  玻璃边框用白色半透明，模拟边缘高光  -->
-                <Color x:Key="OmniXCardStrokeColor">#99FFFFFF</Color>
-                <Color x:Key="OmniXCardStrokeHoverColor">#FFFFB3B5</Color>
-                <Color x:Key="OmniXControlBackgroundColor">#B3FFFFFF</Color>
-                <Color x:Key="OmniXControlBorderColor">#80D8D8DE</Color>
-                <Color x:Key="OmniXControlBorderPointerOverColor">#FFE0A7A9</Color>
+                <Color x:Key="OmniXCardStrokeColor">#40FFFFFF</Color>
+                <Color x:Key="OmniXCardStrokeHoverColor">#66E5484D</Color>
+                <Color x:Key="OmniXControlBackgroundColor">#26FFFFFF</Color>
+                <Color x:Key="OmniXControlBorderColor">#33FFFFFF</Color>
+                <Color x:Key="OmniXControlBorderPointerOverColor">#66E5484D</Color>
                 <Color x:Key="OmniXGlassTintColor">#FFFFFFFF</Color>
                 <Color x:Key="OmniXHeroBackgroundColor">#D9FFFFFF</Color>
                 <Color x:Key="OmniXNavGlassTintColor">#FFFFFFFF</Color>
-                <Color x:Key="OmniXNavItemPointerOverColor">#59F3F3F6</Color>
-                <Color x:Key="OmniXNavItemPressedColor">#73EAEAEF</Color>
-                <Color x:Key="OmniXNavItemSelectedColor">#FFFFE8E8</Color>
-                <Color x:Key="OmniXNavItemSelectedPointerOverColor">#FFFFDDDD</Color>
-                <Color x:Key="OmniXNavItemSelectedPressedColor">#FFFFCFCF</Color>
+                <Color x:Key="OmniXNavItemPointerOverColor">#1FFFFFFF</Color>
+                <Color x:Key="OmniXNavItemPressedColor">#2BFFFFFF</Color>
+                <!--  选中项用 10% 主色，而不是整块粉色，突出但不抢眼  -->
+                <Color x:Key="OmniXNavItemSelectedColor">#1FE5484D</Color>
+                <Color x:Key="OmniXNavItemSelectedPointerOverColor">#2EE5484D</Color>
+                <Color x:Key="OmniXNavItemSelectedPressedColor">#3DE5484D</Color>
                 <Color x:Key="OmniXNavPaneBackgroundColor">#99FFFFFF</Color>
                 <Color x:Key="OmniXPageBackgroundColor">#B3F0F0F3</Color>
                 <Color x:Key="OmniXPureWhiteColor">#FFFFFFFF</Color>
@@ -93,22 +97,22 @@
                 <Color x:Key="OmniXAccentSoftHoverColor">#FF4A2C2E</Color>
                 <Color x:Key="OmniXAccentSoftPressedColor">#FF553336</Color>
                 <Color x:Key="OmniXAccentStrongColor">#FFFF8A92</Color>
-                <Color x:Key="OmniXCardAltBackgroundColor">#6626262C</Color>
-                <Color x:Key="OmniXCardBackgroundColor">#80202026</Color>
+                <Color x:Key="OmniXCardAltBackgroundColor">#14FFFFFF</Color>
+                <Color x:Key="OmniXCardBackgroundColor">#1FFFFFFF</Color>
                 <!--  深色玻璃靠白色细边勾轮廓  -->
-                <Color x:Key="OmniXCardStrokeColor">#73FFFFFF</Color>
-                <Color x:Key="OmniXCardStrokeHoverColor">#FF7A4048</Color>
-                <Color x:Key="OmniXControlBackgroundColor">#9926262C</Color>
-                <Color x:Key="OmniXControlBorderColor">#663A3A44</Color>
-                <Color x:Key="OmniXControlBorderPointerOverColor">#FF7A4048</Color>
+                <Color x:Key="OmniXCardStrokeColor">#2EFFFFFF</Color>
+                <Color x:Key="OmniXCardStrokeHoverColor">#66FF6B75</Color>
+                <Color x:Key="OmniXControlBackgroundColor">#1FFFFFFF</Color>
+                <Color x:Key="OmniXControlBorderColor">#2AFFFFFF</Color>
+                <Color x:Key="OmniXControlBorderPointerOverColor">#66FF6B75</Color>
                 <Color x:Key="OmniXGlassTintColor">#FF1F1F24</Color>
                 <Color x:Key="OmniXHeroBackgroundColor">#99202026</Color>
                 <Color x:Key="OmniXNavGlassTintColor">#FF1B1B1F</Color>
-                <Color x:Key="OmniXNavItemPointerOverColor">#662A2A31</Color>
-                <Color x:Key="OmniXNavItemPressedColor">#8033333B</Color>
-                <Color x:Key="OmniXNavItemSelectedColor">#FF3A2224</Color>
-                <Color x:Key="OmniXNavItemSelectedPointerOverColor">#FF4A2C2E</Color>
-                <Color x:Key="OmniXNavItemSelectedPressedColor">#FF553336</Color>
+                <Color x:Key="OmniXNavItemPointerOverColor">#1FFFFFFF</Color>
+                <Color x:Key="OmniXNavItemPressedColor">#2BFFFFFF</Color>
+                <Color x:Key="OmniXNavItemSelectedColor">#29FF6B75</Color>
+                <Color x:Key="OmniXNavItemSelectedPointerOverColor">#38FF6B75</Color>
+                <Color x:Key="OmniXNavItemSelectedPressedColor">#47FF6B75</Color>
                 <Color x:Key="OmniXNavPaneBackgroundColor">#B3141418</Color>
                 <Color x:Key="OmniXPageBackgroundColor">#990E0E11</Color>
                 <Color x:Key="OmniXPureWhiteColor">#FFFFFFFF</Color>
@@ -171,8 +175,8 @@
 
             <!--  二开：侧栏也做成玻璃，原来是纯白到浅灰的实色  -->
             <LinearGradientBrush x:Key="OmniXSidebarGradientBrush" StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Offset="0" Color="#D9FFFFFF" />
-                <GradientStop Offset="1" Color="#A6F0F0F3" />
+                <GradientStop Offset="0" Color="#C7FFFFFF" />
+                <GradientStop Offset="1" Color="#8CF4F4F8" />
             </LinearGradientBrush>
         
 
@@ -205,9 +209,19 @@
         <GradientStop Offset="1" Color="#1A000000" />
     </LinearGradientBrush>
 
+    <!--
+        玻璃边缘：上亮下透的一圈描边，模拟 inset 高光。
+        WinUI 的 Border 做不了内阴影，用整圈渐变描边代替，远看就是玻璃反光的那道边。
+    -->
+    <LinearGradientBrush x:Key="OmniXGlassEdgeBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" Color="#8CFFFFFF" />
+        <GradientStop Offset="0.35" Color="#26FFFFFF" />
+        <GradientStop Offset="1" Color="#12FFFFFF" />
+    </LinearGradientBrush>
+
     <!--  ========== 圆角 ==========  -->
-    <CornerRadius x:Key="OmniXCardCornerRadius">16</CornerRadius>
-    <CornerRadius x:Key="OmniXControlCornerRadius">10</CornerRadius>
+    <CornerRadius x:Key="OmniXCardCornerRadius">18</CornerRadius>
+    <CornerRadius x:Key="OmniXControlCornerRadius">12</CornerRadius>
     <CornerRadius x:Key="OmniXPillCornerRadius">12</CornerRadius>
     <CornerRadius x:Key="ControlCornerRadius">8</CornerRadius>
     <CornerRadius x:Key="OverlayCornerRadius">12</CornerRadius>
@@ -303,9 +317,9 @@
         </Setter>
     </Style>
 
-    <!--  ========== 按钮：红色渐变主按钮 ==========  -->
+    <!--  ========== 按钮：主按钮（实色，不再用渐变） ==========  -->
     <Style x:Key="OmniXAccentButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{ThemeResource OmniXAccentGradientBrush}" />
+        <Setter Property="Background" Value="{ThemeResource OmniXAccentBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="{ThemeResource OmniXControlCornerRadius}" />
@@ -372,7 +386,7 @@
         x:Key="OmniXWarmButtonStyle"
         BasedOn="{StaticResource OmniXAccentButtonStyle}"
         TargetType="Button">
-        <Setter Property="Background" Value="{ThemeResource OmniXWarmGradientBrush}" />
+        <Setter Property="Background" Value="{ThemeResource OmniXWarmBrush}" />
     </Style>
 
     <!--  ========== 按钮：无底透明 ==========  -->
@@ -569,7 +583,7 @@
     <!--  ========== 卡片 ==========  -->
     <Style x:Key="OmniXCardStyle" TargetType="Border">
         <Setter Property="Background" Value="{ThemeResource OmniXCardBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="{ThemeResource OmniXCardStrokeBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource OmniXGlassEdgeBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="{ThemeResource OmniXCardCornerRadius}" />
     </Style>
@@ -665,11 +679,24 @@
 
     <Style x:Key="OmniXGlassCardStyle" TargetType="Border">
         <Setter Property="Background" Value="{ThemeResource OmniXGlassBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="{ThemeResource OmniXCardStrokeBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource OmniXGlassEdgeBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="{ThemeResource OmniXCardCornerRadius}" />
         <Setter Property="Padding" Value="16" />
     </Style>
+
+    <!--
+        所有弹窗也走同一块玻璃：底色半透 + 上亮下暗的高光边 + 大圆角。
+        不单独给每个 ContentDialog 写资源，改这里一处就全跟。
+    -->
+    <AcrylicBrush
+        x:Key="ContentDialogBackground"
+        FallbackColor="{ThemeResource OmniXDialogBackgroundColor}"
+        TintColor="{ThemeResource OmniXDialogBackgroundColor}"
+        TintLuminosityOpacity="0.55"
+        TintOpacity="0.42" />
+    <SolidColorBrush x:Key="ContentDialogBorderBrush" Color="{ThemeResource OmniXCardStrokeColor}" />
+    <CornerRadius x:Key="ContentDialogCornerRadius">20</CornerRadius>
 
     <Style
         x:Key="OmniXPlaceholderCardStyle"
@@ -686,7 +713,7 @@
     </Style>
 
     <Style x:Key="OmniXHeroButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{ThemeResource OmniXAccentGradientBrush}" />
+        <Setter Property="Background" Value="{ThemeResource OmniXAccentBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXPureWhiteBrush}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="16" />

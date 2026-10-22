@@ -20,11 +20,12 @@ namespace OMniX.WinUI.ViewModels;
 /// </summary>
 public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
 {
-    private static readonly Color Dlss5Tint = Color.FromArgb(0x38, 0x8B, 0x6F, 0xFF);
-    private static readonly Color Dlss5Text = Color.FromArgb(0xFF, 0xB4, 0x9B, 0xFF);
-    private static readonly Color ModTint = Color.FromArgb(0x38, 0x5A, 0x9B, 0xE8);
-    private static readonly Color ModText = Color.FromArgb(0xFF, 0x7F, 0xB0, 0xF5);
-    private static readonly Color MutedTint = Color.FromArgb(0x28, 0x9A, 0xA0, 0xAE);
+    // 一面玻璃上只该有一两种主色：DLSS5 用主色红，Mod 用中性灰，未上线的用更淡的灰
+    private static readonly Color Dlss5Tint = Color.FromArgb(0x24, 0xE5, 0x48, 0x4D);
+    private static readonly Color Dlss5Text = Color.FromArgb(0xFF, 0xE5, 0x48, 0x4D);
+    private static readonly Color ModTint = Color.FromArgb(0x24, 0x2C, 0x2C, 0x34);
+    private static readonly Color ModText = Color.FromArgb(0xFF, 0x5A, 0x5A, 0x66);
+    private static readonly Color MutedTint = Color.FromArgb(0x1A, 0x9A, 0xA0, 0xAE);
     private static readonly Color MutedText = Color.FromArgb(0xFF, 0x9A, 0xA0, 0xAE);
 
     private readonly PluginDependencyService _dependencies = App.GetService<PluginDependencyService>();
