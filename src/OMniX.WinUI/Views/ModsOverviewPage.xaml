@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="OMniX.WinUI.Views.ModsOverviewPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -16,6 +16,60 @@
     <Page.Resources>
 
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+        <!--
+            二开：快捷卡共用样式。四张卡以前各抄一遍同样的背景、描边、图标块，
+            抽出来之后每张卡只剩颜色、字母和文案有差异。
+        -->
+        <Style x:Key="QuickActionButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style x:Key="QuickActionCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{ThemeResource OmniXCardBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{ThemeResource OmniXCardStrokeBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="16" />
+        </Style>
+
+        <!--  卡顶那一条彩色细线，颜色由每张卡自己指定  -->
+        <Style x:Key="QuickActionBeamStyle" TargetType="Rectangle">
+            <Setter Property="Height" Value="2" />
+            <Setter Property="Margin" Value="14,0,14,0" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="RadiusX" Value="1" />
+            <Setter Property="RadiusY" Value="1" />
+        </Style>
+
+        <!--  左上角的字母方块  -->
+        <Style x:Key="QuickActionBadgeStyle" TargetType="Border">
+            <Setter Property="Width" Value="34" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="CornerRadius" Value="10" />
+        </Style>
+
+        <Style x:Key="QuickActionBadgeTextStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+
+        <Style x:Key="QuickActionTitleStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,6,0,0" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="QuickActionDescStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{ThemeResource OmniXTextSecondaryBrush}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
 
         <Flyout
             x:Key="CommandMenuFlyout"
@@ -417,7 +471,7 @@
             </Grid>
         </Border>
 
-        <!--  四个快捷卡  -->
+        <!--  四个快捷卡：样式抽到页面资源里，每张卡只留颜色、字母和文案  -->
         <Grid Grid.Row="2" ColumnSpacing="14">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -428,50 +482,29 @@
 
             <Button
                 Grid.Column="0"
-                Padding="0"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                Background="Transparent"
-                BorderThickness="0"
-                Command="{x:Bind ViewModel.EnableAllCommand}">
-                <Border
-                    Background="{ThemeResource OmniXCardBackgroundBrush}"
-                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
-                    BorderThickness="1"
-                    CornerRadius="16">
+                Command="{x:Bind ViewModel.EnableAllCommand}"
+                Style="{StaticResource QuickActionButtonStyle}">
+                <Border Style="{StaticResource QuickActionCardStyle}">
                     <Grid>
                         <Rectangle
-                            Height="2"
-                            Margin="14,0,14,0"
-                            VerticalAlignment="Top"
                             Fill="{ThemeResource OmniXAuxPinkBrush}"
-                            RadiusX="1"
-                            RadiusY="1" />
+                            Style="{StaticResource QuickActionBeamStyle}" />
                         <StackPanel
                             Padding="18,18,18,16"
                             Spacing="6">
                             <Border
-                                Width="34"
-                                Height="34"
-                                HorizontalAlignment="Left"
                                 Background="{ThemeResource OmniXAuxPinkBrush}"
-                                CornerRadius="10">
+                                Style="{StaticResource QuickActionBadgeStyle}">
                                 <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Foreground="White"
+                                    Style="{StaticResource QuickActionBadgeTextStyle}"
                                     Text="A" />
                             </Border>
                             <TextBlock
-                                Margin="0,6,0,0"
-                                FontWeight="SemiBold"
+                                Style="{StaticResource QuickActionTitleStyle}"
                                 Text="全部启用" />
                             <TextBlock
-                                FontSize="12"
-                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="一键打开所有可用 Mod"
-                                TextWrapping="Wrap" />
+                                Style="{StaticResource QuickActionDescStyle}"
+                                Text="一键打开所有可用 Mod" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -479,50 +512,29 @@
 
             <Button
                 Grid.Column="1"
-                Padding="0"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                Background="Transparent"
-                BorderThickness="0"
-                Command="{x:Bind ViewModel.DisableAllCommand}">
-                <Border
-                    Background="{ThemeResource OmniXCardBackgroundBrush}"
-                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
-                    BorderThickness="1"
-                    CornerRadius="16">
+                Command="{x:Bind ViewModel.DisableAllCommand}"
+                Style="{StaticResource QuickActionButtonStyle}">
+                <Border Style="{StaticResource QuickActionCardStyle}">
                     <Grid>
                         <Rectangle
-                            Height="2"
-                            Margin="14,0,14,0"
-                            VerticalAlignment="Top"
                             Fill="{ThemeResource OmniXAuxPurpleBrush}"
-                            RadiusX="1"
-                            RadiusY="1" />
+                            Style="{StaticResource QuickActionBeamStyle}" />
                         <StackPanel
                             Padding="18,18,18,16"
                             Spacing="6">
                             <Border
-                                Width="34"
-                                Height="34"
-                                HorizontalAlignment="Left"
                                 Background="{ThemeResource OmniXAuxPurpleBrush}"
-                                CornerRadius="10">
+                                Style="{StaticResource QuickActionBadgeStyle}">
                                 <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Foreground="White"
+                                    Style="{StaticResource QuickActionBadgeTextStyle}"
                                     Text="Z" />
                             </Border>
                             <TextBlock
-                                Margin="0,6,0,0"
-                                FontWeight="SemiBold"
+                                Style="{StaticResource QuickActionTitleStyle}"
                                 Text="全部禁用" />
                             <TextBlock
-                                FontSize="12"
-                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="一键关闭所有 Mod"
-                                TextWrapping="Wrap" />
+                                Style="{StaticResource QuickActionDescStyle}"
+                                Text="一键关闭所有 Mod" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -530,50 +542,29 @@
 
             <Button
                 Grid.Column="2"
-                Padding="0"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                Background="Transparent"
-                BorderThickness="0"
-                Command="{x:Bind ViewModel.CheckConflictsCommand}">
-                <Border
-                    Background="{ThemeResource OmniXCardBackgroundBrush}"
-                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
-                    BorderThickness="1"
-                    CornerRadius="16">
+                Command="{x:Bind ViewModel.CheckConflictsCommand}"
+                Style="{StaticResource QuickActionButtonStyle}">
+                <Border Style="{StaticResource QuickActionCardStyle}">
                     <Grid>
                         <Rectangle
-                            Height="2"
-                            Margin="14,0,14,0"
-                            VerticalAlignment="Top"
                             Fill="{ThemeResource OmniXAuxBlueBrush}"
-                            RadiusX="1"
-                            RadiusY="1" />
+                            Style="{StaticResource QuickActionBeamStyle}" />
                         <StackPanel
                             Padding="18,18,18,16"
                             Spacing="6">
                             <Border
-                                Width="34"
-                                Height="34"
-                                HorizontalAlignment="Left"
                                 Background="{ThemeResource OmniXAuxBlueBrush}"
-                                CornerRadius="10">
+                                Style="{StaticResource QuickActionBadgeStyle}">
                                 <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Foreground="White"
+                                    Style="{StaticResource QuickActionBadgeTextStyle}"
                                     Text="D" />
                             </Border>
                             <TextBlock
-                                Margin="0,6,0,0"
-                                FontWeight="SemiBold"
+                                Style="{StaticResource QuickActionTitleStyle}"
                                 Text="冲突检查" />
                             <TextBlock
-                                FontSize="12"
-                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="扫描同角色多开的情况"
-                                TextWrapping="Wrap" />
+                                Style="{StaticResource QuickActionDescStyle}"
+                                Text="扫描同角色多开的情况" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -581,50 +572,29 @@
 
             <Button
                 Grid.Column="3"
-                Padding="0"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                Background="Transparent"
-                BorderThickness="0"
-                Command="{x:Bind ViewModel.RefreshListCommand}">
-                <Border
-                    Background="{ThemeResource OmniXCardBackgroundBrush}"
-                    BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
-                    BorderThickness="1"
-                    CornerRadius="16">
+                Command="{x:Bind ViewModel.RefreshListCommand}"
+                Style="{StaticResource QuickActionButtonStyle}">
+                <Border Style="{StaticResource QuickActionCardStyle}">
                     <Grid>
                         <Rectangle
-                            Height="2"
-                            Margin="14,0,14,0"
-                            VerticalAlignment="Top"
                             Fill="{ThemeResource OmniXAccentBrush}"
-                            RadiusX="1"
-                            RadiusY="1" />
+                            Style="{StaticResource QuickActionBeamStyle}" />
                         <StackPanel
                             Padding="18,18,18,16"
                             Spacing="6">
                             <Border
-                                Width="34"
-                                Height="34"
-                                HorizontalAlignment="Left"
                                 Background="{ThemeResource OmniXAccentBrush}"
-                                CornerRadius="10">
+                                Style="{StaticResource QuickActionBadgeStyle}">
                                 <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Foreground="White"
+                                    Style="{StaticResource QuickActionBadgeTextStyle}"
                                     Text="R" />
                             </Border>
                             <TextBlock
-                                Margin="0,6,0,0"
-                                FontWeight="SemiBold"
+                                Style="{StaticResource QuickActionTitleStyle}"
                                 Text="刷新列表" />
                             <TextBlock
-                                FontSize="12"
-                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="重新读取 Mod 目录"
-                                TextWrapping="Wrap" />
+                                Style="{StaticResource QuickActionDescStyle}"
+                                Text="重新读取 Mod 目录" />
                         </StackPanel>
                     </Grid>
                 </Border>

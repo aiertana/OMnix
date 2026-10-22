@@ -263,22 +263,23 @@ public partial class ModsOverviewVM(
     }
 
     /// <summary>
-    ///     二开：把某个 Mod 设成指定状态（批量操作用，逻辑和单条切换一致）
+    ///     二开：把某个 Mod 设成目标状态。单条勾选和批量操作共用这一份，
+    ///     返回 false 表示列表里找不到对应的条目（通常是因为列表已经重建过）。
     /// </summary>
-    private async Task SetModEnabledAsync(ModModelNode modNode, bool wantEnabled)
+    private async Task<bool> ApplyModStateAsync(ModModelNode modNode, bool wantEnabled)
     {
-        if (modNode.IsEnabled == wantEnabled)
-            return;
-
         var modList = _skinManagerService.GetCharacterModList(modNode.ParentModdableObject.ModdableObject);
         var entry = modList.Mods.FirstOrDefault(m => m.Id == modNode.SkinEntry.Id);
         if (entry is null)
-            return;
+            return false;
 
+        // 以磁盘上的真实状态为准：界面状态没同步时也不会做反向操作
         if (IsEnabledOnDisk(entry) != wantEnabled)
             await Task.Run(() => RenameModFolder(entry, wantEnabled));
 
         modNode.IsEnabled = wantEnabled;
+        modNode.ParentModdableObject.RefreshEnabledCount();
+        return true;
     }
 
     private async Task SetAllEnabledAsync(bool enable)
@@ -299,8 +300,10 @@ public partial class ModsOverviewVM(
         {
             try
             {
-                await SetModEnabledAsync(mod, enable);
-                done++;
+                if (await ApplyModStateAsync(mod, enable))
+                    done++;
+                else
+                    failed++;
             }
             catch (Exception e)
             {
@@ -457,32 +460,15 @@ public partial class ModsOverviewVM(
 
         try
         {
-            var modList = _skinManagerService.GetCharacterModList(modNode.ParentModdableObject.ModdableObject);
-
-            // 用 Id 重新取一次条目，避免用到已经被重建过的旧对象
-            var entry = modList.Mods.FirstOrDefault(m => m.Id == modNode.SkinEntry.Id);
-            if (entry is null)
+            // 复用批量操作那一份：按 Id 重新取条目，按磁盘真实状态决定是否改名。
+            // 注意：里面执行 Task.Run 时不能 ConfigureAwait(false)，
+            // 否则回来时在线程池线程上改 UI 绑定会抛 0x8001010E
+            if (!await ApplyModStateAsync(modNode, wantEnabled))
             {
                 _notificationManager.ShowNotification("找不到这个 Mod",
                     "Mod 列表可能已刷新，请重新进入 Mod 总览", TimeSpan.FromSeconds(8));
                 return;
             }
-
-            // 以磁盘上的真实状态为准：界面状态没同步时也不会做反向操作
-            if (IsEnabledOnDisk(entry) == wantEnabled)
-            {
-                modNode.IsEnabled = wantEnabled;
-                modNode.ParentModdableObject.RefreshEnabledCount();
-                return;
-            }
-
-            // 直接改文件夹名（DISABLED_ 前缀），不依赖 Core 的 EnableMod/DisableMod：
-            // 那两个方法重命名成功后还会去更新内部集合，偶尔会抛异常，导致明明成功却报失败
-            // 注意：这里不能 ConfigureAwait(false)，否则回来时在线程池线程上改 UI 绑定会抛 0x8001010E
-            await Task.Run(() => RenameModFolder(entry, wantEnabled));
-
-            modNode.IsEnabled = wantEnabled;
-            modNode.ParentModdableObject.RefreshEnabledCount();
         }
         catch (InvalidOperationException e) when (
             e.Message.Contains("Cannot enable a enabled mod") ||
