@@ -9,13 +9,13 @@
                 <!--  二开：把 WinUI 的系统 accent 也换成珊瑚红。
                       弹窗主按钮、输入框聚焦下划线、FocusVisual 这些用的都是 SystemAccentColor 派生出的画刷，
                       不覆盖的话永远是系统蓝（在 ThemeDictionaries 里定义，优先级才压得住内置值）。  -->
-                <Color x:Key="SystemAccentColor">#FFFF7EB9</Color>
-                <Color x:Key="SystemAccentColorLight1">#FFFFA0CC</Color>
-                <Color x:Key="SystemAccentColorLight2">#FFFFC2DE</Color>
-                <Color x:Key="SystemAccentColorLight3">#FFE8F0FF</Color>
-                <Color x:Key="SystemAccentColorDark1">#FFE85A96</Color>
-                <Color x:Key="SystemAccentColorDark2">#FFCC4080</Color>
-                <Color x:Key="SystemAccentColorDark3">#FFA83068</Color>
+                <Color x:Key="SystemAccentColor">#FFFF6B8A</Color>
+                <Color x:Key="SystemAccentColorLight1">#FFFF8FA8</Color>
+                <Color x:Key="SystemAccentColorLight2">#FFFFB0C2</Color>
+                <Color x:Key="SystemAccentColorLight3">#FFFFD0DA</Color>
+                <Color x:Key="SystemAccentColorDark1">#FFE04A6B</Color>
+                <Color x:Key="SystemAccentColorDark2">#FFB83654</Color>
+                <Color x:Key="SystemAccentColorDark3">#FF8C2741</Color>
                 <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#FFFF7EB9" />
                 <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#E6FF7EB9" />
                 <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#CCFF7EB9" />
@@ -28,65 +28,65 @@
                     强调色：参考稿的 accent-red，比 logo 那个珊瑚红柔一点，
                     配这套粉紫蓝才不打架。aux 三色给顶部流光条和状态点用。
                 -->
-                <Color x:Key="OmniXAccentColor">#FFFF7EB9</Color>
-                <Color x:Key="OmniXAccentSoftColor">#FFFFF0F7</Color>
-                <Color x:Key="OmniXAccentSoftHoverColor">#FFFFE4F0</Color>
-                <Color x:Key="OmniXAccentSoftPressedColor">#FFFFD8E8</Color>
-                <Color x:Key="OmniXAccentStrongColor">#FFFFA0CC</Color>
+                <Color x:Key="OmniXAccentColor">#FFFF6B8A</Color>
+                <Color x:Key="OmniXAccentSoftColor">#FFFFF1F5</Color>
+                <Color x:Key="OmniXAccentSoftHoverColor">#FFFFE4EC</Color>
+                <Color x:Key="OmniXAccentSoftPressedColor">#FFFFD8E4</Color>
+                <Color x:Key="OmniXAccentStrongColor">#FFFF8FA8</Color>
                 <!--  aux：粉 / 紫 / 蓝，只做点缀，不拿来当主操作色  -->
-                <Color x:Key="OmniXAuxPinkColor">#FFFFB3D9</Color>
-                <Color x:Key="OmniXAuxPurpleColor">#FFC9A8FF</Color>
-                <Color x:Key="OmniXAuxBlueColor">#FFA8D8FF</Color>
+                <Color x:Key="OmniXAuxPinkColor">#FFFF9EC7</Color>
+                <Color x:Key="OmniXAuxPurpleColor">#FFB58BFF</Color>
+                <Color x:Key="OmniXAuxBlueColor">#FF8CCBFF</Color>
 
                 <!--  卡片：参考稿是 72% 白 + 1px 淡紫线，照抄  -->
-                <Color x:Key="OmniXCardAltBackgroundColor">#A6FFFFFF</Color>
-                <Color x:Key="OmniXCardBackgroundColor">#BFFFFFFF</Color>
-                <Color x:Key="OmniXCardStrokeColor">#1AFF7EB9</Color>
-                <Color x:Key="OmniXCardStrokeHoverColor">#4DFF7EB9</Color>
+                <Color x:Key="OmniXCardAltBackgroundColor">#9EFFFFFF</Color>
+                <Color x:Key="OmniXCardBackgroundColor">#B8FFFFFF</Color>
+                <Color x:Key="OmniXCardStrokeColor">#29150E6E</Color>
+                <Color x:Key="OmniXCardStrokeHoverColor">#52966ED8</Color>
                 <Color x:Key="OmniXControlBackgroundColor">#B3FFFFFF</Color>
-                <Color x:Key="OmniXControlBorderColor">#1AFF7EB9</Color>
-                <Color x:Key="OmniXControlBorderPointerOverColor">#66FF7EB9</Color>
+                <Color x:Key="OmniXControlBorderColor">#29150E6E</Color>
+                <Color x:Key="OmniXControlBorderPointerOverColor">#668CCBFF</Color>
                 <Color x:Key="OmniXGlassTintColor">#FFFFFFFF</Color>
                 <Color x:Key="OmniXHeroBackgroundColor">#D9FFFFFF</Color>
                 <Color x:Key="OmniXNavGlassTintColor">#FFFFFFFF</Color>
-                <Color x:Key="OmniXNavItemPointerOverColor">#14FF7EB9</Color>
-                <Color x:Key="OmniXNavItemPressedColor">#1FFF7EB9</Color>
-                <Color x:Key="OmniXNavItemSelectedColor">#2EFF7EB9</Color>
-                <Color x:Key="OmniXNavItemSelectedPointerOverColor">#45FF7EB9</Color>
-                <Color x:Key="OmniXNavItemSelectedPressedColor">#5CFF7EB9</Color>
-                <Color x:Key="OmniXNavPaneBackgroundColor">#F2FFFFFF</Color>
-                <Color x:Key="OmniXPageBackgroundColor">#FFFFF8FC</Color>
+                <Color x:Key="OmniXNavItemPointerOverColor">#B8FFFFFF</Color>
+                <Color x:Key="OmniXNavItemPressedColor">#CCFFFFFF</Color>
+                <Color x:Key="OmniXNavItemSelectedColor">#2EFF6B8A</Color>
+                <Color x:Key="OmniXNavItemSelectedPointerOverColor">#45FF6B8A</Color>
+                <Color x:Key="OmniXNavItemSelectedPressedColor">#5CFF6B8A</Color>
+                <Color x:Key="OmniXNavPaneBackgroundColor">#99FFFFFF</Color>
+                <Color x:Key="OmniXPageBackgroundColor">#FFFFFFFF</Color>
                 <Color x:Key="OmniXPureWhiteColor">#FFFFFFFF</Color>
-                <Color x:Key="OmniXSidebarBackgroundColor">#F7FFFFFF</Color>
+                <Color x:Key="OmniXSidebarBackgroundColor">#9EFFFFFF</Color>
                 <Color x:Key="OmniXTextOnHeroColor">#FFFFFFFF</Color>
                 <!--  文字用参考稿的紫灰：#4b3d6b / #8a7da8  -->
-                <Color x:Key="OmniXTextPrimaryColor">#FF4A3A5C</Color>
-                <Color x:Key="OmniXTextSecondaryColor">#FF9A8AB5</Color>
-                <Color x:Key="OmniXTextSecondaryOnHeroColor">#FFFFE8F0</Color>
-                <Color x:Key="OmniXWarmColor">#FFFF9E80</Color>
-                <Color x:Key="OmniXWarmDeepColor">#FFE85A40</Color>
+                <Color x:Key="OmniXTextPrimaryColor">#FF4B3D6B</Color>
+                <Color x:Key="OmniXTextSecondaryColor">#FF8A7DA8</Color>
+                <Color x:Key="OmniXTextSecondaryOnHeroColor">#FFFFE3EC</Color>
+                <Color x:Key="OmniXWarmColor">#FFFF8A6B</Color>
+                <Color x:Key="OmniXWarmDeepColor">#FFD84A2F</Color>
                 <!--  弹窗：参考稿的 card-strong，92% 白  -->
-                <Color x:Key="OmniXDialogBackgroundColor">#F0FFFFFF</Color>
-                <Color x:Key="OmniXDialogBorderColor">#1AFF7EB9</Color>
+                <Color x:Key="OmniXDialogBackgroundColor">#EBFFFFFF</Color>
+                <Color x:Key="OmniXDialogBorderColor">#29150E6E</Color>
 
                 <!--  二开：柔光底色（淡紫 → 淡粉 → 淡蓝）。
                       半透明卡片要有色彩层次垫底才像玻璃，纯灰底怎么调都是一片白。  -->
                 <!--  底：参考稿的 bg-1 #fff7fc → bg-2 #f0f7ff  -->
                 <LinearGradientBrush x:Key="OmniXPageBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Offset="0" Color="#FFFFF8FC" />
-                    <GradientStop Offset="0.5" Color="#FFFFF0F6" />
-                    <GradientStop Offset="1" Color="#FFF0F5FF" />
+                    <GradientStop Offset="0" Color="#FFFFF7FC" />
+                    <GradientStop Offset="0.5" Color="#FFFAF9FE" />
+                    <GradientStop Offset="1" Color="#FFF0F7FF" />
                 </LinearGradientBrush>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
                 <!--  二开：深色下的系统 accent 覆盖，和亮色一一对应  -->
-                <Color x:Key="SystemAccentColor">#FFFF8FB8</Color>
-                <Color x:Key="SystemAccentColorLight1">#FFFFA8CC</Color>
-                <Color x:Key="SystemAccentColorLight2">#FFFFC2DE</Color>
-                <Color x:Key="SystemAccentColorLight3">#FFE8F0FF</Color>
-                <Color x:Key="SystemAccentColorDark1">#FFD86AA0</Color>
-                <Color x:Key="SystemAccentColorDark2">#FFB84A80</Color>
-                <Color x:Key="SystemAccentColorDark3">#FF963866</Color>
+                <Color x:Key="SystemAccentColor">#FFFF6B75</Color>
+                <Color x:Key="SystemAccentColorLight1">#FFFF8A92</Color>
+                <Color x:Key="SystemAccentColorLight2">#FFFFA8AE</Color>
+                <Color x:Key="SystemAccentColorLight3">#FFFFC6CA</Color>
+                <Color x:Key="SystemAccentColorDark1">#FFE5484D</Color>
+                <Color x:Key="SystemAccentColorDark2">#FFC9172A</Color>
+                <Color x:Key="SystemAccentColorDark3">#FFA51020</Color>
                 <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#FFFF8FB8" />
                 <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#E6FF8FB8" />
                 <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#CCFF8FB8" />
@@ -96,48 +96,48 @@
                 <SolidColorBrush x:Key="AccentTextFillColorTertiaryBrush" Color="#FFFFA8CC" />
 
                 <!--  深色：近黑玻璃底，主色压亮一档才看得清  -->
-                <Color x:Key="OmniXAccentColor">#FFFF8FB8</Color>
-                <Color x:Key="OmniXAccentSoftColor">#FF3A2833</Color>
-                <Color x:Key="OmniXAccentSoftHoverColor">#FF4A3340</Color>
-                <Color x:Key="OmniXAccentSoftPressedColor">#FF553A48</Color>
-                <Color x:Key="OmniXAccentStrongColor">#FFFFB3D9</Color>
-                <Color x:Key="OmniXAuxPinkColor">#FFFFB3D9</Color>
-                <Color x:Key="OmniXAuxPurpleColor">#FFC9A8FF</Color>
-                <Color x:Key="OmniXAuxBlueColor">#FFA8D8FF</Color>
-                <Color x:Key="OmniXCardAltBackgroundColor">#14FFFFFF</Color>
-                <Color x:Key="OmniXCardBackgroundColor">#1FFFFFFF</Color>
+                <Color x:Key="OmniXAccentColor">#FFFF8FA8</Color>
+                <Color x:Key="OmniXAccentSoftColor">#FF3A2430</Color>
+                <Color x:Key="OmniXAccentSoftHoverColor">#FF4A2F3E</Color>
+                <Color x:Key="OmniXAccentSoftPressedColor">#FF553646</Color>
+                <Color x:Key="OmniXAccentStrongColor">#FFFFB0C2</Color>
+                <Color x:Key="OmniXAuxPinkColor">#FFFF9EC7</Color>
+                <Color x:Key="OmniXAuxPurpleColor">#FFB58BFF</Color>
+                <Color x:Key="OmniXAuxBlueColor">#FF8CCBFF</Color>
+                <Color x:Key="OmniXCardAltBackgroundColor">#12FFFFFF</Color>
+                <Color x:Key="OmniXCardBackgroundColor">#1AFFFFFF</Color>
                 <!--  深色玻璃靠白色细边勾轮廓  -->
-                <Color x:Key="OmniXCardStrokeColor">#24FFFFFF</Color>
-                <Color x:Key="OmniXCardStrokeHoverColor">#4DFF8FB8</Color>
+                <Color x:Key="OmniXCardStrokeColor">#2EFFFFFF</Color>
+                <Color x:Key="OmniXCardStrokeHoverColor">#66FF8FA8</Color>
                 <Color x:Key="OmniXControlBackgroundColor">#1FFFFFFF</Color>
-                <Color x:Key="OmniXControlBorderColor">#26FFFFFF</Color>
-                <Color x:Key="OmniXControlBorderPointerOverColor">#66FF8FB8</Color>
+                <Color x:Key="OmniXControlBorderColor">#2AFFFFFF</Color>
+                <Color x:Key="OmniXControlBorderPointerOverColor">#668CCBFF</Color>
                 <Color x:Key="OmniXGlassTintColor">#FF1F1B26</Color>
                 <Color x:Key="OmniXHeroBackgroundColor">#99202026</Color>
                 <Color x:Key="OmniXNavGlassTintColor">#FF1B1822</Color>
                 <Color x:Key="OmniXNavItemPointerOverColor">#1FFFFFFF</Color>
                 <Color x:Key="OmniXNavItemPressedColor">#2BFFFFFF</Color>
-                <Color x:Key="OmniXNavItemSelectedColor">#33FF8FB8</Color>
-                <Color x:Key="OmniXNavItemSelectedPointerOverColor">#45FF8FB8</Color>
-                <Color x:Key="OmniXNavItemSelectedPressedColor">#57FF8FB8</Color>
+                <Color x:Key="OmniXNavItemSelectedColor">#33FF8FA8</Color>
+                <Color x:Key="OmniXNavItemSelectedPointerOverColor">#45FF8FA8</Color>
+                <Color x:Key="OmniXNavItemSelectedPressedColor">#57FF8FA8</Color>
                 <Color x:Key="OmniXNavPaneBackgroundColor">#B3141418</Color>
-                <Color x:Key="OmniXPageBackgroundColor">#140E121A</Color>
+                <Color x:Key="OmniXPageBackgroundColor">#990E0E11</Color>
                 <Color x:Key="OmniXPureWhiteColor">#FFFFFFFF</Color>
                 <Color x:Key="OmniXSidebarBackgroundColor">#B3141418</Color>
                 <Color x:Key="OmniXTextOnHeroColor">#FFFFFFFF</Color>
-                <Color x:Key="OmniXTextPrimaryColor">#FFF5EEF8</Color>
-                <Color x:Key="OmniXTextSecondaryColor">#FFC4B5D5</Color>
-                <Color x:Key="OmniXTextSecondaryOnHeroColor">#FFE8D8E0</Color>
+                <Color x:Key="OmniXTextPrimaryColor">#FFF3EFFA</Color>
+                <Color x:Key="OmniXTextSecondaryColor">#FFB9AED0</Color>
+                <Color x:Key="OmniXTextSecondaryOnHeroColor">#FFE6D9E4</Color>
                 <Color x:Key="OmniXWarmColor">#FFFF9E80</Color>
                 <Color x:Key="OmniXWarmDeepColor">#FFE85A40</Color>
                 <Color x:Key="OmniXDialogBackgroundColor">#B31A1A20</Color>
-                <Color x:Key="OmniXDialogBorderColor">#4DFFFFFF</Color>
+                <Color x:Key="OmniXDialogBorderColor">#59FFFFFF</Color>
 
                 <!--  二开：深色主题的底，近黑里带一点紫，和亮色版对应  -->
                 <LinearGradientBrush x:Key="OmniXPageBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Offset="0" Color="#F2160E20" />
-                    <GradientStop Offset="0.5" Color="#F2140E1A" />
-                    <GradientStop Offset="1" Color="#F20E1420" />
+                    <GradientStop Offset="0" Color="#F216121C" />
+                    <GradientStop Offset="0.5" Color="#F2121219" />
+                    <GradientStop Offset="1" Color="#F20F1418" />
                 </LinearGradientBrush>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
@@ -226,11 +226,11 @@
         粉 → 紫 → 蓝，配 sweep 动画从左边扫到右边。
     -->
     <LinearGradientBrush x:Key="OmniXCardBeamBrush" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Offset="0" Color="#00FF7EB9" />
-        <GradientStop Offset="0.25" Color="#FFFF7EB9" />
-        <GradientStop Offset="0.55" Color="#FFC9A8FF" />
-        <GradientStop Offset="0.85" Color="#FFA8D8FF" />
-        <GradientStop Offset="1" Color="#00A8D8FF" />
+        <GradientStop Offset="0" Color="#00FF9EC7" />
+        <GradientStop Offset="0.25" Color="#FFFF9EC7" />
+        <GradientStop Offset="0.55" Color="#FFB58BFF" />
+        <GradientStop Offset="0.85" Color="#FF8CCBFF" />
+        <GradientStop Offset="1" Color="#008CCBFF" />
     </LinearGradientBrush>
 
     <!--
