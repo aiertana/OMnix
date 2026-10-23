@@ -28,7 +28,7 @@ namespace OMniX.WinUI.Helpers.Xaml;
 public sealed class SakuraFx
 {
     // 想调密度和节奏，改这几个常量就够了
-    private const int PetalCount = 28;
+    private const int PetalCount = 25;
 
     private const double MinSize = 8;
     private const double MaxSize = 16;
@@ -65,9 +65,11 @@ public sealed class SakuraFx
     /// <summary>三种花瓣色：半透明粉、更淡的粉、淡紫粉</summary>
     private static readonly Color[] PetalColors =
     [
-        Color.FromArgb(0x66, 0xFF, 0xB3, 0xD9),
-        Color.FromArgb(0x73, 0xFF, 0xD9, 0xEC),
-        Color.FromArgb(0x59, 0xC9, 0xA8, 0xFF)
+        // 文档给的四色：淡粉 / 更淡的粉 / 淡蓝白 / 白
+        Color.FromArgb(0x66, 0xFF, 0xC9, 0xD9),
+        Color.FromArgb(0x73, 0xFF, 0xD9, 0xE8),
+        Color.FromArgb(0x59, 0xD9, 0xEC, 0xFF),
+        Color.FromArgb(0x59, 0xFF, 0xFF, 0xFF)
     ];
 
     private readonly Random _random = new();

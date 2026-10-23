@@ -322,6 +322,9 @@ public sealed partial class ShellPage : Page
         // 否则切到别的页面后那些按钮就没有悬停反馈。
         MotionFx.ScanTree(frame);
 
+        // 切页面一声"咚"。点导航项的"嗒"是先响的，两个音错开一点，听上去是连贯的两下
+        UiSoundService.Instance?.PlayPopup();
+
         if (ThemeStyleService.Instance is { MotionEnabled: false })
             return;
 

@@ -95,8 +95,9 @@ public sealed class UiSoundService
         if (ThemeStyleService.Instance is { MotionEnabled: false })
             return;
 
-        // 同一时间堆了一堆事件时只响一次，免得变成噪音
-        if ((DateTimeOffset.UtcNow - _lastPlay).TotalMilliseconds < 45)
+        // 点击会连点，密集时只响一次免得变成噪音；
+        // 切页面这种低频事件不节流，不然总被点击那声挡掉，等于没加
+        if (!popup && (DateTimeOffset.UtcNow - _lastPlay).TotalMilliseconds < 45)
             return;
 
         _lastPlay = DateTimeOffset.UtcNow;

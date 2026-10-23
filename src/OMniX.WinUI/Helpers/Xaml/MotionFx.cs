@@ -93,6 +93,10 @@ public static class MotionFx
             if (ShouldAttach(child) && !GlassFx.GetAttach(child))
                 GlassFx.SetAttach(child, true);
 
+            // 投影只给卡片：按钮本身已经有按压反馈，再叠一层阴影会显得脏
+            if (IsCardLike(child) && !ShadowFx.GetAttach(child))
+                ShadowFx.SetAttach(child, true);
+
             ScanTree(child);
         }
     }
@@ -103,14 +107,18 @@ public static class MotionFx
     ///     - 圆角较大的 Border：这是我们的卡片/磁贴，抬起来最明显
     ///     其它容器一律不挂，免得整个界面跟着抖。
     /// </summary>
-    private static bool ShouldAttach(DependencyObject child) => child switch
+    private static bool ShouldAttach(DependencyObject child) => IsControl(child) || IsCardLike(child);
+
+    private static bool IsControl(DependencyObject child) => child switch
     {
         Button or RepeatButton or ToggleButton or HyperlinkButton or DropDownButton or SplitButton => true,
         CheckBox or RadioButton or ComboBox or Slider or ToggleSwitch => true,
         NavigationViewItem or ListViewItem or GridViewItem or TreeViewItem => true,
-        Border border => border.CornerRadius.TopLeft >= 12,
         _ => false
     };
+
+    // IsCardLike 在下面音效命中那段也有一个，圆角 >= 12 的 Border 就算卡片，
+    // 两处判断保持一致，这里直接用那个
 
     /// <summary>
     ///     点按反馈：一声"嗒" + 一团粒子。挂在页面根上用 AddHandler 收 PointerPressed

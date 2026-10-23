@@ -109,11 +109,19 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
     private readonly ThemeStyleService _themeStyleService;
     private readonly UiSoundService _uiSoundService;
+    private readonly PaletteService _paletteService;
 
     /// <summary>界面风格：标准版（带动效）/ 简易版（静态玻璃）</summary>
     public bool IsStandardStyle => _themeStyleService.Current == OmniXThemeStyle.Standard;
 
     public bool IsSimpleStyle => !IsStandardStyle;
+
+    /// <summary>三套配色，两两互斥，给 RadioButton 的 IsChecked 用</summary>
+    public bool IsWarmPalette => _paletteService.Current == OmniXPalette.Warm;
+
+    public bool IsBluePalette => _paletteService.Current == OmniXPalette.Blue;
+
+    public bool IsMonoPalette => _paletteService.Current == OmniXPalette.Mono;
 
     /// <summary>
     ///     二开：交互音效开关。简易版会自动静音（UiSoundService 里判断），
@@ -152,10 +160,11 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         SelectedGameService selectedGameService, ModUpdateAvailableChecker modUpdateAvailableChecker,
         LifeCycleService lifeCycleService, INavigationService navigationService,
         ModArchiveRepository modArchiveRepository, ThemeStyleService themeStyleService,
-        UiSoundService uiSoundService)
+        UiSoundService uiSoundService, PaletteService paletteService)
     {
         _uiSoundService = uiSoundService;
         _themeStyleService = themeStyleService;
+        _paletteService = paletteService;
 
         // 音效开关改动后，让绑定把 ToggleSwitch 拉回一致状态
         _uiSoundService.EnabledChanged += (_, _) => OnPropertyChanged(nameof(SoundEnabled));
@@ -306,6 +315,38 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
         _notificationManager.ShowNotification("界面风格已切换",
             style == OmniXThemeStyle.Standard ? "标准版：流动光斑、悬停抬起、按压反馈" : "简易版：静态玻璃，不带动画",
+            TimeSpan.FromSeconds(5));
+    }
+
+    /// <summary>
+    ///     二开：切配色。改的是已经解析出来的画刷实例，不用重启，整界面立刻换色。
+    /// </summary>
+    [RelayCommand]
+    private async Task SwitchPaletteAsync(string? param)
+    {
+        var palette = param switch
+        {
+            nameof(OmniXPalette.Blue) => OmniXPalette.Blue,
+            nameof(OmniXPalette.Mono) => OmniXPalette.Mono,
+            _ => OmniXPalette.Warm
+        };
+
+        await _paletteService.SetAsync(palette);
+
+        OnPropertyChanged(nameof(IsWarmPalette));
+        OnPropertyChanged(nameof(IsBluePalette));
+        OnPropertyChanged(nameof(IsMonoPalette));
+
+        // 换配色也响一声，和点按钮的手感保持一致
+        _uiSoundService.PlayTap();
+
+        _notificationManager.ShowNotification("配色已切换",
+            palette switch
+            {
+                OmniXPalette.Blue => "冷调蓝：冷白底 + 蓝色主色",
+                OmniXPalette.Mono => "深黑白：近黑底 + 白色主色，不跟随明暗模式",
+                _ => "暖白珊瑚：1.0 版那套"
+            },
             TimeSpan.FromSeconds(5));
     }
 

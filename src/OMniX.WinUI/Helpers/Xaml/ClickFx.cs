@@ -23,12 +23,13 @@ public sealed class ClickFx
     // 参考网页是 16 颗。点击是离散动作，不像移动那样持续触发，多一点没关系
     private const int ParticleCount = 16;
 
+    // 文档给的四色：主色珊瑚红 / 淡粉 / 浅蓝 / 白
     private static readonly Color[] ParticleColors =
     [
-        Color.FromArgb(0xFF, 0xFF, 0x9E, 0xC7),   // 粉
-        Color.FromArgb(0xFF, 0xB5, 0x8B, 0xFF),   // 紫
-        Color.FromArgb(0xFF, 0x8C, 0xCB, 0xFF),   // 蓝
-        Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF)    // 白
+        Color.FromArgb(0xFF, 0xFF, 0x6B, 0x8A),
+        Color.FromArgb(0xFF, 0xFF, 0xB3, 0xD1),
+        Color.FromArgb(0xFF, 0x7E, 0xC8, 0xFF),
+        Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF)
     ];
 
     private readonly Panel _layer;
@@ -63,8 +64,9 @@ public sealed class ClickFx
         var count = 1 + _random.Next(2);
 
         for (var i = 0; i < count; i++)
-            SpawnParticle(position, spread: 24, seconds: 0.5, minSize: 3, maxSize: 8,
-                fromOpacity: 0.55, drift: -6);
+            // 文档：4-12px、800ms、透明度 0.8
+            SpawnParticle(position, spread: 24, seconds: 0.8, minSize: 4, maxSize: 12,
+                fromOpacity: 0.8, drift: -6);
     }
 
     /// <summary>鼠标刚移到交互控件上，往四周散一小撮</summary>
@@ -123,7 +125,7 @@ public sealed class ClickFx
     ///     一颗往外飞的小圆点。spread / seconds / drift 这几个参数是为了
     ///     让点击、拖尾、悬停三种场合共用同一套画法，只是规模和时长不同。
     /// </summary>
-    private void SpawnParticle(Point position, double spread = 80, double seconds = 0.9,
+    private void SpawnParticle(Point position, double spread = 120, double seconds = 0.9,
         double minSize = 6, double maxSize = 20, double fromOpacity = 1.0, double drift = -25)
     {
         var size = minSize + _random.NextDouble() * (maxSize - minSize);
