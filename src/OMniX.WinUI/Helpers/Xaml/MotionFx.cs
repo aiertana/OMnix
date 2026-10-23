@@ -97,6 +97,11 @@ public static class MotionFx
             if (IsCardLike(child) && !ShadowFx.GetAttach(child))
                 ShadowFx.SetAttach(child, true);
 
+            // hover 时顶上那条 2px 渐变条，同样只给卡片。
+            // 小尺寸的圆角 Border（图标底、小徽章）不要，挂上去反而脏
+            if (IsCardLike(child) && IsBeamSized(child) && !CardBeamFx.GetAttach(child))
+                CardBeamFx.SetAttach(child, true);
+
             ScanTree(child);
         }
     }
@@ -148,7 +153,7 @@ public static class MotionFx
 
     // 拖尾 45ms 一次（参考网页是 25ms 配 2-3 颗，实测稳态粒子太多，放慢一档）；
     // 悬停 300ms 一次，鼠标划过一长串控件时不会每个都炸一下
-    private const long TrailIntervalMs = 45;
+    private const long TrailIntervalMs = 25;
     private const long HoverIntervalMs = 300;
 
     private static long _lastTrail;
@@ -331,4 +336,13 @@ public static class MotionFx
     /// <summary>圆角够大的 Border 按卡片算，属于猜的，所以限制层数</summary>
     private static bool IsCardLike(DependencyObject node) =>
         node is Border { CornerRadius.TopLeft: >= 12 };
+
+    /// <summary>
+    ///     够大才配得上顶部那条渐变条。还没量过（ActualWidth 为 0）的先放过，
+    ///     下一次扫描还会再来。
+    /// </summary>
+    private static bool IsBeamSized(DependencyObject node) =>
+        node is not FrameworkElement element
+        || element.ActualWidth <= 0
+        || (element.ActualWidth >= 110 && element.ActualHeight >= 60);
 }

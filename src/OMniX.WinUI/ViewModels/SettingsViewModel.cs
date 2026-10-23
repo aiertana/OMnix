@@ -344,7 +344,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             palette switch
             {
                 OmniXPalette.Blue => "冷调蓝：冷白底 + 蓝色主色",
-                OmniXPalette.Mono => "深黑白：近黑底 + 白色主色，不跟随明暗模式",
+                OmniXPalette.Mono => "深黑白：近黑底 + 红色主色，不跟随明暗模式",
                 _ => "暖白珊瑚：1.0 版那套"
             },
             TimeSpan.FromSeconds(5));

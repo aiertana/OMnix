@@ -138,6 +138,31 @@ public sealed class PaletteService
 
         if (FindResource("OmniXPageBackgroundBrush") is LinearGradientBrush page)
             SetStops(page, gradient);
+
+        // 启动按钮的主色渐变（AccentPrimary -> AccentLight），跟着配色一起换
+        if (colors.TryGetValue("OmniXAccentColor", out var accent)
+            && FindResource("OmniXAccentGradientBrush") is LinearGradientBrush accentGradient)
+        {
+            accentGradient.GradientStops[0].Color = ToColor(accent);
+
+            if (colors.TryGetValue("OmniXAccentStrongColor", out var strong) && accentGradient.GradientStops.Count > 1)
+                accentGradient.GradientStops[1].Color = ToColor(strong);
+        }
+
+        // 卡片顶部那条渐变条：AccentPrimary -> PinkAccent -> BlueAccent。
+        // 两端那两个 stop 是透明的（做出淡出的效果），保持不动
+        if (FindResource("OmniXCardBeamBrush") is LinearGradientBrush beam
+            && beam.GradientStops.Count >= 4)
+        {
+            if (colors.TryGetValue("OmniXAccentColor", out var primary))
+                beam.GradientStops[1].Color = ToColor(primary);
+
+            if (colors.TryGetValue("OmniXAuxPinkColor", out var pink))
+                beam.GradientStops[2].Color = ToColor(pink);
+
+            if (colors.TryGetValue("OmniXAuxBlueColor", out var blue))
+                beam.GradientStops[3].Color = ToColor(blue);
+        }
     }
 
     private static void SetStops(LinearGradientBrush brush, string[] gradient)
@@ -251,9 +276,9 @@ public sealed class PaletteService
         ["OmniXAccentColor"] = "#FFE84C6D",
         ["OmniXAccentStrongColor"] = "#FFFF8AA0",
         // --accent-bg rgba(232,76,109,.06) / strong .12
-        ["OmniXAccentSoftColor"] = "#0FE84C6D",
-        ["OmniXAccentSoftHoverColor"] = "#1FE84C6D",
-        ["OmniXAccentSoftPressedColor"] = "#2EE84C6D",
+        ["OmniXAccentSoftColor"] = "#14E84C6D",
+        ["OmniXAccentSoftHoverColor"] = "#26E84C6D",
+        ["OmniXAccentSoftPressedColor"] = "#33E84C6D",
         // --pink #ffb3d1 / --purple #b58bff / --blue #7ec8ff
         ["OmniXAuxPinkColor"] = "#FFFFB3D1",
         ["OmniXAuxPurpleColor"] = "#FFB58BFF",
@@ -270,7 +295,7 @@ public sealed class PaletteService
         ["OmniXHeroBackgroundColor"] = "#FFFDF9F8",
         ["OmniXNavItemPointerOverColor"] = "#FFF7F1F0",
         ["OmniXNavItemPressedColor"] = "#FFEFE7E5",
-        ["OmniXNavItemSelectedColor"] = "#1AE84C6D",
+        ["OmniXNavItemSelectedColor"] = "#14E84C6D",
         ["OmniXNavItemSelectedPointerOverColor"] = "#26E84C6D",
         ["OmniXNavItemSelectedPressedColor"] = "#33E84C6D",
         ["OmniXNavPaneBackgroundColor"] = "#FFFFFFFF",
@@ -450,13 +475,12 @@ public sealed class PaletteService
 
     private static readonly Dictionary<string, string> MonoColors = new()
     {
-        // --accent #ffffff / --accent-light #e0e0e5
-        ["OmniXAccentColor"] = "#FFFFFFFF",
-        ["OmniXAccentStrongColor"] = "#FFE0E0E5",
-        // --accent-bg rgba(255,255,255,.06) / strong .12
-        ["OmniXAccentSoftColor"] = "#0FFFFFFF",
-        ["OmniXAccentSoftHoverColor"] = "#1FFFFFFF",
-        ["OmniXAccentSoftPressedColor"] = "#2AFFFFFF",
+        // 执行指令的配色3：AccentPrimary #FFE63946（红）
+        ["OmniXAccentColor"] = "#FFE63946",
+        ["OmniXAccentStrongColor"] = "#FFEF6B77",
+        ["OmniXAccentSoftColor"] = "#1AE63946",
+        ["OmniXAccentSoftHoverColor"] = "#26E63946",
+        ["OmniXAccentSoftPressedColor"] = "#33E63946",
         ["OmniXAuxPinkColor"] = "#FFFFB3D1",
         ["OmniXAuxPurpleColor"] = "#FFB58BFF",
         ["OmniXAuxBlueColor"] = "#FF7EC8FF",
@@ -472,9 +496,9 @@ public sealed class PaletteService
         ["OmniXHeroBackgroundColor"] = "#FF161618",
         ["OmniXNavItemPointerOverColor"] = "#14FFFFFF",
         ["OmniXNavItemPressedColor"] = "#1FFFFFFF",
-        ["OmniXNavItemSelectedColor"] = "#1FFFFFFF",
-        ["OmniXNavItemSelectedPointerOverColor"] = "#2AFFFFFF",
-        ["OmniXNavItemSelectedPressedColor"] = "#35FFFFFF",
+        ["OmniXNavItemSelectedColor"] = "#1AE63946",
+        ["OmniXNavItemSelectedPointerOverColor"] = "#26E63946",
+        ["OmniXNavItemSelectedPressedColor"] = "#33E63946",
         ["OmniXNavPaneBackgroundColor"] = "#FF161618",
         ["OmniXPageBackgroundColor"] = "#FF0F0F11",
         ["OmniXSidebarBackgroundColor"] = "#FF161618",
@@ -483,20 +507,20 @@ public sealed class PaletteService
         ["OmniXTextSecondaryColor"] = "#FF8A8A92",
         ["OmniXDialogBackgroundColor"] = "#FF1C1C20",
         ["OmniXDialogBorderColor"] = "#FF2A2A30",
-        ["SystemAccentColor"] = "#FFFFFFFF",
-        ["SystemAccentColorLight1"] = "#FFFFFFFF",
-        ["SystemAccentColorLight2"] = "#FFFFFFFF",
-        ["SystemAccentColorLight3"] = "#FFFFFFFF",
-        ["SystemAccentColorDark1"] = "#FFE0E0E5",
-        ["SystemAccentColorDark2"] = "#FFC0C0C8",
-        ["SystemAccentColorDark3"] = "#FFA0A0A8",
-        // 白底按钮，字用近黑，保证对比度
-        ["AccentFillColorDefaultBrush"] = "#FFFFFFFF",
-        ["AccentFillColorSecondaryBrush"] = "#E6FFFFFF",
-        ["AccentFillColorTertiaryBrush"] = "#CCFFFFFF",
-        ["AccentFillColorDisabledBrush"] = "#33FFFFFF",
-        ["AccentTextFillColorPrimaryBrush"] = "#FFFFFFFF",
-        ["AccentTextFillColorSecondaryBrush"] = "#FFFFFFFF",
-        ["AccentTextFillColorTertiaryBrush"] = "#FFFFFFFF"
+        ["SystemAccentColor"] = "#FFE63946",
+        ["SystemAccentColorLight1"] = "#FFEF6B77",
+        ["SystemAccentColorLight2"] = "#FFF49AA4",
+        ["SystemAccentColorLight3"] = "#FFF9C5CB",
+        ["SystemAccentColorDark1"] = "#FFC42B38",
+        ["SystemAccentColorDark2"] = "#FF9E202B",
+        ["SystemAccentColorDark3"] = "#FF7A1821",
+        ["AccentFillColorDefaultBrush"] = "#FFE63946",
+        ["AccentFillColorSecondaryBrush"] = "#E6E63946",
+        ["AccentFillColorTertiaryBrush"] = "#CCE63946",
+        ["AccentFillColorDisabledBrush"] = "#33E63946",
+        // 近黑底上红色文字要亮一点，纯 #E63946 会糊
+        ["AccentTextFillColorPrimaryBrush"] = "#FFFF6B77",
+        ["AccentTextFillColorSecondaryBrush"] = "#FFFF6B77",
+        ["AccentTextFillColorTertiaryBrush"] = "#FFFF6B77"
     };
 }

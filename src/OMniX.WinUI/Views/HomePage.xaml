@@ -10,7 +10,8 @@
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Padding="34,26,34,40">
+        <!--  执行指令 三：主内容区左右 padding 32、上下 24  -->
+        <Grid Padding="32,24">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -21,7 +22,8 @@
             </Grid.RowDefinitions>
 
             <!--  ==================== Hero：当前游戏 ====================  -->
-            <Grid Grid.Row="0" Height="186" ToolTipService.ToolTip="右键可以换背景图">
+            <!--  执行指令 3：Hero 高 180、圆角 16（圆角不许超过 20）  -->
+            <Grid Grid.Row="0" Height="180" ToolTipService.ToolTip="右键可以换背景图">
                 <Grid.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyoutItem Click="ChangeHeroBackground_OnClick" Text="更换背景图…">
@@ -44,17 +46,17 @@
                 </Grid.ContextFlyout>
 
                 <!--  底色：图还没加载出来时兜底  -->
-                <Border Background="{ThemeResource OmniXHeroGradientBrush}" CornerRadius="22" />
+                <Border Background="{ThemeResource OmniXHeroGradientBrush}" CornerRadius="16" />
 
                 <!--  背景图  -->
-                <Border CornerRadius="22">
+                <Border CornerRadius="16">
                     <Border.Background>
                         <ImageBrush ImageSource="{x:Bind ViewModel.HeroBackgroundImage, Mode=OneWay}" Stretch="UniformToFill" />
                     </Border.Background>
                 </Border>
 
                 <!--  左边压暗，白字才看得清  -->
-                <Border Background="{ThemeResource OmniXHeroScrimBrush}" CornerRadius="22" />
+                <Border Background="{ThemeResource OmniXHeroScrimBrush}" CornerRadius="16" />
 
                 <!--  装饰：半透明圆  -->
                 <Ellipse
@@ -213,7 +215,8 @@
                     Text="点开就用，常用的都在这里" />
             </StackPanel>
 
-            <Grid Grid.Row="3" ColumnSpacing="18">
+            <!--  执行指令 三：卡片间距 16  -->
+            <Grid Grid.Row="3" ColumnSpacing="16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -300,18 +303,7 @@
                                 Style="{ThemeResource OmniXGhostButtonStyle}" />
                         </StackPanel>
 
-                        <!--  二开：顶部流光条，参考稿的 card::after  -->
-                        <Rectangle
-                            Grid.RowSpan="2"
-                            Height="2"
-                            Margin="14,0,14,0"
-                            VerticalAlignment="Top"
-                            Fill="{ThemeResource OmniXCardBeamBrush}"
-                            IsHitTestVisible="False"
-                            Loaded="CardBeam_Loaded"
-                            Opacity="0.85"
-                            RadiusX="1"
-                            RadiusY="1" />
+                        <!--  顶部渐变条改由 CardBeamFx 统一挂，hover 时才出现  -->
                     </Grid>
                 </Border>
 
@@ -396,18 +388,7 @@
                                 Style="{ThemeResource OmniXGhostButtonStyle}" />
                         </StackPanel>
 
-                        <!--  二开：顶部流光条  -->
-                        <Rectangle
-                            Grid.RowSpan="2"
-                            Height="2"
-                            Margin="14,0,14,0"
-                            VerticalAlignment="Top"
-                            Fill="{ThemeResource OmniXCardBeamBrush}"
-                            IsHitTestVisible="False"
-                            Loaded="CardBeam_Loaded"
-                            Opacity="0.85"
-                            RadiusX="1"
-                            RadiusY="1" />
+                        <!--  顶部渐变条改由 CardBeamFx 统一挂，hover 时才出现  -->
                     </Grid>
                 </Border>
             </Grid>

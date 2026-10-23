@@ -23,10 +23,10 @@ public sealed class ClickFx
     // 参考网页是 16 颗。点击是离散动作，不像移动那样持续触发，多一点没关系
     private const int ParticleCount = 16;
 
-    // 文档给的四色：主色珊瑚红 / 淡粉 / 浅蓝 / 白
+    // 执行指令的四色：主色 #E84C6D / 淡粉 / 浅蓝 / 白
     private static readonly Color[] ParticleColors =
     [
-        Color.FromArgb(0xFF, 0xFF, 0x6B, 0x8A),
+        Color.FromArgb(0xFF, 0xE8, 0x4C, 0x6D),
         Color.FromArgb(0xFF, 0xFF, 0xB3, 0xD1),
         Color.FromArgb(0xFF, 0x7E, 0xC8, 0xFF),
         Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF)
@@ -61,7 +61,8 @@ public sealed class ClickFx
         if (ThemeStyleService.Instance is { MotionEnabled: false })
             return;
 
-        var count = 1 + _random.Next(2);
+        // 执行指令：每次 2-3 个
+        var count = 2 + _random.Next(2);
 
         for (var i = 0; i < count; i++)
             // 文档：4-12px、800ms、透明度 0.8
@@ -80,10 +81,16 @@ public sealed class ClickFx
                 fromOpacity: 0.8, drift: -10);
     }
 
-    /// <summary>点击处先炸开一团粉色雾</summary>
+    /// <summary>
+    ///     点击处先炸开一团雾。执行指令 4：从点击位置扩散 160px 的圆形波纹，
+    ///     AccentPrimary 20% 不透明度，500ms 消失 —— 所以这里取当前主色再套透明度，
+    ///     配色换了波纹也跟着换。
+    /// </summary>
     private void SpawnRipple(Point position)
     {
         const double size = 160;
+
+        var accent = RippleColor();
 
         var ripple = new Microsoft.UI.Xaml.Shapes.Ellipse
         {
@@ -97,10 +104,10 @@ public sealed class ClickFx
             {
                 GradientStops =
                 {
-                    // rgba(255,158,199,.28) → rgba(181,139,255,.14) → 透明
-                    new GradientStop { Color = Color.FromArgb(0x47, 0xFF, 0x9E, 0xC7), Offset = 0 },
-                    new GradientStop { Color = Color.FromArgb(0x24, 0xB5, 0x8B, 0xFF), Offset = 0.45 },
-                    new GradientStop { Color = Color.FromArgb(0x00, 0xFF, 0xFF, 0xFF), Offset = 0.7 }
+                    // 20% → 10% → 透明
+                    new GradientStop { Color = accent, Offset = 0 },
+                    new GradientStop { Color = Color.FromArgb(0x1A, accent.R, accent.G, accent.B), Offset = 0.45 },
+                    new GradientStop { Color = Color.FromArgb(0x00, accent.R, accent.G, accent.B), Offset = 0.7 }
                 }
             }
         };
@@ -119,6 +126,19 @@ public sealed class ClickFx
 
         storyboard.Completed += (_, _) => _layer.Children.Remove(ripple);
         storyboard.Begin();
+    }
+
+    /// <summary>当前主色，套上 20% 不透明度；取不到就用配色1 的珊瑚红</summary>
+    private static Color RippleColor()
+    {
+        var color = Color.FromArgb(0xFF, 0xE8, 0x4C, 0x6D);
+
+        // OmniXAccentColor 在 ThemeDictionaries 里，顶层索引取不到，走引用它的画刷
+        if (Application.Current.Resources.TryGetValue("OmniXAccentBrush", out var value)
+            && value is SolidColorBrush brush)
+            color = brush.Color;
+
+        return Color.FromArgb(0x33, color.R, color.G, color.B);
     }
 
     /// <summary>

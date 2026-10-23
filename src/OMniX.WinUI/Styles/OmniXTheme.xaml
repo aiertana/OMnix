@@ -189,10 +189,12 @@
 
 
     <!--  ===== 通用渐变（红） =====  -->
-    <!--  二开：渐变统一到 logo 的珊瑚红，去掉原来的橙味  -->
+    <!--  执行指令 4.1：主按钮/启动按钮用 AccentPrimary -> AccentLight 渐变。
+          GradientStop 里不能写 ThemeResource，这里给默认值（配色1），
+          PaletteService 启动和切配色时改成当前配色的主色。  -->
     <LinearGradientBrush x:Key="OmniXAccentGradientBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Offset="0" Color="#FFFF7A84" />
-        <GradientStop Offset="1" Color="#FFC9172A" />
+        <GradientStop Offset="0" Color="#FFE84C6D" />
+        <GradientStop Offset="1" Color="#FFFF8AA0" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="OmniXWarmGradientBrush" StartPoint="0,0" EndPoint="1,1">
@@ -251,9 +253,10 @@
     <CornerRadius x:Key="OverlayCornerRadius">12</CornerRadius>
 
     <!--  ========== 文本样式 ==========  -->
+    <!--  执行指令 三：页面标题 26px / 700，正文 14，次要 13，弱化 11  -->
     <Style x:Key="OmniXPageTitleStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="26" />
-        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXTextPrimaryBrush}" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
@@ -265,18 +268,18 @@
     </Style>
 
     <Style x:Key="OmniXBodyStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXTextPrimaryBrush}" />
     </Style>
 
     <Style x:Key="OmniXCaptionStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXTextSecondaryBrush}" />
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
     <Style x:Key="OmniXStrongCaptionStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="11" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXAccentStrongBrush}" />
     </Style>
@@ -343,14 +346,14 @@
 
     <!--  ========== 按钮：主按钮（实色，不再用渐变） ==========  -->
     <Style x:Key="OmniXAccentButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{ThemeResource OmniXAccentBrush}" />
+        <Setter Property="Background" Value="{ThemeResource OmniXAccentGradientBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="{ThemeResource OmniXControlCornerRadius}" />
-        <Setter Property="Padding" Value="18,8" />
+        <Setter Property="Padding" Value="16,8" />
         <Setter Property="MinHeight" Value="36" />
         <Setter Property="FontSize" Value="13" />
-        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
@@ -605,11 +608,13 @@
     </Style>
 
     <!--  ========== 卡片 ==========  -->
+    <!--  执行指令 2：背景 BgCard、圆角 16、边框 1px、内边距 20  -->
     <Style x:Key="OmniXCardStyle" TargetType="Border">
         <Setter Property="Background" Value="{ThemeResource OmniXCardBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{ThemeResource OmniXGlassEdgeBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="{ThemeResource OmniXCardCornerRadius}" />
+        <Setter Property="Padding" Value="20" />
     </Style>
 
     <Style
@@ -706,7 +711,7 @@
         <Setter Property="BorderBrush" Value="{ThemeResource OmniXGlassEdgeBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="{ThemeResource OmniXCardCornerRadius}" />
-        <Setter Property="Padding" Value="16" />
+        <Setter Property="Padding" Value="20" />
     </Style>
 
     <!--
@@ -731,18 +736,19 @@
     </Style>
 
     <Style x:Key="OmniXSectionSubtitleStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="11" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXTextSecondaryBrush}" />
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
+    <!--  执行指令 4：主按钮 AccentPrimary 底、白字、圆角 12、padding 16,8  -->
     <Style x:Key="OmniXHeroButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{ThemeResource OmniXAccentBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXPureWhiteBrush}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="CornerRadius" Value="16" />
-        <Setter Property="Padding" Value="18,9" />
-        <Setter Property="FontSize" Value="13.5" />
+        <Setter Property="CornerRadius" Value="{ThemeResource OmniXControlCornerRadius}" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
 
