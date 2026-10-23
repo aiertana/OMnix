@@ -38,6 +38,17 @@ public static class MotionFx
 
     private static SakuraFx? _sakura;
     private static Grid? _sakuraHost;
+
+    private static FrameworkElement? _companionRoot;
+    private static Panel? _companionOverlay;
+    private static CompanionFx? _companion;
+    private static bool _companionAttached;
+
+    private static NavigationView? _nav;
+    private static Panel? _navOverlay;
+    private static NavIndicatorFx? _navIndicator;
+    private static bool _navIndicatorAttached;
+
     private static bool _themeHooked;
 
     private static void OnScanChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -117,7 +128,58 @@ public static class MotionFx
         root.AddHandler(UIElement.PointerPressedEvent,
             new PointerEventHandler(OnPointerPressed), true);
 
+        // 移动拖尾和悬停粒子，两个都做了节流，移动那个尤其要控住频率
+        root.AddHandler(UIElement.PointerMovedEvent,
+            new PointerEventHandler(OnTrailMoved), true);
+
+        root.AddHandler(UIElement.PointerEnteredEvent,
+            new PointerEventHandler(OnHoverEntered), true);
+
         ScanTree(root);
+    }
+
+    // 拖尾 45ms 一次（参考网页是 25ms 配 2-3 颗，实测稳态粒子太多，放慢一档）；
+    // 悬停 300ms 一次，鼠标划过一长串控件时不会每个都炸一下
+    private const long TrailIntervalMs = 45;
+    private const long HoverIntervalMs = 300;
+
+    private static long _lastTrail;
+    private static long _lastHover;
+
+    private static void OnTrailMoved(object sender, PointerRoutedEventArgs e)
+    {
+        if (_overlay is null || _clickFx is null)
+            return;
+
+        if (e.Pointer.PointerDeviceType is not Microsoft.UI.Input.PointerDeviceType.Mouse)
+            return;
+
+        var now = Environment.TickCount64;
+        if (now - _lastTrail < TrailIntervalMs)
+            return;
+
+        _lastTrail = now;
+        _clickFx.Trail(e.GetCurrentPoint(_overlay).Position);
+    }
+
+    private static void OnHoverEntered(object sender, PointerRoutedEventArgs e)
+    {
+        if (_overlay is null || _clickFx is null)
+            return;
+
+        if (e.Pointer.PointerDeviceType is not Microsoft.UI.Input.PointerDeviceType.Mouse)
+            return;
+
+        // 只对真正的交互控件出粒子，划过文字和空白不应该有反应
+        if (e.OriginalSource is not DependencyObject node || !IsInteractiveControl(node))
+            return;
+
+        var now = Environment.TickCount64;
+        if (now - _lastHover < HoverIntervalMs)
+            return;
+
+        _lastHover = now;
+        _clickFx.Hover(e.GetCurrentPoint(_overlay).Position);
     }
 
     /// <summary>
@@ -154,7 +216,71 @@ public static class MotionFx
             _sakura.Attach(_sakuraHost);
     }
 
-    private static void OnThemeStyleChanged(object? sender, OmniXThemeStyle style) => ApplySakura();
+    /// <summary>
+    ///     跟着鼠标跑的看板娘。和樱花共用同一个风格开关，
+    ///     切到简易版会立刻从界面上摘掉。
+    /// </summary>
+    public static void AttachCompanion(FrameworkElement root, Panel overlay)
+    {
+        _companionRoot = root;
+        _companionOverlay = overlay;
+        _companion ??= new CompanionFx(overlay);
+
+        HookThemeStyle();
+        ApplyCompanion();
+    }
+
+    private static void ApplyCompanion()
+    {
+        if (_companionRoot is null || _companion is null)
+            return;
+
+        if (ThemeStyleService.Instance is { MotionEnabled: false })
+        {
+            _companion.Detach();
+            _companionAttached = false;
+        }
+        else if (!_companionAttached)
+        {
+            _companion.Attach(_companionRoot);
+            _companionAttached = true;
+        }
+    }
+
+    /// <summary>侧边栏选中项的滑动指示条，和樱花同一套开关</summary>
+    public static void AttachNavIndicator(NavigationView nav, Panel overlay)
+    {
+        _nav = nav;
+        _navOverlay = overlay;
+        _navIndicator ??= new NavIndicatorFx(overlay);
+
+        HookThemeStyle();
+        ApplyNavIndicator();
+    }
+
+    private static void ApplyNavIndicator()
+    {
+        if (_nav is null || _navIndicator is null)
+            return;
+
+        if (ThemeStyleService.Instance is { MotionEnabled: false })
+        {
+            _navIndicator.Detach();
+            _navIndicatorAttached = false;
+        }
+        else if (!_navIndicatorAttached)
+        {
+            _navIndicator.Attach(_nav);
+            _navIndicatorAttached = true;
+        }
+    }
+
+    private static void OnThemeStyleChanged(object? sender, OmniXThemeStyle style)
+    {
+        ApplySakura();
+        ApplyCompanion();
+        ApplyNavIndicator();
+    }
 
     private static void OnPointerPressed(object sender, PointerRoutedEventArgs e)
     {

@@ -272,6 +272,12 @@ public sealed partial class ShellPage : Page
         // 二开：背景樱花飘落，铺在最底层，跟界面风格同一套开关
         MotionFx.AttachSakura(ShellRoot);
 
+        // 二开：看板娘跟着鼠标跑（默认趴着 / 按下张嘴）
+        MotionFx.AttachCompanion(this, FxLayer);
+
+        // 二开：侧边栏选中项的滑动指示条
+        MotionFx.AttachNavIndicator(NavigationViewControl, FxLayer);
+
         await SyncDlss5ToggleAsync();
     }
 

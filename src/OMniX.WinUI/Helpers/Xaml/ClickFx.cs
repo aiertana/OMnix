@@ -20,6 +20,9 @@ namespace OMniX.WinUI.Helpers.Xaml;
 /// </summary>
 public sealed class ClickFx
 {
+    // 参考网页是 16 颗。点击是离散动作，不像移动那样持续触发，多一点没关系
+    private const int ParticleCount = 16;
+
     private static readonly Color[] ParticleColors =
     [
         Color.FromArgb(0xFF, 0xFF, 0x9E, 0xC7),   // 粉
@@ -44,8 +47,35 @@ public sealed class ClickFx
 
         SpawnRipple(position);
 
-        for (var i = 0; i < 10; i++)
+        for (var i = 0; i < ParticleCount; i++)
             SpawnParticle(position);
+    }
+
+    /// <summary>
+    ///     鼠标移动拖出来的小尾巴。刻意做得比点击粒子少很多：
+    ///     移动是持续触发的，太密会一直在造元素和动画，稳态控制在 20 颗以内。
+    /// </summary>
+    public void Trail(Point position)
+    {
+        if (ThemeStyleService.Instance is { MotionEnabled: false })
+            return;
+
+        var count = 1 + _random.Next(2);
+
+        for (var i = 0; i < count; i++)
+            SpawnParticle(position, spread: 24, seconds: 0.5, minSize: 3, maxSize: 8,
+                fromOpacity: 0.55, drift: -6);
+    }
+
+    /// <summary>鼠标刚移到交互控件上，往四周散一小撮</summary>
+    public void Hover(Point position)
+    {
+        if (ThemeStyleService.Instance is { MotionEnabled: false })
+            return;
+
+        for (var i = 0; i < 10; i++)
+            SpawnParticle(position, spread: 80, seconds: 0.7, minSize: 4, maxSize: 11,
+                fromOpacity: 0.8, drift: -10);
     }
 
     /// <summary>点击处先炸开一团粉色雾</summary>
@@ -89,10 +119,14 @@ public sealed class ClickFx
         storyboard.Begin();
     }
 
-    /// <summary>一颗往外飞的小圆点</summary>
-    private void SpawnParticle(Point position)
+    /// <summary>
+    ///     一颗往外飞的小圆点。spread / seconds / drift 这几个参数是为了
+    ///     让点击、拖尾、悬停三种场合共用同一套画法，只是规模和时长不同。
+    /// </summary>
+    private void SpawnParticle(Point position, double spread = 80, double seconds = 0.9,
+        double minSize = 6, double maxSize = 20, double fromOpacity = 1.0, double drift = -25)
     {
-        var size = 6 + _random.NextDouble() * 14;
+        var size = minSize + _random.NextDouble() * (maxSize - minSize);
         var color = ParticleColors[_random.Next(ParticleColors.Length)];
 
         var dot = new Microsoft.UI.Xaml.Shapes.Ellipse
@@ -109,17 +143,17 @@ public sealed class ClickFx
         _layer.Children.Add(dot);
 
         // 参考稿：tx = (±40)，ty = (±40) - 25，整体略偏上
-        var tx = (_random.NextDouble() - 0.5) * 80;
-        var ty = (_random.NextDouble() - 0.5) * 80 - 25;
+        var tx = (_random.NextDouble() - 0.5) * spread;
+        var ty = (_random.NextDouble() - 0.5) * spread + drift;
 
         var transform = (CompositeTransform)dot.RenderTransform;
         var storyboard = new Storyboard();
 
-        storyboard.Children.Add(Build(transform, nameof(CompositeTransform.TranslateX), 0, tx, 0.9));
-        storyboard.Children.Add(Build(transform, nameof(CompositeTransform.TranslateY), 0, ty, 0.9));
-        storyboard.Children.Add(Build(transform, nameof(CompositeTransform.ScaleX), 1, 0.25, 0.9));
-        storyboard.Children.Add(Build(transform, nameof(CompositeTransform.ScaleY), 1, 0.25, 0.9));
-        storyboard.Children.Add(Build(dot, "Opacity", 1.0, 0.0, 0.9));
+        storyboard.Children.Add(Build(transform, nameof(CompositeTransform.TranslateX), 0, tx, seconds));
+        storyboard.Children.Add(Build(transform, nameof(CompositeTransform.TranslateY), 0, ty, seconds));
+        storyboard.Children.Add(Build(transform, nameof(CompositeTransform.ScaleX), 1, 0.25, seconds));
+        storyboard.Children.Add(Build(transform, nameof(CompositeTransform.ScaleY), 1, 0.25, seconds));
+        storyboard.Children.Add(Build(dot, "Opacity", fromOpacity, 0.0, seconds));
 
         storyboard.Completed += (_, _) => _layer.Children.Remove(dot);
         storyboard.Begin();
