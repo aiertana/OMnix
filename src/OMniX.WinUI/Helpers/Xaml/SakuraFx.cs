@@ -46,13 +46,12 @@ public sealed class SakuraFx
     private const float StartOpacity = 0.9f;
     private const float EndOpacity = 0.45f;
 
-    // 风向：从右上角那一侧斜着往右下角飘。
-    // 起点集中在偏右的位置，下落过程中再匀速往右推一段，
-    // 三个值都是相对层宽度的比例
-    private const double WindStartMin = 0.32;
-    private const double WindStartMax = 1.12;
-    private const double WindDriftMin = 0.12;
-    private const double WindDriftMax = 0.30;
+    // 风向：右上往左下斜着飘，起点铺满整页宽度，所以整块页面都有花瓣。
+    // 下落过程中匀速往左推一段（负值就是往左），三个值都是相对层宽度的比例
+    private const double WindStartMin = 0.05;
+    private const double WindStartMax = 1.10;
+    private const double WindDriftMin = -0.32;
+    private const double WindDriftMax = -0.10;
 
     // 花瓣从屏幕上边界之外一点点出现，落到下边界之外一点点再重置
     private const double EdgeMargin = 20;
