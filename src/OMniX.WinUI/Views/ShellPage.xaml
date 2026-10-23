@@ -22,6 +22,7 @@
     </Page.Resources>
 
     <Grid
+        x:Name="ShellRoot"
         fx:MotionFx.Scan="True"
         Background="{ThemeResource OmniXPageBackgroundBrush}">
         <Grid.RowDefinitions>

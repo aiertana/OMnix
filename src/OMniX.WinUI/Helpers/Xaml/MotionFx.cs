@@ -36,6 +36,10 @@ public static class MotionFx
     private static Panel? _overlay;
     private static ClickFx? _clickFx;
 
+    private static SakuraFx? _sakura;
+    private static Grid? _sakuraHost;
+    private static bool _sakuraHooked;
+
     private static void OnScanChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not FrameworkElement element)
@@ -144,6 +148,37 @@ public static class MotionFx
 
         ScanTree(root);
     }
+
+    /// <summary>
+    ///     背景樱花花瓣。和悬停、点击那两套共用同一个开关：
+    ///     标准版在宿主 Grid 最底层铺一层花瓣，切到简易版立刻整层移除。
+    /// </summary>
+    public static void AttachSakura(Grid host)
+    {
+        _sakuraHost = host;
+        _sakura ??= new SakuraFx();
+
+        if (!_sakuraHooked && ThemeStyleService.Instance is not null)
+        {
+            ThemeStyleService.Instance.Changed += OnThemeStyleChanged;
+            _sakuraHooked = true;
+        }
+
+        ApplySakura();
+    }
+
+    private static void ApplySakura()
+    {
+        if (_sakuraHost is null || _sakura is null)
+            return;
+
+        if (ThemeStyleService.Instance is { MotionEnabled: false })
+            _sakura.Detach();
+        else
+            _sakura.Attach(_sakuraHost);
+    }
+
+    private static void OnThemeStyleChanged(object? sender, OmniXThemeStyle style) => ApplySakura();
 
     private static void OnPointerPressed(object sender, PointerRoutedEventArgs e)
     {

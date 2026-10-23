@@ -269,6 +269,9 @@ public sealed partial class ShellPage : Page
         // 二开：点按音效 + 粒子挂在根上，全界面统一收 PointerPressed
         MotionFx.AttachClickFx(this, FxLayer);
 
+        // 二开：背景樱花飘落，铺在最底层，跟界面风格同一套开关
+        MotionFx.AttachSakura(ShellRoot);
+
         await SyncDlss5ToggleAsync();
     }
 
