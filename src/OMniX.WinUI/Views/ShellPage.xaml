@@ -6,6 +6,7 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:behaviors="using:OMniX.WinUI.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fx="using:OMniX.WinUI.Helpers.Xaml"
     xmlns:helpers="using:OMniX.WinUI.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -20,7 +21,9 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource OmniXPageBackgroundBrush}">
+    <Grid
+        fx:MotionFx.Scan="True"
+        Background="{ThemeResource OmniXPageBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
             <RowDefinition Height="*" />
@@ -301,6 +304,17 @@
                     TextWrapping="NoWrap" />
             </StackPanel>
         </Grid>
+
+        <!--
+            二开：点击粒子层。铺满整个窗口盖在最上面，
+            IsHitTestVisible=False 所以不挡任何点击，只在上面画飞散的粒子。
+        -->
+        <Canvas
+            x:Name="FxLayer"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Canvas.ZIndex="99"
+            IsHitTestVisible="False" />
     </Grid>
 
 </Page>

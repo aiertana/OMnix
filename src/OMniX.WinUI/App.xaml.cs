@@ -362,6 +362,9 @@ public partial class App : Application
                 // 二开：界面风格（简易版 / 标准版），只切换动效不动配色
                 services.AddSingleton<ThemeStyleService>();
 
+                // 二开：交互音效，跟着界面风格走，简易版静音
+                services.AddSingleton<UiSoundService>();
+
                 // Configuration
                 services.Configure<LocalSettingsOptions>(
                     context.Configuration.GetSection(nameof(LocalSettingsOptions)));
@@ -437,6 +440,7 @@ public partial class App : Application
         Environment.SetEnvironmentVariable("WEBVIEW2_USE_VISUAL_HOSTING_FOR_OWNED_WINDOWS", "1");
         await GetService<ILanguageLocalizer>().InitializeAsync();
         await GetService<ThemeStyleService>().InitializeAsync();
+        await GetService<UiSoundService>().InitializeAsync();
         NotImplemented.NotificationManager = GetService<NotificationManager>();
         base.OnLaunched(args);
         await GetService<IActivationService>().ActivateAsync(args).ConfigureAwait(false);

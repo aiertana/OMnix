@@ -108,11 +108,32 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty] private bool _legacyCharacterDetails;
 
     private readonly ThemeStyleService _themeStyleService;
+    private readonly UiSoundService _uiSoundService;
 
     /// <summary>界面风格：标准版（带动效）/ 简易版（静态玻璃）</summary>
     public bool IsStandardStyle => _themeStyleService.Current == OmniXThemeStyle.Standard;
 
     public bool IsSimpleStyle => !IsStandardStyle;
+
+    /// <summary>
+    ///     二开：交互音效开关。简易版会自动静音（UiSoundService 里判断），
+    ///     这里只管用户自己想不想听。
+    /// </summary>
+    public bool SoundEnabled
+    {
+        get => _uiSoundService.Enabled;
+        set
+        {
+            if (_uiSoundService.Enabled == value)
+                return;
+
+            // 保存完会回调 EnabledChanged，再统一刷新界面
+            _ = _uiSoundService.SetEnabledAsync(value);
+
+            if (value)
+                _uiSoundService.PlayTap();   // 开的时候试听一声
+        }
+    }
 
 
     private static bool _showElevatorStartDialog = true;
@@ -130,9 +151,14 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         IGameService gameService, AutoUpdaterService autoUpdaterService, ILanguageLocalizer localizer,
         SelectedGameService selectedGameService, ModUpdateAvailableChecker modUpdateAvailableChecker,
         LifeCycleService lifeCycleService, INavigationService navigationService,
-        ModArchiveRepository modArchiveRepository, ThemeStyleService themeStyleService)
+        ModArchiveRepository modArchiveRepository, ThemeStyleService themeStyleService,
+        UiSoundService uiSoundService)
     {
+        _uiSoundService = uiSoundService;
         _themeStyleService = themeStyleService;
+
+        // 音效开关改动后，让绑定把 ToggleSwitch 拉回一致状态
+        _uiSoundService.EnabledChanged += (_, _) => OnPropertyChanged(nameof(SoundEnabled));
         _themeSelectorService = themeSelectorService;
         _localSettingsService = localSettingsService;
         ElevatorService = elevatorService;

@@ -3,6 +3,7 @@ using CommunityToolkitWrapper;
 using OMniX.Core.GamesService;
 using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.Helpers;
+using OMniX.WinUI.Helpers.Xaml;
 using OMniX.WinUI.Services;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.ViewModels;
@@ -262,11 +263,81 @@ public sealed partial class ShellPage : Page
 
         ApplyFlowMotion();
 
+        // 二开：切页面时新页面淡入放大（参考稿 panel.active 的 0.38s 过渡）
+        NavigationFrame.Navigated += OnFrameNavigated;
+
+        // 二开：点按音效 + 粒子挂在根上，全界面统一收 PointerPressed
+        MotionFx.AttachClickFx(this, FxLayer);
+
         await SyncDlss5ToggleAsync();
     }
 
     /// <summary>换风格时立刻启停流动光斑</summary>
     private void OnThemeStyleChanged(object? sender, OmniXThemeStyle style) => ApplyFlowMotion();
+
+    /// <summary>
+    ///     二开：页面切换动画。参考稿的 .panel 是 opacity 0→1 配 scale 0.94→1，
+    ///     0.38s 缓出。简易版直接跳过。
+    /// </summary>
+    private void OnFrameNavigated(object sender, Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
+    {
+        if (sender is not Frame frame)
+            return;
+
+        // 新页面是新的一批元素，LayoutUpdated 不一定会再触发，这里补扫一次，
+        // 否则切到别的页面后那些按钮就没有悬停反馈。
+        MotionFx.ScanTree(frame);
+
+        if (ThemeStyleService.Instance is { MotionEnabled: false })
+            return;
+
+        var transform = frame.RenderTransform as ScaleTransform ?? new ScaleTransform();
+        frame.RenderTransformOrigin = new Windows.Foundation.Point(0.5, 0.5);
+        frame.RenderTransform = transform;
+
+        // 明确保底：万一动画没跑完，也要把页面恢复成完全可见
+        void Restore()
+        {
+            frame.Opacity = 1;
+            transform.ScaleX = 1;
+            transform.ScaleY = 1;
+        }
+
+        try
+        {
+            transform.ScaleX = 0.94;
+            transform.ScaleY = 0.94;
+            frame.Opacity = 0;
+
+            var storyboard = new Storyboard();
+
+            foreach (var (target, property, to) in new (DependencyObject, string, double)[]
+                     {
+                         (transform, nameof(ScaleTransform.ScaleX), 1.0),
+                         (transform, nameof(ScaleTransform.ScaleY), 1.0),
+                         (frame, "Opacity", 1.0)
+                     })
+            {
+                var animation = new DoubleAnimation
+                {
+                    To = to,
+                    Duration = new Duration(TimeSpan.FromSeconds(0.38)),
+                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                };
+
+                Storyboard.SetTarget(animation, target);
+                Storyboard.SetTargetProperty(animation, property);
+                storyboard.Children.Add(animation);
+            }
+
+            storyboard.Completed += (_, _) => Restore();
+            storyboard.Begin();
+        }
+        catch
+        {
+            Restore();
+        }
+    }
 
     private void ApplyFlowMotion()
     {

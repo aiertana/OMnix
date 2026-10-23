@@ -191,6 +191,29 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="交互音效" />
+                            <TextBlock
+                                Style="{StaticResource CardDescStyle}"
+                                Text="点击按钮和卡片时播放一声轻响。切到简易版会自动静音"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <ToggleSwitch
+                            Grid.Column="1"
+                            Margin="0,0,4,0"
+                            VerticalAlignment="Center"
+                            IsOn="{x:Bind ViewModel.SoundEnabled, Mode=TwoWay}" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
                             <TextBlock Style="{StaticResource CardTitleStyle}" Text="主题" l:Uids.Uid="Settings_Theme" />
                             <TextBlock Style="{StaticResource CardDescStyle}" Text="界面配色。选「跟随系统」时会随 Windows 的深浅色设置切换" />
                         </StackPanel>
