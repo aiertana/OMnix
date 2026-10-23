@@ -38,7 +38,7 @@ public static class MotionFx
 
     private static SakuraFx? _sakura;
     private static Grid? _sakuraHost;
-    private static bool _sakuraHooked;
+    private static bool _themeHooked;
 
     private static void OnScanChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -72,16 +72,6 @@ public static class MotionFx
         if (ThemeStyleService.Instance is { MotionEnabled: false })
             return;
 
-        var attached = 0;
-        ScanCore(node, ref attached);
-
-#if DEBUG
-        Trace($"scan: attached {attached} new elements");
-#endif
-    }
-
-    private static void ScanCore(DependencyObject node, ref int attached)
-    {
         var count = VisualTreeHelper.GetChildrenCount(node);
 
         for (var i = 0; i < count; i++)
@@ -90,30 +80,11 @@ public static class MotionFx
                 continue;
 
             if (ShouldAttach(child) && !GlassFx.GetAttach(child))
-            {
                 GlassFx.SetAttach(child, true);
-                attached++;
-            }
 
-            ScanCore(child, ref attached);
+            ScanTree(child);
         }
     }
-
-#if DEBUG
-    private static void Trace(string message)
-    {
-        try
-        {
-            var path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "omnix_motion.log");
-            System.IO.File.AppendAllText(path,
-                $"{DateTime.Now:HH:mm:ss.fff} {message}{Environment.NewLine}");
-        }
-        catch
-        {
-            // 诊断用，失败就失败
-        }
-    }
-#endif
 
     /// <summary>
     ///     哪些控件该有手感：
@@ -158,13 +129,18 @@ public static class MotionFx
         _sakuraHost = host;
         _sakura ??= new SakuraFx();
 
-        if (!_sakuraHooked && ThemeStyleService.Instance is not null)
-        {
-            ThemeStyleService.Instance.Changed += OnThemeStyleChanged;
-            _sakuraHooked = true;
-        }
-
+        HookThemeStyle();
         ApplySakura();
+    }
+
+    /// <summary>风格开关只订阅一次，樱花和光标共用同一个</summary>
+    private static void HookThemeStyle()
+    {
+        if (_themeHooked || ThemeStyleService.Instance is null)
+            return;
+
+        ThemeStyleService.Instance.Changed += OnThemeStyleChanged;
+        _themeHooked = true;
     }
 
     private static void ApplySakura()
@@ -189,29 +165,36 @@ public static class MotionFx
 
         DependencyObject? node = e.OriginalSource as DependencyObject;
 
-        // 只往上找 6 层：交互控件一般在源的近处，也不用每次循环到根
-        for (var depth = 0; depth < 6 && node is not null; depth++)
+        // 明确是交互控件的，一路往上找到根都认；
+        // 只有"圆角 Border 当卡片用"这种靠形状猜的才限制层数，
+        // 否则点到页面空白处也会因为外层套了个圆角容器而乱响
+        for (var depth = 0; node is not null; depth++, node = VisualTreeHelper.GetParent(node))
         {
-            if (ShouldPlay(node))
-            {
-                UiSoundService.Instance?.PlayTap();
+            if (!IsInteractiveControl(node) && !(depth < CardSearchDepth && IsCardLike(node)))
+                continue;
 
-                if (_overlay is not null)
-                    _clickFx?.Burst(e.GetCurrentPoint(_overlay).Position);
+            UiSoundService.Instance?.PlayTap();
 
-                return;
-            }
+            if (_overlay is not null)
+                _clickFx?.Burst(e.GetCurrentPoint(_overlay).Position);
 
-            node = VisualTreeHelper.GetParent(node);
+            return;
         }
     }
 
-    private static bool ShouldPlay(DependencyObject node) => node switch
+    // 靠形状猜卡片时最多往上找几层
+    private const int CardSearchDepth = 8;
+
+    /// <summary>这些是货真价实的交互控件，命中就响</summary>
+    private static bool IsInteractiveControl(DependencyObject node) => node switch
     {
         ButtonBase or CheckBox or RadioButton or ToggleButton or ToggleSwitch => true,
-        ComboBox or Slider or AutoSuggestBox => true,
-        NavigationViewItem or ListViewItem or GridViewItem or TreeViewItem => true,
-        Border border => border.CornerRadius.TopLeft >= 12,
+        ComboBox or Slider or AutoSuggestBox or Expander => true,
+        NavigationViewItem or SelectorItem or TreeViewItem or TabViewItem => true,
         _ => false
     };
+
+    /// <summary>圆角够大的 Border 按卡片算，属于猜的，所以限制层数</summary>
+    private static bool IsCardLike(DependencyObject node) =>
+        node is Border { CornerRadius.TopLeft: >= 12 };
 }

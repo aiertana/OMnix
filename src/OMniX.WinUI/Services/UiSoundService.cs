@@ -23,7 +23,8 @@ public sealed class UiSoundService
     private const uint SndNoDefault = 0x0002;
 
     private const int SampleRate = 22050;
-    private const double Amplitude = 0.18;     // 参考稿 gain 起始值
+    // 参考稿是 0.18，实测偏轻（0.12 秒的一个短音），提到 0.28 才听得清
+    private const double Amplitude = 0.28;
     private const double TailGain = 0.001;     // 参考稿衰减终点
 
     private readonly ILocalSettingsService _localSettingsService;

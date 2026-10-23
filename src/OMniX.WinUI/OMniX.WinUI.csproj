@@ -96,6 +96,10 @@
 		<None Update="Assets\Heroes\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<!-- 二开：看板娘鼠标光标素材（64px PNG，运行时拼成 CUR 交给 Win32） -->
+		<None Update="Assets\Cursors\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Update="Assets\Icon_Inventory_Weapons.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
