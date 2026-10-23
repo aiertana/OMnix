@@ -111,9 +111,9 @@ public sealed class ClickFx
 
         var transform = (ScaleTransform)ripple.RenderTransform;
 
-        storyboard.Children.Add(Build(transform, nameof(ScaleTransform.ScaleX), 0, 2, 0.45));
-        storyboard.Children.Add(Build(transform, nameof(ScaleTransform.ScaleY), 0, 2, 0.45));
-        storyboard.Children.Add(Build(ripple, "Opacity", 0.7, 0, 0.45));
+        storyboard.Children.Add(Build(transform, nameof(ScaleTransform.ScaleX), 0, 2, 0.5));
+        storyboard.Children.Add(Build(transform, nameof(ScaleTransform.ScaleY), 0, 2, 0.5));
+        storyboard.Children.Add(Build(ripple, "Opacity", 0.7, 0, 0.5));
 
         storyboard.Completed += (_, _) => _layer.Children.Remove(ripple);
         storyboard.Begin();

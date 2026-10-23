@@ -244,7 +244,7 @@
     </LinearGradientBrush>
 
     <!--  ========== 圆角 ==========  -->
-    <CornerRadius x:Key="OmniXCardCornerRadius">18</CornerRadius>
+    <CornerRadius x:Key="OmniXCardCornerRadius">16</CornerRadius>
     <CornerRadius x:Key="OmniXControlCornerRadius">12</CornerRadius>
     <CornerRadius x:Key="OmniXPillCornerRadius">12</CornerRadius>
     <CornerRadius x:Key="ControlCornerRadius">8</CornerRadius>

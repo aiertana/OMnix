@@ -16,8 +16,9 @@
     <Page.Resources>
         <!--  二开：侧边栏导航项统一高度和间距，比原来挤在一起更清爽  -->
         <Style x:Key="OmniXNavItemStyle" TargetType="NavigationViewItem">
-            <Setter Property="MinHeight" Value="42" />
+            <Setter Property="MinHeight" Value="38" />
             <Setter Property="Margin" Value="8,2" />
+            <Setter Property="CornerRadius" Value="10" />
         </Style>
     </Page.Resources>
 
@@ -98,7 +99,7 @@
             IsPaneVisible="{x:Bind ViewModel.IsNotFirstTimeStartupPage, Mode=OneWay}"
             IsSettingsVisible="True"
             MenuItemContainerStyle="{StaticResource OmniXNavItemStyle}"
-            OpenPaneLength="216"
+            OpenPaneLength="240"
             PaneDisplayMode="Left"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
 

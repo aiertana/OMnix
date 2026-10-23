@@ -285,6 +285,31 @@ public sealed partial class ShellPage : Page
     private void OnThemeStyleChanged(object? sender, OmniXThemeStyle style) => ApplyFlowMotion();
 
     /// <summary>
+    ///     380ms、cubic-bezier(.22,1,.36,1) 的补间。
+    ///     内置的 CubicEase 只能选现成曲线，要文档里这条自定义控制点就得用 KeySpline。
+    /// </summary>
+    private static DoubleAnimationUsingKeyFrames Spline(DependencyObject target, string property, double to)
+    {
+        var animation = new DoubleAnimationUsingKeyFrames();
+
+        animation.KeyFrames.Add(new SplineDoubleKeyFrame
+        {
+            KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(380)),
+            Value = to,
+            KeySpline = new KeySpline
+            {
+                ControlPoint1 = new Windows.Foundation.Point(0.22, 1),
+                ControlPoint2 = new Windows.Foundation.Point(0.36, 1)
+            }
+        });
+
+        Storyboard.SetTarget(animation, target);
+        Storyboard.SetTargetProperty(animation, property);
+
+        return animation;
+    }
+
+    /// <summary>
     ///     二开：页面切换动画。参考稿的 .panel 是 opacity 0→1 配 scale 0.94→1，
     ///     0.38s 缓出。简易版直接跳过。
     /// </summary>
@@ -300,7 +325,8 @@ public sealed partial class ShellPage : Page
         if (ThemeStyleService.Instance is { MotionEnabled: false })
             return;
 
-        var transform = frame.RenderTransform as ScaleTransform ?? new ScaleTransform();
+        // 用 CompositeTransform：缩放和位移要一起做
+        var transform = frame.RenderTransform as CompositeTransform ?? new CompositeTransform();
         frame.RenderTransformOrigin = new Windows.Foundation.Point(0.5, 0.5);
         frame.RenderTransform = transform;
 
@@ -310,34 +336,23 @@ public sealed partial class ShellPage : Page
             frame.Opacity = 1;
             transform.ScaleX = 1;
             transform.ScaleY = 1;
+            transform.TranslateY = 0;
         }
 
         try
         {
-            transform.ScaleX = 0.94;
-            transform.ScaleY = 0.94;
+            // 参考稿：新页面从下方 16px 处淡入，scale 0.98 → 1，380ms
+            transform.ScaleX = 0.98;
+            transform.ScaleY = 0.98;
+            transform.TranslateY = 16;
             frame.Opacity = 0;
 
             var storyboard = new Storyboard();
 
-            foreach (var (target, property, to) in new (DependencyObject, string, double)[]
-                     {
-                         (transform, nameof(ScaleTransform.ScaleX), 1.0),
-                         (transform, nameof(ScaleTransform.ScaleY), 1.0),
-                         (frame, "Opacity", 1.0)
-                     })
-            {
-                var animation = new DoubleAnimation
-                {
-                    To = to,
-                    Duration = new Duration(TimeSpan.FromSeconds(0.38)),
-                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-                };
-
-                Storyboard.SetTarget(animation, target);
-                Storyboard.SetTargetProperty(animation, property);
-                storyboard.Children.Add(animation);
-            }
+            storyboard.Children.Add(Spline(transform, nameof(CompositeTransform.ScaleX), 1.0));
+            storyboard.Children.Add(Spline(transform, nameof(CompositeTransform.ScaleY), 1.0));
+            storyboard.Children.Add(Spline(transform, nameof(CompositeTransform.TranslateY), 0.0));
+            storyboard.Children.Add(Spline(frame, "Opacity", 1.0));
 
             storyboard.Completed += (_, _) => Restore();
             storyboard.Begin();

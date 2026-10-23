@@ -74,15 +74,15 @@ public static class GlassFx
         return transform;
     }
 
-    // hover: translateY(-4px) scale(1.015) / active: translateY(-1px) scale(0.98)
+    // hover: translateY(-4px) scale(1.015) 250ms / active: translateY(-1px) scale(0.98) 150ms
     private static void OnPointerEntered(object sender, PointerRoutedEventArgs e) =>
-        Animate((FrameworkElement)sender, 1.015, -GetLift((DependencyObject)sender), 260);
+        Animate((FrameworkElement)sender, 1.015, -GetLift((DependencyObject)sender), 250);
 
     private static void OnPointerExited(object sender, PointerRoutedEventArgs e) =>
         Animate((FrameworkElement)sender, 1.0, 0, 300);
 
     private static void OnPointerPressed(object sender, PointerRoutedEventArgs e) =>
-        Animate((FrameworkElement)sender, 0.98, -1, 90);
+        Animate((FrameworkElement)sender, 0.98, -1, 150);
 
     private static void OnPointerReleased(object sender, PointerRoutedEventArgs e) =>
         Animate((FrameworkElement)sender, 1.015, -GetLift((DependencyObject)sender), 180);
