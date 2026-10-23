@@ -42,8 +42,17 @@ public sealed class SakuraFx
     private const double MinSwingPeriod = 2;
     private const double MaxSwingPeriod = 4;
 
-    private const float StartOpacity = 0.8f;
-    private const float EndOpacity = 0.3f;
+    // 这两个值会和下面花瓣色自带的 alpha 相乘，太低就看不见了
+    private const float StartOpacity = 0.9f;
+    private const float EndOpacity = 0.45f;
+
+    // 风向：从右上角那一侧斜着往右下角飘。
+    // 起点集中在偏右的位置，下落过程中再匀速往右推一段，
+    // 三个值都是相对层宽度的比例
+    private const double WindStartMin = 0.32;
+    private const double WindStartMax = 1.12;
+    private const double WindDriftMin = 0.12;
+    private const double WindDriftMax = 0.30;
 
     // 花瓣从屏幕上边界之外一点点出现，落到下边界之外一点点再重置
     private const double EdgeMargin = 20;
@@ -57,9 +66,9 @@ public sealed class SakuraFx
     /// <summary>三种花瓣色：半透明粉、更淡的粉、淡紫粉</summary>
     private static readonly Color[] PetalColors =
     [
-        Color.FromArgb(0x33, 0xFF, 0xB3, 0xD9),
-        Color.FromArgb(0x40, 0xFF, 0xD9, 0xEC),
-        Color.FromArgb(0x26, 0xC9, 0xA8, 0xFF)
+        Color.FromArgb(0x66, 0xFF, 0xB3, 0xD9),
+        Color.FromArgb(0x73, 0xFF, 0xD9, 0xEC),
+        Color.FromArgb(0x59, 0xC9, 0xA8, 0xFF)
     ];
 
     private readonly Random _random = new();
@@ -202,10 +211,13 @@ public sealed class SakuraFx
         var delay = TimeSpan.FromSeconds(_random.NextDouble() * fallSeconds);
         var compositor = visual.Compositor;
 
-        // 一条曲线同时表达下落和左右摆动：
-        // Y 从屏幕上方线性落到底部，X 按正弦来回摆，
-        // 下落时间里刚好走完整数个摆动周期，循环回到顶部时 X 也回到原位，接缝看不出来
-        var baseX = (float)(_random.NextDouble() * width);
+        // 一条曲线同时表达三件事：
+        // Y 从顶部线性落到底部（重力）；
+        // X 先按起点落在偏右的位置，再匀速往右推一段（风）；
+        // 在这条斜线上叠正弦来回摆（飘）。
+        // 下落时间里刚好走完整数个摆动周期，循环回到顶部时摆动相位也回到原位，接缝看不出来
+        var baseX = width * (WindStartMin + _random.NextDouble() * (WindStartMax - WindStartMin));
+        var windDrift = width * (WindDriftMin + _random.NextDouble() * (WindDriftMax - WindDriftMin));
         var amplitude = (float)(MinSwingAmplitude + _random.NextDouble() * (MaxSwingAmplitude - MinSwingAmplitude));
         var swingPeriod = MinSwingPeriod + _random.NextDouble() * (MaxSwingPeriod - MinSwingPeriod);
         var cycles = Math.Max(fallSeconds / swingPeriod, 1);
@@ -220,7 +232,7 @@ public sealed class SakuraFx
             var progress = (double)i / SwingSamples;
 
             var y = -EdgeMargin + (height + EdgeMargin * 2) * progress;
-            var x = baseX + Math.Sin(progress * cycles * 2 * Math.PI) * amplitude;
+            var x = baseX + windDrift * progress + Math.Sin(progress * cycles * 2 * Math.PI) * amplitude;
 
             drift.InsertKeyFrame((float)progress, new Vector3((float)x, (float)y, 0));
         }
@@ -235,8 +247,11 @@ public sealed class SakuraFx
         spin.Duration = duration;
         spin.DelayTime = delay;
         spin.IterationBehavior = AnimationIterationBehavior.Forever;
-        spin.InsertKeyFrame(0f, 0f);
-        spin.InsertKeyFrame(1f, direction * 360f * spins);
+        // 起始角度随机，免得 28 片都以同一个姿态往下掉
+        var startAngle = (float)(_random.NextDouble() * 360);
+
+        spin.InsertKeyFrame(0f, startAngle);
+        spin.InsertKeyFrame(1f, startAngle + direction * 360f * spins);
 
         visual.StartAnimation("RotationAngleInDegrees", spin);
 
