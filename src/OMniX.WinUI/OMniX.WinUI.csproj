@@ -100,6 +100,10 @@
 		<None Update="Assets\Cursors\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<!-- 二开：交互音效素材 -->
+		<None Update="Assets\Sounds\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Update="Assets\Icon_Inventory_Weapons.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

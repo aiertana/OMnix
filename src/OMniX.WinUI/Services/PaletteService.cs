@@ -8,23 +8,24 @@ namespace OMniX.WinUI.Services;
 /// <summary>
 ///     三套配色。和"浅色 / 深色"是两回事：那个是明暗模式，这个是色系，
 ///     两套正交 —— 每套配色都要各给一份亮色值和暗色值。
+///     取值严格照 OMNIX 紫蓝二次元版 / 蓝色版 / 深色版 三个 HTML 里的 CSS 变量。
 /// </summary>
 public enum OmniXPalette
 {
-    /// <summary>暖白 + 珊瑚红，1.0 版那套</summary>
+    /// <summary>紫蓝二次元版：暖白 + 珊瑚红</summary>
     Warm,
 
-    /// <summary>冷调蓝</summary>
+    /// <summary>蓝色版：冷白 + 蓝</summary>
     Blue,
 
-    /// <summary>深黑白。整体就是深色，明暗模式对它不起作用</summary>
+    /// <summary>深色版：近黑 + 白，整体就是深色，明暗模式对它不起作用</summary>
     Mono
 }
 
 /// <summary>
-///     配色切换。这里不重新加载资源字典，而是直接改已经解析出来的画刷实例：
-///     界面上引用的是同一个 SolidColorBrush 对象，改它的 Color 会立刻跟着变，
-///     不需要重建页面；Color 资源本身也一起改，之后新建的元素才会用上新值。
+///     配色热切换：不重新加载资源字典，直接改已经解析出来的画刷实例。
+///     界面引用的就是同一个 SolidColorBrush 对象，改它的 Color 立刻生效，
+///     不需要重启，也不用重建页面。
 /// </summary>
 public sealed class PaletteService
 {
@@ -82,6 +83,7 @@ public sealed class PaletteService
         }
 
         Apply();
+        Refresh();
         Changed?.Invoke(this, palette);
     }
 
@@ -94,47 +96,47 @@ public sealed class PaletteService
 
     private void Apply()
     {
-        // 深浅两组都写进去，这样切换明暗模式时另一组已经是新配色了
+        // 深浅两组都写，这样之后再切明暗模式时另一组已经是新配色了
         switch (Current)
         {
             case OmniXPalette.Blue:
-                ApplyInto("Light", BlueLight, BlueLightGradient);
-                ApplyInto("Dark", BlueDark, BlueDarkGradient);
+                ApplyInto("Light", BlueLight, BlueGradient);
+                ApplyInto("Dark", BlueDark, BlueGradient);
                 break;
 
             case OmniXPalette.Mono:
-                // 深黑白整体就是深色，明暗两组用同一份
                 ApplyInto("Light", MonoColors, MonoGradient);
                 ApplyInto("Dark", MonoColors, MonoGradient);
                 break;
 
             default:
-                ApplyInto("Light", WarmLight, WarmLightGradient);
-                ApplyInto("Dark", WarmDark, WarmDarkGradient);
+                ApplyInto("Light", WarmLight, WarmGradient);
+                ApplyInto("Dark", WarmDark, WarmGradient);
                 break;
         }
     }
 
     private static void ApplyInto(string section, IReadOnlyDictionary<string, string> colors, string[] gradient)
     {
-        var dictionary = GetSection(section);
+        var dictionary = FindSection(section);
 
         foreach (var (key, hex) in colors)
         {
             var color = ToColor(hex);
 
-            // 以 Brush 结尾的键本身就是画刷，只改它的颜色；
-            // 其余是 Color 资源，改资源值，同时改同名画刷（让已经画出来的地方立刻跟上）
-            var brushKey = key.EndsWith("Brush", StringComparison.Ordinal) ? key : key + "Brush";
+            // 以 Brush 结尾的键本身就是画刷，只改颜色；
+            // 其余是 Color 资源，改字典值（新建元素用），同时改同名画刷（已画出来的立刻变）
+            var isBrush = key.EndsWith("Brush", StringComparison.Ordinal);
+            var brushKey = isBrush ? key : key + "Brush";
 
-            if (Find(brushKey) is SolidColorBrush brush)
+            if (FindResource(brushKey) is SolidColorBrush brush)
                 brush.Color = color;
 
-            if (!key.EndsWith("Brush", StringComparison.Ordinal) && dictionary is not null)
+            if (!isBrush && dictionary is not null)
                 dictionary[key] = color;
         }
 
-        if (dictionary is not null && Find("OmniXPageBackgroundBrush") is LinearGradientBrush page)
+        if (FindResource("OmniXPageBackgroundBrush") is LinearGradientBrush page)
             SetStops(page, gradient);
     }
 
@@ -146,33 +148,84 @@ public sealed class PaletteService
             stops[i].Color = ToColor(gradient[i]);
     }
 
-    private static ResourceDictionary? GetSection(string section)
+    /// <summary>
+    ///     强制让所有 ThemeResource 重新解析一遍。
+    ///     光改画刷能把大部分地方带过去，但直接写在 Color 上的（比如
+    ///     Fill="{ThemeResource XxxColor}"）不会动，抖一下 RequestedTheme
+    ///     能把这些重新求值，代价只是切换那一瞬间重解析一次。
+    /// </summary>
+    private static void Refresh()
     {
         try
         {
-            if (Application.Current.Resources.ThemeDictionaries.TryGetValue(section, out var value)
-                && value is ResourceDictionary dictionary)
-                return dictionary;
+            if (App.MainWindow?.Content is not FrameworkElement root)
+                return;
+
+            var theme = root.RequestedTheme;
+            root.RequestedTheme = theme == ElementTheme.Dark ? ElementTheme.Light : ElementTheme.Dark;
+            root.RequestedTheme = theme;
         }
         catch (Exception)
         {
-            // 主题字典拿不到就只改画刷，界面照样能换色
+            // 刷不动就算了，画刷层面已经改过一轮
         }
-
-        return null;
     }
 
-    /// <summary>画刷都定义在主题字典外面，直接查顶层资源</summary>
-    private static object? Find(string key)
+    /// <summary>
+    ///     资源都躺在 merged 的 OmniXTheme.xaml 里，顶层索引查不到，得递归下去找。
+    /// </summary>
+    private static object? FindResource(string key)
     {
         try
         {
-            return Application.Current.Resources.TryGetValue(key, out var value) ? value : null;
+            return FindResource(Application.Current.Resources, key);
         }
         catch (Exception)
         {
             return null;
         }
+    }
+
+    private static object? FindResource(ResourceDictionary dictionary, string key)
+    {
+        if (dictionary.TryGetValue(key, out var value) && value is not null)
+            return value;
+
+        foreach (var merged in dictionary.MergedDictionaries)
+        {
+            var found = FindResource(merged, key);
+            if (found is not null)
+                return found;
+        }
+
+        return null;
+    }
+
+    private static ResourceDictionary? FindSection(string section)
+    {
+        try
+        {
+            return FindSection(Application.Current.Resources, section);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    private static ResourceDictionary? FindSection(ResourceDictionary dictionary, string section)
+    {
+        if (dictionary.ThemeDictionaries.TryGetValue(section, out var value) && value is ResourceDictionary found)
+            return found;
+
+        foreach (var merged in dictionary.MergedDictionaries)
+        {
+            var nested = FindSection(merged, section);
+            if (nested is not null)
+                return nested;
+        }
+
+        return null;
     }
 
     private static Color ToColor(string hex)
@@ -188,124 +241,130 @@ public sealed class PaletteService
             Convert.ToByte(text.Substring(6, 2), 16));
     }
 
-    // ========== 暖白珊瑚（1.0 版那套，当前默认） ==========
+    // ========== 紫蓝二次元版（暖白 + 珊瑚红，默认） ==========
 
-    private static readonly string[] WarmLightGradient = ["#FFEAE1F5", "#FFF2EDF8", "#FFEDEFFA"];
-
-    private static readonly string[] WarmDarkGradient = ["#F216121C", "#F2121219", "#F20F1418"];
+    private static readonly string[] WarmGradient = ["#FFFAF8F7", "#FFFCFAF9", "#FFF9F5F6"];
 
     private static readonly Dictionary<string, string> WarmLight = new()
     {
-        ["OmniXAccentColor"] = "#FFE35B68",
-        ["OmniXAccentStrongColor"] = "#FFE97F8D",
-        ["OmniXAccentSoftColor"] = "#FFFDF1F3",
-        ["OmniXAccentSoftHoverColor"] = "#FFFCE4E8",
-        ["OmniXAccentSoftPressedColor"] = "#FFFAD8DE",
-        ["OmniXAuxPinkColor"] = "#FFFF9EC7",
+        // --accent #e84c6d / --accent-light #ff8aa0
+        ["OmniXAccentColor"] = "#FFE84C6D",
+        ["OmniXAccentStrongColor"] = "#FFFF8AA0",
+        // --accent-bg rgba(232,76,109,.06) / strong .12
+        ["OmniXAccentSoftColor"] = "#0FE84C6D",
+        ["OmniXAccentSoftHoverColor"] = "#1FE84C6D",
+        ["OmniXAccentSoftPressedColor"] = "#2EE84C6D",
+        // --pink #ffb3d1 / --purple #b58bff / --blue #7ec8ff
+        ["OmniXAuxPinkColor"] = "#FFFFB3D1",
         ["OmniXAuxPurpleColor"] = "#FFB58BFF",
-        ["OmniXAuxBlueColor"] = "#FF8CCBFF",
-        ["OmniXCardAltBackgroundColor"] = "#9EFFFFFF",
-        ["OmniXCardBackgroundColor"] = "#B8FFFFFF",
-        ["OmniXCardStrokeColor"] = "#29150E6E",
-        ["OmniXCardStrokeHoverColor"] = "#52966ED8",
-        ["OmniXControlBackgroundColor"] = "#B3FFFFFF",
-        ["OmniXControlBorderColor"] = "#29150E6E",
-        ["OmniXControlBorderPointerOverColor"] = "#668CCBFF",
-        ["OmniXHeroBackgroundColor"] = "#D9FFFFFF",
-        ["OmniXNavItemPointerOverColor"] = "#B8FFFFFF",
-        ["OmniXNavItemPressedColor"] = "#CCFFFFFF",
-        ["OmniXNavItemSelectedColor"] = "#2EE35B68",
-        ["OmniXNavItemSelectedPointerOverColor"] = "#45E35B68",
-        ["OmniXNavItemSelectedPressedColor"] = "#5CE35B68",
-        ["OmniXNavPaneBackgroundColor"] = "#99FFFFFF",
-        ["OmniXPageBackgroundColor"] = "#FFFFFFFF",
-        ["OmniXSidebarBackgroundColor"] = "#9EFFFFFF",
-        ["OmniXTextPrimaryColor"] = "#FF4B3D6B",
-        ["OmniXTextSecondaryColor"] = "#FF8A7DA8",
-        ["OmniXDialogBackgroundColor"] = "#EBFFFFFF",
-        ["OmniXDialogBorderColor"] = "#29150E6E",
-        ["SystemAccentColor"] = "#FFE35B68",
-        ["SystemAccentColorLight1"] = "#FFE97F8D",
-        ["SystemAccentColorLight2"] = "#FFF1ADB4",
-        ["SystemAccentColorLight3"] = "#FFF7CCD1",
-        ["SystemAccentColorDark1"] = "#FFC14D58",
-        ["SystemAccentColorDark2"] = "#FFA3424B",
-        ["SystemAccentColorDark3"] = "#FF88373E",
-        ["AccentFillColorDefaultBrush"] = "#FFE35B68",
-        ["AccentFillColorSecondaryBrush"] = "#E6E35B68",
-        ["AccentFillColorTertiaryBrush"] = "#CCE35B68",
-        ["AccentFillColorDisabledBrush"] = "#33E35B68",
-        ["AccentTextFillColorPrimaryBrush"] = "#FFD1475A",
-        ["AccentTextFillColorSecondaryBrush"] = "#FFD1475A",
-        ["AccentTextFillColorTertiaryBrush"] = "#FFD1475A"
+        ["OmniXAuxBlueColor"] = "#FF7EC8FF",
+        // --bg-card #ffffff / --bg-sidebar #ffffff / --bg-base #faf8f7
+        ["OmniXCardAltBackgroundColor"] = "#FFFFFFFF",
+        ["OmniXCardBackgroundColor"] = "#FFFFFFFF",
+        // --line #f0ebeb / --line-strong #e2d8d8
+        ["OmniXCardStrokeColor"] = "#FFF0EBEB",
+        ["OmniXCardStrokeHoverColor"] = "#FFE2D8D8",
+        ["OmniXControlBackgroundColor"] = "#FFFFFFFF",
+        ["OmniXControlBorderColor"] = "#FFF0EBEB",
+        ["OmniXControlBorderPointerOverColor"] = "#FFE84C6D",
+        ["OmniXHeroBackgroundColor"] = "#FFFDF9F8",
+        ["OmniXNavItemPointerOverColor"] = "#FFF7F1F0",
+        ["OmniXNavItemPressedColor"] = "#FFEFE7E5",
+        ["OmniXNavItemSelectedColor"] = "#1AE84C6D",
+        ["OmniXNavItemSelectedPointerOverColor"] = "#26E84C6D",
+        ["OmniXNavItemSelectedPressedColor"] = "#33E84C6D",
+        ["OmniXNavPaneBackgroundColor"] = "#FFFFFFFF",
+        ["OmniXPageBackgroundColor"] = "#FFFAF8F7",
+        ["OmniXSidebarBackgroundColor"] = "#FFFFFFFF",
+        // --ink #2d2a2e / --ink-dim #7a7278
+        ["OmniXTextPrimaryColor"] = "#FF2D2A2E",
+        ["OmniXTextSecondaryColor"] = "#FF7A7278",
+        ["OmniXDialogBackgroundColor"] = "#FFFFFFFF",
+        ["OmniXDialogBorderColor"] = "#FFF0EBEB",
+        ["SystemAccentColor"] = "#FFE84C6D",
+        ["SystemAccentColorLight1"] = "#FFFF8AA0",
+        ["SystemAccentColorLight2"] = "#FFFFB0BE",
+        ["SystemAccentColorLight3"] = "#FFFFD5DC",
+        ["SystemAccentColorDark1"] = "#FFD63A5C",
+        ["SystemAccentColorDark2"] = "#FFB32C49",
+        ["SystemAccentColorDark3"] = "#FF8F1F36",
+        ["AccentFillColorDefaultBrush"] = "#FFE84C6D",
+        ["AccentFillColorSecondaryBrush"] = "#E6E84C6D",
+        ["AccentFillColorTertiaryBrush"] = "#CCE84C6D",
+        ["AccentFillColorDisabledBrush"] = "#33E84C6D",
+        ["AccentTextFillColorPrimaryBrush"] = "#FFE84C6D",
+        ["AccentTextFillColorSecondaryBrush"] = "#FFE84C6D",
+        ["AccentTextFillColorTertiaryBrush"] = "#FFE84C6D"
     };
 
     private static readonly Dictionary<string, string> WarmDark = new()
     {
-        ["OmniXAccentColor"] = "#FFE97F8D",
-        ["OmniXAccentStrongColor"] = "#FFFFB0C2",
-        ["OmniXAccentSoftColor"] = "#FF3A2328",
-        ["OmniXAccentSoftHoverColor"] = "#FF4A2D33",
-        ["OmniXAccentSoftPressedColor"] = "#FF553138",
-        ["OmniXAuxPinkColor"] = "#FFFF9EC7",
+        ["OmniXAccentColor"] = "#FFFF8AA0",
+        ["OmniXAccentStrongColor"] = "#FFFFB0BE",
+        ["OmniXAccentSoftColor"] = "#FF3A2128",
+        ["OmniXAccentSoftHoverColor"] = "#FF4A2A33",
+        ["OmniXAccentSoftPressedColor"] = "#FF55303B",
+        ["OmniXAuxPinkColor"] = "#FFFFB3D1",
         ["OmniXAuxPurpleColor"] = "#FFB58BFF",
-        ["OmniXAuxBlueColor"] = "#FF8CCBFF",
+        ["OmniXAuxBlueColor"] = "#FF7EC8FF",
         ["OmniXCardAltBackgroundColor"] = "#12FFFFFF",
         ["OmniXCardBackgroundColor"] = "#1AFFFFFF",
         ["OmniXCardStrokeColor"] = "#2EFFFFFF",
-        ["OmniXCardStrokeHoverColor"] = "#66E97F8D",
+        ["OmniXCardStrokeHoverColor"] = "#66FF8AA0",
         ["OmniXControlBackgroundColor"] = "#1FFFFFFF",
         ["OmniXControlBorderColor"] = "#2AFFFFFF",
-        ["OmniXControlBorderPointerOverColor"] = "#668CCBFF",
+        ["OmniXControlBorderPointerOverColor"] = "#66FF8AA0",
         ["OmniXHeroBackgroundColor"] = "#99202026",
         ["OmniXNavItemPointerOverColor"] = "#1FFFFFFF",
         ["OmniXNavItemPressedColor"] = "#2BFFFFFF",
-        ["OmniXNavItemSelectedColor"] = "#33E97F8D",
-        ["OmniXNavItemSelectedPointerOverColor"] = "#45E97F8D",
-        ["OmniXNavItemSelectedPressedColor"] = "#57E97F8D",
+        ["OmniXNavItemSelectedColor"] = "#33FF8AA0",
+        ["OmniXNavItemSelectedPointerOverColor"] = "#45FF8AA0",
+        ["OmniXNavItemSelectedPressedColor"] = "#57FF8AA0",
         ["OmniXNavPaneBackgroundColor"] = "#B3141418",
         ["OmniXPageBackgroundColor"] = "#990E0E11",
         ["OmniXSidebarBackgroundColor"] = "#B3141418",
-        ["OmniXTextPrimaryColor"] = "#FFF3EFFA",
-        ["OmniXTextSecondaryColor"] = "#FFB9AED0",
+        ["OmniXTextPrimaryColor"] = "#FFF5F2F3",
+        ["OmniXTextSecondaryColor"] = "#FFB9AEB2",
         ["OmniXDialogBackgroundColor"] = "#B31A1A20",
         ["OmniXDialogBorderColor"] = "#59FFFFFF",
-        ["SystemAccentColor"] = "#FFFF6B75",
-        ["SystemAccentColorLight1"] = "#FFFF8A92",
-        ["SystemAccentColorLight2"] = "#FFFFA8AE",
-        ["SystemAccentColorLight3"] = "#FFFFC6CA",
-        ["SystemAccentColorDark1"] = "#FFE5484D",
-        ["SystemAccentColorDark2"] = "#FFC9172A",
-        ["SystemAccentColorDark3"] = "#FFA51020",
-        ["AccentFillColorDefaultBrush"] = "#FFE97F8D",
-        ["AccentFillColorSecondaryBrush"] = "#E6E97F8D",
-        ["AccentFillColorTertiaryBrush"] = "#CCE97F8D",
-        ["AccentFillColorDisabledBrush"] = "#33E97F8D",
-        ["AccentTextFillColorPrimaryBrush"] = "#FFE9A0AB",
-        ["AccentTextFillColorSecondaryBrush"] = "#FFE9A0AB",
-        ["AccentTextFillColorTertiaryBrush"] = "#FFE9A0AB"
+        ["SystemAccentColor"] = "#FFFF8AA0",
+        ["SystemAccentColorLight1"] = "#FFFFB0BE",
+        ["SystemAccentColorLight2"] = "#FFFFCFD6",
+        ["SystemAccentColorLight3"] = "#FFFFE6EA",
+        ["SystemAccentColorDark1"] = "#FFE85A78",
+        ["SystemAccentColorDark2"] = "#FFC43A58",
+        ["SystemAccentColorDark3"] = "#FF9E2440",
+        ["AccentFillColorDefaultBrush"] = "#FFFF8AA0",
+        ["AccentFillColorSecondaryBrush"] = "#E6FF8AA0",
+        ["AccentFillColorTertiaryBrush"] = "#CCFF8AA0",
+        ["AccentFillColorDisabledBrush"] = "#33FF8AA0",
+        ["AccentTextFillColorPrimaryBrush"] = "#FFFF8AA0",
+        ["AccentTextFillColorSecondaryBrush"] = "#FFFF8AA0",
+        ["AccentTextFillColorTertiaryBrush"] = "#FFFF8AA0"
     };
 
-    // ========== 冷调蓝 ==========
+    // ========== 蓝色版（冷白 + 蓝） ==========
 
-    private static readonly string[] BlueLightGradient = ["#FFF5F9FF", "#FFEDF5FF", "#FFE8F0FF"];
-
-    private static readonly string[] BlueDarkGradient = ["#FF0F1420", "#FF111726", "#FF0D1220"];
+    private static readonly string[] BlueGradient = ["#FFF5F9FF", "#FFEDF5FF", "#FFE8F0FF"];
 
     private static readonly Dictionary<string, string> BlueLight = new()
     {
+        // --accent #4a9eff / --accent-light #7ec8ff
         ["OmniXAccentColor"] = "#FF4A9EFF",
         ["OmniXAccentStrongColor"] = "#FF7EC8FF",
-        ["OmniXAccentSoftColor"] = "#FFF2F8FF",
-        ["OmniXAccentSoftHoverColor"] = "#FFE4F1FF",
-        ["OmniXAccentSoftPressedColor"] = "#FFD4E6FF",
+        // --accent-bg .07 / strong .14
+        ["OmniXAccentSoftColor"] = "#124A9EFF",
+        ["OmniXAccentSoftHoverColor"] = "#244A9EFF",
+        ["OmniXAccentSoftPressedColor"] = "#334A9EFF",
         ["OmniXAuxPinkColor"] = "#FFFFB3D1",
         ["OmniXAuxPurpleColor"] = "#FFB58BFF",
         ["OmniXAuxBlueColor"] = "#FF4A9EFF",
+        // --bg-card #ffffff / --bg-base #f5f9ff / --bg-sidebar #ffffff
         ["OmniXCardAltBackgroundColor"] = "#FFFBFDFF",
         ["OmniXCardBackgroundColor"] = "#FFFFFFFF",
+        // --line #e8eff8 / --line-strong #d4e0f0
         ["OmniXCardStrokeColor"] = "#FFE8EFF8",
-        ["OmniXCardStrokeHoverColor"] = "#FF7EC8FF",
+        ["OmniXCardStrokeHoverColor"] = "#FFD4E0F0",
         ["OmniXControlBackgroundColor"] = "#FFFFFFFF",
         ["OmniXControlBorderColor"] = "#FFE8EFF8",
         ["OmniXControlBorderPointerOverColor"] = "#FF4A9EFF",
@@ -314,13 +373,14 @@ public sealed class PaletteService
         ["OmniXNavItemPressedColor"] = "#FFD4E0F0",
         ["OmniXNavItemSelectedColor"] = "#124A9EFF",
         ["OmniXNavItemSelectedPointerOverColor"] = "#244A9EFF",
-        ["OmniXNavItemSelectedPressedColor"] = "#3D4A9EFF",
-        ["OmniXNavPaneBackgroundColor"] = "#FFF5F9FF",
+        ["OmniXNavItemSelectedPressedColor"] = "#334A9EFF",
+        ["OmniXNavPaneBackgroundColor"] = "#FFFFFFFF",
         ["OmniXPageBackgroundColor"] = "#FFF5F9FF",
         ["OmniXSidebarBackgroundColor"] = "#FFFFFFFF",
+        // --ink #2a303d / --ink-dim #6b7a90
         ["OmniXTextPrimaryColor"] = "#FF2A303D",
         ["OmniXTextSecondaryColor"] = "#FF6B7A90",
-        ["OmniXDialogBackgroundColor"] = "#FFF5F9FF",
+        ["OmniXDialogBackgroundColor"] = "#FFFFFFFF",
         ["OmniXDialogBorderColor"] = "#FFE8EFF8",
         ["SystemAccentColor"] = "#FF4A9EFF",
         ["SystemAccentColorLight1"] = "#FF7EC8FF",
@@ -333,21 +393,21 @@ public sealed class PaletteService
         ["AccentFillColorSecondaryBrush"] = "#E64A9EFF",
         ["AccentFillColorTertiaryBrush"] = "#CC4A9EFF",
         ["AccentFillColorDisabledBrush"] = "#334A9EFF",
-        ["AccentTextFillColorPrimaryBrush"] = "#FF2A6ECC",
-        ["AccentTextFillColorSecondaryBrush"] = "#FF2A6ECC",
-        ["AccentTextFillColorTertiaryBrush"] = "#FF2A6ECC"
+        ["AccentTextFillColorPrimaryBrush"] = "#FF4A9EFF",
+        ["AccentTextFillColorSecondaryBrush"] = "#FF4A9EFF",
+        ["AccentTextFillColorTertiaryBrush"] = "#FF4A9EFF"
     };
 
     private static readonly Dictionary<string, string> BlueDark = new()
     {
         ["OmniXAccentColor"] = "#FF7EC8FF",
         ["OmniXAccentStrongColor"] = "#FFA8D8FF",
-        ["OmniXAccentSoftColor"] = "#FF1E2A38",
-        ["OmniXAccentSoftHoverColor"] = "#FF26354A",
-        ["OmniXAccentSoftPressedColor"] = "#FF2E4058",
+        ["OmniXAccentSoftColor"] = "#1F4A9EFF",
+        ["OmniXAccentSoftHoverColor"] = "#2E4A9EFF",
+        ["OmniXAccentSoftPressedColor"] = "#3D4A9EFF",
         ["OmniXAuxPinkColor"] = "#FFFFB3D1",
         ["OmniXAuxPurpleColor"] = "#FFB58BFF",
-        ["OmniXAuxBlueColor"] = "#FF4A9EFF",
+        ["OmniXAuxBlueColor"] = "#FF7EC8FF",
         ["OmniXCardAltBackgroundColor"] = "#12FFFFFF",
         ["OmniXCardBackgroundColor"] = "#1AFFFFFF",
         ["OmniXCardStrokeColor"] = "#2EFFFFFF",
@@ -379,61 +439,64 @@ public sealed class PaletteService
         ["AccentFillColorSecondaryBrush"] = "#E67EC8FF",
         ["AccentFillColorTertiaryBrush"] = "#CC7EC8FF",
         ["AccentFillColorDisabledBrush"] = "#337EC8FF",
-        ["AccentTextFillColorPrimaryBrush"] = "#FFA8D8FF",
-        ["AccentTextFillColorSecondaryBrush"] = "#FFA8D8FF",
-        ["AccentTextFillColorTertiaryBrush"] = "#FFA8D8FF"
+        ["AccentTextFillColorPrimaryBrush"] = "#FF7EC8FF",
+        ["AccentTextFillColorSecondaryBrush"] = "#FF7EC8FF",
+        ["AccentTextFillColorTertiaryBrush"] = "#FF7EC8FF"
     };
 
-    // ========== 深黑白：整体就是深色，明暗两组共用 ==========
+    // ========== 深色版（近黑 + 白），明暗两组共用 ==========
 
     private static readonly string[] MonoGradient = ["#FF0F0F11", "#FF141417", "#FF101014"];
 
     private static readonly Dictionary<string, string> MonoColors = new()
     {
-        // 深色版主色：交接文档给的是 #E63946（OMNIX logo 那抹红），
-        // HTML 深色版那份写的是纯白，这里以文档为准
-        ["OmniXAccentColor"] = "#FFE63946",
-        ["OmniXAccentStrongColor"] = "#FFEF6B77",
-        ["OmniXAccentSoftColor"] = "#FF1AE63946",
-        ["OmniXAccentSoftHoverColor"] = "#FF26E63946",
-        ["OmniXAccentSoftPressedColor"] = "#FF33E63946",
+        // --accent #ffffff / --accent-light #e0e0e5
+        ["OmniXAccentColor"] = "#FFFFFFFF",
+        ["OmniXAccentStrongColor"] = "#FFE0E0E5",
+        // --accent-bg rgba(255,255,255,.06) / strong .12
+        ["OmniXAccentSoftColor"] = "#0FFFFFFF",
+        ["OmniXAccentSoftHoverColor"] = "#1FFFFFFF",
+        ["OmniXAccentSoftPressedColor"] = "#2AFFFFFF",
         ["OmniXAuxPinkColor"] = "#FFFFB3D1",
         ["OmniXAuxPurpleColor"] = "#FFB58BFF",
         ["OmniXAuxBlueColor"] = "#FF7EC8FF",
-        ["OmniXCardAltBackgroundColor"] = "#FF141417",
+        // --bg-card #1c1c20 / --bg-base #0f0f11 / --bg-sidebar #161618
+        ["OmniXCardAltBackgroundColor"] = "#FF17171A",
         ["OmniXCardBackgroundColor"] = "#FF1C1C20",
+        // --line #2a2a30 / --line-strong #3a3a42
         ["OmniXCardStrokeColor"] = "#FF2A2A30",
         ["OmniXCardStrokeHoverColor"] = "#FF3A3A42",
         ["OmniXControlBackgroundColor"] = "#FF222226",
         ["OmniXControlBorderColor"] = "#FF2A2A30",
         ["OmniXControlBorderPointerOverColor"] = "#FF8A8A92",
         ["OmniXHeroBackgroundColor"] = "#FF161618",
-        ["OmniXNavItemPointerOverColor"] = "#FF1FFFFFFF",
-        ["OmniXNavItemPressedColor"] = "#FF2AFFFFFF",
-        ["OmniXNavItemSelectedColor"] = "#FF1AE63946",
-        ["OmniXNavItemSelectedPointerOverColor"] = "#FF26E63946",
-        ["OmniXNavItemSelectedPressedColor"] = "#FF33E63946",
+        ["OmniXNavItemPointerOverColor"] = "#14FFFFFF",
+        ["OmniXNavItemPressedColor"] = "#1FFFFFFF",
+        ["OmniXNavItemSelectedColor"] = "#1FFFFFFF",
+        ["OmniXNavItemSelectedPointerOverColor"] = "#2AFFFFFF",
+        ["OmniXNavItemSelectedPressedColor"] = "#35FFFFFF",
         ["OmniXNavPaneBackgroundColor"] = "#FF161618",
         ["OmniXPageBackgroundColor"] = "#FF0F0F11",
         ["OmniXSidebarBackgroundColor"] = "#FF161618",
+        // --ink #f5f5f7 / --ink-dim #8a8a92
         ["OmniXTextPrimaryColor"] = "#FFF5F5F7",
         ["OmniXTextSecondaryColor"] = "#FF8A8A92",
         ["OmniXDialogBackgroundColor"] = "#FF1C1C20",
         ["OmniXDialogBorderColor"] = "#FF2A2A30",
-        ["SystemAccentColor"] = "#FFE63946",
-        ["SystemAccentColorLight1"] = "#FFEF6B77",
-        ["SystemAccentColorLight2"] = "#FFF49AA4",
-        ["SystemAccentColorLight3"] = "#FFF9C5CB",
-        ["SystemAccentColorDark1"] = "#FFC42B38",
-        ["SystemAccentColorDark2"] = "#FF9E202B",
-        ["SystemAccentColorDark3"] = "#FF7A1821",
-        ["AccentFillColorDefaultBrush"] = "#FFE63946",
-        ["AccentFillColorSecondaryBrush"] = "#E6E63946",
-        ["AccentFillColorTertiaryBrush"] = "#CCE63946",
-        ["AccentFillColorDisabledBrush"] = "#33E63946",
-        // 近黑底上用亮一点的红，纯 #E63946 当文字会糊
-        ["AccentTextFillColorPrimaryBrush"] = "#FFFF6B77",
-        ["AccentTextFillColorSecondaryBrush"] = "#FFFF6B77",
-        ["AccentTextFillColorTertiaryBrush"] = "#FFFF6B77"
+        ["SystemAccentColor"] = "#FFFFFFFF",
+        ["SystemAccentColorLight1"] = "#FFFFFFFF",
+        ["SystemAccentColorLight2"] = "#FFFFFFFF",
+        ["SystemAccentColorLight3"] = "#FFFFFFFF",
+        ["SystemAccentColorDark1"] = "#FFE0E0E5",
+        ["SystemAccentColorDark2"] = "#FFC0C0C8",
+        ["SystemAccentColorDark3"] = "#FFA0A0A8",
+        // 白底按钮，字用近黑，保证对比度
+        ["AccentFillColorDefaultBrush"] = "#FFFFFFFF",
+        ["AccentFillColorSecondaryBrush"] = "#E6FFFFFF",
+        ["AccentFillColorTertiaryBrush"] = "#CCFFFFFF",
+        ["AccentFillColorDisabledBrush"] = "#33FFFFFF",
+        ["AccentTextFillColorPrimaryBrush"] = "#FFFFFFFF",
+        ["AccentTextFillColorSecondaryBrush"] = "#FFFFFFFF",
+        ["AccentTextFillColorTertiaryBrush"] = "#FFFFFFFF"
     };
 }

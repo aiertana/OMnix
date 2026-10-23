@@ -1,38 +1,44 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using OMniX.WinUI.Contracts.Services;
 
 namespace OMniX.WinUI.Services;
 
 /// <summary>
-///     二开：UI 交互音效。参数直接照抄参考网页里的 playTapSound / playPopupSound：
-///     tap   = sine     960Hz → 1420Hz，0.12s
-///     popup = triangle 720Hz → 1080Hz，0.2s
-///     音量 0.18 指数衰减到 0.001，短促不刺耳。
-///
-///     不配任何音频文件，直接在内存里合成 22kHz 的 PCM，用 winmm 的 PlaySound 异步播。
+///     二开：UI 交互音效。
+///     tap   优先用 Assets/Sounds/click.wav，没有就现场合成一段（sine 960→1420，0.12s）
+///     popup 合成 triangle 720→1080，0.2s
 ///     简易版（MotionEnabled=false）自动静音，也可以在设置里单独关。
 /// </summary>
 public sealed class UiSoundService
 {
     public const string SoundEnabledKey = "App.UiSound";
 
-    // winmm
-    private const uint SndMemory = 0x0004;
+    // winmm 的 PlaySound 标志位
     private const uint SndAsync = 0x0001;
     private const uint SndNoDefault = 0x0002;
+    private const uint SndMemory = 0x0004;
+    private const uint SndFilename = 0x20000;
 
     private const int SampleRate = 22050;
+
     // 参考稿是 0.18，实测偏轻（0.12 秒的一个短音），提到 0.28 才听得清
     private const double Amplitude = 0.28;
-    private const double TailGain = 0.001;     // 参考稿衰减终点
+    private const double TailGain = 0.001;
 
     private readonly ILocalSettingsService _localSettingsService;
 
     private byte[]? _tapWave;
+    private IntPtr _tapPointer;
+    private GCHandle _tapPin;
+
     private byte[]? _popupWave;
-    private GCHandle _tapPinned;
-    private GCHandle _popupPinned;
+    private IntPtr _popupPointer;
+    private GCHandle _popupPin;
+
+    private string? _tapFile;
+
     private DateTimeOffset _lastPlay = DateTimeOffset.MinValue;
 
     public UiSoundService(ILocalSettingsService localSettingsService)
@@ -77,15 +83,12 @@ public sealed class UiSoundService
         EnabledChanged?.Invoke(this, value);
     }
 
-    /// <summary>点按钮：短促的"嗒"（sine 960→1420）</summary>
+    /// <summary>点按钮：短促的"嗒"</summary>
     public void PlayTap() => Play(false);
 
-    /// <summary>切页面 / 开弹窗：带一点厚度的"咚"（triangle 720→1080）</summary>
+    /// <summary>切页面 / 开弹窗：带一点厚度的"咚"</summary>
     public void PlayPopup() => Play(true);
 
-    /// <summary>
-    ///     没开音效、简易版、事件太密集都会直接返回，不做任何事。
-    /// </summary>
     private void Play(bool popup)
     {
         if (!Enabled)
@@ -104,10 +107,22 @@ public sealed class UiSoundService
 
         try
         {
-            var wave = popup ? EnsurePopupWave() : EnsureTapWave();
+            // 优先放现成的 wav 文件：文件由 winmm 自己读盘，不涉及托管内存，
+            // 异步播放期间不会被 GC 动到
+            if (!popup && ResolveTapFile() is { } file)
+            {
+                PlaySoundFile(file, IntPtr.Zero, SndFilename | SndAsync | SndNoDefault);
+                return;
+            }
 
-            // 内存里的波形要一直固定住，SND_ASYNC 会在别的线程上读它
-            PlaySound(wave, IntPtr.Zero, SndMemory | SndAsync | SndNoDefault);
+            var pointer = popup ? PopupPointer() : TapPointer();
+            if (pointer == IntPtr.Zero)
+                return;
+
+            // 传的是固定住的内存地址，不是 byte[] 本身 ——
+            // 传数组的话 marshaler 会临时复制一份，SND_ASYNC 还没读完就被回收了，
+            // 表现就是"大部分时候没声音，偶尔响一下"
+            PlaySoundMemory(pointer, IntPtr.Zero, SndMemory | SndAsync | SndNoDefault);
         }
         catch (Exception)
         {
@@ -115,33 +130,46 @@ public sealed class UiSoundService
         }
     }
 
-    private byte[] EnsureTapWave()
+    private string? ResolveTapFile()
     {
-        if (_tapWave is null)
-        {
-            // sine，960 → 1420Hz，0.08s 滑上去，总长 0.12s
-            _tapWave = BuildWave(false, 960, 1420, 0.08, 0.12);
-            _tapPinned = GCHandle.Alloc(_tapWave, GCHandleType.Pinned);
-        }
+        if (_tapFile is not null)
+            return _tapFile.Length == 0 ? null : _tapFile;
 
-        return _tapWave;
+        var path = Path.Combine(AppContext.BaseDirectory, "Assets", "Sounds", "click.wav");
+        _tapFile = File.Exists(path) ? path : string.Empty;
+
+        return _tapFile.Length == 0 ? null : _tapFile;
     }
 
-    private byte[] EnsurePopupWave()
+    private IntPtr TapPointer()
     {
-        if (_popupWave is null)
-        {
-            // triangle，720 → 1080Hz，0.15s 滑上去，总长 0.2s
-            _popupWave = BuildWave(true, 720, 1080, 0.15, 0.2);
-            _popupPinned = GCHandle.Alloc(_popupWave, GCHandleType.Pinned);
-        }
+        if (_tapPointer != IntPtr.Zero)
+            return _tapPointer;
 
-        return _popupWave;
+        // sine，960 → 1420Hz，0.08s 滑上去，总长 0.12s
+        _tapWave ??= BuildWave(false, 960, 1420, 0.08, 0.12);
+        _tapPin = GCHandle.Alloc(_tapWave, GCHandleType.Pinned);
+        _tapPointer = _tapPin.AddrOfPinnedObject();
+
+        return _tapPointer;
+    }
+
+    private IntPtr PopupPointer()
+    {
+        if (_popupPointer != IntPtr.Zero)
+            return _popupPointer;
+
+        // triangle，720 → 1080Hz，0.15s 滑上去，总长 0.2s
+        _popupWave ??= BuildWave(true, 720, 1080, 0.15, 0.2);
+        _popupPin = GCHandle.Alloc(_popupWave, GCHandleType.Pinned);
+        _popupPointer = _popupPin.AddrOfPinnedObject();
+
+        return _popupPointer;
     }
 
     /// <summary>
-    ///     合成一段 16bit 单声道 PCM。频率按指数从 startHz 滑到 endHz（参考稿的
-    ///     exponentialRampToValueAtTime），音量同样指数衰减。
+    ///     合成一段 16bit 单声道 PCM。频率按指数从 startHz 滑到 endHz，
+    ///     音量同样指数衰减。
     /// </summary>
     private static byte[] BuildWave(bool triangle, double startHz, double endHz,
         double rampSeconds, double totalSeconds)
@@ -217,5 +245,8 @@ public sealed class UiSoundService
     }
 
     [DllImport("winmm.dll", EntryPoint = "PlaySoundW", CharSet = CharSet.Unicode)]
-    private static extern bool PlaySound(byte[] pszSound, IntPtr hmod, uint fdwSound);
+    private static extern bool PlaySoundFile(string pszSound, IntPtr hmod, uint fdwSound);
+
+    [DllImport("winmm.dll", EntryPoint = "PlaySoundW")]
+    private static extern bool PlaySoundMemory(IntPtr pszSound, IntPtr hmod, uint fdwSound);
 }
