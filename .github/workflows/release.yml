@@ -149,33 +149,55 @@ jobs:
           $cur = "v$ver"
           Write-Output "当前版本: $cur"
 
+          function Get-PrevPackage([string]$tag) {
+              $v   = $tag.TrimStart('v')
+              $dir = Join-Path 'Releases' "OMniX$v"
+
+              if (Test-Path (Join-Path $dir 'OMniX')) {
+                  Write-Output "已有 $tag，跳过下载"
+                  return
+              }
+
+              New-Item -ItemType Directory -Force -Path $dir | Out-Null
+
+              gh release download $tag --dir $dir --pattern 'OMniX*.zip' --clobber 2>$null
+
+              $zip = Get-ChildItem $dir -Filter 'OMniX*.zip' -ErrorAction SilentlyContinue |
+                     Where-Object { $_.Name -notlike '*-patch-*' } |
+                     Select-Object -First 1
+
+              if (-not $zip) {
+                  Write-Output "拿不到 $tag 的整包，跳过"
+                  return
+              }
+
+              Expand-Archive $zip.FullName -DestinationPath $dir -Force
+              Write-Output "$tag 已就位：$($zip.Name)"
+          }
+
+          # 二开：mkrelease.ps1 现在按「固定基准版本」算补丁（$PatchBaseVersion），
+          # 补丁里放的是「基准 → 新版本」的全部变化，基准及之后的版本都能直接装。
+          # CI 是全新 checkout，本地那个 Releases\OMniX1.1.7\ 不存在，
+          # 少了它会退回「上一版」逻辑，出的补丁又变成只对上一版有效 ——
+          # 1.1.7 想一步升到 1.1.9 就又升不上来了。所以基准版也必须拉下来。
+          #
+          # 要改基准版本时，三处一起改：
+          #   mkrelease.ps1 的 $PatchBaseVersion
+          #   MainPageVM.cs 的 PatchBaseVersion
+          #   下面这个 Get-PrevPackage 'v1.1.7'
+          Get-PrevPackage 'v1.1.7'
+
+          # 上一版：基准版缺失时的退路
           $prevTag = gh release list --limit 10 --json tagName -q '.[].tagName' |
                      Where-Object { $_ -and $_ -ne $cur } |
                      Select-Object -First 1
 
-          if (-not $prevTag) {
+          if ($prevTag) {
+              Get-PrevPackage $prevTag.Trim()
+          }
+          else {
               Write-Output "没有上一版，这次只出整包"
-              exit 0
           }
-
-          $prevVer = $prevTag.TrimStart('v')
-          $dir     = Join-Path 'Releases' "OMniX$prevVer"
-          New-Item -ItemType Directory -Force -Path $dir | Out-Null
-          Write-Output "上一版: $prevTag  ->  $dir"
-
-          gh release download $prevTag --dir $dir --pattern 'OMniX*.zip' --clobber
-
-          $zip = Get-ChildItem $dir -Filter 'OMniX*.zip' |
-                 Where-Object { $_.Name -notlike '*-patch-*' } |
-                 Select-Object -First 1
-
-          if (-not $zip) {
-              Write-Output "上一个 Release 里没有整包，跳过补丁"
-              exit 0
-          }
-
-          Expand-Archive $zip.FullName -DestinationPath $dir -Force
-          Write-Output "上一版已就位：$($zip.Name)"
 
       - name: 出包
         shell: pwsh
