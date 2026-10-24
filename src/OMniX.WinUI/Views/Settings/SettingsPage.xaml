@@ -649,10 +649,41 @@
                             </StackPanel>
                         </StackPanel>
 
+                        <!--  二开：手动检查更新。后台每两小时会自己查一次，但用户想主动确认时总得有地方点  -->
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Button AutomationProperties.Name="检查更新" Command="{x:Bind ViewModel.CheckUpdateCommand}">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <FontIcon VerticalAlignment="Center" FontSize="14" Glyph="&#xE895;" />
+                                    <TextBlock VerticalAlignment="Center" Text="检查更新" />
+                                </StackPanel>
+                            </Button>
+
+                            <ProgressRing
+                                Width="16"
+                                Height="16"
+                                VerticalAlignment="Center"
+                                IsActive="{x:Bind ViewModel.IsCheckingUpdate, Mode=OneWay}" />
+
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{x:Bind ViewModel.UpdateCheckMessage, Mode=OneWay}" />
+                        </StackPanel>
+
                         <StackPanel Orientation="Horizontal" Spacing="8" Visibility="{x:Bind ViewModel.ShowNewVersionAvailable, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}">
                             <FontIcon VerticalAlignment="Center" FontSize="14" Glyph="&#xE896;" />
                             <TextBlock VerticalAlignment="Center" Text="有新版本：" />
                             <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.LatestVersion, Mode=OneWay}" />
+
+                            <!--  二开：这次是补丁还是新版本  -->
+                            <Border
+                                Padding="8,1"
+                                VerticalAlignment="Center"
+                                Background="{ThemeResource ControlAltFillColorSecondaryBrush}"
+                                CornerRadius="8">
+                                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind ViewModel.UpdateKindText, Mode=OneWay}" />
+                            </Border>
+
                             <controls:LinkButton Link="https://github.com/aiertana/OMnix/releases/latest" Text="看看更新了什么" />
                         </StackPanel>
 
@@ -661,8 +692,8 @@
                                 <Button.Flyout>
                                     <Flyout ShouldConstrainToRootBounds="False">
                                         <StackPanel Spacing="8">
-                                            <TextBlock TextWrapping="WrapWholeWords" Text="OMniX 将退出并开始更新，是否继续？" />
-                                            <Button Command="{x:Bind ViewModel.UpdateOmniXCommand}" Content="是，更新 OMniX" />
+                                            <TextBlock TextWrapping="WrapWholeWords" Text="OMniX 会退出，由自带的更新器下载新版本、自动替换文件，完成后自己重新打开。这期间别关机。" />
+                                            <Button Command="{x:Bind ViewModel.UpdateOmniXCommand}" Content="是，自动更新并重启" />
                                         </StackPanel>
                                     </Flyout>
                                 </Button.Flyout>

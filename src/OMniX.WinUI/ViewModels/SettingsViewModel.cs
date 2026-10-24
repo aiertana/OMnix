@@ -72,6 +72,15 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty] private string _latestVersion = string.Empty;
     [ObservableProperty] private bool _showNewVersionAvailable = false;
 
+    /// <summary>二开：正在检查更新（按钮旁边转圈用）</summary>
+    [ObservableProperty] private bool _isCheckingUpdate;
+
+    /// <summary>二开：检查完给一句话，「已经是最新版本」/「检查失败…」</summary>
+    [ObservableProperty] private string _updateCheckMessage = string.Empty;
+
+    /// <summary>二开：这次更新属于「补丁」还是「新版本」</summary>
+    [ObservableProperty] private string _updateKindText = string.Empty;
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(IgnoreNewVersionCommand))]
     private bool _CanIgnoreUpdate = false;
@@ -800,6 +809,59 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             SelectedLanguage = currentLanguage;
 
             await RestartAppAsync();
+        }
+    }
+
+    /// <summary>
+    ///     二开：设置页「检查更新」—— 点一下就查 GitHub。
+    ///     有新版本时顺便判断是补丁（只动修订号）还是新版本（次版本号变了）。
+    /// </summary>
+    [RelayCommand]
+    private async Task CheckUpdateAsync()
+    {
+        if (IsCheckingUpdate)
+            return;
+
+        IsCheckingUpdate = true;
+        UpdateCheckMessage = "正在检查…";
+
+        try
+        {
+            var (latest, hasUpdate) = await _updateChecker.CheckNowAsync();
+
+            if (latest is null)
+            {
+                UpdateCheckMessage = "检查失败：连不上 GitHub";
+                return;
+            }
+
+            LatestVersion = VersionFormatter(latest);
+
+            if (!hasUpdate)
+            {
+                ShowNewVersionAvailable = false;
+                UpdateCheckMessage = "已经是最新版本";
+                return;
+            }
+
+            var current = _updateChecker.CurrentVersion;
+
+            UpdateKindText = latest.Major != current.Major || latest.Minor != current.Minor
+                ? "新版本"
+                : "补丁";
+
+            ShowNewVersionAvailable = true;
+            CanIgnoreUpdate = latest != _updateChecker.IgnoredVersion;
+            UpdateCheckMessage = "发现" + UpdateKindText + " " + VersionFormatter(latest);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, "检查更新失败");
+            UpdateCheckMessage = "检查失败：" + e.Message;
+        }
+        finally
+        {
+            IsCheckingUpdate = false;
         }
     }
 

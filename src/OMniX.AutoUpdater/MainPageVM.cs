@@ -361,7 +361,23 @@ public partial class MainPageVM : ObservableRecipient
 
         Log("Copying new files...", $"Path: {_installedOmniXFolder.FullName}");
 
-        await Task.Run(() => { CopyFilesRecursively(_extractedOmniXFolder, _installedOmniXFolder); });
+        await Task.Run(() =>
+        {
+            // 二开：新压缩包里也带着更新器自己，但它此刻正在运行、exe 被锁住。
+            // 直接覆盖会抛 IOException，把整个更新流程搞挂（前面删文件的循环已经跳过它了，
+            // 复制这里原来没跳过，两边不一致）。保持旧更新器不动即可 ——
+            // 真需要换更新器时，主程序启动会从 OMniX - Auto Updater_New 里换。
+            foreach (var dir in _extractedOmniXFolder.GetDirectories())
+            {
+                if (dir.Name.StartsWith(autoUpdaterFolder.Name, StringComparison.CurrentCultureIgnoreCase))
+                    continue;
+
+                CopyFilesRecursively(dir, _installedOmniXFolder.CreateSubdirectory(dir.Name));
+            }
+
+            foreach (var file in _extractedOmniXFolder.GetFiles())
+                file.CopyTo(Path.Combine(_installedOmniXFolder.FullName, file.Name), true);
+        });
 
         Log("OMniX updated successfully");
     }

@@ -124,6 +124,35 @@ public sealed class UpdateChecker
         }
     }
 
+    /// <summary>
+    ///     二开：设置页「检查更新」按钮用 —— 立刻查一次，不用等后台那个两小时循环。
+    ///     返回 (最新版本, 是否真的可以更新)。连不上 GitHub 时 Latest 为 null。
+    /// </summary>
+    public async Task<(Version? Latest, bool HasUpdate)> CheckNowAsync(
+        CancellationToken cancellationToken = default)
+    {
+        if (DisableChecker)
+            return (null, false);
+
+        var latest = await GetLatestVersionAsync(cancellationToken);
+
+        if (latest is null)
+            return (null, false);
+
+        LatestRetrievedVersion = latest;
+
+        // 已经是最新，或者比它还新（本地跑的是开发版）
+        if (CurrentVersion >= latest)
+            return (latest, false);
+
+        // 用户点过「忽略这次」的，不再提示，但版本号照样返回，界面能显示「已是最新」
+        if (_ignoredVersion is not null && _ignoredVersion >= latest)
+            return (latest, false);
+
+        OnNewVersionAvailable(latest);
+        return (latest, true);
+    }
+
     private async Task<Version?> GetLatestVersionAsync(CancellationToken cancellationToken)
     {
         using var httpClient = CreateHttpClient();
