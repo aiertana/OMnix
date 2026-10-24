@@ -16,7 +16,7 @@
 		<WindowsPackageType>None</WindowsPackageType>
 		<BaseOutputPath></BaseOutputPath>
 		<!-- x-release-please-start-version -->
-		<VersionPrefix>1.1.1</VersionPrefix>
+		<VersionPrefix>1.1.2</VersionPrefix>
 		<!-- x-release-please-end -->
 
 		<!-- 二开：署名，会写进 exe 的文件属性(详细信息页) -->
@@ -51,7 +51,7 @@
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
 		<PackageReference Include="OneOf" Version="3.0.271" />
 		<PackageReference Include="Polly" Version="8.5.2" />
-		<PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
+		<PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.2" />
 		<PackageReference Include="Polly.Extensions" Version="8.5.2" />
 		<PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
 		<PackageReference Include="Polly.RateLimiting" Version="8.5.2" />

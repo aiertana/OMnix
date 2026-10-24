@@ -60,7 +60,15 @@ public sealed class ModPresetHandlerService(
     {
         try
         {
-            return await InternalModPresetAsync(presetName, cancellationToken).ConfigureAwait(false);
+            // 二开：整段丢到线程池。
+            // 应用一个预设要动几十上百个 Mod —— 每个都是一次目录改名（启用/禁用就是改名字）
+            // 加一次 ini 读写，作者这边 127 个 Mod，实测要 5 秒往上。
+            // 而 ApplyPresetAsync 开头那句 `await LockAsync()` 经常是「立即完成」的：
+            // 立即完成的 await 根本没有切换线程，.ConfigureAwait(false) 也不起作用，
+            // 于是整个循环老老实实压在 UI 线程上，界面就冻住了 —— 也就是他说的「卡死」。
+            // 内部只碰文件和通知（通知自己会排队到 UI 线程），不涉及任何界面对象，可以放心扔过去。
+            return await Task.Run(() => InternalModPresetAsync(presetName, cancellationToken), cancellationToken)
+                .ConfigureAwait(false);
         }
         catch (Exception e)
         {
@@ -85,8 +93,12 @@ public sealed class ModPresetHandlerService(
 
         if (!preferencesResult)
         {
-            _notificationManager.ShowNotification("没能把 Mod 设置写进 3Dmigoto 的 user ini",
-                "See logs for details", null);
+            // 二开：原来只说「See logs for details」，用户根本不知道该干嘛。
+            // 九成情况是 d3dx_user.ini 还没生成 —— 游戏没跑过一次就没有这个文件。
+            _notificationManager.ShowNotification(
+                "Mod 的按键等设置这次没写进游戏",
+                "多半是 3DMigoto 的 d3dx_user.ini 还没生成（游戏运行过一次才会有）。Mod 的开关状态已经改好了，不影响使用。",
+                TimeSpan.FromSeconds(8));
         }
 
 
@@ -95,8 +107,8 @@ public sealed class ModPresetHandlerService(
 
         var simpleNotification = new SimpleNotification
         (
-            "Mod preset applied",
-            $"Mod preset {modPreset.Name} applied successfully",
+            "Mod 预设已应用",
+            $"「{modPreset.Name}」已经生效",
             TimeSpan.FromSeconds(5)
         );
 
