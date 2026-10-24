@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "OMniX.WinUI (Unpackaged)": {
+      "commandName": "Project"
+    },
+    "OMniX Start ZZZ": {
+      "commandName": "Project",
+      "commandLineArgs": "--game zzz --switch"
+    }
+  }
+}

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="OMniX.WinUI.Views.PresetPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:OMniX.WinUI.Views.Controls"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:OMniX.WinUI.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:OMniX.WinUI.ViewModels"
+    xmlns:xaml="using:OMniX.WinUI.Helpers.Xaml"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <xaml:BoolInverterConverter x:Name="BoolInverter" />
+
+
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+
+            <Grid Grid.Column="1">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Text="自动同步未开启！修改后记得按 F10 手动重新加载 3DMigoto 配置"
+                        Visibility="{x:Bind ViewModel.AutoSync3DMigotoConfigIsDisabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                    <Button Click="ButtonBase_OnClick">
+                        <Button.Content>
+                            <FontIcon Glyph="&#xE946;" />
+                        </Button.Content>
+                    </Button>
+                    <Grid MinWidth="32">
+                        <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
+                    </Grid>
+                </StackPanel>
+
+            </Grid>
+
+            <TextBlock
+                Grid.Column="0"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Mod 预设与偏好设置"
+                TextWrapping="NoWrap" />
+        </Grid>
+
+
+
+
+        <Grid Grid.Row="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid ColumnSpacing="30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel HorizontalAlignment="Left">
+                    <TextBox
+                        MinWidth="345"
+                        HorizontalAlignment="Left"
+                        Header="新预设名称"
+                        IsEnabled="{x:Bind ViewModel.IsNotBusy, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.NewPresetNameInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <StackPanel
+                        Margin="0,8"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button Command="{x:Bind ViewModel.CreatePresetCommand}" Content="保存当前 Mod 偏好并创建预设" />
+                        <CheckBox
+                            Content="创建为空预设"
+                            IsChecked="{x:Bind ViewModel.CreateEmptyPresetInput, Mode=TwoWay}"
+                            IsEnabled="{x:Bind ViewModel.IsNotBusy, Mode=OneWay}"
+                            ToolTipService.ToolTip="勾选后，新预设里不会启用任何 Mod" />
+
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid Grid.Column="1" HorizontalAlignment="Right">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+
+                    <StackPanel
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Spacing="16">
+                        <CheckBox
+                            Command="{x:Bind ViewModel.ToggleAutoSyncCommand}"
+                            Content="切换预设时自动同步 Mod 偏好"
+                            IsChecked="{x:Bind ViewModel.AutoSync3DMigotoConfig, Mode=OneWay}"
+                            ToolTipService.ToolTip="勾选后，创建预设和切换预设时 OMniX 会自动同步偏好设置" />
+                        <Button
+                            Command="{x:Bind ViewModel.StartElevatorCommand}"
+                            Content="启动 Elevator…"
+                            IsEnabled="{x:Bind ViewModel.ElevatorService.CanStartElevator, Mode=OneWay}" />
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Row="1"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Spacing="16">
+                        <Button
+                            Command="{x:Bind ViewModel.SaveActivePreferencesCommand}"
+                            Content="保存当前 Mod 偏好（按键）到 Mod"
+                            ToolTipService.ToolTip="从 d3dx_user.ini 读取当前启用 Mod 的偏好，存进各自的 .JASM_Config.json"
+                            Visibility="{x:Bind ViewModel.ShowManualControls, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                        <Button
+                            Command="{x:Bind ViewModel.ApplySavedModPreferencesCommand}"
+                            Content="应用已保存的 Mod 偏好（按键）"
+                            ToolTipService.ToolTip="从 .JASM_Config.json 读取偏好，写进 d3dx_user.ini 让 3DMigoto 生效"
+                            Visibility="{x:Bind ViewModel.ShowManualControls, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                        <CheckBox
+                            Content="显示手动控制"
+                            IsChecked="{x:Bind ViewModel.ShowManualControls, Mode=TwoWay}"
+                            ToolTipService.ToolTip="勾选后可以自己手动同步偏好，不用让 Elevator 代劳" />
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Grid>
+
+
+            <ListView
+                x:Name="PresetsList"
+                Grid.Row="1"
+                Padding="0,16"
+                AllowDrop="True"
+                CanDragItems="True"
+                CanReorderItems="True"
+                IsEnabled="{x:Bind ViewModel.IsNotBusy, Mode=OneWay}"
+                ItemsSource="{x:Bind ViewModel.Presets}"
+                SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:ModPresetVm">
+                        <Grid
+                            Margin="0,8"
+                            Padding="8"
+                            BorderBrush="{ThemeResource AccentFillColorSelectedTextBackgroundBrush}"
+                            BorderThickness="2"
+                            ColumnSpacing="16"
+                            CornerRadius="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid
+                                x:Name="DragHandleIcon"
+                                PointerEntered="DragHandleIcon_OnPointerEntered"
+                                PointerExited="DragHandleIcon_OnPointerExited">
+                                <FontIcon Glyph="&#xE76F;" />
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+                                    <Grid>
+                                        <controls:EditableTextBlock
+                                            MinWidth="200"
+                                            Margin="-12,0,0,0"
+                                            IsEditMode="{x:Bind IsEditingName, Mode=OneWay}"
+                                            KeyDown="UIElement_OnKeyDown"
+                                            Text="{x:Bind NameInput, Mode=TwoWay}" />
+                                    </Grid>
+
+
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <TextBlock Text="已启用 Mod 数：" />
+                                        <TextBlock Text="{x:Bind EnabledModsCount, Mode=OneWay}" />
+
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <TextBlock Text="创建时间：" />
+                                        <TextBlock Text="{x:Bind CreatedAt, Mode=OneWay}" />
+                                    </StackPanel>
+
+                                    <Button
+                                        Command="{x:Bind NavigateToPresetDetailsCommand}"
+                                        CommandParameter="{Binding}"
+                                        Content="查看预设详情" />
+                                </StackPanel>
+
+                                <StackPanel
+                                    Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    Spacing="16">
+                                    <Button Content="应用预设" ToolTipService.ToolTip="启用这个预设里的所有 Mod，并把预设里的偏好写回 Mod">
+                                        <Button.Flyout>
+                                            <Flyout Placement="Left">
+                                                <StackPanel>
+                                                    <Button
+                                                        Command="{x:Bind ApplyPresetCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Content="确认" />
+                                                </StackPanel>
+                                            </Flyout>
+                                        </Button.Flyout>
+
+
+                                    </Button>
+                                    <DropDownButton AutomationProperties.Name="更多操作">
+                                        <DropDownButton.Content>
+                                            <FontIcon Glyph="&#xE712;" />
+                                        </DropDownButton.Content>
+                                        <DropDownButton.Flyout>
+                                            <MenuFlyout Placement="Bottom">
+                                                <ToggleMenuFlyoutItem
+                                                    Command="{x:Bind ToggleReadOnlyCommand}"
+                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                    IsChecked="{x:Bind IsReadOnly, Mode=OneWay}"
+                                                    Text="只读">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xE736;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </ToggleMenuFlyoutItem>
+                                                <MenuFlyoutItem
+                                                    Command="{x:Bind StartEditingNameCommand}"
+                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                    Text="{x:Bind RenameButtonText, Mode=OneWay}">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xE8AC;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                                <MenuFlyoutItem
+                                                    Command="{x:Bind DuplicatePresetCommand}"
+                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                    Text="复制">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xEA35;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                                <MenuFlyoutSeparator Height="10" />
+                                                <MenuFlyoutItem
+                                                    Command="{x:Bind DeletePresetCommand}"
+                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                    Text="删除"
+                                                    ToolTipService.ToolTip="永久删除这个预设">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xE74D;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                            </MenuFlyout>
+                                        </DropDownButton.Flyout>
+                                    </DropDownButton>
+                                </StackPanel>
+
+                            </Grid>
+
+                        </Grid>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Grid>
+
+        <Grid
+            Grid.Row="2"
+            Margin="0,0,0,4"
+            HorizontalAlignment="Left">
+
+            <StackPanel Orientation="Horizontal" Spacing="32">
+                <Button
+                    Command="{x:Bind ViewModel.RandomizeModsCommand}"
+                    Content="随机 Mod"
+                    ToolTipService.ToolTip="打开一个带说明的弹窗" />
+
+                <Button Content="重置 Mod 偏好" ToolTipService.ToolTip="清空存在 Mod 的 .JASM_ModConfig.json 里的偏好">
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <TextBlock Text="重置已保存的 Mod 偏好" />
+                                <CheckBox Content="只重置已启用的 Mod" IsChecked="{x:Bind ViewModel.ResetOnlyEnabledMods, Mode=TwoWay}" />
+                                <CheckBox Content="同时清空 3DMigoto 的 user.ini" IsChecked="{x:Bind ViewModel.AlsoReset3DmigotoConfig, Mode=TwoWay}" />
+                                <Button
+                                    HorizontalAlignment="Center"
+                                    Command="{x:Bind ViewModel.ResetModPreferencesCommand}"
+                                    Content="确认" />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+
+            </StackPanel>
+
+        </Grid>
+
+    </Grid>
+</Page>

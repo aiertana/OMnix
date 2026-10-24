@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWinUI>false</UseWinUI>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>启动OMniX</AssemblyName>
+    <RootNamespace>OMniX.Launcher</RootNamespace>
+    <ApplicationIcon>OMniX.ico</ApplicationIcon>
+    <Version>1.0.0</Version>
+    <Authors>是湫</Authors>
+    <Company>是湫</Company>
+    <Product>OMniX</Product>
+    <Copyright>Copyright © 2026 是湫</Copyright>
+    <Description>OMniX 启动器，by 是湫</Description>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+  </PropertyGroup>
+
+</Project>

@@ -24,7 +24,7 @@ OMniX **完全免费、开源**。没有会员版，没有激活码，也没有�
 
 其它渠道拿到的安装包，请不要用。
 
-<img src="OMniX/Assets/About/group-qr.jpg" width="200" alt="交流群二维码" />
+<img src="src/OMniX.WinUI/Assets/About/group-qr.jpg" width="200" alt="交流群二维码" />
 
 ---
 
@@ -78,28 +78,59 @@ Mod 文件本身**不在**这里，在 XXMI Launcher 的 `WWMI\Mods` 下。
 
 ---
 
-## 源码
+## 源码与构建
 
-这个仓库放的是**编译好的程序和文档**，源码不在这里。
+这个仓库放的是**源码**。不想自己编译的话，打好的程序去
+[Releases](https://github.com/aiertana/OMnix/releases) 下载 `OMniX1.0.zip`，解压即用。
 
-需要源码的话，在交流群或者 GitHub 上找作者要就行 —— 按 GPL-3.0 的约定，
-拿到这个程序的人本来就有权向作者索取对应的源代码。
+### 需要什么
 
-仓库里现在有什么：
+- Windows 10 2004 及以上（内部版本 10.0.19041）
+- [Visual Studio 2022](https://visualstudio.microsoft.com/)，勾选「.NET 桌面开发」
+  和「Windows 应用开发」两个工作负载
+- **C++ 桌面开发组件**：提权辅助 `Elevator` 是 C++ 项目，没装这个工作负载编译会失败
+
+### 编译运行
+
+Visual Studio 打开 `src/OMniX.sln`，把 `OMniX.WinUI` 设为启动项目，平台选 **x64**，按 F5。
+
+命令行也行：
+
+```bat
+dotnet build src\OMniX.WinUI\OMniX.WinUI.csproj -c Debug -p:Platform=x64
+```
+
+### 出发布包（自包含，给别人的机器上不用装 .NET）
+
+```bat
+dotnet publish src\OMniX.WinUI\OMniX.WinUI.csproj -c Release -p:Platform=x64 /p:PublishProfile=FolderProfileSelfContained
+```
+
+产物在 `src\OMniX.WinUI\bin\Release\Publish\`。把它整个拷出来，
+配上一个无窗口启动器就是 Release 里那个包。
+
+### 仓库里有什么
 
 ```
 OMniX/
-├─ OMniX/            编译好的程序，自带 .NET 运行时
-├─ OMniX娘/          表情包
-├─ Images/           界面预览图
-├─ 启动OMniX.exe     无窗口启动器，双击即用
-├─ README.md         项目首页
-├─ README_EN.md      英文说明
-├─ DISCLAIMER.md     免责声明
-├─ LICENSE           GPL-3.0
-├─ 使用说明.txt      快速上手
-└─ 使用说明书.md     完整图文说明
+├─ src/                   源码
+│  ├─ OMniX.WinUI/           主程序（WinUI 3 / .NET 9），界面全在这里
+│  ├─ OMniX.Core/            Mod 处理、GameBanana 客户端、游戏服务
+│  ├─ OMniX.AutoUpdater/     自动更新器
+│  ├─ OMniXLauncher/         启动器源码
+│  ├─ Elevator/              提权辅助（C++）
+│  └─ GenshinGenerator/  Tools/  UpdateGenshinAssets/   生成 asset 用的小工具
+├─ Images/                界面预览图
+├─ README.md              项目首页
+├─ README_EN.md           英文说明
+├─ DISCLAIMER.md          免责声明
+├─ LICENSE                GPL-3.0
+├─ 使用说明.txt           快速上手
+└─ 使用说明书.md          完整图文说明
 ```
+
+> **注意**：`src/` 之外的其它目录（`OMniX\` 编译产物、打包素材、本地截图等）只存在于本地，
+> 不在版本控制里，也不进镜像。
 
 ---
 
@@ -109,9 +140,9 @@ OMniX/
 软件本身一直免费，以后也不会收费。
 
 <p>
-  <img src="OMniX/Assets/About/wechat-pay.png" width="170" alt="微信" />
+  <img src="src/OMniX.WinUI/Assets/About/wechat-pay.png" width="170" alt="微信" />
   &nbsp;&nbsp;&nbsp;
-  <img src="OMniX/Assets/About/alipay-pay.png" width="170" alt="支付宝" />
+  <img src="src/OMniX.WinUI/Assets/About/alipay-pay.png" width="170" alt="支付宝" />
 </p>
 
 ---

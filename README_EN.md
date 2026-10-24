@@ -25,7 +25,7 @@ There are only two legitimate places to get it:
 
 Anything downloaded elsewhere should not be used.
 
-<img src="OMniX/Assets/About/group-qr.jpg" width="200" alt="Community QR code" />
+<img src="src/OMniX.WinUI/Assets/About/group-qr.jpg" width="200" alt="Community QR code" />
 
 *(The group chat is Chinese-language.)*
 
@@ -80,29 +80,59 @@ C:\Users\<user>\AppData\Local\OMniX\
 
 ---
 
-## Source code
+## Source code and building
 
-This repository ships the **compiled program and the docs only** — the sources
-are not published here.
+This repository holds the **source code**. If you just want the app, grab `OMniX1.0.zip`
+from [Releases](https://github.com/aiertana/OMnix/releases) and unzip it.
 
-Need them? Just ask in the community group or open an issue. Under GPL-3.0, anyone
-who received the binary is entitled to the corresponding source from the author anyway.
+### Prerequisites
 
-What's in this repo:
+- Windows 10 2004 or newer (build 10.0.19041)
+- [Visual Studio 2022](https://visualstudio.microsoft.com/) with the **.NET desktop development**
+  and **Windows application development** workloads
+- The **Desktop development with C++** workload as well: `Elevator` is a C++ project,
+  the solution won't build without it
+
+### Build and run
+
+Open `src/OMniX.sln`, set `OMniX.WinUI` as the startup project, pick the **x64** platform, hit F5.
+
+Command line works too:
+
+```bat
+dotnet build src\OMniX.WinUI\OMniX.WinUI.csproj -c Debug -p:Platform=x64
+```
+
+### Produce a release build (self-contained, no .NET needed on the target machine)
+
+```bat
+dotnet publish src\OMniX.WinUI\OMniX.WinUI.csproj -c Release -p:Platform=x64 /p:PublishProfile=FolderProfileSelfContained
+```
+
+Output lands in `src\OMniX.WinUI\bin\Release\Publish\`.
+
+### What's in this repo
 
 ```
 OMniX/
-├─ OMniX/            compiled program, bundles the .NET runtime
-├─ OMniX娘/          sticker pack
-├─ Images/           UI preview screenshot
-├─ 启动OMniX.exe     silent launcher — double-click and go
-├─ README.md         this page
-├─ README_EN.md      English version
-├─ DISCLAIMER.md     disclaimer
-├─ LICENSE           GPL-3.0
-├─ 使用说明.txt      quick start
-└─ 使用说明书.md     full walkthrough (Chinese)
+├─ src/                   source code
+│  ├─ OMniX.WinUI/           main app (WinUI 3 / .NET 9), all UI lives here
+│  ├─ OMniX.Core/            mod handling, GameBanana client, game services
+│  ├─ OMniX.AutoUpdater/     auto updater
+│  ├─ OMniXLauncher/         launcher source
+│  ├─ Elevator/              elevation helper (C++)
+│  └─ GenshinGenerator/  Tools/  UpdateGenshinAssets/    asset generation helpers
+├─ Images/                UI preview screenshot
+├─ README.md              this page
+├─ README_EN.md           English version
+├─ DISCLAIMER.md          disclaimer
+├─ LICENSE                GPL-3.0
+├─ 使用说明.txt           quick start (Chinese)
+└─ 使用说明书.md          full walkthrough (Chinese)
 ```
+
+> **Note:** anything outside `src/` — build output, packaging assets, local screenshots —
+> stays local. It isn't tracked and isn't in the mirror.
 
 ---
 
@@ -112,9 +142,9 @@ The app is and will stay free. If you find it useful and feel like buying me a b
 the QR codes are entirely optional — nothing is locked behind them.
 
 <p>
-  <img src="OMniX/Assets/About/wechat-pay.png" width="170" alt="WeChat Pay" />
+  <img src="src/OMniX.WinUI/Assets/About/wechat-pay.png" width="170" alt="WeChat Pay" />
   &nbsp;&nbsp;&nbsp;
-  <img src="OMniX/Assets/About/alipay-pay.png" width="170" alt="Alipay" />
+  <img src="src/OMniX.WinUI/Assets/About/alipay-pay.png" width="170" alt="Alipay" />
 </p>
 
 ---
