@@ -138,6 +138,13 @@ public partial class MainPageVM : ObservableRecipient
         FinishedSuccessfully = true;
     }
 
+    /// <summary>
+    ///     统一按三位写版本号。Version 从 "1.0" 造出来时 Build 是 -1，
+    ///     直接 ToString() 会是 "1.0"，跟文件名里的 "1.0.0" 对不上。
+    /// </summary>
+    private static string VersionText(Version version) =>
+        $"{version.Major}.{version.Minor}.{Math.Max(version.Build, 0)}";
+
     private async Task<GitHubRelease?> IsNewerVersionAvailable(CancellationToken cancellationToken)
     {
         var newestVersionFound = await GetLatestVersionAsync(cancellationToken);
@@ -157,12 +164,24 @@ public partial class MainPageVM : ObservableRecipient
             return null;
         }
 
-        // 二开：附件名是 OMniX<版本>.zip（OMniX1.0.1.zip 这种），中间没有下划线。
-        // 原来写的是 "OMniX_" 前缀，永远匹配不上，于是每次都报
-        // 「找不到 OMniX 压缩包」，看着像作者忘了传附件，其实是前缀写错了。
-        var getOmniXAsset = newestVersionFound?.assets?.FirstOrDefault(a => a.name?.StartsWith("OMniX") ?? false);
+        // 二开：附件有两种 ——
+        //   增量补丁  OMniX1.0.3-patch-1.0.2.zip   只含相对当前版本变过的文件，通常几 MB
+        //   整包      OMniX1.0.3.zip               一百多 MB，供新装或跨多版本时用
+        // 优先挑补丁：下载快、也不容易下到一半断掉。
+        // （附件名是 OMniX<版本>.zip，中间没有下划线 —— 原来是按 "OMniX_" 找的，
+        //   永远匹配不上，于是每次都报「找不到 OMniX 压缩包」。）
+        var assets = newestVersionFound?.assets ?? [];
 
-        if (getOmniXAsset?.browser_download_url is null)
+        var patchName = $"OMniX{VersionText(release.Version)}-patch-{VersionText(InstalledVersion)}.zip";
+
+        var asset = assets.FirstOrDefault(a =>
+                        string.Equals(a.name, patchName, StringComparison.OrdinalIgnoreCase)) ??
+                    assets.FirstOrDefault(a =>
+                        a.name is not null &&
+                        a.name.StartsWith("OMniX", StringComparison.OrdinalIgnoreCase) &&
+                        !a.name.Contains("-patch-", StringComparison.OrdinalIgnoreCase));
+
+        if (asset?.browser_download_url is null)
         {
             Stop(
                 "Could not find OMniX archive in the newest release on GitHub. This may be due to the developer having to manually upload the zip which can take a few minutes. " +
@@ -170,9 +189,15 @@ public partial class MainPageVM : ObservableRecipient
             return null;
         }
 
-        release.DownloadUrl = new Uri(getOmniXAsset.browser_download_url);
+        var isPatch = string.Equals(asset.name, patchName, StringComparison.OrdinalIgnoreCase);
+
+        Log(isPatch
+            ? $"Found incremental patch {VersionText(InstalledVersion)} -> {VersionText(release.Version)}"
+            : "No patch for this version, downloading the full package");
+
+        release.DownloadUrl = new Uri(asset.browser_download_url);
         release.BrowserUrl = new Uri(newestVersionFound?.html_url ?? "https://github.com/aiertana/OMnix/releases");
-        release.FileName = getOmniXAsset.name ?? "OMniX.zip";
+        release.FileName = asset.name ?? "OMniX.zip";
 
         LatestVersion = release.Version.ToString();
 
@@ -274,9 +299,7 @@ public partial class MainPageVM : ObservableRecipient
         _newOmniXExePath = Path.Combine(_installedOmniXFolder.FullName, omnixExe);
 
         var containsOmniXExe = false;
-        var containsSystemFiles = false;
         var systemFileFound = string.Empty;
-        var warningFiles = new List<string>();
 
         foreach (var fileSystemInfo in _installedOmniXFolder.EnumerateFileSystemInfos())
         {
@@ -289,26 +312,12 @@ public partial class MainPageVM : ObservableRecipient
             if (SystemEntries.WindowsEntries.Any(fileEntry => fileSystemInfo.Name.Equals(fileEntry,
                     StringComparison.CurrentCultureIgnoreCase)))
             {
-                containsSystemFiles = true;
                 systemFileFound = fileSystemInfo.Name;
-            }
-
-            if (fileSystemInfo.Name.Equals("3DMigoto Loader.exe", StringComparison.CurrentCultureIgnoreCase))
-            {
-                warningFiles.Add(fileSystemInfo.Name);
-            }
-
-            if (fileSystemInfo.Name.Equals("3dmigoto", StringComparison.CurrentCultureIgnoreCase))
-            {
-                warningFiles.Add(fileSystemInfo.Name);
-            }
-
-            if (fileSystemInfo.Name.Equals("Mods", StringComparison.CurrentCultureIgnoreCase))
-            {
-                warningFiles.Add("Mods");
             }
         }
 
+        // 目录里得有 OMniX.exe，而且不能长得像 Windows 系统目录 ——
+        // 万一上面那句 Parent 算错了，往系统目录里盖文件就完了
         if (!containsOmniXExe)
         {
             Stop(
@@ -316,7 +325,7 @@ public partial class MainPageVM : ObservableRecipient
             return;
         }
 
-        if (containsSystemFiles)
+        if (!string.IsNullOrEmpty(systemFileFound))
         {
             Stop(
                 $"OMniX folder seems to contain windows system files, this should never happen. File Found: '{systemFileFound}' at " +
@@ -324,72 +333,55 @@ public partial class MainPageVM : ObservableRecipient
             return;
         }
 
-        var result = await ShowDeleteWarning(warningFiles);
+        // 二开：改成打补丁式覆盖。
+        // 原来是先删光整个 OMniX 文件夹再铺一遍新文件 —— 那样连用户自己在里面放的
+        // 东西（Mods、3DMigoto 之类）一起没了，而且删到一半出意外，
+        // 就留下一个半新半旧、直接跑不起来的程序。
+        // 现在只把新版本带的文件盖上去，目录里原有的东西一律不动。
+        var autoUpdaterFolderName = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Name;
 
-        if (result is ContentDialogResult.Secondary or ContentDialogResult.None)
-        {
-            Stop("User cancelled");
-            return;
-        }
+        Log("Applying update...", $"Path: {_installedOmniXFolder.FullName}");
 
-        var autoUpdaterFolder = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-
-        Log("Deleting old files...", $"Path: {_installedOmniXFolder.FullName}");
-
-        string[] doNotDeleteFiles = ["Elevator.exe", "OMniX.exe.WebView2", "logs"];
-
-        foreach (var fileSystemInfo in _installedOmniXFolder.EnumerateFileSystemInfos())
-        {
-            if (fileSystemInfo.Name.StartsWith(autoUpdaterFolder.Name,
-                    StringComparison.CurrentCultureIgnoreCase))
-            {
-                continue;
-            }
-
-            if (doNotDeleteFiles.Any(fileEntry => fileSystemInfo.Name.Equals(fileEntry,
-                    StringComparison.CurrentCultureIgnoreCase)))
-            {
-                Serilog.Log.Logger.Information("Not deleting file: {FileName}", fileSystemInfo.Name);
-                continue;
-            }
-
-            if (fileSystemInfo is DirectoryInfo directoryInfo)
-                directoryInfo.Delete(true);
-            else
-                fileSystemInfo.Delete();
-        }
-
-        Log("Copying new files...", $"Path: {_installedOmniXFolder.FullName}");
-
-        await Task.Run(() =>
-        {
-            // 二开：新压缩包里也带着更新器自己，但它此刻正在运行、exe 被锁住。
-            // 直接覆盖会抛 IOException，把整个更新流程搞挂（前面删文件的循环已经跳过它了，
-            // 复制这里原来没跳过，两边不一致）。保持旧更新器不动即可 ——
-            // 真需要换更新器时，主程序启动会从 OMniX - Auto Updater_New 里换。
-            foreach (var dir in _extractedOmniXFolder.GetDirectories())
-            {
-                if (dir.Name.StartsWith(autoUpdaterFolder.Name, StringComparison.CurrentCultureIgnoreCase))
-                    continue;
-
-                CopyFilesRecursively(dir, _installedOmniXFolder.CreateSubdirectory(dir.Name));
-            }
-
-            foreach (var file in _extractedOmniXFolder.GetFiles())
-                file.CopyTo(Path.Combine(_installedOmniXFolder.FullName, file.Name), true);
-        });
+        await Task.Run(() => { ApplyPatch(_extractedOmniXFolder, _installedOmniXFolder, autoUpdaterFolderName); });
 
         Log("OMniX updated successfully");
     }
 
-    // https://stackoverflow.com/questions/58744/copy-the-entire-contents-of-a-directory-in-c-sharp
-    private static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
+    /// <summary>
+    ///     把新版本的文件逐个盖到安装目录上：有就覆盖，没有就新建，<b>不删任何东西</b>。
+    ///     上一版留下的多余文件保持原样，用户自己放在 OMniX 目录里的文件也不会被动。
+    /// </summary>
+    private static void ApplyPatch(DirectoryInfo source, DirectoryInfo target, string skipFolderName)
     {
-        foreach (var dir in source.GetDirectories())
-            CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
-        foreach (var file in source.GetFiles())
-            file.CopyTo(Path.Combine(target.FullName, file.Name));
+        foreach (var dir in source.EnumerateDirectories())
+        {
+            // 新包里也带着更新器自己，但它此刻正在运行、exe 被锁着，覆盖会抛 IOException。
+            // 跳过它 —— 换更新器靠 OMniX - Auto Updater_New，主程序启动时会自动换过去。
+            // （这里必须用 Equals：用 StartsWith 会把 _New 也一起跳过，更新器就永远换不了了）
+            if (dir.Name.Equals(skipFolderName, StringComparison.CurrentCultureIgnoreCase))
+                continue;
+
+            ApplyPatch(dir, target.CreateSubdirectory(dir.Name), skipFolderName);
+        }
+
+        foreach (var file in source.EnumerateFiles())
+        {
+            var destination = Path.Combine(target.FullName, file.Name);
+
+            try
+            {
+                file.CopyTo(destination, true);
+            }
+            catch (IOException e)
+            {
+                // 单个文件被占用不该让整个更新失败，记一笔接着装别的。
+                // 真被卡住的通常是跟 OMniX 一起跑的子进程，重启一次就好。
+                Serilog.Log.Logger.Warning(e, "Skipped file that is still in use: {File}", destination);
+            }
+        }
     }
+
+
 
     private void CleanUp()
     {
@@ -489,56 +481,6 @@ public partial class MainPageVM : ObservableRecipient
         Application.Current.Exit();
     }
 
-
-    private async Task<ContentDialogResult> ShowDeleteWarning(ICollection<string> warningFiles)
-    {
-        var content = new ContentDialog
-        {
-            Title = "Warning",
-            PrimaryButtonText = "Continue",
-            DefaultButton = ContentDialogButton.Primary,
-            SecondaryButtonText = "Cancel",
-            XamlRoot = App.MainWindow.Content.XamlRoot
-        };
-
-        var stackPanel = new StackPanel();
-
-        stackPanel.Children.Add(new TextBlock
-        {
-            Text =
-                "All files/folders in the installed OMniX folder will be deleted permanently!\n" +
-                "This excludes the update folder itself. This action cannot be undone.\n" +
-                $"OMniX Directory: {_installedOmniXFolder.FullName}",
-            TextWrapping = TextWrapping.WrapWholeWords,
-            IsTextSelectionEnabled = true,
-            Margin = new Thickness(0, 0, 0, 10)
-        });
-
-        if (warningFiles.Any())
-            stackPanel.Children.Add(new TextBlock
-            {
-                Text = "These files/folders do not belong to OMniX and will be deleted as well:\n" +
-                       string.Join("\n", warningFiles),
-                IsTextSelectionEnabled = true,
-                TextWrapping = TextWrapping.WrapWholeWords,
-                Margin = new Thickness(0, 0, 0, 10)
-            });
-
-        stackPanel.Children.Add(new Button()
-        {
-            Content = "Open installed OMniX folder...",
-            Margin = new Thickness(0, 8, 0, 8),
-            Command = new AsyncRelayCommand(async () =>
-            {
-                await Launcher.LaunchFolderAsync(
-                    await StorageFolder.GetFolderFromPathAsync(_installedOmniXFolder.FullName));
-            })
-        });
-
-        content.Content = stackPanel;
-
-        return await content.ShowAsync();
-    }
 }
 
 internal class ApiAssets

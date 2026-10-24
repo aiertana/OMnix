@@ -55,20 +55,23 @@ public class AutoUpdaterService
             return;
         }
 
-        // There is a new auto updater, so we can update the current one.
+        // 二开：原来是「删掉旧目录、把 _New 整个移过来」，这要求 _New 是一份完整的更新器。
+        // 但增量补丁里只会带上真正变过的那几个文件，照原逻辑移过去，
+        // 得到的就是一个缺了 .NET 运行时、双击直接报错的更新器。
+        // 改成把 _New 里的文件盖到现有目录上，没带的就继续用旧的。
         try
         {
             App.OverrideShutdown = true;
-            if (_oldAutoUpdaterFolder.Exists)
-            {
-                _logger.Information("Updating Auto Updater...");
-                _oldAutoUpdaterFolder.Delete(true);
-            }
-            else
-                _logger.Debug("No old auto updater found, using new one.");
 
+            _logger.Information("Updating Auto Updater...");
 
-            _newAutoUpdaterFolder.MoveTo(_oldAutoUpdaterFolder.FullName);
+            if (!_oldAutoUpdaterFolder.Exists)
+                _oldAutoUpdaterFolder.Create();
+
+            CopyFilesRecursively(_newAutoUpdaterFolder, _oldAutoUpdaterFolder);
+
+            _newAutoUpdaterFolder.Delete(true);
+
             _logger.Information("Auto Updater updated successfully.");
         }
         catch (Exception e)
@@ -79,6 +82,15 @@ public class AutoUpdaterService
         {
             App.OverrideShutdown = false;
         }
+    }
+
+    private static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
+    {
+        foreach (var dir in source.EnumerateDirectories())
+            CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
+
+        foreach (var file in source.EnumerateFiles())
+            file.CopyTo(Path.Combine(target.FullName, file.Name), true);
     }
 
 

@@ -32,18 +32,18 @@
             <TextBlock
                 VerticalAlignment="Center"
                 IsTextSelectionEnabled="True"
-                Text="The Auto updater will delete OMniX program files and then download the latest version from GitHub."
+                Text="The Auto updater will download the latest version from GitHub and overwrite the OMniX program files with it."
                 TextWrapping="WrapWholeWords" />
             <TextBlock
                 VerticalAlignment="Center"
                 IsTextSelectionEnabled="True"
-                Text="This means that all files in the OMniX folder will be deleted. OMniX stores all personal settings in AppSettings or in the mods themselves."
+                Text="It only replaces the files that come with OMniX — nothing in the folder gets deleted, so your own files are left as they are."
                 TextWrapping="WrapWholeWords" />
             <TextBlock
                 Margin="0,8"
                 IsTextSelectionEnabled="True"
                 Style="{ThemeResource BodyStrongTextBlockStyle}"
-                Text="If you have your mods folder or other personal files inside the OMniX folder, move them out or they will be deleted."
+                Text="OMniX will close during the update and reopen by itself when it's done."
                 TextWrapping="WrapWholeWords" />
             <Button
                 Margin="0,16,0,0"
