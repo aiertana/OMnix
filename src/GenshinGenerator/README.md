@@ -1,1 +1,0 @@
-﻿This project is just a console app script that I use to semi-automate modfying the characters.json file

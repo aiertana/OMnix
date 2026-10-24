@@ -1,7 +1,0 @@
-﻿ShowWindow
-SetWindowPos
-SetForegroundWindow
-PlaySound
-PathFindOnPath
-AttachConsole
-GetWindowThreadProcessId
