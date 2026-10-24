@@ -69,7 +69,8 @@ jobs:
           $json.updated = (Get-Date).ToString('yyyy-MM-dd')
           ($json | ConvertTo-Json) | Set-Content version.json -Encoding UTF8
 
-          powershell -File bumpVersion.ps1 -Kind none
+          # 用 pwsh，别用 powershell —— 后者是 5.1，执行策略可能拦住脚本
+          pwsh -File bumpVersion.ps1 -Kind none
 
           Select-String -Path 'src\OMniX.WinUI\OMniX.WinUI.csproj' -Pattern 'VersionPrefix' |
               ForEach-Object { $_.Line.Trim() }
@@ -113,7 +114,7 @@ jobs:
 
       - name: 出包
         shell: pwsh
-        run: powershell -File mkrelease.ps1
+        run: pwsh -File mkrelease.ps1
 
       - name: 发布 Release
         shell: pwsh
