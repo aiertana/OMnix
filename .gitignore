@@ -27,8 +27,11 @@
 # CI 上 checkout 下来只有源码和文档，没有 mkrelease.ps1，
 # 于是「出包」那步 `pwsh -File mkrelease.ps1` 1 秒就挂，
 # 连着三次失败都是同一个原因（前两次挂的是同样不在仓库里的 bumpVersion.ps1）。
-# 用通配符而不是写中文文件名：.gitignore 的编码依赖环境，写中文容易匹配不上。
-!/*.ps1
+#
+# 只放行这两个：根目录还有 analyze / shot1-5 / hovercheck 之类的一次性调试脚本，
+# 那些不该进公开仓库。启动器因为文件名是中文，用 *.exe 通配（根目录只有它一个）。
+!/mkrelease.ps1
+!/bumpVersion.ps1
 !/*.exe
 
 # 源码
