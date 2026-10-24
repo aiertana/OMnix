@@ -23,6 +23,14 @@
 !/.github/workflows/
 !/.github/workflows/release.yml
 
+# 出包脚本和启动器也得进仓库 —— 这条踩过坑：
+# CI 上 checkout 下来只有源码和文档，没有 mkrelease.ps1，
+# 于是「出包」那步 `pwsh -File mkrelease.ps1` 1 秒就挂，
+# 连着三次失败都是同一个原因（前两次挂的是同样不在仓库里的 bumpVersion.ps1）。
+# 用通配符而不是写中文文件名：.gitignore 的编码依赖环境，写中文容易匹配不上。
+!/*.ps1
+!/*.exe
+
 # 源码
 !/src/
 !/src/**
