@@ -20,6 +20,7 @@
         <Grid>
             <TextBlock
                 Grid.Column="0"
+                Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 IsTextSelectionEnabled="True"
@@ -53,6 +54,7 @@
             Margin="0,5,0,0"
             Visibility="Collapsed">
             <TextBlock
+                Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                 HorizontalAlignment="Left"
                 IsTextSelectionEnabled="True"
                 Text="{x:Bind Footer, Mode=TwoWay}" />

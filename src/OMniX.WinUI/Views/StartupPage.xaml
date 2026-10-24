@@ -38,6 +38,7 @@
 
             <StackPanel Orientation="Horizontal" Spacing="8">
                 <TextBlock
+                    Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                     HorizontalAlignment="Left"
                     Style="{StaticResource TitleTextBlockStyle}"
                     Text="首次启动配置" />
@@ -82,6 +83,7 @@
                     Visibility="{x:Bind ViewModel.IsGameSelectionVisible, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}">
 
                     <TextBlock
+                        Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                         IsTextSelectionEnabled="True"
                         Style="{ThemeResource BodyTextBlockStyle}"
                         Text="选择需要管理的游戏，点击图标进入该游戏的文件夹配置。以后可在“设置”页面中切换游戏。"
@@ -119,6 +121,7 @@
                                             </Image>
                                         </Border>
                                         <TextBlock
+                                            Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                             HorizontalAlignment="Center"
                                             TextAlignment="Center"
                                             Text="{Binding GameName}"
@@ -145,17 +148,20 @@
                     <Grid Margin="{StaticResource SmallTopBottomMargin}">
                         <StackPanel Spacing="8">
                             <TextBlock
+                                Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                 IsTextSelectionEnabled="True"
                                 Style="{ThemeResource BodyTextBlockStyle}"
                                 Text="选择启动器所在的文件夹即可，例如 D:\mod\XXMI Launcher。OMniX 会自动识别其中的启动程序（如 Resources\Bin\XXMI Launcher.exe）并推导 Mods 文件夹（如 WWMI\Mods）。"
                                 TextWrapping="WrapWholeWords" />
                             <TextBlock
+                                Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                 IsTextSelectionEnabled="True"
                                 Style="{ThemeResource BodyTextBlockStyle}"
                                 TextWrapping="WrapWholeWords"
                                 Text="保存后 OMniX 会在 Mods 文件夹内为每个角色创建一个文件夹，启用/禁用 Mod 时会给 Mod 文件夹加上 'DISABLED_' 前缀。"
                                 l:Uids.Uid="/Startup/Body2" />
                             <TextBlock
+                                Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                 IsTextSelectionEnabled="True"
                                 Style="{ThemeResource BodyStrongTextBlockStyle}"
                                 TextWrapping="WrapWholeWords"
@@ -244,12 +250,14 @@
 
                                         <TextBlock
                                             Margin="0,8,0,4"
+                                            Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                             Style="{ThemeResource BodyTextBlockStyle}"
                                             TextWrapping="WrapWholeWords"
                                             Text="勾上之后，程序会把现有的 Mod 按角色分到各自的文件夹里。实在对不上角色的，会放进「Others」文件夹。"
                                             l:Uids.Uid="/Startup/ReorganizeTooltip1" />
 
                                         <TextBlock
+                                            Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                             Style="{ThemeResource BodyTextBlockStyle}"
                                             TextWrapping="WrapWholeWords"
                                             Text="如果某个 Mod 文件夹里塞了好几个角色的名字，可能会被挪到错误角色的目录下。这套逻辑假设 Mod 是平铺存放的（皮肤文件夹直接躺在 Mods 里）。要是你自己搞了很深的嵌套结构，OMniX 认错皮肤的概率会比较高。"
@@ -257,6 +265,7 @@
 
                                         <TextBlock
                                             Margin="0,8,0,4"
+                                            Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                             Style="{ThemeResource BaseTextBlockStyle}"
                                             TextWrapping="WrapWholeWords"
                                             Text="以后也可以在设置页里打开。"
@@ -288,6 +297,7 @@
 
                                         <TextBlock
                                             Margin="0,8,0,4"
+                                            Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                             Style="{ThemeResource BodyTextBlockStyle}"
                                             TextWrapping="WrapWholeWords"
                                             Text="给所有 Mod 文件夹加上 DISABLED_ 前缀，让它们全部失效"
