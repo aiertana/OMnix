@@ -4,7 +4,7 @@
 
 使用说明书：[使用说明书.md](使用说明书.md)　·　英文说明：[README_EN.md](README_EN.md)　·　免责声明：[DISCLAIMER.md](DISCLAIMER.md)　·　许可：[GPL-3.0](LICENSE)
 
-当前版本：**1.1.3**
+当前版本：**1.1.5**
 
 ![界面预览](Images/screenshot-home.png)
 
@@ -81,7 +81,7 @@ Mod 文件本身**不在**这里，在 XXMI Launcher 的 `WWMI\Mods` 下。
 ## 源码与构建
 
 这个仓库放的是**源码**。不想自己编译的话，打好的程序去
-[Releases](https://github.com/aiertana/OMnix/releases) 下载 `OMniX1.1.3.zip`，解压即用。
+[Releases](https://github.com/aiertana/OMnix/releases) 下载 `OMniX1.1.5.zip`，解压即用。
 
 ### 需要什么
 

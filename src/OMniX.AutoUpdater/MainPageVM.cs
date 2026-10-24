@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -245,40 +247,129 @@ public partial class MainPageVM : ObservableRecipient
         StopReason = stopReason;
     }
 
+    /// <summary>
+    ///     二开：这一段原来只有一次 GetAsync + CopyToAsync，中间断一下整包就作废。
+    ///     作者那边 5 秒就 "Received an unexpected EOF or 0 bytes from the transport stream"，
+    ///     187 MB 的整包一次都没下成，更新器卡在这步永远过不去。
+    ///     现在改成断点续传 + 自动重试：断了就带 Range 头接着要剩下的部分，
+    ///     只要不是彻底连不上，几 MB 几 MB 也能慢慢磨完。
+    /// </summary>
     private async Task DownloadLatestVersion(GitHubRelease gitHubRelease, CancellationToken cancellationToken)
     {
-        if (Directory.Exists(WorkDir))
-        {
-            Directory.Delete(WorkDir, true);
-        }
-
+        // 注意：这里不再删整个 WorkDir —— 上次失败留下的半个包要留着续传。
         Directory.CreateDirectory(WorkDir);
 
-
         _zipPath = Path.Combine(WorkDir, gitHubRelease.FileName);
-        if (File.Exists(_zipPath))
-        {
-            File.Delete(_zipPath);
-        }
 
-        var httpClient = CreateHttpClient();
+        using var httpClient = CreateHttpClient();
         httpClient.DefaultRequestHeaders.Add("Accept", "application/octet-stream");
 
-        Log("正在下载最新版本…");
-        var result = await httpClient.GetAsync(gitHubRelease.DownloadUrl, HttpCompletionOption.ResponseHeadersRead,
-            cancellationToken);
+        const int maxAttempts = 8;
 
-        if (!result.IsSuccessStatusCode)
+        Log($"正在下载：{gitHubRelease.FileName}");
+
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
-            Stop($"下载失败。状态码：{result.StatusCode}，原因：{result.ReasonPhrase}");
-            return;
+            if (Stopped)
+            {
+                return;
+            }
+
+            var already = File.Exists(_zipPath) ? new FileInfo(_zipPath).Length : 0;
+
+            try
+            {
+                using var request = new HttpRequestMessage(HttpMethod.Get, gitHubRelease.DownloadUrl);
+
+                if (already > 0)
+                {
+                    request.Headers.Range = new RangeHeaderValue(already, null);
+                }
+
+                using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead,
+                    cancellationToken);
+
+                if (response.StatusCode == HttpStatusCode.RequestedRangeNotSatisfiable)
+                {
+                    // 服务器说没有这个区间了 —— 说明本地这份其实已经完整
+                    Log("文件已完整");
+                    return;
+                }
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Stop($"下载失败。状态码：{response.StatusCode}，原因：{response.ReasonPhrase}");
+                    return;
+                }
+
+                // 服务器不认 Range（回 200 而不是 206）就只能从头写
+                var append = response.StatusCode == HttpStatusCode.PartialContent && already > 0;
+
+                if (!append)
+                {
+                    already = 0;
+                }
+
+                var total = response.Content.Headers.ContentRange?.Length
+                            ?? (response.Content.Headers.ContentLength ?? 0) + already;
+
+                var written = already;
+                var lastLogged = -1;
+
+                await using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
+                await using (var fileStream = new FileStream(_zipPath, append ? FileMode.Append : FileMode.Create,
+                                 FileAccess.Write, FileShare.None, 1024 * 128, true))
+                {
+                    var buffer = new byte[1024 * 128];
+                    int read;
+
+                    while ((read = await stream.ReadAsync(buffer, cancellationToken)) > 0)
+                    {
+                        await fileStream.WriteAsync(buffer.AsMemory(0, read), cancellationToken);
+                        written += read;
+
+                        if (total > 0)
+                        {
+                            var percent = (int)(written * 100 / total);
+
+                            // 每爬 10% 记一次，免得日志刷屏
+                            if (percent / 10 != lastLogged / 10)
+                            {
+                                lastLogged = percent;
+                                Log($"已下载 {percent}%（{written / 1048576.0:F1} / {total / 1048576.0:F1} MB）");
+                            }
+                        }
+                    }
+                }
+
+                if (total <= 0 || written >= total)
+                {
+                    Log($"下载完成，来自 {gitHubRelease.DownloadUrl}");
+                    return;
+                }
+
+                Log($"连接提前断开（{written} / {total} 字节），接着下…");
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex) when (attempt < maxAttempts)
+            {
+                Log($"下载中断（第 {attempt} 次）：{ex.Message}，3 秒后接着下…");
+                await Task.Delay(3000, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                Stop($"下载失败，自动重试 {maxAttempts} 次都没成功：{ex.Message}\n" +
+                     "多半是网络到 GitHub 不通。点「重试」再试（已经下到的部分会保留），" +
+                     "或者去 Release 页面手动下载，用设置页的「导入本地更新包」安装。");
+                return;
+            }
         }
 
-        await using var stream = await result.Content.ReadAsStreamAsync(cancellationToken);
-
-        await using var fileStream = File.Create(_zipPath);
-        await stream.CopyToAsync(fileStream, cancellationToken);
-        Log($"下载完成，来自 {gitHubRelease.DownloadUrl}");
+        Stop("下载没有完成。点「重试」接着下（已下载的部分会保留），" +
+             "或者去 Release 页面手动下载，用设置页的「导入本地更新包」安装。");
     }
 
     private async Task UnzipLatestVersion(CancellationToken cancellationToken)
@@ -419,9 +510,35 @@ public partial class MainPageVM : ObservableRecipient
     private void CleanUp()
     {
         Log("正在清理临时文件…", WorkDir);
+
         if (Directory.Exists(WorkDir))
         {
-            Directory.Delete(WorkDir, true);
+            // 二开：以前是整个目录删掉，结果下载失败后点「重试」得从 0 开始。
+            // 现在只清解压出来的东西，把下了一半的安装包留着，重试时能带着
+            // Range 头接着下 —— 187 MB 在烂网络下靠的就是这一点点攒。
+            foreach (var entry in Directory.EnumerateFileSystemEntries(WorkDir))
+            {
+                if (string.Equals(entry, _zipPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    if (Directory.Exists(entry))
+                    {
+                        Directory.Delete(entry, true);
+                    }
+                    else
+                    {
+                        File.Delete(entry);
+                    }
+                }
+                catch (IOException)
+                {
+                    // 被占用就留着，下次启动再说
+                }
+            }
         }
 
         Log("清理完成");
@@ -458,8 +575,15 @@ public partial class MainPageVM : ObservableRecipient
         var httpClient = new HttpClient(new HttpClientHandler
         {
             AllowAutoRedirect = true,
-            MaxAutomaticRedirections = 2
-        });
+            // 二开：GitHub 的附件会 302 到 objects.githubusercontent.com，中间还可能再过一跳。
+            // 原来只给 2 次，网络差一点就跳不完直接失败。
+            MaxAutomaticRedirections = 10
+        })
+        {
+            // 二开：187 MB 的整包用默认的 100 秒会中途超时，
+            // 超时也会被当成 "EOF or 0 bytes" 那一类错误报出来。
+            Timeout = TimeSpan.FromMinutes(15)
+        };
         httpClient.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28");
         httpClient.DefaultRequestHeaders.Add("User-Agent", "OMniX-Just_Another_Skin_Manager-Update-Checker");
         return httpClient;
