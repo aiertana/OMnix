@@ -35,6 +35,7 @@ public static class MotionFx
 
     private static Panel? _overlay;
     private static ClickFx? _clickFx;
+    private static MouseTrailFx? _trailFx;
 
     private static SakuraFx? _sakura;
     private static Grid? _sakuraHost;
@@ -90,17 +91,23 @@ public static class MotionFx
             if (VisualTreeHelper.GetChild(node, i) is not DependencyObject child)
                 continue;
 
-            if (ShouldAttach(child) && !GlassFx.GetAttach(child))
+            if (IsCardLike(child))
+            {
+                // 卡片：抬升 + 按压回弹 + 阴影 + 顶部渐变条，一个开关全带
+                if (!CardHoverFx.GetAttach(child))
+                    CardHoverFx.SetAttach(child, true);
+            }
+            else if (IsControl(child) && !GlassFx.GetAttach(child))
+            {
+                // 按钮这类只要抬升和按压，再叠一层阴影会显得脏
                 GlassFx.SetAttach(child, true);
+            }
 
-            // 投影只给卡片：按钮本身已经有按压反馈，再叠一层阴影会显得脏
-            if (IsCardLike(child) && !ShadowFx.GetAttach(child))
-                ShadowFx.SetAttach(child, true);
-
-            // hover 时顶上那条 2px 渐变条，同样只给卡片。
-            // 小尺寸的圆角 Border（图标底、小徽章）不要，挂上去反而脏
-            if (IsCardLike(child) && IsBeamSized(child) && !CardBeamFx.GetAttach(child))
-                CardBeamFx.SetAttach(child, true);
+            // 二开：主按钮模板里的扫光 / 环绕流光要在挂上视觉树之后由代码起
+            // （放在 VSM 的 Normal 里实测不会自动播放）。
+            // 用的不是主按钮模板的按钮找不到那些元素，会自己跳过。
+            if (child is Button button && !AccentButtonFx.GetAttach(button))
+                AccentButtonFx.SetAttach(button, true);
 
             ScanTree(child);
         }
@@ -138,12 +145,12 @@ public static class MotionFx
         _overlay = overlay;
         _clickFx = new ClickFx(overlay);
 
+        // 拖尾自己管节流，单独一个类，不再从这里转发 PointerMoved
+        _trailFx = new MouseTrailFx(overlay);
+        _trailFx.Attach(root);
+
         root.AddHandler(UIElement.PointerPressedEvent,
             new PointerEventHandler(OnPointerPressed), true);
-
-        // 移动拖尾和悬停粒子，两个都做了节流，移动那个尤其要控住频率
-        root.AddHandler(UIElement.PointerMovedEvent,
-            new PointerEventHandler(OnTrailMoved), true);
 
         root.AddHandler(UIElement.PointerEnteredEvent,
             new PointerEventHandler(OnHoverEntered), true);
@@ -151,29 +158,38 @@ public static class MotionFx
         ScanTree(root);
     }
 
-    // 拖尾 45ms 一次（参考网页是 25ms 配 2-3 颗，实测稳态粒子太多，放慢一档）；
+    /// <summary>
+    ///     二开：全局点击音效。挂在窗口内容的根元素（ShellPage）上，
+    ///     点界面任何地方 —— 包括空白处 —— 都响一声。
+    ///
+    ///     和上面 AttachClickFx 里那个不是一回事：
+    ///     那个要命中按钮 / 卡片这类控件才响，点空白是没声的。
+    ///     现在声音统一从这里出，所以 OnPointerPressed 里不再单独播，
+    ///     否则点一下按钮会叠成两声。
+    ///
+    ///     开关走 UiSoundService.Enabled：设置里关掉，这里就一声不出。
+    /// </summary>
+    public static void AttachGlobalClick(FrameworkElement root)
+    {
+        root.AddHandler(UIElement.PointerPressedEvent,
+            new PointerEventHandler(OnGlobalPointerPressed), true);
+    }
+
+    private static void OnGlobalPointerPressed(object sender, PointerRoutedEventArgs e)
+    {
+        if (e.Pointer.PointerDeviceType is not (Microsoft.UI.Input.PointerDeviceType.Mouse
+                or Microsoft.UI.Input.PointerDeviceType.Touch
+                or Microsoft.UI.Input.PointerDeviceType.Pen))
+            return;
+
+        // 开关和节流都在 PlayTap 里面，这里不用再判断一次
+        UiSoundService.Instance?.PlayTap();
+    }
+
     // 悬停 300ms 一次，鼠标划过一长串控件时不会每个都炸一下
-    private const long TrailIntervalMs = 25;
     private const long HoverIntervalMs = 300;
 
-    private static long _lastTrail;
     private static long _lastHover;
-
-    private static void OnTrailMoved(object sender, PointerRoutedEventArgs e)
-    {
-        if (_overlay is null || _clickFx is null)
-            return;
-
-        if (e.Pointer.PointerDeviceType is not Microsoft.UI.Input.PointerDeviceType.Mouse)
-            return;
-
-        var now = Environment.TickCount64;
-        if (now - _lastTrail < TrailIntervalMs)
-            return;
-
-        _lastTrail = now;
-        _clickFx.Trail(e.GetCurrentPoint(_overlay).Position);
-    }
 
     private static void OnHoverEntered(object sender, PointerRoutedEventArgs e)
     {
@@ -312,8 +328,8 @@ public static class MotionFx
             if (!IsInteractiveControl(node) && !(depth < CardSearchDepth && IsCardLike(node)))
                 continue;
 
-            UiSoundService.Instance?.PlayTap();
-
+            // 声音不在这里播：全局那一个（AttachGlobalClick）已经包了所有点击，
+            // 这里再播一次，点按钮就是两声叠在一起
             if (_overlay is not null)
                 _clickFx?.Burst(e.GetCurrentPoint(_overlay).Position);
 
@@ -336,13 +352,4 @@ public static class MotionFx
     /// <summary>圆角够大的 Border 按卡片算，属于猜的，所以限制层数</summary>
     private static bool IsCardLike(DependencyObject node) =>
         node is Border { CornerRadius.TopLeft: >= 12 };
-
-    /// <summary>
-    ///     够大才配得上顶部那条渐变条。还没量过（ActualWidth 为 0）的先放过，
-    ///     下一次扫描还会再来。
-    /// </summary>
-    private static bool IsBeamSized(DependencyObject node) =>
-        node is not FrameworkElement element
-        || element.ActualWidth <= 0
-        || (element.ActualWidth >= 110 && element.ActualHeight >= 60);
 }

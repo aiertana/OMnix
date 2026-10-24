@@ -6,9 +6,9 @@ using Windows.UI;
 namespace OMniX.WinUI.Services;
 
 /// <summary>
-///     三套配色。和"浅色 / 深色"是两回事：那个是明暗模式，这个是色系，
+///     两套配色。和"浅色 / 深色"是两回事：那个是明暗模式，这个是色系，
 ///     两套正交 —— 每套配色都要各给一份亮色值和暗色值。
-///     取值严格照 OMNIX 紫蓝二次元版 / 蓝色版 / 深色版 三个 HTML 里的 CSS 变量。
+///     取值严格照 OMNIX 紫蓝二次元版 / 蓝色版两个 HTML 里的 CSS 变量。
 /// </summary>
 public enum OmniXPalette
 {
@@ -16,10 +16,7 @@ public enum OmniXPalette
     Warm,
 
     /// <summary>蓝色版：冷白 + 蓝</summary>
-    Blue,
-
-    /// <summary>深色版：近黑 + 白，整体就是深色，明暗模式对它不起作用</summary>
-    Mono
+    Blue
 }
 
 /// <summary>
@@ -48,7 +45,6 @@ public sealed class PaletteService
     public string DisplayName => Current switch
     {
         OmniXPalette.Blue => "冷调蓝",
-        OmniXPalette.Mono => "深黑白",
         _ => "暖白珊瑚"
     };
 
@@ -87,10 +83,10 @@ public sealed class PaletteService
         Changed?.Invoke(this, palette);
     }
 
+    // 老版本存过 "Mono" 的，这里匹配不上会落回暖白珊瑚，不会因为枚举没了就炸
     private static OmniXPalette Read(string? value) => value switch
     {
         nameof(OmniXPalette.Blue) => OmniXPalette.Blue,
-        nameof(OmniXPalette.Mono) => OmniXPalette.Mono,
         _ => OmniXPalette.Warm
     };
 
@@ -102,11 +98,6 @@ public sealed class PaletteService
             case OmniXPalette.Blue:
                 ApplyInto("Light", BlueLight, BlueGradient);
                 ApplyInto("Dark", BlueDark, BlueGradient);
-                break;
-
-            case OmniXPalette.Mono:
-                ApplyInto("Light", MonoColors, MonoGradient);
-                ApplyInto("Dark", MonoColors, MonoGradient);
                 break;
 
             default:
@@ -147,21 +138,6 @@ public sealed class PaletteService
 
             if (colors.TryGetValue("OmniXAccentStrongColor", out var strong) && accentGradient.GradientStops.Count > 1)
                 accentGradient.GradientStops[1].Color = ToColor(strong);
-        }
-
-        // 卡片顶部那条渐变条：AccentPrimary -> PinkAccent -> BlueAccent。
-        // 两端那两个 stop 是透明的（做出淡出的效果），保持不动
-        if (FindResource("OmniXCardBeamBrush") is LinearGradientBrush beam
-            && beam.GradientStops.Count >= 4)
-        {
-            if (colors.TryGetValue("OmniXAccentColor", out var primary))
-                beam.GradientStops[1].Color = ToColor(primary);
-
-            if (colors.TryGetValue("OmniXAuxPinkColor", out var pink))
-                beam.GradientStops[2].Color = ToColor(pink);
-
-            if (colors.TryGetValue("OmniXAuxBlueColor", out var blue))
-                beam.GradientStops[3].Color = ToColor(blue);
         }
     }
 
@@ -324,8 +300,8 @@ public sealed class PaletteService
 
     private static readonly Dictionary<string, string> WarmDark = new()
     {
-        ["OmniXAccentColor"] = "#FFFF8AA0",
-        ["OmniXAccentStrongColor"] = "#FFFFB0BE",
+        ["OmniXAccentColor"] = "#FFE63946",
+        ["OmniXAccentStrongColor"] = "#FFFF8AA0",
         ["OmniXAccentSoftColor"] = "#FF3A2128",
         ["OmniXAccentSoftHoverColor"] = "#FF4A2A33",
         ["OmniXAccentSoftPressedColor"] = "#FF55303B",
@@ -425,8 +401,8 @@ public sealed class PaletteService
 
     private static readonly Dictionary<string, string> BlueDark = new()
     {
-        ["OmniXAccentColor"] = "#FF7EC8FF",
-        ["OmniXAccentStrongColor"] = "#FFA8D8FF",
+        ["OmniXAccentColor"] = "#FF2E7BE6",
+        ["OmniXAccentStrongColor"] = "#FF7EC8FF",
         ["OmniXAccentSoftColor"] = "#1F4A9EFF",
         ["OmniXAccentSoftHoverColor"] = "#2E4A9EFF",
         ["OmniXAccentSoftPressedColor"] = "#3D4A9EFF",
@@ -469,58 +445,4 @@ public sealed class PaletteService
         ["AccentTextFillColorTertiaryBrush"] = "#FF7EC8FF"
     };
 
-    // ========== 深色版（近黑 + 白），明暗两组共用 ==========
-
-    private static readonly string[] MonoGradient = ["#FF0F0F11", "#FF141417", "#FF101014"];
-
-    private static readonly Dictionary<string, string> MonoColors = new()
-    {
-        // 执行指令的配色3：AccentPrimary #FFE63946（红）
-        ["OmniXAccentColor"] = "#FFE63946",
-        ["OmniXAccentStrongColor"] = "#FFEF6B77",
-        ["OmniXAccentSoftColor"] = "#1AE63946",
-        ["OmniXAccentSoftHoverColor"] = "#26E63946",
-        ["OmniXAccentSoftPressedColor"] = "#33E63946",
-        ["OmniXAuxPinkColor"] = "#FFFFB3D1",
-        ["OmniXAuxPurpleColor"] = "#FFB58BFF",
-        ["OmniXAuxBlueColor"] = "#FF7EC8FF",
-        // --bg-card #1c1c20 / --bg-base #0f0f11 / --bg-sidebar #161618
-        ["OmniXCardAltBackgroundColor"] = "#FF17171A",
-        ["OmniXCardBackgroundColor"] = "#FF1C1C20",
-        // --line #2a2a30 / --line-strong #3a3a42
-        ["OmniXCardStrokeColor"] = "#FF2A2A30",
-        ["OmniXCardStrokeHoverColor"] = "#FF3A3A42",
-        ["OmniXControlBackgroundColor"] = "#FF222226",
-        ["OmniXControlBorderColor"] = "#FF2A2A30",
-        ["OmniXControlBorderPointerOverColor"] = "#FF8A8A92",
-        ["OmniXHeroBackgroundColor"] = "#FF161618",
-        ["OmniXNavItemPointerOverColor"] = "#14FFFFFF",
-        ["OmniXNavItemPressedColor"] = "#1FFFFFFF",
-        ["OmniXNavItemSelectedColor"] = "#1AE63946",
-        ["OmniXNavItemSelectedPointerOverColor"] = "#26E63946",
-        ["OmniXNavItemSelectedPressedColor"] = "#33E63946",
-        ["OmniXNavPaneBackgroundColor"] = "#FF161618",
-        ["OmniXPageBackgroundColor"] = "#FF0F0F11",
-        ["OmniXSidebarBackgroundColor"] = "#FF161618",
-        // --ink #f5f5f7 / --ink-dim #8a8a92
-        ["OmniXTextPrimaryColor"] = "#FFF5F5F7",
-        ["OmniXTextSecondaryColor"] = "#FF8A8A92",
-        ["OmniXDialogBackgroundColor"] = "#FF1C1C20",
-        ["OmniXDialogBorderColor"] = "#FF2A2A30",
-        ["SystemAccentColor"] = "#FFE63946",
-        ["SystemAccentColorLight1"] = "#FFEF6B77",
-        ["SystemAccentColorLight2"] = "#FFF49AA4",
-        ["SystemAccentColorLight3"] = "#FFF9C5CB",
-        ["SystemAccentColorDark1"] = "#FFC42B38",
-        ["SystemAccentColorDark2"] = "#FF9E202B",
-        ["SystemAccentColorDark3"] = "#FF7A1821",
-        ["AccentFillColorDefaultBrush"] = "#FFE63946",
-        ["AccentFillColorSecondaryBrush"] = "#E6E63946",
-        ["AccentFillColorTertiaryBrush"] = "#CCE63946",
-        ["AccentFillColorDisabledBrush"] = "#33E63946",
-        // 近黑底上红色文字要亮一点，纯 #E63946 会糊
-        ["AccentTextFillColorPrimaryBrush"] = "#FFFF6B77",
-        ["AccentTextFillColorSecondaryBrush"] = "#FFFF6B77",
-        ["AccentTextFillColorTertiaryBrush"] = "#FFFF6B77"
-    };
 }

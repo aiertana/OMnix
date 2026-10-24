@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
@@ -188,15 +188,15 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
 
         // 二开：配置完成后同样不改动窗口大小
         _navigationService.NavigateTo(typeof(CharactersViewModel).FullName!, null, true);
-        App.GetService<NotificationManager>().ShowNotification("Startup settings saved",
-            $"Startup settings saved successfully to '{_localSettingsService.GameScopedSettingsLocation}'",
+        App.GetService<NotificationManager>().ShowNotification("启动设置已保存",
+            $"启动设置已保存 successfully to '{_localSettingsService.GameScopedSettingsLocation}'",
             TimeSpan.FromSeconds(7));
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         Task.Run(async () =>
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         {
             await Task.Delay(TimeSpan.FromSeconds(7));
-            App.GetService<NotificationManager>().ShowNotification("OMniX is still in alpha",
+            App.GetService<NotificationManager>().ShowNotification("OMniX 还在 alpha 阶段",
                 "There will be bugs and things will most likely break. Anyway, hope you enjoy using OMniX!",
                 TimeSpan.FromSeconds(20));
         });

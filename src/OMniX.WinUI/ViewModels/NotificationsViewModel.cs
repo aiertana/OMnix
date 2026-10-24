@@ -1,4 +1,4 @@
-﻿using Windows.Storage;
+using Windows.Storage;
 using Windows.System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -23,12 +23,12 @@ public partial class NotificationsViewModel : ObservableRecipient
     {
         if (!File.Exists(LogFilePath))
         {
-            NotificationManager.ShowNotification("Log file not found", "", null);
+            NotificationManager.ShowNotification("找不到日志文件", "", null);
             return;
         }
 
         var openResult = await Launcher.LaunchFileAsync(await StorageFile.GetFileFromPathAsync(LogFilePath));
         if (!openResult)
-            NotificationManager.ShowNotification("Log file could not be opened", "", null);
+            NotificationManager.ShowNotification("日志文件打不开", "", null);
     }
 }

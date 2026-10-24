@@ -20,12 +20,12 @@
 
 
         <StackPanel Margin="0,0,0,16">
-            <TextBlock FontSize="18" Text="Create Command" />
+            <TextBlock FontSize="18" Text="新建命令" />
             <TextBox
                 MinWidth="300"
                 HorizontalAlignment="Left"
-                Header="* Command Name:"
-                PlaceholderText="Command Display Name (Required)"
+                Header="* 命令名称："
+                PlaceholderText="显示给你看的名字（必填）"
                 Text="{x:Bind ViewModel.CommandDisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
@@ -41,11 +41,11 @@
                 HorizontalAlignment="Center"
                 SelectedIndex="0"
                 SelectionMode="Single">
-                <controls:SegmentedItem Content="Custom Command" />
+                <controls:SegmentedItem Content="单条命令" />
                 <controls:SegmentedItem
-                    Content="Custom Chained Command"
+                    Content="命令链"
                     IsEnabled="False"
-                    ToolTipService.ToolTip="Not Implemented" />
+                    ToolTipService.ToolTip="还没做" />
             </controls:Segmented>
 
 
@@ -55,49 +55,49 @@
 
                         <StackPanel Spacing="8">
                             <controls2:FolderSelector
-                                Title="* Executable"
+                                Title="* 程序"
                                 BrowseCommand="{x:Bind ViewModel.SelectExecutableCommand}"
-                                PlaceHolderText="Must either be in $PATH or be an absolute path to the executable (Required)"
+                                PlaceHolderText="可以直接写程序名（要求在 PATH 里），也可以填完整路径（必填）"
                                 SelectedFolderValue="{x:Bind ViewModel.Command, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <controls2:FolderSelector
-                                Title="Working Directory"
+                                Title="工作目录"
                                 BrowseCommand="{x:Bind ViewModel.SelectWorkingDirectoryCommand}"
                                 Footer="{x:Bind ViewModel.EffectiveWorkingDirectory, Mode=OneWay}"
                                 IsEnabled="{x:Bind ViewModel.CanEditWorkingDirectory, Mode=OneWay}"
-                                PlaceHolderText="When manually specifying a path, the folder must exist"
+                                PlaceHolderText="手动填路径时，文件夹必须已经存在"
                                 SelectedFolderValue="{x:Bind ViewModel.WorkingDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <StackPanel>
                                 <TextBox
-                                    Header="Arguments"
-                                    PlaceholderText="Arguments that will be passed to the executable"
+                                    Header="启动参数"
+                                    PlaceholderText="传给这个程序的参数"
                                     Text="{x:Bind ViewModel.Arguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock IsTextSelectionEnabled="True" Text="When command is run against a file system object (i.e. a skin/mod folder), {{TargetPath}} will be replaced by the actual path." />
+                                <TextBlock IsTextSelectionEnabled="True" Text="当命令是对着某个文件/文件夹跑的时候（比如某个 Mod 目录），{{TargetPath}} 会被换成实际路径。" />
                             </StackPanel>
 
 
                             <StackPanel>
                                 <CheckBox
-                                    Content="Kill Process on OMniX exit"
+                                    Content="OMniX 退出时一并结束进程"
                                     IsChecked="{x:Bind ViewModel.KillProcessOnMainAppExit, Mode=TwoWay}"
-                                    ToolTipService.ToolTip="If checked the process will be killed when OMniX exits" />
+                                    ToolTipService.ToolTip="勾上之后，OMniX 关掉时这个进程也会被结束" />
                                 <CheckBox
                                     Command="{x:Bind ViewModel.ToggleRunAsAdminCommand}"
-                                    Content="Run as Admin"
+                                    Content="以管理员身份运行"
                                     IsChecked="{x:Bind ViewModel.RunAsAdmin, Mode=TwoWay}"
-                                    ToolTipService.ToolTip="Run the executable as an Administrator" />
+                                    ToolTipService.ToolTip="用管理员权限启动这个程序" />
                                 <CheckBox
                                     Command="{x:Bind ViewModel.ToggleUseShellExecuteCommand}"
-                                    Content="Use Shell Execute"
+                                    Content="交给系统启动"
                                     IsChecked="{x:Bind ViewModel.UseShellExecute, Mode=TwoWay}"
                                     IsEnabled="{x:Bind ViewModel.CanToggleUseShellExecute, Mode=OneWay}"
-                                    ToolTipService.ToolTip="Use the Operating System to start the executable" />
+                                    ToolTipService.ToolTip="交给操作系统去拉起程序（ShellExecute）" />
                                 <CheckBox
-                                    Content="Create window"
+                                    Content="开新窗口"
                                     IsChecked="{x:Bind ViewModel.CreateWindow, Mode=TwoWay}"
                                     IsEnabled="False"
-                                    ToolTipService.ToolTip="If checked it will be run in an external window" />
+                                    ToolTipService.ToolTip="勾上会在单独的窗口里跑（暂不可用）" />
                             </StackPanel>
 
                         </StackPanel>
@@ -110,12 +110,12 @@
 
         <StackPanel Grid.Row="2" Spacing="16">
             <TextBox
-                Header="Command that will be run:"
+                Header="最终会执行的命令："
                 IsReadOnly="True"
                 Text="{x:Bind ViewModel.CommandPreview, Mode=OneWay}" />
             <Button
                 Command="{x:Bind ViewModel.CreateCommandCommand}"
-                Content="Save Command"
+                Content="保存命令"
                 Style="{ThemeResource AccentButtonStyle}" />
         </StackPanel>
 

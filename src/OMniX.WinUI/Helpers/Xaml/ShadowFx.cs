@@ -24,15 +24,7 @@ public static class ShadowFx
     /// <summary>悬停时抬起的 Z 深度，越大阴影越散、离得越远</summary>
     public static readonly DependencyProperty DepthProperty =
         DependencyProperty.RegisterAttached("Depth", typeof(float), typeof(ShadowFx),
-            new PropertyMetadata(26f));
-
-    /// <summary>
-    ///     静态的 Z 深度。执行指令 2.2 里卡片默认就带一层"0 2px 12px 黑色5%"的淡影，
-    ///     不是只有 hover 才有，所以挂着的时候就给它一个很低的高度。
-    /// </summary>
-    public static readonly DependencyProperty RestDepthProperty =
-        DependencyProperty.RegisterAttached("RestDepth", typeof(float), typeof(ShadowFx),
-            new PropertyMetadata(8f));
+            new PropertyMetadata(16f));
 
     public static bool GetAttach(DependencyObject obj) => (bool)obj.GetValue(AttachProperty);
 
@@ -41,10 +33,6 @@ public static class ShadowFx
     public static float GetDepth(DependencyObject obj) => (float)obj.GetValue(DepthProperty);
 
     public static void SetDepth(DependencyObject obj, float value) => obj.SetValue(DepthProperty, value);
-
-    public static float GetRestDepth(DependencyObject obj) => (float)obj.GetValue(RestDepthProperty);
-
-    public static void SetRestDepth(DependencyObject obj, float value) => obj.SetValue(RestDepthProperty, value);
 
     private static void OnAttachChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -62,13 +50,6 @@ public static class ShadowFx
 
         element.PointerEntered += OnPointerEntered;
         element.PointerExited += OnPointerExited;
-
-        if (ThemeStyleService.Instance is { MotionEnabled: false })
-            return;
-
-        // 默认那层淡影：不抬起来，只给一点 Z，让卡片和背景分开
-        EnsureShadow(element);
-        element.Translation = new Vector3(0, 0, GetRestDepth(element));
     }
 
     private static void OnPointerEntered(object sender, PointerRoutedEventArgs e)
@@ -80,15 +61,22 @@ public static class ShadowFx
         Raise((FrameworkElement)sender);
     }
 
-    private static void OnPointerExited(object sender, PointerRoutedEventArgs e)
-    {
-        var element = (FrameworkElement)sender;
-        element.Translation = new Vector3(0, 0, GetRestDepth(element));
-    }
+    private static void OnPointerExited(object sender, PointerRoutedEventArgs e) =>
+        Clear((FrameworkElement)sender);
 
     private static void Raise(FrameworkElement element)
     {
-        EnsureShadow(element);
+        if (element.Shadow is null)
+        {
+            var shadow = new ThemeShadow();
+
+            // ThemeShadow 必须告诉它阴影投在谁身上，不然它不画
+            var receiver = FindReceiver(element);
+            if (receiver is not null)
+                shadow.Receivers.Add(receiver);
+
+            element.Shadow = shadow;
+        }
 
         // 有 Z 偏移才有投影；XY 保持 0，位移交给 GlassFx 的 RenderTransform，
         // 两边叠加不会打架
@@ -96,21 +84,6 @@ public static class ShadowFx
     }
 
     private static void Clear(FrameworkElement element) => element.Translation = Vector3.Zero;
-
-    private static void EnsureShadow(FrameworkElement element)
-    {
-        if (element.Shadow is not null)
-            return;
-
-        var shadow = new ThemeShadow();
-
-        // ThemeShadow 必须告诉它阴影投在谁身上，不然它不画
-        var receiver = FindReceiver(element);
-        if (receiver is not null)
-            shadow.Receivers.Add(receiver);
-
-        element.Shadow = shadow;
-    }
 
     /// <summary>往上找第一个容器当作承接阴影的背景</summary>
     private static UIElement? FindReceiver(FrameworkElement element)

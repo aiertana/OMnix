@@ -285,33 +285,8 @@ public sealed partial class ShellPage : Page
     private void OnThemeStyleChanged(object? sender, OmniXThemeStyle style) => ApplyFlowMotion();
 
     /// <summary>
-    ///     380ms、cubic-bezier(.22,1,.36,1) 的补间。
-    ///     内置的 CubicEase 只能选现成曲线，要文档里这条自定义控制点就得用 KeySpline。
-    /// </summary>
-    private static DoubleAnimationUsingKeyFrames Spline(DependencyObject target, string property, double to)
-    {
-        var animation = new DoubleAnimationUsingKeyFrames();
-
-        animation.KeyFrames.Add(new SplineDoubleKeyFrame
-        {
-            KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(380)),
-            Value = to,
-            KeySpline = new KeySpline
-            {
-                ControlPoint1 = new Windows.Foundation.Point(0.22, 1),
-                ControlPoint2 = new Windows.Foundation.Point(0.36, 1)
-            }
-        });
-
-        Storyboard.SetTarget(animation, target);
-        Storyboard.SetTargetProperty(animation, property);
-
-        return animation;
-    }
-
-    /// <summary>
-    ///     二开：页面切换动画。参考稿的 .panel 是 opacity 0→1 配 scale 0.94→1，
-    ///     0.38s 缓出。简易版直接跳过。
+    ///     二开：切到新页面时补扫一遍手感、响一声，再把新页面滑进来。
+    ///     动画本身在 Helpers/Xaml/PageTransitionFx.cs 里。
     /// </summary>
     private void OnFrameNavigated(object sender, Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
     {
@@ -325,45 +300,7 @@ public sealed partial class ShellPage : Page
         // 切页面一声"咚"。点导航项的"嗒"是先响的，两个音错开一点，听上去是连贯的两下
         UiSoundService.Instance?.PlayPopup();
 
-        if (ThemeStyleService.Instance is { MotionEnabled: false })
-            return;
-
-        // 用 CompositeTransform：缩放和位移要一起做
-        var transform = frame.RenderTransform as CompositeTransform ?? new CompositeTransform();
-        frame.RenderTransformOrigin = new Windows.Foundation.Point(0.5, 0.5);
-        frame.RenderTransform = transform;
-
-        // 明确保底：万一动画没跑完，也要把页面恢复成完全可见
-        void Restore()
-        {
-            frame.Opacity = 1;
-            transform.ScaleX = 1;
-            transform.ScaleY = 1;
-            transform.TranslateY = 0;
-        }
-
-        try
-        {
-            // 参考稿：新页面从下方 16px 处淡入，scale 0.98 → 1，380ms
-            transform.ScaleX = 0.98;
-            transform.ScaleY = 0.98;
-            transform.TranslateY = 16;
-            frame.Opacity = 0;
-
-            var storyboard = new Storyboard();
-
-            storyboard.Children.Add(Spline(transform, nameof(CompositeTransform.ScaleX), 1.0));
-            storyboard.Children.Add(Spline(transform, nameof(CompositeTransform.ScaleY), 1.0));
-            storyboard.Children.Add(Spline(transform, nameof(CompositeTransform.TranslateY), 0.0));
-            storyboard.Children.Add(Spline(frame, "Opacity", 1.0));
-
-            storyboard.Completed += (_, _) => Restore();
-            storyboard.Begin();
-        }
-        catch
-        {
-            Restore();
-        }
+        PageTransitionFx.Play(frame);
     }
 
     private void ApplyFlowMotion()
@@ -484,6 +421,8 @@ public sealed partial class ShellPage : Page
             // ignored
         }
     }
+
+    // 「关于」现在是独立页面（Views/AboutPage.xaml），不再是弹窗，这里就不用处理方法了。
 
     private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
     {

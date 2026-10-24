@@ -351,6 +351,8 @@ public partial class App : Application
                 services.AddTransient<HomePage>();
                 services.AddTransient<PluginAreaViewModel>();
                 services.AddTransient<PluginAreaPage>();
+                services.AddTransient<AboutViewModel>();
+                services.AddTransient<AboutPage>();
 
                 // 二开：DLSS5 渲染链插件（只做检测 + 调部署包脚本，删掉部署包不影响管理器）
                 services.AddSingleton<Dlss5PluginService>();
@@ -362,7 +364,7 @@ public partial class App : Application
                 // 二开：界面风格（简易版 / 标准版），只切换动效不动配色
                 services.AddSingleton<ThemeStyleService>();
 
-                // 二开：三套配色（暖白珊瑚 / 冷调蓝 / 深黑白），和明暗模式是两回事
+                // 二开：两套配色（暖白珊瑚 / 冷调蓝），和明暗模式是两回事
                 services.AddSingleton<PaletteService>();
 
                 // 二开：交互音效，跟着界面风格走，简易版静音
@@ -412,7 +414,7 @@ public partial class App : Application
         var window = new ErrorWindow(e.Exception, () => _ErrorWindowsOpen--)
         {
             IsAlwaysOnTop = true,
-            Title = "OMniX - Unhandled Exception",
+            Title = "OMniX - 出错了",
             SystemBackdrop = new MicaBackdrop()
         };
 
@@ -421,8 +423,8 @@ public partial class App : Application
         window.CenterOnScreen();
 
         GetService<NotificationManager>()
-            .ShowNotification("An error occured!",
-                "OMniX may be in an unstable state could crash at any moment. It is suggested to restart the app.",
+            .ShowNotification("出错了",
+                "这会儿 OMniX 可能不太稳定，随时可能崩，建议重启一下。",
                 TimeSpan.FromMinutes(60));
 
         if (_ErrorWindowsOpen > 4)

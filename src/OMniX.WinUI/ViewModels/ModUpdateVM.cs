@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMniX.Core.Contracts.Entities;
@@ -164,10 +164,10 @@ public partial class ModUpdateVM : ObservableRecipient
 
     private async Task LogErrorAndClose(Exception e, bool removeNotification = true)
     {
-        _logger.Error(e, "Failed to get mod update info");
+        _logger.Error(e, "读取 Mod 更新信息失败");
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
-            App.GetService<NotificationManager>().ShowNotification("Failed to get mod update info",
+            App.GetService<NotificationManager>().ShowNotification("读取 Mod 更新信息失败",
                 e.Message, TimeSpan.FromSeconds(10));
         });
         _window.Close();
@@ -256,9 +256,9 @@ public partial class ModUpdateVM : ObservableRecipient
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Failed to download mod file");
+            _logger.Error(e, "下载 Mod 文件失败");
 
-            _notificationManager.ShowNotification("Failed to download mod file",
+            _notificationManager.ShowNotification("下载 Mod 文件失败",
                 e.Message, TimeSpan.FromSeconds(10));
 
             Reset();
@@ -363,9 +363,9 @@ public partial class ModUpdateVM : ObservableRecipient
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Failed to install mod file");
+            _logger.Error(e, "安装 Mod 文件失败");
 
-            _notificationManager.ShowNotification("Failed to install mod file",
+            _notificationManager.ShowNotification("安装 Mod 文件失败",
                 e.InnerException?.Message ?? e.Message, TimeSpan.FromSeconds(10));
 
             fileInfoVm.Status = ModFileInfoVm.InstallStatus.Downloaded;

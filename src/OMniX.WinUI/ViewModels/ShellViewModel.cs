@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMniX.Core.GamesService;
 using OMniX.WinUI.Contracts.Services;
@@ -389,7 +389,7 @@ public partial class ShellViewModel : ObservableRecipient
 
         if (ElevatorService.ElevatorStatus == ElevatorStatus.NotRunning)
         {
-            NotificationManager.ShowNotification("Elevator is not running",
+            NotificationManager.ShowNotification("Elevator 没在运行",
                 "Please start the Elevator first in the Settings page",
                 TimeSpan.FromSeconds(5));
         }

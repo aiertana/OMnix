@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using Windows.System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using OMniX.Core.Contracts.Services;
@@ -17,6 +18,7 @@ using OMniX.WinUI.Contracts.ViewModels;
 using OMniX.WinUI.Helpers;
 using OMniX.WinUI.Models;
 using OMniX.WinUI.Services;
+using OMniX.WinUI.Services.ModHandling;
 using OMniX.WinUI.Services.Notifications;
 using Serilog;
 using ScrollViewer = Microsoft.UI.Xaml.Controls.ScrollViewer;
@@ -29,7 +31,8 @@ public partial class ModsOverviewVM(
     IGameService gameService,
     CommandService commandService,
     CommandHandlerService commandHandlerService,
-    NotificationManager notificationManager)
+    NotificationManager notificationManager,
+    ModPresetHandlerService modPresetHandlerService)
     : ObservableRecipient, INavigationAware
 {
     private readonly ILogger _logger = logger.ForContext<ModsOverviewVM>();
@@ -38,6 +41,7 @@ public partial class ModsOverviewVM(
     private readonly CommandService _commandService = commandService;
     private readonly CommandHandlerService _commandHandlerService = commandHandlerService;
     private readonly NotificationManager _notificationManager = notificationManager;
+    private readonly ModPresetHandlerService _modPresetHandlerService = modPresetHandlerService;
 
     public static ModOverviewPageState PageState { get; } = new();
     public TaskCompletionSource<bool> ViewModelLoading { get; } = new();
@@ -325,9 +329,75 @@ public partial class ModsOverviewVM(
             TimeSpan.FromSeconds(6));
     }
 
-    /// <summary>二开：一键启用全部</summary>
+    /// <summary>
+    ///     二开：启用预设。
+    ///
+    ///     原来这张卡是「全部启用」—— 一把把上百个 Mod 全打开，实际没人这么用
+    ///     （同角色开一堆，游戏只认一个）。改成先列出所有预设，
+    ///     选一个就把那个预设里的 Mod 组合启用上去。
+    /// </summary>
     [RelayCommand]
-    private Task EnableAllAsync() => SetAllEnabledAsync(true);
+    private async Task EnablePresetAsync()
+    {
+        var presets = (await _modPresetHandlerService.GetModPresetsAsync()).ToList();
+
+        if (presets.Count == 0)
+        {
+            _notificationManager.ShowNotification("还没有预设",
+                "先去「预设配置」把现在的 Mod 组合存成一个预设，这里就能一键切换",
+                TimeSpan.FromSeconds(7));
+
+            return;
+        }
+
+        // 每一项都带上这个预设里有多少个 Mod，选之前心里有数
+        var list = new ListView
+        {
+            ItemsSource = presets
+                .Select(preset => $"{preset.Name}（{preset.Mods.Count} 个 Mod）")
+                .ToList(),
+            SelectionMode = ListViewSelectionMode.Single,
+            SelectedIndex = 0,
+            MinWidth = 320,
+            MaxHeight = 360
+        };
+
+        var dialog = new ContentDialog
+        {
+            Title = "启用预设",
+            Content = list,
+            PrimaryButtonText = "启用",
+            CloseButtonText = "取消",
+            DefaultButton = ContentDialogButton.Primary,
+            XamlRoot = App.MainWindow.Content.XamlRoot
+        };
+
+        if (await dialog.ShowAsync() != ContentDialogResult.Primary)
+            return;
+
+        var index = list.SelectedIndex;
+
+        if (index < 0 || index >= presets.Count)
+            return;
+
+        var preset = presets[index];
+
+        // 3DMigoto 在跑、又开了自动同步的话，Apply 里会等几秒再回写偏好，
+        // 先给个"正在启用"，不然这段时间界面一点反应都没有
+        _notificationManager.ShowNotification("正在启用预设", $"「{preset.Name}」", TimeSpan.FromSeconds(4));
+
+        var result = await _modPresetHandlerService.ApplyModPresetAsync(preset.Name);
+
+        // 预设会改一堆 Mod 的开关状态，列表和顶上那行统计都得重读
+        await Refresh();
+        UpdateStats();
+
+        if (result.HasNotification)
+            _notificationManager.ShowNotification(result.Notification);
+        else
+            _notificationManager.ShowNotification("已启用预设",
+                $"「{preset.Name}」里的 Mod 已经启用", TimeSpan.FromSeconds(6));
+    }
 
     /// <summary>二开：一键停用全部</summary>
     [RelayCommand]

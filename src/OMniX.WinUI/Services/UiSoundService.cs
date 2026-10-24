@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using OMniX.WinUI.Contracts.Services;
+using Windows.Media.Core;
+using Windows.Media.Playback;
+using Windows.Storage.Streams;
 
 namespace OMniX.WinUI.Services;
 
@@ -10,16 +14,16 @@ namespace OMniX.WinUI.Services;
 ///     tap   优先用 Assets/Sounds/click.wav，没有就现场合成一段（sine 960→1420，0.12s）
 ///     popup 合成 triangle 720→1080，0.2s
 ///     简易版（MotionEnabled=false）自动静音，也可以在设置里单独关。
+///
+///     之前用 winmm 的 PlaySound(SND_ASYNC)：它是进程级单通道，
+///     后一次调用会把前一次掐掉，点击密集（或者正好赶上切页面的 popup 音）时
+///     前一声就没了，表现就是"大部分时候没声音，偶尔响一下"。
+///     换成 WinRT 的 MediaPlayer，两个音效各一个实例，重播只把 Position 拨回 0，
+///     不会互相打断；启动时静音预热一次，避免第一次点击还在解码。
 /// </summary>
 public sealed class UiSoundService
 {
     public const string SoundEnabledKey = "App.UiSound";
-
-    // winmm 的 PlaySound 标志位
-    private const uint SndAsync = 0x0001;
-    private const uint SndNoDefault = 0x0002;
-    private const uint SndMemory = 0x0004;
-    private const uint SndFilename = 0x20000;
 
     private const int SampleRate = 22050;
 
@@ -27,17 +31,17 @@ public sealed class UiSoundService
     private const double Amplitude = 0.28;
     private const double TailGain = 0.001;
 
+    private const double Volume = 0.8;
+
     private readonly ILocalSettingsService _localSettingsService;
 
-    private byte[]? _tapWave;
-    private IntPtr _tapPointer;
-    private GCHandle _tapPin;
+    private MediaPlayer? _tapPlayer;
+    private MediaPlayer? _popupPlayer;
 
-    private byte[]? _popupWave;
-    private IntPtr _popupPointer;
-    private GCHandle _popupPin;
+    // MediaSource.CreateFromStream 要求流在播放期间一直活着，得拿字段托住
+    private readonly List<InMemoryRandomAccessStream> _waveStreams = [];
 
-    private string? _tapFile;
+    private bool _prepared;
 
     private DateTimeOffset _lastPlay = DateTimeOffset.MinValue;
 
@@ -65,6 +69,8 @@ public sealed class UiSoundService
         {
             Enabled = true;
         }
+
+        Prepare();
     }
 
     public async Task SetEnabledAsync(bool value)
@@ -84,12 +90,116 @@ public sealed class UiSoundService
     }
 
     /// <summary>点按钮：短促的"嗒"</summary>
-    public void PlayTap() => Play(false);
+    public void PlayTap() => Play(_tapPlayer, false);
 
     /// <summary>切页面 / 开弹窗：带一点厚度的"咚"</summary>
-    public void PlayPopup() => Play(true);
+    public void PlayPopup() => Play(_popupPlayer, true);
 
-    private void Play(bool popup)
+    private void Prepare()
+    {
+        if (_prepared)
+            return;
+
+        try
+        {
+            _tapPlayer = CreatePlayer(ResolveTapSource());
+            _popupPlayer = CreatePlayer(CreateWaveSource(BuildWave(true, 720, 1080, 0.15, 0.2)));
+
+            _prepared = true;
+
+            // 静音放一次：MediaPlayer 第一次 Play 要先解码，赶在用户点第一下之前做完，
+            // 不然第一次点击（或第一次切页面）是没声的
+            _ = WarmUpAsync(_tapPlayer);
+            _ = WarmUpAsync(_popupPlayer);
+        }
+        catch (Exception)
+        {
+            // 音频初始化失败就当没有音效，不能连累界面
+        }
+    }
+
+    private static MediaPlayer CreatePlayer(MediaSource? source)
+    {
+        var player = new MediaPlayer
+        {
+            AutoPlay = false,
+            Volume = Volume,
+            IsLoopingEnabled = false
+        };
+
+        if (source is not null)
+            player.Source = source;
+
+        return player;
+    }
+
+    private static async Task WarmUpAsync(MediaPlayer? player)
+    {
+        if (player?.Source is null)
+            return;
+
+        try
+        {
+            player.Volume = 0;
+            player.Play();
+
+            await Task.Delay(80);
+
+            player.Pause();
+            player.PlaybackSession.Position = TimeSpan.Zero;
+            player.Volume = Volume;
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    private MediaSource? ResolveTapSource()
+    {
+        var path = Path.Combine(AppContext.BaseDirectory, "Assets", "Sounds", "click.wav");
+
+        if (File.Exists(path))
+        {
+            try
+            {
+                return MediaSource.CreateFromUri(new Uri(path));
+            }
+            catch (Exception)
+            {
+                // Uri 构造失败就退回合成音
+            }
+        }
+
+        return CreateWaveSource(BuildWave(false, 960, 1420, 0.08, 0.12));
+    }
+
+    private MediaSource? CreateWaveSource(byte[] wave)
+    {
+        try
+        {
+            var stream = new InMemoryRandomAccessStream();
+
+            using (var writer = new DataWriter(stream.GetOutputStreamAt(0)))
+            {
+                writer.WriteBytes(wave);
+                writer.StoreAsync().AsTask().GetAwaiter().GetResult();
+                writer.FlushAsync().AsTask().GetAwaiter().GetResult();
+            }
+
+            stream.Seek(0);
+
+            // MediaSource.CreateFromStream 要求流在播放期间一直活着，用字段托住
+            _waveStreams.Add(stream);
+
+            return MediaSource.CreateFromStream(stream, "audio/wav");
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    private void Play(MediaPlayer? player, bool popup)
     {
         if (!Enabled)
             return;
@@ -105,66 +215,23 @@ public sealed class UiSoundService
 
         _lastPlay = DateTimeOffset.UtcNow;
 
+        if (player?.Source is null)
+            return;
+
         try
         {
-            // 优先放现成的 wav 文件：文件由 winmm 自己读盘，不涉及托管内存，
-            // 异步播放期间不会被 GC 动到
-            if (!popup && ResolveTapFile() is { } file)
-            {
-                PlaySoundFile(file, IntPtr.Zero, SndFilename | SndAsync | SndNoDefault);
-                return;
-            }
+            // 同一个 player 重播：位置拨回开头再 Play，不会掐掉别的音效
+            var session = player.PlaybackSession;
 
-            var pointer = popup ? PopupPointer() : TapPointer();
-            if (pointer == IntPtr.Zero)
-                return;
+            if (session.Position > TimeSpan.Zero)
+                session.Position = TimeSpan.Zero;
 
-            // 传的是固定住的内存地址，不是 byte[] 本身 ——
-            // 传数组的话 marshaler 会临时复制一份，SND_ASYNC 还没读完就被回收了，
-            // 表现就是"大部分时候没声音，偶尔响一下"
-            PlaySoundMemory(pointer, IntPtr.Zero, SndMemory | SndAsync | SndNoDefault);
+            player.Play();
         }
         catch (Exception)
         {
             // 声音这种锦上添花的东西，怎么样都不该拖累操作
         }
-    }
-
-    private string? ResolveTapFile()
-    {
-        if (_tapFile is not null)
-            return _tapFile.Length == 0 ? null : _tapFile;
-
-        var path = Path.Combine(AppContext.BaseDirectory, "Assets", "Sounds", "click.wav");
-        _tapFile = File.Exists(path) ? path : string.Empty;
-
-        return _tapFile.Length == 0 ? null : _tapFile;
-    }
-
-    private IntPtr TapPointer()
-    {
-        if (_tapPointer != IntPtr.Zero)
-            return _tapPointer;
-
-        // sine，960 → 1420Hz，0.08s 滑上去，总长 0.12s
-        _tapWave ??= BuildWave(false, 960, 1420, 0.08, 0.12);
-        _tapPin = GCHandle.Alloc(_tapWave, GCHandleType.Pinned);
-        _tapPointer = _tapPin.AddrOfPinnedObject();
-
-        return _tapPointer;
-    }
-
-    private IntPtr PopupPointer()
-    {
-        if (_popupPointer != IntPtr.Zero)
-            return _popupPointer;
-
-        // triangle，720 → 1080Hz，0.15s 滑上去，总长 0.2s
-        _popupWave ??= BuildWave(true, 720, 1080, 0.15, 0.2);
-        _popupPin = GCHandle.Alloc(_popupWave, GCHandleType.Pinned);
-        _popupPointer = _popupPin.AddrOfPinnedObject();
-
-        return _popupPointer;
     }
 
     /// <summary>
@@ -243,10 +310,4 @@ public sealed class UiSoundService
         buffer[offset + 2] = (byte)((value >> 16) & 0xFF);
         buffer[offset + 3] = (byte)((value >> 24) & 0xFF);
     }
-
-    [DllImport("winmm.dll", EntryPoint = "PlaySoundW", CharSet = CharSet.Unicode)]
-    private static extern bool PlaySoundFile(string pszSound, IntPtr hmod, uint fdwSound);
-
-    [DllImport("winmm.dll", EntryPoint = "PlaySoundW")]
-    private static extern bool PlaySoundMemory(IntPtr pszSound, IntPtr hmod, uint fdwSound);
 }

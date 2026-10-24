@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -107,7 +107,7 @@ public partial class CharacterDetailsViewModel
             {
                 _logger.Error("Could not find character skin {SkinName} for character {CharacterName}",
                     characterTemplate.DisplayName, ShownModObject.DisplayName);
-                _notificationService.ShowNotification("Error while switching character skin.", "",
+                _notificationService.ShowNotification("切换角色皮肤出错", "",
                     TimeSpan.FromSeconds(5));
                 return;
             }
@@ -171,7 +171,7 @@ public partial class CharacterDetailsViewModel
 
         if (!canDisableAllMods)
         {
-            _notificationService.ShowNotification("Error while disabling mods", "Could not disable all mods.",
+            _notificationService.ShowNotification("禁用 Mod 时出错", "Could not disable all mods.",
                 TimeSpan.FromSeconds(5));
             return;
         }

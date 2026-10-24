@@ -41,7 +41,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Style="{ThemeResource TitleTextBlockStyle}"
-                    Text="An error has occurred: " />
+                    Text="出错了：" />
 
             </StackPanel>
 
@@ -62,13 +62,13 @@
                     Margin="0,0,0,8"
                     FontSize="18"
                     Style="{ThemeResource BodyStrongTextBlockStyle}"
-                    Text="An unhanded exception has occurred. The application ran into a problem that it didn't know how to handle. OMniX may be in an unstable state, and it is recommended to restart OMniX." />
+                    Text="程序碰到了一个没处理好的问题。这会儿 OMniX 可能不太稳定，建议重启一下。" />
 
                 <TextBlock
                     Margin="0,4"
                     IsTextSelectionEnabled="True"
                     Style="{ThemeResource BodyStrongTextBlockStyle}"
-                    Text="Stack trace:" />
+                    Text="出错位置：" />
 
                 <StackPanel
                     Padding="12"
@@ -85,14 +85,14 @@
                     <TextBlock
                         Margin="4,0"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                        Text="An inner exception" />
+                        Text="里面还有一个异常" />
                     <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{x:Bind ViewModel.InnerExceptionMessage, Mode=OneWay}" />
 
                     <TextBlock
                         Margin="0,4"
                         IsTextSelectionEnabled="True"
                         Style="{ThemeResource BodyStrongTextBlockStyle}"
-                        Text="Stack trace:" />
+                        Text="出错位置：" />
 
                     <StackPanel
                         Padding="12"

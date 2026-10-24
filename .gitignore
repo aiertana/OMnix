@@ -27,3 +27,24 @@ OMniX_v1.0_release.zip
 
 # 超过 50MB 的大文件（不上传，本地留着）
 OMix_表情包.zip
+
+# 打好的发布包与中间产物（不上传，走 Releases）
+/OMniX1.0/
+/OMniX1.0.zip
+/OMniX_v1.0_release/
+/OMniX_v1.0_portable.zip
+/UI-Backup/
+/UI-Backup.7z
+/UI-Patch/
+/snapshots/
+/源码1.0/
+/工作区1.0/
+/工作区1.0.zip
+
+# 截图与日志（不上传）
+/shot/
+*.log
+/1/
+
+# 根目录下所有 1.0 结尾的目录（打包产物、源码副本等，名字带中文/乱码都挡得住）
+/*1.0/

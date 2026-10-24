@@ -48,9 +48,9 @@ public class ModRandomizationService
     {
         var dialog = new ContentDialog
         {
-            Title = "Randomize Mods",
-            PrimaryButtonText = "Randomize",
-            CloseButtonText = "Cancel",
+            Title = "随机换 Mod",
+            PrimaryButtonText = "随机",
+            CloseButtonText = "取消",
             DefaultButton = ContentDialogButton.Primary
         };
 
@@ -59,12 +59,12 @@ public class ModRandomizationService
 
         stackPanel.Children.Add(new TextBlock
         {
-            Text = "Select the categories you want to randomize mods for:"
+            Text = "选一下要给哪些分类随机："
         });
 
         stackPanel.Children.Add(new TextBlock
         {
-            Text = "Note: This will only randomize mod folders that are meant to only have one mod active. So 'Others __' folders will not be randomized. While only one mod wil be enabled per in game character skin",
+            Text = "说明：只会随机那些「本来就只能开一个」的 Mod 文件夹，所以 Others 里的不会动。同一个角色的皮肤，每次只会开一个 Mod。",
             TextWrapping = TextWrapping.WrapWholeWords,
             Margin = new Thickness(0, 0, 0, 10)
         });
@@ -82,13 +82,13 @@ public class ModRandomizationService
         stackPanel.Children.Add(new CheckBox
         {
             Margin = new Thickness(0, 10, 0, 0),
-            Content = "Allow no mods as a result. This means it is possible for no mods to be enabled for a mod folder",
+            Content = "允许随机结果是一个都不开（有些 Mod 文件夹可能整个空着）",
             IsChecked = false
         });
 
         stackPanel.Children.Add(new TextBlock
         {
-            Text = "I suggest creating a preset (or a backup) of your mods before randomizing if you have a lot of enabled mods",
+            Text = "开的 Mod 多的话，建议先存个预设（或者备份）再随机",
             TextWrapping = TextWrapping.WrapWholeWords,
             Margin = new Thickness(0, 10, 0, 0)
         });
@@ -115,7 +115,7 @@ public class ModRandomizationService
 
         if (selectedCategories.Count == 0)
         {
-            _notificationManager.ShowNotification("No categories selected", "No categories were selected to randomize.",
+            _notificationManager.ShowNotification("没选分类", "一个分类都没选，什么都没换。",
                 TimeSpan.FromSeconds(5));
             return;
         }
@@ -183,8 +183,8 @@ public class ModRandomizationService
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Failed to randomize mods");
-            _notificationManager.ShowNotification("Failed to randomize mods", e.Message, TimeSpan.FromSeconds(5));
+            _logger.Error(e, "随机换 Mod 失败");
+            _notificationManager.ShowNotification("随机换 Mod 失败", e.Message, TimeSpan.FromSeconds(5));
             return;
         }
 
@@ -193,7 +193,7 @@ public class ModRandomizationService
             await Task.Run(() => _elevatorService.RefreshGenshinMods());
         }
 
-        _notificationManager.ShowNotification("Mods randomized",
+        _notificationManager.ShowNotification("随机完成",
             "Mods have been randomized for the categories: " +
             string.Join(", ", selectedCategories.Select(c => c.DisplayNamePlural)),
             TimeSpan.FromSeconds(5));

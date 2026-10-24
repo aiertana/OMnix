@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -193,7 +193,7 @@ public partial class ContextMenuVM(
         if (destinationModList is null)
         {
             _logger.Warning("Destination mod list not found");
-            _notificationManager.ShowNotification("Destination Mod List Not Found",
+            _notificationManager.ShowNotification("找不到目标 Mod 列表",
                 "Destination mod list not found", TimeSpan.FromSeconds(5));
             return;
         }
@@ -209,7 +209,7 @@ public partial class ContextMenuVM(
         {
             _logger.Error(e, "Error moving mods");
             _notificationManager
-                .ShowNotification("Invalid Operation Exception",
+                .ShowNotification("这个操作不合法",
                     $"Cannot move mods\n{e.Message}, see logs for details.", TimeSpan.FromSeconds(10));
             return;
         }
@@ -322,7 +322,7 @@ public partial class ContextMenuVM(
 
         if (result.IsT0)
         {
-            _notificationManager.ShowNotification("Changed skin override for mod",
+            _notificationManager.ShowNotification("已改掉这个 Mod 的皮肤归属",
                 $"Set skin override for mod '{modEntry.Mod.GetDisplayName()}' to {characterSkinToSet.DisplayName}", null);
         }
         else

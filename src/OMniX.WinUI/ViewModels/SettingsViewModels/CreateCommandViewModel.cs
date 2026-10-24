@@ -279,7 +279,7 @@ public partial class CreateCommandViewModel : ObservableObject
         var folderPicker = new FolderPicker()
         {
             SuggestedStartLocation = PickerLocationId.ComputerFolder,
-            CommitButtonText = "Select Folder"
+            CommitButtonText = "选择文件夹"
         };
 
 

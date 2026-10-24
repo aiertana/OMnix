@@ -183,7 +183,7 @@
                     </Grid>
                 </Border>
 
-                <!--  二开：三套配色。改的是画刷实例，不用重启，整界面立刻换色  -->
+                <!--  二开：两套配色。改的是画刷实例，不用重启，整界面立刻换色  -->
                 <Border Style="{StaticResource SettingCardStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -195,7 +195,7 @@
                             <TextBlock Style="{StaticResource CardTitleStyle}" Text="配色" />
                             <TextBlock
                                 Style="{StaticResource CardDescStyle}"
-                                Text="三套色系，和明暗模式是两回事：暖白珊瑚是 1.0 版那套，深黑白整体就是深色"
+                                Text="两套色系，和明暗模式是两回事：暖白珊瑚是 1.0 版那套，冷调蓝是冷白底配蓝色主色"
                                 TextWrapping="Wrap" />
                         </StackPanel>
 
@@ -216,12 +216,6 @@
                                 Content="冷调蓝"
                                 GroupName="AppPalette"
                                 IsChecked="{x:Bind ViewModel.IsBluePalette, Mode=OneWay}" />
-                            <RadioButton
-                                Command="{x:Bind ViewModel.SwitchPaletteCommand}"
-                                CommandParameter="Mono"
-                                Content="深黑白"
-                                GroupName="AppPalette"
-                                IsChecked="{x:Bind ViewModel.IsMonoPalette, Mode=OneWay}" />
                         </StackPanel>
                     </Grid>
                 </Border>

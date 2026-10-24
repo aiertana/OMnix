@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkitWrapper;
@@ -188,13 +188,13 @@ public sealed partial class PresetDetailsViewModel(
 
             ModEntries.Remove(modPresetEntryVm);
 
-            _notificationManager.ShowNotification("Mod removed from preset",
+            _notificationManager.ShowNotification("已从预设里移除",
                 $"Removed {(modPresetEntryVm.IsMissing ? "missing" : "")} mod '{modPresetEntryVm.Name}' from preset {PresetName}",
                 null);
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("Failed to remove mod from preset", e.Message, null);
+            _notificationManager.ShowNotification("从预设里移除失败", e.Message, null);
         }
         finally
         {
@@ -238,13 +238,13 @@ public sealed partial class PresetDetailsViewModel(
             ModEntries.Insert(0, modEntryVm);
             _backendModEntries.Insert(0, modEntryVm);
 
-            _notificationManager.ShowNotification("Mod added to preset",
+            _notificationManager.ShowNotification("已加进预设",
                 $"Added mod '{modEntryVm.Name}' to preset {PresetName}",
                 null);
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("Failed to add mod to preset", e.Message, null);
+            _notificationManager.ShowNotification("加进预设失败", e.Message, null);
         }
         finally
         {
@@ -302,13 +302,13 @@ public sealed partial class PresetDetailsViewModel(
 
             await Task.Run(() => _modPresetService.DeleteModEntryAsync(PresetName, vm.ModId));
 
-            _notificationManager.ShowNotification("Mod added to preset",
+            _notificationManager.ShowNotification("已加进预设",
                 $"Added mod '{modEntryVm.Name}' to preset {PresetName}",
                 null);
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("Failed to add mod to preset", e.Message, null);
+            _notificationManager.ShowNotification("加进预设失败", e.Message, null);
         }
         finally
         {
@@ -351,12 +351,12 @@ public sealed partial class PresetDetailsViewModel(
             _backendModEntries[backendIndex] = updatedModEntry;
 
 
-            _notificationManager.ShowNotification("Preferences saved for mod",
+            _notificationManager.ShowNotification("这个 Mod 的设置已保存",
                 $"Preferences saved successfully for mod {presetEntryDetailedVm.Name}", null);
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("Failed to save mod preferences", e.Message, null);
+            _notificationManager.ShowNotification("保存 Mod 设置失败", e.Message, null);
         }
         finally
         {
@@ -405,7 +405,7 @@ public sealed partial class PresetDetailsViewModel(
         var window = new WindowEx()
         {
             SystemBackdrop = new MicaBackdrop(),
-            Title = "Select Mods",
+            Title = "选择 Mod",
             Content = modSelector,
             Width = 1200,
             Height = 750,

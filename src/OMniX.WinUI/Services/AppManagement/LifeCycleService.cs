@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Reflection;
 using CommunityToolkitWrapper;
 using OMniX.Core.Helpers;
@@ -54,7 +54,7 @@ public class LifeCycleService(
 
         if (notifyOnError)
         {
-            _notificationManager.ShowNotification("Error restarting app",
+            _notificationManager.ShowNotification("重启应用失败",
                 useLegacyRestartOnError
                     ? $"Trying legacy restart method. Reason: {error}"
                     : $"Please restart manually. Reason: {error}",
@@ -64,11 +64,11 @@ public class LifeCycleService(
 
         if (!useLegacyRestartOnError)
         {
-            _logger.Error("Error restarting app: {Error}", error);
+            _logger.Error("重启应用失败: {Error}", error);
             return;
         }
 
-        _logger.Warning("Error restarting app: {Error}. Falling back to legacy restart method", error);
+        _logger.Warning("重启应用失败: {Error}. Falling back to legacy restart method", error);
         await Task.Delay(1);
         await LegacyRestartAsync(args).ConfigureAwait(false);
     }
@@ -109,8 +109,8 @@ public class LifeCycleService(
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Error restarting app");
-            _notificationManager.ShowNotification("Error restarting app", "Please restart manually",
+            _logger.Error(e, "重启应用失败");
+            _notificationManager.ShowNotification("重启应用失败", "Please restart manually",
                 TimeSpan.FromSeconds(4));
             await Task.Delay(TimeSpan.FromSeconds(3));
             await StartShutdownAsync();

@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 
@@ -184,7 +184,7 @@ public partial class CharacterDetailsViewModel
                     }
                 }
 
-                _notificationService.ShowNotification("Error Deleting Mods", content.ToString(), TimeSpan.FromSeconds(10));
+                _notificationService.ShowNotification("删除 Mod 出错", content.ToString(), TimeSpan.FromSeconds(10));
                 return;
             }
 

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="OMniX.WinUI.Views.StartupPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -216,10 +216,10 @@
                             Margin="0,8,0,0"
                             Style="{ThemeResource BodyTextBlockStyle}"
                             TextWrapping="WrapWholeWords"
-                            Text="Unloading of Mods is currently not implemented. However, once implemented it will be possible to unload select mods to an unloaded mods folder." />
+                            Text="卸载 Mod 的功能还没做。等以后做了，可以把选中的 Mod 挪到单独的卸载区文件夹里。" />
                     </Grid>
                     <controls:FolderSelector
-                        Title="Unloaded Mods Folder (Optional)"
+                        Title="卸载区文件夹（可选）"
                         Margin="4,8,4,8"
                         IsEnabled="False"
                         Visibility="Collapsed" />
@@ -246,20 +246,20 @@
                                             Margin="0,8,0,4"
                                             Style="{ThemeResource BodyTextBlockStyle}"
                                             TextWrapping="WrapWholeWords"
-                                            Text="Enabling this option will prompt the application to sort existing mods into folders assigned to their respective characters. Any mods that can't be reasonably matched will be placed in an 'Others' folder."
+                                            Text="勾上之后，程序会把现有的 Mod 按角色分到各自的文件夹里。实在对不上角色的，会放进「Others」文件夹。"
                                             l:Uids.Uid="/Startup/ReorganizeTooltip1" />
 
                                         <TextBlock
                                             Style="{ThemeResource BodyTextBlockStyle}"
                                             TextWrapping="WrapWholeWords"
-                                            Text="A mod folder containing multiple character names may be wrongly moved to a character's directory. This assumes a flat mod structure, where skin folders are loosely stored in the mods folder. If you have a custom folder structure, there is a high chance that OMniX will incorrectly identify your skins. This also the case if you have nested folders with skins inside of them."
+                                            Text="如果某个 Mod 文件夹里塞了好几个角色的名字，可能会被挪到错误角色的目录下。这套逻辑假设 Mod 是平铺存放的（皮肤文件夹直接躺在 Mods 里）。要是你自己搞了很深的嵌套结构，OMniX 认错皮肤的概率会比较高。"
                                             l:Uids.Uid="/Startup/ReorganizeTooltip2" />
 
                                         <TextBlock
                                             Margin="0,8,0,4"
                                             Style="{ThemeResource BaseTextBlockStyle}"
                                             TextWrapping="WrapWholeWords"
-                                            Text="This can be activated later in the settings page."
+                                            Text="以后也可以在设置页里打开。"
                                             l:Uids.Uid="/Startup/ReorganizeTooltip3" />
                                     </StackPanel>
                                 </Flyout>
@@ -290,7 +290,7 @@
                                             Margin="0,8,0,4"
                                             Style="{ThemeResource BodyTextBlockStyle}"
                                             TextWrapping="WrapWholeWords"
-                                            Text="Prepend DISABLED_ to all mods so that they are disabled"
+                                            Text="给所有 Mod 文件夹加上 DISABLED_ 前缀，让它们全部失效"
                                             l:Uids.Uid="/Startup/DisableModsTooltip" />
 
                                     </StackPanel>

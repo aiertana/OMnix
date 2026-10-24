@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -64,6 +64,9 @@ public abstract partial class BaseProcessManager<TProcessOptions> : ObservableOb
         {
             ProcessStatus = ProcessStatus.NotInitialized;
 
+            // 没有命令记录就别留着上一次的路径，不然界面显示的和实际状态对不上
+            ProcessPath = null;
+
             if (_process is not null)
                 Debugger.Break();
 
@@ -79,11 +82,23 @@ public abstract partial class BaseProcessManager<TProcessOptions> : ObservableOb
 
     public async Task ResetProcessOptions()
     {
-        if (ProcessStatus == ProcessStatus.NotInitialized || _commandDefinition is null) return;
+        // 原来这里遇到 NotInitialized 就直接 return，可"状态"和"记着的 exe 路径"本来就可能对不上
+        // （比如路径是自动推导出来的、没走 SetCommandAsync），那种情况下永远清不掉。
+        // 现在有两样就清两样，都不存在时也照常把状态归零。
+        if (_commandDefinition is not null)
+        {
+            await _commandService.DeleteCommandDefinitionAsync(_commandDefinition.Id);
+            _commandDefinition = null;
+        }
 
-        await _commandService.DeleteCommandDefinitionAsync(_commandDefinition.Id);
+        _process = null;
+
+        // ProcessPath 必须一起清：
+        // 设置页那个按钮的 ToolTip、"能不能点重置"的判断，看的都是它。
+        // 只清 CommandDefinition 的话，界面上一点变化都没有，看着就像没生效。
+        ProcessPath = null;
+        ProcessName = string.Empty;
         ProcessStatus = ProcessStatus.NotInitialized;
-        _commandDefinition = null;
     }
 
 
@@ -124,7 +139,7 @@ public abstract partial class BaseProcessManager<TProcessOptions> : ObservableOb
                         $"Failed to start {ProcessName}, this can happen if the exe has the 'Run as administrator' option enabled in the exe properties";
                 }
 
-                _notificationManager.ShowNotification("Could not start process", message, null);
+                _notificationManager.ShowNotification("启动进程失败", message, null);
                 return;
             }
 
@@ -135,7 +150,7 @@ public abstract partial class BaseProcessManager<TProcessOptions> : ObservableOb
                 return;
             }
 
-            _notificationManager.ShowNotification("Could not start process", "An unknown error occurred", null);
+            _notificationManager.ShowNotification("启动进程失败", "An unknown error occurred", null);
             return;
         }
 

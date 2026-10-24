@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
@@ -116,12 +116,10 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
     public bool IsSimpleStyle => !IsStandardStyle;
 
-    /// <summary>三套配色，两两互斥，给 RadioButton 的 IsChecked 用</summary>
+    /// <summary>两套配色，互斥，给 RadioButton 的 IsChecked 用</summary>
     public bool IsWarmPalette => _paletteService.Current == OmniXPalette.Warm;
 
     public bool IsBluePalette => _paletteService.Current == OmniXPalette.Blue;
-
-    public bool IsMonoPalette => _paletteService.Current == OmniXPalette.Mono;
 
     /// <summary>
     ///     二开：交互音效开关。简易版会自动静音（UiSoundService 里判断），
@@ -229,6 +227,25 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             if (args.PropertyName == nameof(PathPicker.Path))
                 SaveSettingsCommand.NotifyCanExecuteChanged();
         };
+
+        // 「路径重置」两个按钮能不能点，看的是管理器里记着的东西。
+        // ProcessStatus / ProcessPath 都是在管理器内部改的，属性本身不会被重新赋值，
+        // 所以 [NotifyCanExecuteChangedFor] 那条走不到 —— 得盯着它的 PropertyChanged 手动通知，
+        // 不然初始化完成后按钮还一直是灰的。
+        GenshinProcessManager.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName is nameof(GenshinProcessManager.ProcessStatus)
+                or nameof(GenshinProcessManager.ProcessPath))
+                ResetGenshinExePathCommand.NotifyCanExecuteChanged();
+        };
+
+        ThreeDMigtoProcessManager.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName is nameof(ThreeDMigtoProcessManager.ProcessStatus)
+                or nameof(ThreeDMigtoProcessManager.ProcessPath))
+                Reset3DmigotoPathCommand.NotifyCanExecuteChanged();
+        };
+
         ElevatorService.CheckStatus();
 
         MaxCacheLimit = localSettingsService.ReadSetting<ModArchiveSettings>(ModArchiveSettings.Key)
@@ -274,17 +291,17 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         {
             var result = await _windowManagerService.ShowDialogAsync(new ContentDialog()
             {
-                Title = "Restart required",
+                Title = "需要重启",
                 Content = new TextBlock()
                 {
                     Text =
-                        "You'll need to restart the application for the theme to take effect or else the application will become unstable. " +
-                        "This is most likely me not configuring the theming correctly. Dark Mode is the recommended theme.\n\n" +
-                        "Sorry for the inconvenience.",
+                        "换主题后要重启应用才会生效，不然界面可能会错乱。" +
+                        "这是主题处理没做到位，推荐用深色模式。\n\n" +
+                        "给你添麻烦了。",
                     TextWrapping = TextWrapping.Wrap
                 },
-                PrimaryButtonText = "Restart",
-                CloseButtonText = "Cancel",
+                PrimaryButtonText = "重启",
+                CloseButtonText = "取消",
                 DefaultButton = ContentDialogButton.Primary
             });
 
@@ -292,7 +309,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             ElementTheme = param;
             await _themeSelectorService.SetThemeAsync(param);
-            _notificationManager.ShowNotification("Restarting...", "The application will restart now.",
+            _notificationManager.ShowNotification("正在重启…", "应用马上重启。",
                 null);
             await RestartAppAsync();
         }
@@ -327,7 +344,6 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         var palette = param switch
         {
             nameof(OmniXPalette.Blue) => OmniXPalette.Blue,
-            nameof(OmniXPalette.Mono) => OmniXPalette.Mono,
             _ => OmniXPalette.Warm
         };
 
@@ -335,7 +351,6 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
         OnPropertyChanged(nameof(IsWarmPalette));
         OnPropertyChanged(nameof(IsBluePalette));
-        OnPropertyChanged(nameof(IsMonoPalette));
 
         // 换配色也响一声，和点按钮的手感保持一致
         _uiSoundService.PlayTap();
@@ -344,7 +359,6 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             palette switch
             {
                 OmniXPalette.Blue => "冷调蓝：冷白底 + 蓝色主色",
-                OmniXPalette.Mono => "深黑白：近黑底 + 红色主色，不跟随明暗模式",
                 _ => "暖白珊瑚：1.0 版那套"
             },
             TimeSpan.FromSeconds(5));
@@ -396,11 +410,11 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         var dialog = new ContentDialog();
         dialog.XamlRoot = App.MainWindow.Content.XamlRoot;
         dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-        dialog.Title = "Update Folder Paths?";
-        dialog.CloseButtonText = "Cancel";
-        dialog.PrimaryButtonText = "Save";
+        dialog.Title = "保存文件夹路径？";
+        dialog.CloseButtonText = "取消";
+        dialog.PrimaryButtonText = "保存";
         dialog.DefaultButton = ContentDialogButton.Primary;
-        dialog.Content = "Do you want to save the new folder paths? The App will restart afterwards.";
+        dialog.Content = "要保存新的文件夹路径吗？保存后应用会重启。";
 
         var result = await dialog.ShowAsync();
 
@@ -415,7 +429,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             await _localSettingsService.SaveSettingAsync(ModManagerOptions.Section,
                 modManagerOptions);
             _logger.Information("Saved startup settings: {@ModManagerOptions}", modManagerOptions);
-            _notificationManager.ShowNotification("Settings saved. Restarting App...", "", TimeSpan.FromSeconds(2));
+            _notificationManager.ShowNotification("设置已保存，正在重启…", "", TimeSpan.FromSeconds(2));
 
 
             await RestartAppAsync();
@@ -443,19 +457,19 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         var result = await _windowManagerService.ShowDialogAsync(new ContentDialog()
         {
-            Title = "Reorganize Mods?",
+            Title = "重新整理 Mod？",
             Content = new TextBlock()
             {
                 Text =
-                    "Do you want to reorganize the Mods folder?\n" +
-                    "This will prompt the application to sort existing mods that are directly in the Mods folder and Others folder, into folders assigned to their respective characters.\n\n" +
-                    "Any mods that can't be reasonably matched will be placed in an 'Others' folder. While the mods already in 'Others' folder will remain there.",
+                    "要把 Mods 文件夹重新整理一遍吗？\n" +
+                    "程序会把直接躺在 Mods 文件夹和 Others 文件夹里的 Mod，按角色分到各自的文件夹里。\n\n" +
+                    "实在对不上角色的 Mod 会被放进「Others」文件夹；本来就在「Others」里的不会动。",
                 TextWrapping = TextWrapping.WrapWholeWords,
                 IsTextSelectionEnabled = true
             },
-            PrimaryButtonText = "Yes",
+            PrimaryButtonText = "开始整理",
             DefaultButton = ContentDialogButton.Primary,
-            CloseButtonText = "Cancel",
+            CloseButtonText = "取消",
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style
         });
 
@@ -476,12 +490,12 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                 await _skinManagerService.RefreshModsAsync();
 
                 if (movedModsCount == -1)
-                    _notificationManager.ShowNotification("Mods reorganization failed.",
-                        "See logs for more details.", TimeSpan.FromSeconds(5));
+                    _notificationManager.ShowNotification("整理 Mod 失败",
+                        "详细原因见日志。", TimeSpan.FromSeconds(5));
 
                 else
-                    _notificationManager.ShowNotification("Mods reorganized.",
-                        $"Moved {movedModsCount} mods to character folders", TimeSpan.FromSeconds(5));
+                    _notificationManager.ShowNotification("整理完成",
+                        $"已把 {movedModsCount} 个 Mod 移进角色文件夹", TimeSpan.FromSeconds(5));
             }
             finally
             {
@@ -569,31 +583,64 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             }
             catch (Win32Exception e)
             {
-                _notificationManager.ShowNotification("Unable to start Elevator", e.Message, TimeSpan.FromSeconds(10));
+                _notificationManager.ShowNotification("无法启动 Elevator", e.Message, TimeSpan.FromSeconds(10));
                 _showElevatorStartDialog = true;
             }
     }
 
+    /// <summary>
+    ///     路径重置能不能点：只要"确实记过东西"就允许。
+    ///
+    ///     原来判断的是 ProcessStatus != NotInitialized。问题是没手动指定过 exe 的人
+    ///     （路径靠「XXMI 文件夹」自动推导的那批），状态一直是 NotInitialized，
+    ///     按钮就永远是灰的、点不动 —— 而他们恰恰是最需要清一次让程序重新找的人。
+    /// </summary>
     private bool CanResetGenshinExePath()
     {
-        return GenshinProcessManager.ProcessStatus != ProcessStatus.NotInitialized;
+        return !string.IsNullOrWhiteSpace(GenshinProcessManager.ProcessPath) || HasLauncherFolder();
+    }
+
+    /// <summary>是否记过「XXMI 文件夹」。有它就能重新推导启动程序 / 游戏程序。</summary>
+    private bool HasLauncherFolder()
+    {
+        return !string.IsNullOrWhiteSpace(_modManagerOptions?.GimiRootFolderPath);
     }
 
     [RelayCommand(CanExecute = nameof(CanResetGenshinExePath))]
     private async Task ResetGenshinExePath()
     {
+        var hadPath = !string.IsNullOrWhiteSpace(GenshinProcessManager.ProcessPath);
+
         await GenshinProcessManager.ResetProcessOptions();
+
+        // 清完必须给一句话。原来这个命令静默跑完，界面上一点变化都没有，
+        // 用户点了不知道发生了什么，反馈过来就是"这个功能无效"。
+        _notificationManager.ShowNotification("已重置游戏程序路径",
+            hadPath
+                ? "记下的游戏程序已清掉，下次启动游戏时会重新定位，找不到会让你重新指定"
+                : "当前没有记下的游戏程序路径，下次启动游戏时会重新定位",
+            TimeSpan.FromSeconds(7));
     }
 
     private bool CanReset3DmigotoPath()
     {
-        return ThreeDMigtoProcessManager.ProcessStatus != ProcessStatus.NotInitialized;
+        return !string.IsNullOrWhiteSpace(ThreeDMigtoProcessManager.ProcessPath) || HasLauncherFolder();
     }
 
     [RelayCommand(CanExecute = nameof(CanReset3DmigotoPath))]
     private async Task Reset3DmigotoPath()
     {
+        var hadPath = !string.IsNullOrWhiteSpace(ThreeDMigtoProcessManager.ProcessPath);
+
         await ThreeDMigtoProcessManager.ResetProcessOptions();
+
+        // 启动器 exe 本来就是从「XXMI 文件夹」里推导出来的，
+        // 记录清掉之后，下次会按那个文件夹重新识别一遍。
+        _notificationManager.ShowNotification("已重置启动器路径",
+            hadPath
+                ? "记下的启动程序已清掉，下次会按「XXMI 文件夹」重新识别"
+                : "当前没有记下的启动程序，下次会按「XXMI 文件夹」重新识别",
+            TimeSpan.FromSeconds(7));
     }
 
     private void UpdateCheckerOnNewVersionAvailable(object? sender, UpdateChecker.NewVersionEventArgs e)
@@ -640,13 +687,13 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         var dialog = new ContentDialog()
         {
-            PrimaryButtonText = "Export",
+            PrimaryButtonText = "导出",
             IsPrimaryButtonEnabled = true,
-            CloseButtonText = "Cancel",
+            CloseButtonText = "取消",
             DefaultButton = ContentDialogButton.Primary
         };
 
-        dialog.Title = "Export Mods";
+        dialog.Title = "导出 Mod";
 
         dialog.ContentTemplate = contentDialog.ContentTemplate;
 
@@ -683,13 +730,13 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                     removeLocalOmniXSettings: model.RemoveOmniXSettings, zip: false,
                     keepCharacterFolderStructure: model.KeepFolderStructure, setModStatus: model.SetModStatus);
             });
-            _notificationManager.ShowNotification("Mods exported", $"Mods exported to {folder.Path}",
+            _notificationManager.ShowNotification("Mod 已导出", $"Mod 已导出 to {folder.Path}",
                 TimeSpan.FromSeconds(5));
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Error exporting mods");
-            _notificationManager.ShowNotification("Error exporting mods", e.Message, TimeSpan.FromSeconds(10));
+            _logger.Error(e, "导出 Mod 失败");
+            _notificationManager.ShowNotification("导出 Mod 失败", e.Message, TimeSpan.FromSeconds(10));
         }
         finally
         {
@@ -720,19 +767,18 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             var restartDialog = new ContentDialog()
             {
-                Title = "Restart Required",
+                Title = "需要重启",
                 Content = new TextBlock()
                 {
                     Text = _localizer.GetLocalizedStringOrDefault("/Settings/ChangeLanguageDialogText",
                         defaultValue:
-                        "Changing the language requires a restart of the application.\n" +
-                        "This is required to ensure that the application is configured correctly for the selected language.\n\n" +
-                        "Do you want to change the language?"),
+                        "切换语言需要重启应用，这样才能按选好的语言重新加载。\n\n" +
+                        "要切换语言吗？"),
                     TextWrapping = TextWrapping.WrapWholeWords,
                     IsTextSelectionEnabled = true
                 },
-                PrimaryButtonText = "Change Language and restart",
-                CloseButtonText = "Cancel",
+                PrimaryButtonText = "切换语言并重启",
+                CloseButtonText = "取消",
                 DefaultButton = ContentDialogButton.Primary
             };
 
@@ -768,13 +814,13 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         catch (Exception e)
         {
             _logger.Error(e, "Error starting update process");
-            _notificationManager.ShowNotification("Error starting update process", e.Message, TimeSpan.FromSeconds(10));
+            _notificationManager.ShowNotification("启动更新失败", e.Message, TimeSpan.FromSeconds(10));
         }
 
         if (errors is not null && errors.Any())
         {
             var errorMessages = errors.Select(e => e.Description).ToArray();
-            _notificationManager.ShowNotification("Could not start update process", string.Join('\n', errorMessages),
+            _notificationManager.ShowNotification("无法启动更新", string.Join('\n', errorMessages),
                 TimeSpan.FromSeconds(10));
         }
     }
@@ -790,18 +836,17 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
         var switchGameDialog = new ContentDialog()
         {
-            Title = "Switch Game",
+            Title = "切换游戏",
             Content = new TextBlock()
             {
                 Text =
-                    "Switching games will restart the application. " +
-                    "This is required to ensure that the application is configured correctly for the selected game.\n\n" +
-                    "Do you want to switch games?",
+                    "切换游戏会重启应用，这样才能按新游戏重新配置。\n\n" +
+                    "要切换吗？",
                 TextWrapping = TextWrapping.WrapWholeWords
             },
 
-            PrimaryButtonText = $"Switch to {game}",
-            CloseButtonText = "Cancel",
+            PrimaryButtonText = $"切换到 {game}",
+            CloseButtonText = "取消",
             DefaultButton = ContentDialogButton.Primary
         };
 

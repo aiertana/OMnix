@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using OMniX.Core.Contracts.Services;
@@ -215,7 +215,7 @@ public sealed class ModUpdateAvailableChecker
         if (!modCheckOperation.ModsToCheck.Any())
         {
             if (!modCheckOperation.ModCheckRequest.ScheduledCheck)
-                _notificationManager.ShowNotification("No mods to check for updates",
+                _notificationManager.ShowNotification("没有 Mod 需要检查更新",
                     $"None of the mods were valid, therefore no check has been performed", TimeSpan.FromSeconds(4));
             return;
         }
@@ -228,20 +228,20 @@ public sealed class ModUpdateAvailableChecker
             .ConfigureAwait(false);
         stopWatch.Stop();
 
-        _logger.Debug("Finished checking for mod updates in {Elapsed}", stopWatch.Elapsed);
+        _logger.Debug("更新检查完成 in {Elapsed}", stopWatch.Elapsed);
 
         if (modCheckOperation.ModCheckRequest.IsCharacterCheck &&
             modCheckOperation.ModCheckRequest.Characters.Length == 1)
         {
-            _notificationManager.ShowNotification("Finished checking for mod updates",
+            _notificationManager.ShowNotification("更新检查完成",
                 $"Finished checking {modCheckOperation.ModsToCheck.Count} mods for updates for" +
                 $" {modCheckOperation.ModCheckRequest.Characters.First().DisplayName}",
                 TimeSpan.FromSeconds(4));
         }
         else if (anyModsChecked)
         {
-            _notificationManager.ShowNotification("Finished checking for mod updates",
-                "Finished checking for mod updates", TimeSpan.FromSeconds(4));
+            _notificationManager.ShowNotification("更新检查完成",
+                "更新检查完成", TimeSpan.FromSeconds(4));
         }
     }
 
@@ -288,7 +288,7 @@ public sealed class ModUpdateAvailableChecker
 
         if (runningTasks.Count == 0)
         {
-            _logger.Debug("No mods to check for updates");
+            _logger.Debug("没有 Mod 需要检查更新");
             return false;
         }
 

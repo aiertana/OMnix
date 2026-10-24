@@ -21,30 +21,30 @@ internal class CharacterSkinsDialog
             },
             DefaultButton = ContentDialogButton.Primary,
             PrimaryButtonText = isEnabled ? DisablePrimaryButtonText : EnablePrimaryButtonText,
-            CloseButtonText = "Cancel"
+            CloseButtonText = "取消"
         };
 
 
         return await _windowManagerService.ShowDialogAsync(dialog).ConfigureAwait(false);
     }
 
-    private const string EnableTitle = "Enable Character Skins as Characters?";
+    private const string EnableTitle = "把皮肤当作独立角色？";
 
     private const string EnableContent =
-        "Enabling this will make OMniX treat in game skins as separate characters in the character overview.\n" +
-        "This could potentially become the default setting of OMniX in the future.\n" +
-        "OMniX will not move any of your mods nor will it delete any.\n\n" +
-        "Are you sure you want to enable character skins as characters? OMniX will restart afterwards...";
+        "开启后，游戏里的皮肤会在角色列表里单独列出来，当成一个角色。\n" +
+        "以后这可能就是 OMniX 的默认设置。\n" +
+        "OMniX 不会挪动、也不会删除你任何 Mod。\n\n" +
+        "确定要开启吗？开启后 OMniX 会重启…";
 
-    private const string EnablePrimaryButtonText = "Enable";
+    private const string EnablePrimaryButtonText = "开启";
 
-    private const string DisableTitle = "Disable Character Skins as Characters?";
+    private const string DisableTitle = "不再把皮肤当作独立角色？";
 
     private const string DisableContent =
-        "Disabling this will make OMniX treat in game skins as skins of the base character in the character overview.\n" +
-        "This is currently the default setting of OMniX\n" +
-        "OMniX will not move any of your mods nor will it delete any.\n\n" +
-        "Are you sure you want to disable character skins as characters? OMniX will restart afterwards...";
+        "关闭后，游戏里的皮肤会归到本体角色下面，不再单独列出。\n" +
+        "这是 OMniX 目前默认的处理方式。\n" +
+        "OMniX 不会挪动、也不会删除你任何 Mod。\n\n" +
+        "确定要关闭吗？关闭后 OMniX 会重启…";
 
-    private const string DisablePrimaryButtonText = "Disable";
+    private const string DisablePrimaryButtonText = "关闭";
 }

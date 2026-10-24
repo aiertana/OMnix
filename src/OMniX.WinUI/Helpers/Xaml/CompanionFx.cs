@@ -34,6 +34,9 @@ public sealed class CompanionFx
 
     private bool _visible;
 
+    /// <summary>已经挂过事件的根节点，重复 Attach 时不要重复订阅</summary>
+    private FrameworkElement? _root;
+
     public CompanionFx(Panel host)
     {
         _host = host;
@@ -71,17 +74,36 @@ public sealed class CompanionFx
 
     public void Attach(FrameworkElement root)
     {
-        root.AddHandler(UIElement.PointerMovedEvent,
-            new PointerEventHandler(OnPointerMoved), true);
+        // Detach() 会把这个 Image 从 Canvas 上摘掉（简易版要彻底不出现），
+        // 切回标准版时必须放回去，否则事件照样在跑、坐标也照样在算，
+        // 但元素根本不在视觉树里 —— 表现就是"切回来之后鼠标宠物没了"
+        if (!_host.Children.Contains(_image))
+            _host.Children.Add(_image);
 
-        root.AddHandler(UIElement.PointerPressedEvent,
-            new PointerEventHandler(OnPointerPressed), true);
+        if (!ReferenceEquals(_root, root))
+        {
+            if (_root is not null)
+            {
+                _root.RemoveHandler(UIElement.PointerMovedEvent, new PointerEventHandler(OnPointerMoved));
+                _root.RemoveHandler(UIElement.PointerPressedEvent, new PointerEventHandler(OnPointerPressed));
+                _root.RemoveHandler(UIElement.PointerReleasedEvent, new PointerEventHandler(OnPointerReleased));
+                _root.RemoveHandler(UIElement.PointerExitedEvent, new PointerEventHandler(OnPointerExited));
+            }
 
-        root.AddHandler(UIElement.PointerReleasedEvent,
-            new PointerEventHandler(OnPointerReleased), true);
+            root.AddHandler(UIElement.PointerMovedEvent,
+                new PointerEventHandler(OnPointerMoved), true);
 
-        root.AddHandler(UIElement.PointerExitedEvent,
-            new PointerEventHandler(OnPointerExited), true);
+            root.AddHandler(UIElement.PointerPressedEvent,
+                new PointerEventHandler(OnPointerPressed), true);
+
+            root.AddHandler(UIElement.PointerReleasedEvent,
+                new PointerEventHandler(OnPointerReleased), true);
+
+            root.AddHandler(UIElement.PointerExitedEvent,
+                new PointerEventHandler(OnPointerExited), true);
+
+            _root = root;
+        }
     }
 
     private void OnPointerMoved(object sender, PointerRoutedEventArgs e)

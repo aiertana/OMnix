@@ -11,7 +11,7 @@
 
     <UserControl.Resources>
         <MenuFlyout x:Key="Flyout">
-            <MenuFlyoutItem Click="MenuFlyoutItem_CopyLink" Text="Copy Link">
+            <MenuFlyoutItem Click="MenuFlyoutItem_CopyLink" Text="复制链接">
                 <MenuFlyoutItem.Icon>
                     <FontIcon Glyph="&#xE8C8;" />
                 </MenuFlyoutItem.Icon>

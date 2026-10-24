@@ -37,6 +37,7 @@ public class PageService : IPageService
         Configure<CreateCharacterViewModel, CreateCharacterPage>();
         Configure<HomeViewModel, HomePage>();
         Configure<PluginAreaViewModel, PluginAreaPage>();
+        Configure<AboutViewModel, AboutPage>();
     }
 
     public Type GetPageType(string key)

@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.System;
@@ -207,7 +207,7 @@ public partial class CharacterDetailsViewModel
             catch (Exception e)
             {
                 _logger.Error(e, "Error while adding archive.");
-                _notificationService.ShowNotification("Error while adding storage items.",
+                _notificationService.ShowNotification("添加文件时出错",
                     $"An error occurred while adding the storage items.\n{e.Message}",
                     TimeSpan.FromSeconds(5));
             }

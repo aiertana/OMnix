@@ -1,4 +1,4 @@
-﻿using OMniX.Core.Helpers;
+using OMniX.Core.Helpers;
 using OMniX.Core.Services;
 using OMniX.Core.Services.ModPresetService;
 using OMniX.Core.Services.ModPresetService.Models;
@@ -85,7 +85,7 @@ public sealed class ModPresetHandlerService(
 
         if (!preferencesResult)
         {
-            _notificationManager.ShowNotification("Could not write mod preferences to 3Dmigoto user .ini",
+            _notificationManager.ShowNotification("没能把 Mod 设置写进 3Dmigoto 的 user ini",
                 "See logs for details", null);
         }
 

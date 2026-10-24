@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Windows.ApplicationModel.DataTransfer;
@@ -95,8 +95,8 @@ public partial class ModInstallerVM : ObservableRecipient, INavigationAware, IDi
 
     [ObservableProperty] private ObservableCollection<RootFolder> _rootFolder = new();
 
-    private const string AddRenameText = "Rename and Add mod";
-    private const string AddReplaceText = "Overwrite old mod";
+    private const string AddRenameText = "改名后添加";
+    private const string AddReplaceText = "覆盖原来的 Mod";
     [ObservableProperty] private string _primaryButtonText = AddRenameText;
 
     [ObservableProperty] private bool _overwriteExistingMod;
@@ -574,8 +574,8 @@ public partial class ModInstallerVM : ObservableRecipient, INavigationAware, IDi
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Failed retrieve image from clipboard");
-            _notificationManager.ShowNotification("Failed retrieve image from clipboard", e.Message,
+            _logger.Error(e, "没能从剪贴板取到图片");
+            _notificationManager.ShowNotification("没能从剪贴板取到图片", e.Message,
                 TimeSpan.FromSeconds(5));
             return;
         }
@@ -958,7 +958,7 @@ public partial class ModInstallerVM : ObservableRecipient, INavigationAware, IDi
                 catch (Exception e)
                 {
                     _logger.Error(e, "Failed to download image");
-                    _notificationManager.ShowNotification("Failed to download image from modUrl", e.Message,
+                    _notificationManager.ShowNotification("从 modUrl 下载图片失败", e.Message,
                         TimeSpan.FromSeconds(5));
                 }
             }
@@ -1019,8 +1019,8 @@ public partial class ModInstallerVM : ObservableRecipient, INavigationAware, IDi
         PInvoke.PlaySound("SystemAsterisk", null,
             SND_FLAGS.SND_ASYNC | SND_FLAGS.SND_ALIAS | SND_FLAGS.SND_NODEFAULT);
 
-        _notificationManager.ShowNotification("An error occurred",
-            "An error occurred while adding the mod. See logs for more details",
+        _notificationManager.ShowNotification("出错了",
+            "出错了 while adding the mod. See logs for more details",
             TimeSpan.FromSeconds(10));
 
         CloseRequested?.Invoke(this, new CloseRequestedArgs(CloseReasons.Error, e));

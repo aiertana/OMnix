@@ -88,7 +88,7 @@
     <Grid>
         <ContentDialog
             x:Name="DuplicateModDialog"
-            Title="A folder with the same name exists"
+            Title="已经有同名文件夹了"
             CloseButtonText="取消"
             DefaultButton="Primary"
             IsPrimaryButtonEnabled="{x:Bind ViewModel.CanExecuteDialogCommand, Mode=OneWay}"
@@ -359,7 +359,7 @@
                             IsChecked="True"
                             IsEnabled="False" />
                         <CheckBox Content="Url" IsEnabled="False" />
-                        <CheckBox Content="Mod Files" IsEnabled="False" />
+                        <CheckBox Content="Mod 文件" IsEnabled="False" />
                         <CheckBox Content="Ignore" IsEnabled="False" />
                     </StackPanel>
 
@@ -392,7 +392,7 @@
 
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Margin="4,0" Glyph="{x:Bind ViewModel.SelectedMergeIniIcon}" />
-                            <TextBlock Margin="4,0" Text="MergedIniFile Folder:" />
+                            <TextBlock Margin="4,0" Text="MergedIniFile 文件夹：" />
                             <TextBlock Text="Auto" />
                         </StackPanel>
 
@@ -405,14 +405,14 @@
 
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Margin="4,0" Glyph="{x:Bind ViewModel.ShaderFixesFolderIcon}" />
-                            <TextBlock Margin="4,0" Text="ShaderFixes Folder:" />
+                            <TextBlock Margin="4,0" Text="ShaderFixes 文件夹：" />
                             <TextBlock Text="{x:Bind ViewModel.LastSelectedShaderFixesFolder.Name, Mode=OneWay, FallbackValue=Unknown}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <CheckBox Content="Auto" IsEnabled="False" />
                             <CheckBox
-                                Content="Manual Select"
+                                Content="手动选择"
                                 IsChecked="True"
                                 IsEnabled="False" />
                             <CheckBox Content="Ignore" IsEnabled="False" />

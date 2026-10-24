@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Channels;
@@ -135,7 +135,7 @@ public partial class ModGridVM(
             }
             catch (Exception e)
             {
-                _notificationService.ShowNotification("Error refreshing mods", e.Message, null);
+                _notificationService.ShowNotification("刷新 Mod 出错", e.Message, null);
             }
         }
     }
@@ -205,7 +205,7 @@ public partial class ModGridVM(
                         current +
                         $"Mod: '{duplicateMod.ExistingFolderName}' was renamed to '{duplicateMod.RenamedFolderName}' to avoid conflicts.\n");
 
-                _notificationService.ShowNotification("Duplicate Mods Detected",
+                _notificationService.ShowNotification("发现重复的 Mod",
                     message,
                     TimeSpan.FromSeconds(10));
             }
@@ -475,7 +475,7 @@ public partial class ModGridVM(
                 }
                 catch (Exception e)
                 {
-                    _notificationService.ShowNotification("An error occured disabling mod", e.Message, TimeSpan.FromSeconds(5));
+                    _notificationService.ShowNotification("禁用 Mod 时出错", e.Message, TimeSpan.FromSeconds(5));
                 }
 
 
@@ -492,7 +492,7 @@ public partial class ModGridVM(
         }
         catch (Exception e)
         {
-            _notificationService.ShowNotification("An error occured toggling mod", e.Message, TimeSpan.FromSeconds(5));
+            _notificationService.ShowNotification("开关 Mod 时出错", e.Message, TimeSpan.FromSeconds(5));
         }
 
         RefreshMultipleModsActiveWarning();
@@ -522,13 +522,13 @@ public partial class ModGridVM(
             if (result.HasNotification)
                 _notificationService.ShowNotification(result.Notification);
             else
-                _notificationService.ShowNotification("An error occured saving mod settings", result.Exception?.ToString() ?? result.ErrorMessage ?? "",
+                _notificationService.ShowNotification("保存 Mod 设置时出错", result.Exception?.ToString() ?? result.ErrorMessage ?? "",
                     TimeSpan.FromSeconds(6));
         }
 
         if (result.IsSuccess)
         {
-            _notificationService.ShowNotification("Mod settings saved", messageBody, TimeSpan.FromSeconds(3));
+            _notificationService.ShowNotification("Mod 设置已保存", messageBody, TimeSpan.FromSeconds(3));
         }
 
         await UpdateModVmAsync(mod, true, CancellationToken.None);

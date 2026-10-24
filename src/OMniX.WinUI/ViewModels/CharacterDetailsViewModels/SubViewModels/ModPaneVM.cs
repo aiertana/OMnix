@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -107,7 +107,7 @@ public sealed partial class ModPaneVM(
             }
             catch (Exception e)
             {
-                _notificationService.ShowNotification("Error loading mod", e.Message, null);
+                _notificationService.ShowNotification("加载 Mod 出错", e.Message, null);
             }
         }
     }
@@ -261,7 +261,7 @@ public sealed partial class ModPaneVM(
             dataPackage.SetText(modFolderPath);
             Clipboard.SetContent(dataPackage);
 
-            _notificationService.ShowNotification("Mod folder path copied to clipboard", "", TimeSpan.FromSeconds(3));
+            _notificationService.ShowNotification("Mod 文件夹路径已复制", "", TimeSpan.FromSeconds(3));
         }
         catch (Exception e)
         {
@@ -326,7 +326,7 @@ public sealed partial class ModPaneVM(
     {
         if (!IsModLoaded) return;
         var filePicker = new FileOpenPicker();
-        filePicker.CommitButtonText = "Set Image";
+        filePicker.CommitButtonText = "选这张图";
         filePicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
         filePicker.SettingsIdentifier = "ImagePicker";
         foreach (var supportedImageExtension in Constants.SupportedImageExtensions)
@@ -356,7 +356,7 @@ public sealed partial class ModPaneVM(
 
             if (!clipboardHasValidImageResult.Result)
             {
-                _notificationService.ShowNotification("Clipboard does not contain a valid image", "", null);
+                _notificationService.ShowNotification("剪贴板里没有可用的图片", "", null);
                 return;
             }
 
@@ -364,7 +364,7 @@ public sealed partial class ModPaneVM(
 
             if (imagePath == null)
             {
-                _notificationService.ShowNotification("Could not retrieve image from clipboard", "", null);
+                _notificationService.ShowNotification("没能从剪贴板取到图片", "", null);
                 return;
             }
 
@@ -479,7 +479,7 @@ public sealed partial class ModPaneVM(
                 _notificationService.ShowNotification(result.Notification);
 
             if (savingKeySwapException is not null)
-                _notificationService.ShowNotification("Failed to save key swaps", savingKeySwapException.Message, null);
+                _notificationService.ShowNotification("保存按键替换失败", savingKeySwapException.Message, null);
 
             _cancellationToken.ThrowIfCancellationRequested();
 

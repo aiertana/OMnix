@@ -1,4 +1,4 @@
-﻿using Windows.Storage;
+using Windows.Storage;
 using OMniX.Core.Helpers;
 using OMniX.Core.Services.GameBanana;
 
@@ -37,7 +37,7 @@ public partial class CharacterDetailsViewModel
     {
         if (!CanDragDropMod(items))
         {
-            _notificationService.ShowNotification("Drag And Drop operation failed",
+            _notificationService.ShowNotification("拖拽操作失败",
                 "The operation failed because the selected item is not a valid mod file or folder.",
                 TimeSpan.FromSeconds(5));
             return;
@@ -56,7 +56,7 @@ public partial class CharacterDetailsViewModel
             catch (Exception e)
             {
                 _logger.Error(e, "Error while adding storage items.");
-                _notificationService.ShowNotification("Drag And Drop operation failed",
+                _notificationService.ShowNotification("拖拽操作失败",
                     $"An error occurred while adding the storage items. Reason:\n{e.Message}",
                     TimeSpan.FromSeconds(5));
             }
@@ -87,7 +87,7 @@ public partial class CharacterDetailsViewModel
     {
         if (!CanDragDropModUrl(uri))
         {
-            _notificationService.ShowNotification("Drag And Drop operation failed",
+            _notificationService.ShowNotification("拖拽操作失败",
                 "The operation failed because the selected item is not a valid https GameBanana mod URL.",
                 TimeSpan.FromSeconds(5));
             return;
@@ -101,8 +101,8 @@ public partial class CharacterDetailsViewModel
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Error opening mod page window");
-                _notificationService.ShowNotification("Error opening mod page window", e.Message, TimeSpan.FromSeconds(10));
+                _logger.Error(e, "打开 Mod 页面失败");
+                _notificationService.ShowNotification("打开 Mod 页面失败", e.Message, TimeSpan.FromSeconds(10));
             }
         }).ConfigureAwait(false);
     }

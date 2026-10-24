@@ -25,6 +25,18 @@ public static class CardBeamFx
 
     private const int FadeMs = 250;
 
+    /// <summary>
+    ///     上面那道扫光的宽度。
+    ///     条子本身只有 2px 高，60 宽的时候在深色下几乎看不出来，放宽到 100 才有"光带"的感觉。
+    /// </summary>
+    private const double ShineWidth = 100;
+
+    /// <summary>扫一遍要多久。慢一点才像流光，和首页 banner 一个节奏</summary>
+    private const double FlowSeconds = 2.6;
+
+    /// <summary>扫光能跑到的最远处，卡片再宽也够用</summary>
+    private const double FlowDistance = 900;
+
     public static readonly DependencyProperty AttachProperty =
         DependencyProperty.RegisterAttached("Attach", typeof(bool), typeof(CardBeamFx),
             new PropertyMetadata(false, OnAttachChanged));
@@ -41,6 +53,15 @@ public static class CardBeamFx
     private static UIElement? GetBeam(DependencyObject obj) => (UIElement?)obj.GetValue(BeamProperty);
 
     private static void SetBeam(DependencyObject obj, UIElement? value) => obj.SetValue(BeamProperty, value);
+
+    /// <summary>挂在渐变条上的循环动画，摘条的时候要连它一起停</summary>
+    private static readonly DependencyProperty FlowProperty =
+        DependencyProperty.RegisterAttached("Flow", typeof(Storyboard), typeof(CardBeamFx),
+            new PropertyMetadata(null));
+
+    private static Storyboard? GetFlow(DependencyObject obj) => (Storyboard?)obj.GetValue(FlowProperty);
+
+    private static void SetFlow(DependencyObject obj, Storyboard? value) => obj.SetValue(FlowProperty, value);
 
     private static void OnAttachChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -90,17 +111,38 @@ public static class CardBeamFx
 
     private static void TryInsert(Border border)
     {
-        var beam = new Rectangle
+        // 渐变条本身改成 Grid：底下铺渐变，上面压一道会跑的白色窄条。
+        // 原来是单个 Rectangle，里面塞不下第二层。
+        // Grid 的 CornerRadius 会裁剪子内容，扫光跑出去时不会露在卡片外面
+        // （WinUI 没有 ClipToBounds，只能靠这个）。
+        var beam = new Grid
         {
             Height = BeamHeight,
             VerticalAlignment = VerticalAlignment.Top,
             HorizontalAlignment = HorizontalAlignment.Stretch,
-            RadiusX = 1,
-            RadiusY = 1,
+            CornerRadius = new CornerRadius(1),
             IsHitTestVisible = false,
             Opacity = 0,
-            Fill = BeamBrush()
+            Background = BeamBrush()
         };
+
+        // 0.7 的白：太浓会盖掉下面那条渐变，太淡又看不出在动
+        var shine = new Rectangle
+        {
+            Width = ShineWidth,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Stretch,
+            IsHitTestVisible = false,
+            Fill = new SolidColorBrush(Windows.UI.Color.FromArgb(0xB4, 0xFF, 0xFF, 0xFF))
+        };
+
+        var shift = new TranslateTransform { X = -ShineWidth };
+        shine.RenderTransform = shift;
+
+        beam.Children.Add(shine);
+
+        // 动画要等元素真正挂上视觉树才播得起来，插进去的这会儿还没挂上
+        beam.Loaded += (_, _) => StartFlow(beam, shift);
 
         var child = border.Child;
 
@@ -139,6 +181,13 @@ public static class CardBeamFx
             return;
 
         SetBeam(border, null);
+
+        // 循环动画不显式停的话，元素摘掉了故事板还在跑
+        if (beam is FrameworkElement element)
+        {
+            GetFlow(element)?.Stop();
+            SetFlow(element, null);
+        }
 
         if (beam is FrameworkElement { Parent: Panel panel })
             panel.Children.Remove(beam);
@@ -187,6 +236,41 @@ public static class CardBeamFx
         fallback.GradientStops.Add(new GradientStop { Offset = 1, Color = Windows.UI.Color.FromArgb(0xFF, 0x7E, 0xC8, 0xFF) });
 
         return fallback;
+    }
+
+    /// <summary>
+    ///     二开：让顶上那条渐变条真的"流"起来 —— 一道白条从左跑到右，循环。
+    ///     动画直接下给 TranslateTransform 本身（而不是写 RenderTransform 的属性路径），
+    ///     目标明确，不会因为属性路径写错就静默不生效。
+    ///     简易版下不起动画，条子还是那条静态的渐变。
+    /// </summary>
+    private static void StartFlow(FrameworkElement beam, TranslateTransform shift)
+    {
+        if (ThemeStyleService.Instance is { MotionEnabled: false })
+            return;
+
+        var animation = new DoubleAnimationUsingKeyFrames { RepeatBehavior = RepeatBehavior.Forever };
+
+        animation.KeyFrames.Add(new LinearDoubleKeyFrame
+        {
+            KeyTime = KeyTime.FromTimeSpan(TimeSpan.Zero),
+            Value = -ShineWidth
+        });
+
+        animation.KeyFrames.Add(new LinearDoubleKeyFrame
+        {
+            KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(FlowSeconds)),
+            Value = FlowDistance
+        });
+
+        var storyboard = new Storyboard();
+        storyboard.Children.Add(animation);
+
+        Storyboard.SetTarget(animation, shift);
+        Storyboard.SetTargetProperty(animation, "X");
+
+        SetFlow(beam, storyboard);
+        storyboard.Begin();
     }
 
     private static void Fade(UIElement beam, double to)

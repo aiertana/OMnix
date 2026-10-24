@@ -1,4 +1,4 @@
-﻿using System.Security.Principal;
+using System.Security.Principal;
 using Windows.Graphics;
 using Windows.Win32;
 using Windows.Win32.Foundation;
@@ -19,6 +19,7 @@ using OMniX.WinUI.Views;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Serilog;
 
 namespace OMniX.WinUI.Services;
@@ -105,6 +106,12 @@ public class ActivationService : IActivationService
             _shell = App.GetService<ShellPage>();
             App.MainWindow.Content = _shell ?? new Frame();
         }
+
+        // 二开：全局点击音效要挂在窗口内容的根上，
+        // Content 设好之后才挂得上（早了是 null），点界面任何地方都响。
+        // App.MainWindow 的静态类型是 WindowEx，得转到 MainWindow 才有这个方法
+        if (App.MainWindow is MainWindow window)
+            window.AttachGlobalClick();
 
         // Handle activation via ActivationHandlers.
         await HandleActivationAsync(activationArgs);
@@ -392,10 +399,60 @@ public class ActivationService : IActivationService
         App.MainWindow.DispatcherQueue.EnqueueAsync(async () =>
         {
             await Task.Delay(2000);
+            await FreeSoftwareNoticePopup();
             await AdminWarningPopup();
             await Task.Delay(1000);
             await NewFolderStructurePopup();
         });
+    }
+
+    /// <summary>免费声明只在第一次启动时弹一次，勾了「不再提示」或者看过了就写进本地设置。</summary>
+    public const string IgnoreFreeSoftwareNoticeKey = "IgnoreFreeSoftwareNotice";
+
+    private async Task FreeSoftwareNoticePopup()
+    {
+        if (await _localSettingsService.ReadOrCreateSettingAsync<bool>(IgnoreFreeSoftwareNoticeKey)) return;
+
+        var secondary = Application.Current.Resources["OmniXTextSecondaryBrush"] as Brush;
+
+        var panel = new StackPanel { Spacing = 12 };
+
+        panel.Children.Add(new TextBlock
+        {
+            Text = "OMniX 是完全免费的开源软件，不收一分钱，也没有「会员版」「激活码」这种东西。",
+            TextWrapping = TextWrapping.WrapWholeWords,
+            IsTextSelectionEnabled = true
+        });
+
+        panel.Children.Add(new TextBlock
+        {
+            Text = "如果有人跟你要钱才给安装包，或者卖激活码、卖会员版，那就是骗子。" +
+                   "直接拒绝就好，顺手到交流群或者 GitHub 上说一声，别让下一个人上当。",
+            TextWrapping = TextWrapping.WrapWholeWords,
+            IsTextSelectionEnabled = true
+        });
+
+        panel.Children.Add(new TextBlock
+        {
+            Text = "正经的获取途径只有两个：GitHub 仓库，和交流群里的群文件。" +
+                   "其它渠道下载到的，请不要用。",
+            FontSize = 12,
+            Foreground = secondary,
+            TextWrapping = TextWrapping.WrapWholeWords,
+            IsTextSelectionEnabled = true
+        });
+
+        var dialog = new ContentDialog
+        {
+            Title = "免费软件，别被人收了钱",
+            Content = panel,
+            PrimaryButtonText = "我知道了",
+            DefaultButton = ContentDialogButton.Primary
+        };
+
+        await _windowManagerService.ShowDialogAsync(dialog).ConfigureAwait(false);
+
+        await _localSettingsService.SaveSettingAsync(IgnoreFreeSoftwareNoticeKey, true);
     }
 
     private async Task AdminWarningPopup()
@@ -412,11 +469,11 @@ public class ActivationService : IActivationService
         var stackPanel = new StackPanel();
         var textWarning = new TextBlock()
         {
-            Text = "You are running OMniX as an administrator. This is not recommended.\n" +
-                   "OMniX was NOT designed to run with administrator privileges.\n" +
-                   "Simple bugs, though unlikely, can potentially cause serious damage to your file system.\n\n" +
-                   "Please consider running OMniX without administrator privileges.\n\n" +
-                   "Use at your own risk, you have been warned",
+            Text = "你现在是以管理员身份在跑 OMniX，不推荐这样。\n" +
+                   "OMniX 并不是按管理员权限设计的。\n" +
+                   "哪怕只是个小 bug，也有可能把文件系统弄乱，后果不小。\n\n" +
+                   "建议用普通权限运行 OMniX。\n\n" +
+                   "要继续的话风险自负。",
             TextWrapping = TextWrapping.WrapWholeWords
         };
         stackPanel.Children.Add(textWarning);
@@ -424,7 +481,7 @@ public class ActivationService : IActivationService
         var doNotShowAgain = new CheckBox()
         {
             IsChecked = false,
-            Content = "Do not show this warning again",
+            Content = "不再显示这个提醒",
             Margin = new Thickness(0, 10, 0, 0)
         };
 
@@ -433,10 +490,10 @@ public class ActivationService : IActivationService
 
         var dialog = new ContentDialog
         {
-            Title = "Running as Administrator Warning",
+            Title = "正在以管理员身份运行",
             Content = stackPanel,
-            PrimaryButtonText = "I understand",
-            SecondaryButtonText = "Exit",
+            PrimaryButtonText = "我知道了",
+            SecondaryButtonText = "退出",
             DefaultButton = ContentDialogButton.Primary
         };
 
@@ -465,14 +522,14 @@ public class ActivationService : IActivationService
         var textWarning = new TextBlock()
         {
             Text = """
-                   This version of OMniX has a new folder structure.
+                   这个版本的 OMniX 换了文件夹结构。
 
-                   Now Characters are organized by category, and each category has its own folder. So new format is as follows:
-                   Mods/Category/Character/<Mod Folders>
-                   Therefore, OMniX won't see any of your mods until you reorganize them.
-                   This is a one time thing, and you can do it manually if you want.
+                   现在角色按分类组织，每个分类一个文件夹，格式变成：
+                   Mods/分类/角色/<Mod 文件夹>
+                   所以在整理之前，OMniX 看不到你现有的 Mod。
+                   这只做一次，你也可以自己动手整理。
 
-                   Also character folders are now created on demand and it is possible to clean up empty folders on the settings page.
+                   另外角色文件夹现在改成按需创建，设置页里也能清理空文件夹。
                    """,
             IsTextSelectionEnabled = true,
             TextWrapping = TextWrapping.WrapWholeWords
@@ -481,7 +538,7 @@ public class ActivationService : IActivationService
 
         var textWarning2 = new TextBlock()
         {
-            Text = "If you're uncertain about this then back up your mods first. I've tested this on my own mods.",
+            Text = "拿不准的话，先把 Mod 备份一份。这套是在自己的 Mod 上验证过的。",
             FontWeight = FontWeights.Bold,
             IsTextSelectionEnabled = true,
             TextWrapping = TextWrapping.WrapWholeWords
@@ -494,8 +551,8 @@ public class ActivationService : IActivationService
         {
             Text = """
 
-                   This popup will be shown until you chose an option below. You can also use the reorganize button on the settings page.
-                   Check the logs if you want to see what's happening.
+                   这个弹窗会一直出现，直到你在下面选一个。设置页里也有个「重新整理」按钮。
+                   想看具体发生了什么，可以翻日志。
                    """,
             IsTextSelectionEnabled = true,
             TextWrapping = TextWrapping.WrapWholeWords
@@ -506,11 +563,11 @@ public class ActivationService : IActivationService
 
         var dialog = new ContentDialog
         {
-            Title = "New Folder structure",
+            Title = "文件夹结构变了",
             Content = stackPanel,
-            PrimaryButtonText = "Reorganize my mods",
-            SecondaryButtonText = "I will do it myself",
-            CloseButtonText = "Cancel",
+            PrimaryButtonText = "帮我整理",
+            SecondaryButtonText = "我自己来",
+            CloseButtonText = "取消",
             DefaultButton = ContentDialogButton.Primary
         };
 
@@ -528,11 +585,11 @@ public class ActivationService : IActivationService
                 await _skinManagerService.RefreshModsAsync();
 
                 if (movedModsCount == -1)
-                    _notificationManager.ShowNotification("Mods reorganization failed.",
+                    _notificationManager.ShowNotification("整理 Mod 失败",
                         "See logs for more details.", TimeSpan.FromSeconds(5));
 
                 else
-                    _notificationManager.ShowNotification("Mods reorganized.",
+                    _notificationManager.ShowNotification("整理完成",
                         $"Moved {movedModsCount} mods to new character folders", TimeSpan.FromSeconds(5));
             }
             finally

@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -275,7 +275,7 @@ public partial class CharacterDetailsViewModel : ObservableObject, INavigationAw
         if (IsReturning) return;
 
         await InitToolbarAsync();
-        LoadingItemText = "Context Menu";
+        LoadingItemText = "右键菜单";
 
         await InitContextMenuAsync();
         LoadingItemText = "Grid";
@@ -472,10 +472,10 @@ public partial class CharacterDetailsViewModel : ObservableObject, INavigationAw
         {
             await Task.Delay(500);
             if (exception is not null)
-                _notificationService.ShowNotification("An error occurred while loading the character details page.",
+                _notificationService.ShowNotification("加载角色详情页出错了",
                     exception.Message, null);
             else
-                _notificationService.ShowNotification("An error occurred while loading the character details page.", "",
+                _notificationService.ShowNotification("加载角色详情页出错了", "",
                     null);
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
@@ -524,7 +524,7 @@ public partial class CharacterDetailsViewModel : ObservableObject, INavigationAw
         }
         catch (Exception e)
         {
-            _notificationService.ShowNotification("An unknown error occured while executing the command", e.Message,
+            _notificationService.ShowNotification("执行命令时出了未知错误", e.Message,
                 TimeSpan.FromSeconds(5));
         }
     }

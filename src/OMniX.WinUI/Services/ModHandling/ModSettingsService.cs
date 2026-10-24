@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using OMniX.Core.Contracts.Services;
 using OMniX.Core.Entities.Mods.Contract;
@@ -129,7 +129,7 @@ public class ModSettingsService
                )
             {
                 change.ImagePath = null;
-                _notificationManager.ShowNotification("Image path not found",
+                _notificationManager.ShowNotification("找不到图片路径",
                     "When saving mod settings the currently set image could not be found",
                     TimeSpan.FromSeconds(5));
             }

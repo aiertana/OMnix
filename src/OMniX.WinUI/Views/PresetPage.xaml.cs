@@ -52,8 +52,8 @@ public sealed partial class PresetPage : Page
     {
         var dialog = new ContentDialog
         {
-            Title = "How presets work",
-            CloseButtonText = "Close",
+            Title = "预设是怎么工作的",
+            CloseButtonText = "知道了",
             DefaultButton = ContentDialogButton.Close,
             Content = new StackPanel
             {
@@ -61,15 +61,15 @@ public sealed partial class PresetPage : Page
                 Children =
                 {
                     CreateTextBlock(
-                        "A Preset is a list of Mods to enable and their preferences. OMniX reads and stores mod preferences in the mods themselves in the file .OMniX_ModConfig.json"),
+                        "一个预设，就是一份「要开哪些 Mod、各自用什么设置」的清单。Mod 的设置本身存在 Mod 目录下的 .OMniX_ModConfig.json 里。"),
                     CreateTextBlock(
-                        "When you create a new preset OMniX creates a list of all enabled mods and the preferences stored in them. So when you apply the preset later it will enable only those mods and apply the preferences stored in the preset"),
+                        "新建预设时，OMniX 会把当下所有开着的 Mod 连同它们的设置记下来。以后套用这个预设，就只开这些 Mod，并把设置恢复成当时的样子。"),
 
                     CreateTextBlock(
-                        "You can allow OMniX to handle 3Dmigoto reloading by starting the Elevator and checking the Auto Sync checkbox. But you can also do it yourself by checking the Show Manual Controls checkbox and saving/loading preferences manually and refreshing 3Dmigoto with the F10 key."),
+                        "想让 OMniX 帮你刷新 3Dmigoto，可以先启动 Elevator，再勾上「自动同步」。也可以自己来：勾上「显示手动控制」，手动保存/读取设置，按 F10 刷新 3Dmigoto。"),
 
                     CreateTextBlock(
-                        "It is possible to simply ignore the preset part of this page and only use the manual controls to persist mod preferences."
+                        "你也可以完全不管预设，只用下面的手动控制来保存 Mod 的设置。"
                     )
                 }
             }

@@ -44,20 +44,19 @@ public sealed partial class CommandsSettingsViewModel(
         {
             var commandWarningDialog = new ContentDialog
             {
-                Title = "Friendly Warning",
+                Title = "提个醒",
 
                 Content = new TextBlock()
                 {
-                    Text = "Please be careful when creating commands. " +
-                           "Commands can be used to run any executable on your system. " +
-                           "Only create commands from trusted sources.\n" +
-                           "OMniX isn't perfect and can't protect you from malicious scripts or OMniX bugs/glitches.\n\n" +
-                           "By clicking 'I understand' you acknowledge that you understand the risks.",
+                    Text = "建命令的时候留个心。命令能拿来跑你电脑上的任何程序，" +
+                           "只加你信得过的来源。\n" +
+                           "OMniX 本身也不完美，挡不住恶意脚本，也挡不住自己的 bug。\n\n" +
+                           "点「我知道了」就表示你清楚这些风险。",
                     IsTextSelectionEnabled = true,
                     TextWrapping = TextWrapping.WrapWholeWords
                 },
-                PrimaryButtonText = "I understand",
-                CloseButtonText = "Cancel"
+                PrimaryButtonText = "我知道了",
+                CloseButtonText = "取消"
             };
 
             var result = await _windowManagerService.ShowDialogAsync(commandWarningDialog);
@@ -97,18 +96,18 @@ public sealed partial class CommandsSettingsViewModel(
             }
             catch (Exception e)
             {
-                _notificationManager.ShowNotification("Failed to kill process", e.Message, TimeSpan.FromSeconds(5));
+                _notificationManager.ShowNotification("结束进程失败", e.Message, TimeSpan.FromSeconds(5));
                 return;
             }
         }
         else
         {
-            _notificationManager.ShowNotification("Process is not running", string.Empty, TimeSpan.FromSeconds(2));
+            _notificationManager.ShowNotification("这个进程已经不在跑了", string.Empty, TimeSpan.FromSeconds(2));
             await RefreshRunningCommandsAsync();
             return;
         }
 
-        _notificationManager.ShowNotification("Process killed successfully", string.Empty, TimeSpan.FromSeconds(2));
+        _notificationManager.ShowNotification("进程已结束", string.Empty, TimeSpan.FromSeconds(2));
     }
 
     private bool CanEditCommand(CommandDefinitionVM? commandVM)
@@ -129,7 +128,7 @@ public sealed partial class CommandsSettingsViewModel(
 
         if (existingCommand is null)
         {
-            _notificationManager.ShowNotification("Failed to get command", "Command not found",
+            _notificationManager.ShowNotification("读取命令失败", "找不到这条命令",
                 TimeSpan.FromSeconds(5));
             return;
         }
@@ -154,7 +153,7 @@ public sealed partial class CommandsSettingsViewModel(
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("Failed to delete command", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification("删除命令失败", e.Message, TimeSpan.FromSeconds(5));
             return;
         }
         finally
@@ -162,7 +161,7 @@ public sealed partial class CommandsSettingsViewModel(
             await RefreshCommandDefinitionsAsync();
         }
 
-        _notificationManager.ShowNotification($"Command '{commandDefinition.CommandDisplayName}' deleted successfully",
+        _notificationManager.ShowNotification($"命令「{commandDefinition.CommandDisplayName}」已删除",
             string.Empty, TimeSpan.FromSeconds(2));
     }
 
@@ -303,18 +302,20 @@ public partial class CommandDefinitionVM : ObservableObject
 
         const string separator = " | ";
 
+        // 这几个标签会直接印在「已建命令」的卡片上，所以写中文，
+        // 原来拿 nameof 拼，界面上会露出 RunAsAdmin、UseShellExecute 这种枚举名
         if (commandDefinition.KillOnMainAppExit)
-            attributes.Add(nameof(CommandDefinition.KillOnMainAppExit) + separator);
+            attributes.Add("退出时结束进程" + separator);
 
         if (commandDefinition.ExecutionOptions.RunAsAdmin)
-            attributes.Add(nameof(CommandExecutionOptions.RunAsAdmin) + separator);
+            attributes.Add("管理员运行" + separator);
 
         if (commandDefinition.ExecutionOptions.UseShellExecute)
-            attributes.Add(nameof(CommandExecutionOptions.UseShellExecute) + separator);
+            attributes.Add("交给系统启动" + separator);
 
         if (attributes.Count != 0)
         {
-            attributes.Insert(0, "Options: ");
+            attributes.Insert(0, "选项： ");
             var lastItem = attributes.Last().TrimEnd('|', ' ');
             attributes[^1] = lastItem;
         }

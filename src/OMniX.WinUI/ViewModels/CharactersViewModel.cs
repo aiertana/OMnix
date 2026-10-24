@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -1985,9 +1985,9 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty] private string _pinGlyph = DefaultPinGlyph;
 
     const string DefaultPinGlyph = "\uE718";
-    const string DefaultPinText = "Pin To Top";
+    const string DefaultPinText = "置顶";
     const string DefaultUnpinGlyph = "\uE77A";
-    const string DefaultUnpinText = "Unpin Character";
+    const string DefaultUnpinText = "取消置顶";
 
     /// <summary>
     ///     二开：右键菜单当前作用的角色。菜单项只传属性名，角色从这里取。
@@ -2229,14 +2229,14 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Error disabling mods for character {Character}", character.Character.InternalName);
-            NotificationManager.ShowNotification("Error disabling mods", e.Message, TimeSpan.FromSeconds(6));
+            _logger.Error(e, "禁用 Mod 时出错 for character {Character}", character.Character.InternalName);
+            NotificationManager.ShowNotification("禁用 Mod 时出错", e.Message, TimeSpan.FromSeconds(6));
             return;
         }
 
         character.SetMods(updatedMods);
         await RefreshMultipleModsWarningAsync();
-        NotificationManager.ShowNotification("Mods Disabled", $"Alls mods for {character.Character.DisplayName} have been disabled", null);
+        NotificationManager.ShowNotification("已禁用 Mod", $"Alls mods for {character.Character.DisplayName} have been disabled", null);
     }
 
     [RelayCommand]
@@ -2396,8 +2396,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Error adding mod");
-            NotificationManager.ShowNotification("Error adding mod", e.Message, TimeSpan.FromSeconds(10));
+            _logger.Error(e, "添加 Mod 失败");
+            NotificationManager.ShowNotification("添加 Mod 失败", e.Message, TimeSpan.FromSeconds(10));
         }
         finally
         {
@@ -2423,7 +2423,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         if (!GameBananaUrlHelper.TryGetModIdFromUrl(uri, out _))
         {
-            NotificationManager.ShowNotification("Invalid GameBanana mod page link", "", null);
+            NotificationManager.ShowNotification("GameBanana 链接不对", "", null);
             return;
         }
 
@@ -2434,8 +2434,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Error opening mod page window");
-            NotificationManager.ShowNotification("Error opening mod page window", e.Message, TimeSpan.FromSeconds(10));
+            _logger.Error(e, "打开 Mod 页面失败");
+            NotificationManager.ShowNotification("打开 Mod 页面失败", e.Message, TimeSpan.FromSeconds(10));
         }
         finally
         {

@@ -9,14 +9,14 @@
                 <!--  二开：把 WinUI 的系统 accent 也换成珊瑚红。
                       弹窗主按钮、输入框聚焦下划线、FocusVisual 这些用的都是 SystemAccentColor 派生出的画刷，
                       不覆盖的话永远是系统蓝（在 ThemeDictionaries 里定义，优先级才压得住内置值）。  -->
-                <Color x:Key="SystemAccentColor">#FFE35B68</Color>
-                <Color x:Key="SystemAccentColorLight1">#FFE97F8D</Color>
+                <Color x:Key="SystemAccentColor">#FFE84C6D</Color>
+                <Color x:Key="SystemAccentColorLight1">#FFFF8AA0</Color>
                 <Color x:Key="SystemAccentColorLight2">#FFF1ADB4</Color>
                 <Color x:Key="SystemAccentColorLight3">#FFF7CCD1</Color>
                 <Color x:Key="SystemAccentColorDark1">#FFC14D58</Color>
                 <Color x:Key="SystemAccentColorDark2">#FFA3424B</Color>
                 <Color x:Key="SystemAccentColorDark3">#FF88373E</Color>
-                <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#FFE35B68" />
+                <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#FFE84C6D" />
                 <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#E6E35B68" />
                 <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#CCE35B68" />
                 <SolidColorBrush x:Key="AccentFillColorDisabledBrush" Color="#33E35B68" />
@@ -28,19 +28,21 @@
                     强调色：参考稿的 accent-red，比 logo 那个珊瑚红柔一点，
                     配这套粉紫蓝才不打架。aux 三色给顶部流光条和状态点用。
                 -->
-                <Color x:Key="OmniXAccentColor">#FFE35B68</Color>
+                <Color x:Key="OmniXAccentColor">#FFE84C6D</Color>
                 <Color x:Key="OmniXAccentSoftColor">#FFFDF1F3</Color>
                 <Color x:Key="OmniXAccentSoftHoverColor">#FFFCE4E8</Color>
                 <Color x:Key="OmniXAccentSoftPressedColor">#FFFAD8DE</Color>
-                <Color x:Key="OmniXAccentStrongColor">#FFE97F8D</Color>
+                <Color x:Key="OmniXAccentStrongColor">#FFFF8AA0</Color>
                 <!--  aux：粉 / 紫 / 蓝，只做点缀，不拿来当主操作色  -->
                 <Color x:Key="OmniXAuxPinkColor">#FFFF9EC7</Color>
-                <Color x:Key="OmniXAuxPurpleColor">#FFB58BFF</Color>
-                <Color x:Key="OmniXAuxBlueColor">#FF8CCBFF</Color>
+                <Color x:Key="OmniXAuxPurpleColor">#FFFFB3D1</Color>
+                <Color x:Key="OmniXAuxBlueColor">#FF7EC8FF</Color>
 
                 <!--  卡片：参考稿是 72% 白 + 1px 淡紫线，照抄  -->
                 <Color x:Key="OmniXCardAltBackgroundColor">#9EFFFFFF</Color>
                 <Color x:Key="OmniXCardBackgroundColor">#B8FFFFFF</Color>
+                <!--  无底按钮的文字：浅色下保持原来的次级灰  -->
+                <Color x:Key="OmniXGhostButtonTextColor">#FF7A7278</Color>
                 <Color x:Key="OmniXCardStrokeColor">#29150E6E</Color>
                 <Color x:Key="OmniXCardStrokeHoverColor">#52966ED8</Color>
                 <Color x:Key="OmniXControlBackgroundColor">#B3FFFFFF</Color>
@@ -60,8 +62,8 @@
                 <Color x:Key="OmniXSidebarBackgroundColor">#9EFFFFFF</Color>
                 <Color x:Key="OmniXTextOnHeroColor">#FFFFFFFF</Color>
                 <!--  文字用参考稿的紫灰：#4b3d6b / #8a7da8  -->
-                <Color x:Key="OmniXTextPrimaryColor">#FF4B3D6B</Color>
-                <Color x:Key="OmniXTextSecondaryColor">#FF8A7DA8</Color>
+                <Color x:Key="OmniXTextPrimaryColor">#FF2D2A2E</Color>
+                <Color x:Key="OmniXTextSecondaryColor">#FF7A7278</Color>
                 <Color x:Key="OmniXTextSecondaryOnHeroColor">#FFFFE3EC</Color>
                 <Color x:Key="OmniXWarmColor">#FFFF8A6B</Color>
                 <Color x:Key="OmniXWarmDeepColor">#FFD84A2F</Color>
@@ -73,10 +75,37 @@
                       半透明卡片要有色彩层次垫底才像玻璃，纯灰底怎么调都是一片白。  -->
                 <!--  底：参考稿的 bg-1 #fff7fc → bg-2 #f0f7ff  -->
                 <LinearGradientBrush x:Key="OmniXPageBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Offset="0" Color="#FFEAE1F5" />
-                    <GradientStop Offset="0.5" Color="#FFF2EDF8" />
-                    <GradientStop Offset="1" Color="#FFEDEFFA" />
+                    <GradientStop Offset="0" Color="#FFF0F3" />
+                    <GradientStop Offset="0.5" Color="#FFFAF8F7" />
+                    <GradientStop Offset="1" Color="#FFF0F7FF" />
                 </LinearGradientBrush>
+
+                <!--
+                    二开：系统焦点框全部画成透明，位置和时机交给 Helpers/Xaml/FocusFrameFx.cs。
+
+                    系统那套（HighVisibility，白内框 + 深色外框）点下去之后要过一会儿才浮现，
+                    鼠标挨个点列表项时看着就是慢半拍跟不上。这些键是 WinUI 内置的，
+                    只有定义在 ThemeDictionaries 里才压得住内置值；内外两层和几种模板
+                    各自引用的画刷都要点一遍，漏掉的会单独冒出来一个框。
+                -->
+                <SolidColorBrush x:Key="FocusStrokeColorOuterBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="FocusStrokeColorInnerBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="SystemControlFocusVisualPrimaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="SystemControlFocusVisualSecondaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemFocusVisualPrimaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemFocusVisualSecondaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="GridViewItemFocusVisualPrimaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="GridViewItemFocusVisualSecondaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="CalendarViewFocusVisualPrimaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="CalendarViewFocusVisualSecondaryBrush" Color="Transparent" />
+
+                <!--  浅色：卡片维持原来的亚克力半透玻璃  -->
+                <AcrylicBrush
+                    x:Key="OmniXGlassBackgroundBrush"
+                    FallbackColor="{StaticResource OmniXCardBackgroundColor}"
+                    TintColor="{StaticResource OmniXGlassTintColor}"
+                    TintLuminosityOpacity="0.72"
+                    TintOpacity="0.58" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
                 <!--  二开：深色下的系统 accent 覆盖，和亮色一一对应  -->
@@ -85,9 +114,9 @@
                 <Color x:Key="SystemAccentColorLight2">#FFFFA8AE</Color>
                 <Color x:Key="SystemAccentColorLight3">#FFFFC6CA</Color>
                 <Color x:Key="SystemAccentColorDark1">#FFE5484D</Color>
-                <Color x:Key="SystemAccentColorDark2">#FFC9172A</Color>
+                <Color x:Key="SystemAccentColorDark2">#FFFF8AA0</Color>
                 <Color x:Key="SystemAccentColorDark3">#FFA51020</Color>
-                <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#FFE97F8D" />
+                <SolidColorBrush x:Key="AccentFillColorDefaultBrush" Color="#FFFF8AA0" />
                 <SolidColorBrush x:Key="AccentFillColorSecondaryBrush" Color="#E6E97F8D" />
                 <SolidColorBrush x:Key="AccentFillColorTertiaryBrush" Color="#CCE97F8D" />
                 <SolidColorBrush x:Key="AccentFillColorDisabledBrush" Color="#33E97F8D" />
@@ -96,23 +125,36 @@
                 <SolidColorBrush x:Key="AccentTextFillColorTertiaryBrush" Color="#FFE9A0AB" />
 
                 <!--  深色：近黑玻璃底，主色压亮一档才看得清  -->
-                <Color x:Key="OmniXAccentColor">#FFE97F8D</Color>
+                <Color x:Key="OmniXAccentColor">#FFFF8AA0</Color>
                 <Color x:Key="OmniXAccentSoftColor">#FF3A2328</Color>
                 <Color x:Key="OmniXAccentSoftHoverColor">#FF4A2D33</Color>
                 <Color x:Key="OmniXAccentSoftPressedColor">#FF553138</Color>
                 <Color x:Key="OmniXAccentStrongColor">#FFF1ADB4</Color>
                 <Color x:Key="OmniXAuxPinkColor">#FFFF9EC7</Color>
-                <Color x:Key="OmniXAuxPurpleColor">#FFB58BFF</Color>
-                <Color x:Key="OmniXAuxBlueColor">#FF8CCBFF</Color>
-                <Color x:Key="OmniXCardAltBackgroundColor">#12FFFFFF</Color>
-                <Color x:Key="OmniXCardBackgroundColor">#1AFFFFFF</Color>
+                <Color x:Key="OmniXAuxPurpleColor">#FFFFB3D1</Color>
+                <Color x:Key="OmniXAuxBlueColor">#FF7EC8FF</Color>
+                <!--
+                    二开：深色下的卡片改成实色深灰。
+                    原来是 #1AFFFFFF / #12FFFFFF（10% 和 7% 的白），
+                    叠在深色背景上就是一块浅灰，卡片里的白字根本读不出来。
+                    现在给死实色的 #1C1C20 / #242428，字是 #F5F5F7 和 #8A8A92，才看得清。
+                -->
+                <Color x:Key="OmniXCardAltBackgroundColor">#FF242428</Color>
+                <Color x:Key="OmniXCardBackgroundColor">#FF1C1C20</Color>
+                <!--
+                    深色下无底按钮的文字提到接近白。
+                    #8A8A92 在 #1C1C20 上勉强能读，但卡片里那几个
+                    「角色管理 / 角色图库」看着发灰，不如直接给亮一点。
+                -->
+                <Color x:Key="OmniXGhostButtonTextColor">#FFEDEDF2</Color>
                 <!--  深色玻璃靠白色细边勾轮廓  -->
                 <Color x:Key="OmniXCardStrokeColor">#2EFFFFFF</Color>
                 <Color x:Key="OmniXCardStrokeHoverColor">#66E97F8D</Color>
                 <Color x:Key="OmniXControlBackgroundColor">#1FFFFFFF</Color>
                 <Color x:Key="OmniXControlBorderColor">#2AFFFFFF</Color>
                 <Color x:Key="OmniXControlBorderPointerOverColor">#668CCBFF</Color>
-                <Color x:Key="OmniXGlassTintColor">#FF1F1B26</Color>
+                <!--  深色玻璃的染色也跟着去紫味，和卡片同一个深灰  -->
+                <Color x:Key="OmniXGlassTintColor">#FF1C1C20</Color>
                 <Color x:Key="OmniXHeroBackgroundColor">#99202026</Color>
                 <Color x:Key="OmniXNavGlassTintColor">#FF1B1822</Color>
                 <Color x:Key="OmniXNavItemPointerOverColor">#1FFFFFFF</Color>
@@ -125,8 +167,8 @@
                 <Color x:Key="OmniXPureWhiteColor">#FFFFFFFF</Color>
                 <Color x:Key="OmniXSidebarBackgroundColor">#B3141418</Color>
                 <Color x:Key="OmniXTextOnHeroColor">#FFFFFFFF</Color>
-                <Color x:Key="OmniXTextPrimaryColor">#FFF3EFFA</Color>
-                <Color x:Key="OmniXTextSecondaryColor">#FFB9AED0</Color>
+                <Color x:Key="OmniXTextPrimaryColor">#FFF5F5F7</Color>
+                <Color x:Key="OmniXTextSecondaryColor">#FF8A8A92</Color>
                 <Color x:Key="OmniXTextSecondaryOnHeroColor">#FFE6D9E4</Color>
                 <Color x:Key="OmniXWarmColor">#FFFF9E80</Color>
                 <Color x:Key="OmniXWarmDeepColor">#FFE85A40</Color>
@@ -135,10 +177,28 @@
 
                 <!--  二开：深色主题的底，近黑里带一点紫，和亮色版对应  -->
                 <LinearGradientBrush x:Key="OmniXPageBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Offset="0" Color="#F216121C" />
-                    <GradientStop Offset="0.5" Color="#F2121219" />
-                    <GradientStop Offset="1" Color="#F20F1418" />
+                    <GradientStop Offset="0" Color="#FF0F0F11" />
+                    <GradientStop Offset="0.5" Color="#FF161618" />
+                    <GradientStop Offset="1" Color="#FF1C1C20" />
                 </LinearGradientBrush>
+
+                <!--  见 Light 里的说明：系统焦点框全部透明化，改由 FocusFrameFx 自己画  -->
+                <SolidColorBrush x:Key="FocusStrokeColorOuterBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="FocusStrokeColorInnerBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="SystemControlFocusVisualPrimaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="SystemControlFocusVisualSecondaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemFocusVisualPrimaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="ListViewItemFocusVisualSecondaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="GridViewItemFocusVisualPrimaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="GridViewItemFocusVisualSecondaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="CalendarViewFocusVisualPrimaryBrush" Color="Transparent" />
+                <SolidColorBrush x:Key="CalendarViewFocusVisualSecondaryBrush" Color="Transparent" />
+
+                <!--
+                    深色：卡片改成实色 #1C1C20，不用亚克力。
+                    半透明那层在深底上会变成一块灰，白字和浅灰说明都读不出来。
+                -->
+                <SolidColorBrush x:Key="OmniXGlassBackgroundBrush" Color="#FF1C1C20" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
@@ -151,6 +211,13 @@
             <!--  NavigationView / 输入框覆盖  -->
 
             <SolidColorBrush x:Key="OmniXAccentBrush" Color="{ThemeResource OmniXAccentColor}" />
+            <!--
+                启动按钮的主色渐变在下面「通用渐变（红）」那节，键是 OmniXAccentGradientBrush。
+                原来这里还重复定义了一份同名的：同一个 ResourceDictionary 里出现两个同名键，
+                XamlCompiler 会在 Pass2 直接静默退出 1，且不报任何错误。
+                GradientStop 的 Color 不能用 ThemeResource，是硬编码的默认值，
+                真正的颜色由 PaletteService 在启动和切配色时改掉。
+            -->
             <SolidColorBrush x:Key="OmniXAccentStrongBrush" Color="{ThemeResource OmniXAccentStrongColor}" />
             <SolidColorBrush x:Key="OmniXAccentSoftBrush" Color="{ThemeResource OmniXAccentSoftColor}" />
             <SolidColorBrush x:Key="OmniXAccentSoftHoverBrush" Color="{ThemeResource OmniXAccentSoftHoverColor}" />
@@ -160,6 +227,7 @@
                   半透明卡片根本透不出「玻璃」的层次。  -->
             <SolidColorBrush x:Key="OmniXSidebarBackgroundBrush" Color="{ThemeResource OmniXSidebarBackgroundColor}" />
             <SolidColorBrush x:Key="OmniXCardBackgroundBrush" Color="{ThemeResource OmniXCardBackgroundColor}" />
+            <SolidColorBrush x:Key="OmniXGhostButtonTextBrush" Color="{ThemeResource OmniXGhostButtonTextColor}" />
             <SolidColorBrush x:Key="OmniXCardAltBackgroundBrush" Color="{ThemeResource OmniXCardAltBackgroundColor}" />
             <SolidColorBrush x:Key="OmniXCardStrokeBrush" Color="{ThemeResource OmniXCardStrokeColor}" />
             <SolidColorBrush x:Key="OmniXCardStrokeHoverBrush" Color="{ThemeResource OmniXCardStrokeHoverColor}" />
@@ -189,9 +257,7 @@
 
 
     <!--  ===== 通用渐变（红） =====  -->
-    <!--  执行指令 4.1：主按钮/启动按钮用 AccentPrimary -> AccentLight 渐变。
-          GradientStop 里不能写 ThemeResource，这里给默认值（配色1），
-          PaletteService 启动和切配色时改成当前配色的主色。  -->
+    <!--  二开：渐变统一到 logo 的珊瑚红，去掉原来的橙味  -->
     <LinearGradientBrush x:Key="OmniXAccentGradientBrush" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Offset="0" Color="#FFE84C6D" />
         <GradientStop Offset="1" Color="#FFFF8AA0" />
@@ -203,7 +269,7 @@
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="OmniXHeroGradientBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Offset="0" Color="#FFC9172A" />
+        <GradientStop Offset="0" Color="#FFFF8AA0" />
         <GradientStop Offset="0.55" Color="#FFE5484D" />
         <GradientStop Offset="1" Color="#FFFF8A92" />
     </LinearGradientBrush>
@@ -230,8 +296,8 @@
     <LinearGradientBrush x:Key="OmniXCardBeamBrush" StartPoint="0,0" EndPoint="1,0">
         <GradientStop Offset="0" Color="#00FF9EC7" />
         <GradientStop Offset="0.25" Color="#FFFF9EC7" />
-        <GradientStop Offset="0.55" Color="#FFB58BFF" />
-        <GradientStop Offset="0.85" Color="#FF8CCBFF" />
+        <GradientStop Offset="0.55" Color="#FFFFB3D1" />
+        <GradientStop Offset="0.85" Color="#FF7EC8FF" />
         <GradientStop Offset="1" Color="#008CCBFF" />
     </LinearGradientBrush>
 
@@ -253,10 +319,9 @@
     <CornerRadius x:Key="OverlayCornerRadius">12</CornerRadius>
 
     <!--  ========== 文本样式 ==========  -->
-    <!--  执行指令 三：页面标题 26px / 700，正文 14，次要 13，弱化 11  -->
     <Style x:Key="OmniXPageTitleStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="26" />
-        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXTextPrimaryBrush}" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
@@ -268,18 +333,18 @@
     </Style>
 
     <Style x:Key="OmniXBodyStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXTextPrimaryBrush}" />
     </Style>
 
     <Style x:Key="OmniXCaptionStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXTextSecondaryBrush}" />
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
     <Style x:Key="OmniXStrongCaptionStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXAccentStrongBrush}" />
     </Style>
@@ -344,7 +409,10 @@
         </Setter>
     </Style>
 
-    <!--  ========== 按钮：主按钮（实色，不再用渐变） ==========  -->
+    <!--  ========== 按钮：主按钮（实色渐变，颜色跟配色走） ==========
+          暖白珊瑚是珊瑚红（#E84C6D → #FF8AA0），冷调蓝是蓝（#4A9EFF → #7EC8FF），
+          两个 GradientStop 由 PaletteService 在启动和切配色时改掉，
+          所以按钮不用单独分两套 —— 换配色它自己就跟着换了。  -->
     <Style x:Key="OmniXAccentButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{ThemeResource OmniXAccentGradientBrush}" />
         <Setter Property="Foreground" Value="White" />
@@ -359,49 +427,122 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Grid
-                        x:Name="RootGrid"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="PointerOver">
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                            Storyboard.TargetName="RootGrid"
-                                            Storyboard.TargetProperty="Opacity"
-                                            To="0.9"
-                                            Duration="0" />
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                            Storyboard.TargetName="RootGrid"
-                                            Storyboard.TargetProperty="Opacity"
-                                            To="0.78"
-                                            Duration="0" />
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                            Storyboard.TargetName="RootGrid"
-                                            Storyboard.TargetProperty="Opacity"
-                                            To="0.4"
-                                            Duration="0" />
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter
-                            Padding="{TemplateBinding Padding}"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Content="{TemplateBinding Content}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            Foreground="{TemplateBinding Foreground}" />
+                    <!--
+                        二开：按钮外面套了一层 LayoutRoot。
+                        环绕流光的框和 hover 的光晕都比按钮本体大（Margin = -2），
+                        塞进 RootGrid 里会被它的圆角裁掉，所以放到外面这层。
+                        hover 抬 2px、按下缩到 0.98 也都作用在这一层，
+                        框和光晕才会跟着按钮一起动。
+                    -->
+                    <Grid x:Name="LayoutRoot">
+                        <Grid.RenderTransform>
+                            <CompositeTransform x:Name="RootShift" />
+                        </Grid.RenderTransform>
+
+                        <!--
+                            二开：这里本来写的是 VisualStateManager 的那套（Normal / PointerOver /
+                            Pressed / Disabled），实测整组都不生效 —— 不是某个状态的问题：
+                            Normal 里那两组循环动画连拍三帧是 0 像素差异，
+                            hover 状态下按钮上沿也稳稳停在原地没有抬起来。
+                            控件首次套模板时当前状态就是 Normal，没有"切状态"这个动作，
+                            VSM 不去播 Normal 的 Storyboard；PointerOver 那几个同样跟着不起。
+
+                            所以悬停抬 2px、按下缩 0.98、光晕放大、禁用变淡全部改到
+                            Helpers/Xaml/AccentButtonFx.cs 里，用指针事件手动起 Storyboard，
+                            和表面扫光、环形流光走同一条已经验证能跑的路子。
+                        -->
+
+
+                        <!--
+                            按钮本体：和原项目一样，就是渐变底 + 文字。
+                            之前 hover 时还会把底下一层同色的 Glow 放大显出来，
+                            那层是实心的，露在边缘就是一坨色块，已经删掉；
+                            现在 hover 只抬 2px，按钮本身的样子和原来一致。
+                        -->
+                        <Grid
+                            x:Name="RootGrid"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                            <ContentPresenter
+                                Padding="{TemplateBinding Padding}"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Foreground="{TemplateBinding Foreground}" />
+
+                            <!--
+                                按钮表面原来还有一道从左往右淌过去的光（x:Name="Shine"）。
+                                2026-10-24 去掉了：按钮本身就是渐变底，
+                                表面再叠一道滑过去的东西，看着就是方块在按钮里飘。
+                            -->
+                        </Grid>
+
+                        <!--
+                            二开：在原样按钮上抹的那一层荧光粉。
+
+                            按钮本体保持原项目那个样子（渐变底 + 文字，上面那层 RootGrid），
+                            这里只是在它**上面**薄薄地抹一层，不改本体的颜色。
+
+                            按参考图来：整个面是左上亮、右下深的斜向光泽，
+                            像手指蘸了珠光粉从左上角往里抹，越往右下越薄、化开没了。
+                            所以这层是斜向（0,0 → 1,1）的，不是横向的，
+                            峰值也压得低（整层 0.35），只当"蒙了一层粉"，不盖住按钮本色。
+
+                            三层叠出来（都在这一个 Grid 里，从上往下叠）：
+                              1. 斜向抹痕  —— 左上银白，往右下滑到几乎没有
+                              2. 一团柔光  —— 椭圆，中心压在左上三分之一处，是粉堆得最厚的地方
+                              3. 顶沿油光  —— 上边一道很淡的高光，往下化开
+
+                            外面这层 Grid 的 CornerRadius 是必须的：
+                            WinUI 没有 ClipToBounds，靠它把圆角外的东西裁掉。
+
+                            这一层上没有"跑动"的东西：
+                            表面扫光、环形流光、顶部流光几版都不对，已经全删。
+                            整层只做一点很慢的明暗起伏（代码里的 Breathe），像粉面在反光。
+                        -->
+                        <Grid
+                            x:Name="Gloss"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            IsHitTestVisible="False"
+                            Opacity="0.35">
+                            <!--  1. 斜向抹痕：左上浓，右下化开  -->
+                            <Rectangle>
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Offset="0" Color="#38F7FAFF" />
+                                        <GradientStop Offset="0.35" Color="#1CF7FAFF" />
+                                        <GradientStop Offset="0.7" Color="#0FFFE9F7" />
+                                        <GradientStop Offset="1" Color="#00F7FAFF" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+                            <!--  2. 粉堆：椭圆柔光，压在左上  -->
+                            <Rectangle>
+                                <Rectangle.Fill>
+                                    <RadialGradientBrush
+                                        Center="0.3,0.3"
+                                        GradientOrigin="0.3,0.3"
+                                        RadiusX="0.6"
+                                        RadiusY="0.85">
+                                        <GradientStop Offset="0" Color="#26FFFFFF" />
+                                        <GradientStop Offset="1" Color="#00FFFFFF" />
+                                    </RadialGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+                            <!--  3. 顶沿油光  -->
+                            <Rectangle>
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Offset="0" Color="#2EFFFFFF" />
+                                        <GradientStop Offset="0.35" Color="#00FFFFFF" />
+                                        <GradientStop Offset="1" Color="#00FFFFFF" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -419,7 +560,7 @@
     <!--  ========== 按钮：无底透明 ==========  -->
     <Style x:Key="OmniXGhostButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{ThemeResource OmniXTextSecondaryBrush}" />
+        <Setter Property="Foreground" Value="{ThemeResource OmniXGhostButtonTextBrush}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="{ThemeResource OmniXControlCornerRadius}" />
         <Setter Property="Padding" Value="12,6" />
@@ -608,13 +749,11 @@
     </Style>
 
     <!--  ========== 卡片 ==========  -->
-    <!--  执行指令 2：背景 BgCard、圆角 16、边框 1px、内边距 20  -->
     <Style x:Key="OmniXCardStyle" TargetType="Border">
         <Setter Property="Background" Value="{ThemeResource OmniXCardBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{ThemeResource OmniXGlassEdgeBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="{ThemeResource OmniXCardCornerRadius}" />
-        <Setter Property="Padding" Value="20" />
     </Style>
 
     <Style
@@ -678,12 +817,11 @@
 
     <!--  ========== 磨砂玻璃（Acrylic） ==========
           注意：BasedOn 只能用 StaticResource，用 ThemeResource 会让 XamlCompiler 直接崩溃 -->
-    <AcrylicBrush
-        x:Key="OmniXGlassBackgroundBrush"
-        FallbackColor="{StaticResource OmniXCardBackgroundColor}"
-        TintColor="{StaticResource OmniXGlassTintColor}"
-        TintLuminosityOpacity="0.72"
-        TintOpacity="0.58" />
+    <!--
+        OmniXGlassBackgroundBrush 挪进 ThemeDictionaries 了（Light / Dark 各一份），
+        因为深色下卡片要的是实色深灰：亚克力那层半透明叠在深底上是一块灰，
+        卡片里的白字读不出来。同名资源在两套字典里各给一份，按主题自动取。
+    -->
 
     <AcrylicBrush
         x:Key="OmniXNavGlassBrush"
@@ -711,7 +849,7 @@
         <Setter Property="BorderBrush" Value="{ThemeResource OmniXGlassEdgeBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="{ThemeResource OmniXCardCornerRadius}" />
-        <Setter Property="Padding" Value="20" />
+        <Setter Property="Padding" Value="16" />
     </Style>
 
     <!--
@@ -736,19 +874,27 @@
     </Style>
 
     <Style x:Key="OmniXSectionSubtitleStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXTextSecondaryBrush}" />
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
-    <!--  执行指令 4：主按钮 AccentPrimary 底、白字、圆角 12、padding 16,8  -->
-    <Style x:Key="OmniXHeroButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="{ThemeResource OmniXAccentBrush}" />
+    <!--
+        二开：首页那个启动按钮以前是纯色（OmniXAccentBrush），看着很平。
+        现在 BasedOn 主按钮：渐变底、外圈流光、表面扫光、hover 抬升全都继承过来，
+        只把圆角和字号按 hero 的尺寸调一下。
+        BasedOn 只能用 StaticResource（用 ThemeResource 会让 XamlCompiler 崩），注意别改。
+    -->
+    <Style
+        x:Key="OmniXHeroButtonStyle"
+        BasedOn="{StaticResource OmniXAccentButtonStyle}"
+        TargetType="Button">
+        <Setter Property="Background" Value="{ThemeResource OmniXAccentGradientBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource OmniXPureWhiteBrush}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="CornerRadius" Value="{ThemeResource OmniXControlCornerRadius}" />
-        <Setter Property="Padding" Value="16,8" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="Padding" Value="18,9" />
+        <Setter Property="FontSize" Value="13.5" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
 

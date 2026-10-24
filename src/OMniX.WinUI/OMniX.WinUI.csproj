@@ -104,6 +104,10 @@
 		<None Update="Assets\Sounds\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<!-- 关于页用的二维码：交流群、微信投喂、支付宝投喂 -->
+		<None Update="Assets\About\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Update="Assets\Icon_Inventory_Weapons.webp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

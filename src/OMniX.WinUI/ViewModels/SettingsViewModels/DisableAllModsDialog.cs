@@ -21,9 +21,9 @@ public class DisableAllModsDialog
     {
         var dialog = new ContentDialog
         {
-            Title = "Disable Mods",
-            PrimaryButtonText = "Disable Mods in Categories",
-            CloseButtonText = "Cancel",
+            Title = "禁用 Mod",
+            PrimaryButtonText = "禁用所选分类的 Mod",
+            CloseButtonText = "取消",
             DefaultButton = ContentDialogButton.Primary
         };
 
@@ -34,7 +34,7 @@ public class DisableAllModsDialog
 
         stackPanel.Children.Add(new TextBlock
         {
-            Text = "Select the categories you want to disable mods for:",
+            Text = "选一下要给哪些分类关掉 Mod：",
             IsTextSelectionEnabled = true
         });
 
@@ -53,8 +53,8 @@ public class DisableAllModsDialog
 
         stackPanel.Children.Add(new TextBlock
         {
-            Text = "I suggest creating a preset (or a backup) of your mods before disabling mods if you have a lot of enabled mods.\n\n" +
-                   "Only mods tracked by OMniX will be disabled within the selected categories",
+            Text = "开的 Mod 多的话，建议先存个预设（或者备份）再关。\n\n" +
+                   "所选分类里，只会关掉 OMniX 记录在案的 Mod",
             IsTextSelectionEnabled = true,
             TextWrapping = TextWrapping.WrapWholeWords,
             Margin = new Thickness(0, 10, 0, 0)
@@ -80,7 +80,7 @@ public class DisableAllModsDialog
 
         if (selectedCategories.Count == 0)
         {
-            _notificationManager.ShowNotification("No categories selected", "No categories were selected to disable mods.",
+            _notificationManager.ShowNotification("没选分类", "一个分类都没选，所以什么都没动。",
                 TimeSpan.FromSeconds(5));
             return;
         }
@@ -121,15 +121,15 @@ public class DisableAllModsDialog
 
         if (errors.Length == 0)
         {
-            _notificationManager.ShowNotification("Mods disabled",
-                $"All tracked mods have been disabled for the selected categories: {string.Join(',', selectedCategories.Select(c => c.DisplayNamePlural))}",
+            _notificationManager.ShowNotification("已禁用 Mod",
+                $"所选分类里由 OMniX 管理的 Mod 都关掉了：{string.Join("、", selectedCategories.Select(c => c.DisplayNamePlural))}",
                 TimeSpan.FromSeconds(5));
             return;
         }
 
 
         var sb = new StringBuilder();
-        sb.AppendLine("An error occured for the following mods:");
+        sb.AppendLine("下面这些 Mod 出错了：");
 
         foreach (var error in errors)
         {
@@ -137,6 +137,6 @@ public class DisableAllModsDialog
         }
 
 
-        _notificationManager.ShowNotification("Errors while disabling mods", sb.ToString(), TimeSpan.FromSeconds(10));
+        _notificationManager.ShowNotification("禁用 Mod 时出错", sb.ToString(), TimeSpan.FromSeconds(10));
     }
 }

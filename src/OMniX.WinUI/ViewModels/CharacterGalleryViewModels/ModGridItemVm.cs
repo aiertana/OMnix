@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMniX.Core.GamesService.Interfaces;
 using DispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue;
@@ -173,7 +173,7 @@ namespace OMniX.WinUI.ViewModels.CharacterGalleryViewModels
             }
             catch (Exception e)
             {
-                notificationService.ShowNotification("Failed to save image", e.Message, null);
+                notificationService.ShowNotification("保存图片失败", e.Message, null);
             }
         },
         () => CanSaveImage);

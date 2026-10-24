@@ -20,11 +20,10 @@ namespace OMniX.WinUI.ViewModels;
 /// </summary>
 public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
 {
-    // 一面玻璃上只该有一两种主色：DLSS5 用主色红，Mod 用中性灰，未上线的用更淡的灰
-    private static readonly Color Dlss5Tint = Color.FromArgb(0x24, 0xE5, 0x48, 0x4D);
-    private static readonly Color Dlss5Text = Color.FromArgb(0xFF, 0xE5, 0x48, 0x4D);
-    private static readonly Color ModTint = Color.FromArgb(0x24, 0x2C, 0x2C, 0x34);
-    private static readonly Color ModText = Color.FromArgb(0xFF, 0x5A, 0x5A, 0x66);
+    // 两张开着用的插件卡统一用主色红（图标底色更淡一档），未上线的用更淡的灰。
+    // 之前 Mod 加载那张是中性灰，和旁边 DLSS5 的红不一样，看着像没开，按你的要求统一了。
+    private static readonly Color ActiveTint = Color.FromArgb(0x24, 0xE5, 0x48, 0x4D);
+    private static readonly Color ActiveText = Color.FromArgb(0xFF, 0xE5, 0x48, 0x4D);
     private static readonly Color MutedTint = Color.FromArgb(0x1A, 0x9A, 0xA0, 0xAE);
     private static readonly Color MutedText = Color.FromArgb(0xFF, 0x9A, 0xA0, 0xAE);
 
@@ -59,8 +58,8 @@ public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
         {
             Name = "DLSS5 渲染链",
             Glyph = "\uE7FC",
-            BadgeBackground = new SolidColorBrush(Dlss5Tint),
-            BadgeForeground = new SolidColorBrush(Dlss5Text),
+            BadgeBackground = new SolidColorBrush(ActiveTint),
+            BadgeForeground = new SolidColorBrush(ActiveText),
             SecondaryText = "说明",
             SecondaryCommand = OpenDlss5SourceCommand,
             PrimaryCommand = Dlss5PrimaryCommand,
@@ -71,8 +70,8 @@ public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
         {
             Name = "Mod 加载",
             Glyph = "\uE74C",
-            BadgeBackground = new SolidColorBrush(ModTint),
-            BadgeForeground = new SolidColorBrush(ModText),
+            BadgeBackground = new SolidColorBrush(ActiveTint),
+            BadgeForeground = new SolidColorBrush(ActiveText),
             SecondaryText = "XXMI",
             SecondaryCommand = OpenXxmiCommand,
             PrimaryCommand = ModPrimaryCommand,

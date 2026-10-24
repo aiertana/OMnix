@@ -44,11 +44,11 @@
                         Margin="10"
                         FontSize="20"
                         FontWeight="Bold"
-                        Text="Download Mods from GameBanana" />
+                        Text="从 GameBanana 下载 Mod" />
 
                     <controls:LinkButton
                         Link="{x:Bind ViewModel.CharacterModListPath, Mode=OneWay}"
-                        ToolTipService.ToolTip="Open Mod folder..."
+                        ToolTipService.ToolTip="打开 Mod 文件夹…"
                         Text="{x:Bind ViewModel.CharacterModListPath.LocalPath, Mode=OneWay, FallbackValue=ModPath}" />
                 </StackPanel>
 
@@ -58,7 +58,7 @@
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <StackPanel>
                                 <ProgressRing IsActive="True" />
-                                <TextBlock Text="Loading Mod Info from GameBanana..." />
+                                <TextBlock Text="正在从 GameBanana 读取 Mod 信息…" />
                             </StackPanel>
                         </Grid>
 
@@ -171,7 +171,7 @@
                         Command="{x:Bind ViewModel.CloseCommand}"
                         Content="Close"
                         IsEnabled="{x:Bind ViewModel.IsNotBusy, Mode=OneWay}"
-                        ToolTipService.ToolTip="Close window" />
+                        ToolTipService.ToolTip="关闭窗口" />
                 </Grid>
 
             </Grid>
@@ -191,11 +191,11 @@
                         <TextBlock
                             Margin="10,0"
                             VerticalAlignment="Center"
-                            Text="Mod Page:" />
+                            Text="Mod 页面：" />
                         <controls:LinkButton
                             VerticalAlignment="Center"
                             Link="{x:Bind ViewModel.ModPage, Mode=OneWay}"
-                            ToolTipService.ToolTip="Open in default browser..."
+                            ToolTipService.ToolTip="用默认浏览器打开…"
                             Text="{x:Bind ViewModel.ModPage, Mode=OneWay}" />
                     </StackPanel>
                     <Button

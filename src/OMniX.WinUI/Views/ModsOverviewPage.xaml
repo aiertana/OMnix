@@ -482,7 +482,7 @@
 
             <Button
                 Grid.Column="0"
-                Command="{x:Bind ViewModel.EnableAllCommand}"
+                Command="{x:Bind ViewModel.EnablePresetCommand}"
                 Style="{StaticResource QuickActionButtonStyle}">
                 <Border Style="{StaticResource QuickActionCardStyle}">
                     <Grid>
@@ -497,14 +497,14 @@
                                 Style="{StaticResource QuickActionBadgeStyle}">
                                 <TextBlock
                                     Style="{StaticResource QuickActionBadgeTextStyle}"
-                                    Text="A" />
+                                    Text="P" />
                             </Border>
                             <TextBlock
                                 Style="{StaticResource QuickActionTitleStyle}"
-                                Text="全部启用" />
+                                Text="启用预设" />
                             <TextBlock
                                 Style="{StaticResource QuickActionDescStyle}"
-                                Text="一键打开所有可用 Mod" />
+                                Text="选一个预设，启用里面的 Mod" />
                         </StackPanel>
                     </Grid>
                 </Border>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="OMniX.WinUI.Views.ShellPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -18,7 +18,6 @@
         <Style x:Key="OmniXNavItemStyle" TargetType="NavigationViewItem">
             <Setter Property="MinHeight" Value="38" />
             <Setter Property="Margin" Value="8,2" />
-            <Setter Property="Padding" Value="12,0" />
             <Setter Property="CornerRadius" Value="10" />
         </Style>
     </Page.Resources>
@@ -108,28 +107,24 @@
             <NavigationView.PaneCustomContent>
                 <StackPanel Margin="16,0,16,12" Spacing="10">
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <!--  执行指令 1：36x36、圆角10、黑底红边，里面写 OM  -->
                         <Border
                             Width="36"
                             Height="36"
-                            Background="#FF111114"
+                            Padding="1"
+                            Background="{ThemeResource OmniXCardBackgroundBrush}"
                             CornerRadius="10"
-                            BorderBrush="{ThemeResource OmniXAccentBrush}"
+                            BorderBrush="{ThemeResource OmniXCardStrokeBrush}"
                             BorderThickness="1">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="15"
-                                FontWeight="Bold"
-                                Foreground="White"
-                                Text="OM" />
+                            <Image Source="ms-appx:///Assets/OMniX-logo.png" Stretch="UniformToFill" />
                         </Border>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock
-                                FontSize="16"
-                                FontWeight="Bold"
-                                Foreground="{ThemeResource OmniXTextPrimaryBrush}"
-                                Text="OMNiX" />
+                            <!--  二开：直接用 logo 原图里的 OMniX 字样（黑/红/灰/黑底白 x），不再是纯色文字  -->
+                            <Image
+                                Height="24"
+                                Margin="0,1,0,2"
+                                HorizontalAlignment="Left"
+                                Source="ms-appx:///Assets/OMniX-wordmark.png"
+                                Stretch="Uniform" />
                             <TextBlock
                                 FontSize="10"
                                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
@@ -243,6 +238,13 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7E7;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <!--  关于页：整页，不是弹窗，内容都在 Views/AboutPage.xaml 里  -->
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="OMniX.WinUI.ViewModels.AboutViewModel" Content="关于">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.FooterMenuItems>
 
             <!--  ===== 侧栏底部：教程 + 启动游戏 =====  -->
@@ -250,34 +252,27 @@
                 <StackPanel
                     Margin="16,4,16,14"
                     Spacing="8">
+                    <!--  「关于」已经挪到下面的导航项里了，这里只留教程 -->
                     <Button
                         HorizontalAlignment="Stretch"
                         Click="TutorialButton_OnClick"
-                        Style="{ThemeResource OmniXGhostButtonStyle}">
+                        Style="{ThemeResource OmniXGhostButtonStyle}"
+                        ToolTipService.ToolTip="打开 GitHub 上的使用说明">
                         <StackPanel
                             HorizontalAlignment="Center"
                             Orientation="Horizontal"
                             Spacing="6">
-                            <FontIcon FontSize="12" Glyph="&#xE82D;" />
+                            <!--  原来是 E82D，这个码位在 Segoe Fluent Icons 里没有，一直显示成方块  -->
+                            <FontIcon FontSize="12" Glyph="&#xE8A5;" />
                             <TextBlock FontSize="12" Text="查看使用教程" />
                         </StackPanel>
                     </Button>
 
-                    <!--
-                        执行指令 1：全宽、44px、圆角12、主色渐变、白字粗体，底下压一层投影。
-                        影要带主色，但 WinAppSDK 的 Visual 挂不了带色的 DropShadow
-                        （SpriteVisual 只能叠在元素上面，会盖住按钮），所以这里用 ThemeShadow，
-                        静态就有一层，比卡片那层更散。
-                    -->
                     <Button
                         Height="44"
                         HorizontalAlignment="Stretch"
-                        fx:ShadowFx.Attach="True"
-                        fx:ShadowFx.Depth="32"
-                        fx:ShadowFx.RestDepth="20"
                         Command="{x:Bind ViewModel.LaunchGameCommand, Mode=OneWay}"
                         Content="{x:Bind ViewModel.LaunchGameText, Mode=OneWay}"
-                        CornerRadius="12"
                         Style="{ThemeResource OmniXAccentButtonStyle}" />
 
                     <TextBlock

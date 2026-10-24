@@ -18,19 +18,19 @@ internal class ClearEmptyFoldersDialog
     {
         var dialog = new ContentDialog()
         {
-            Title = "Clear Empty Folders",
+            Title = "清理空文件夹",
             Content = new TextBlock()
             {
                 Text =
-                    "This will delete all empty folders in a character's modList if the folder is empty or only contains .OMniX_ files/folders\n" +
-                    "If a character folder is empty then it will be deleted as well.\n" +
-                    "Empty folders in the root of the Mods folder will also be deleted",
+                    "会把角色 Mod 列表里的空文件夹删掉（完全空的，或者里面只剩 .OMniX_ 开头的文件/文件夹）。\n" +
+                    "角色文件夹本身空了，也会一起删。\n" +
+                    "Mods 根目录下的空文件夹同样会删。",
                 TextWrapping = TextWrapping.WrapWholeWords,
                 IsTextSelectionEnabled = true
             },
             DefaultButton = ContentDialogButton.Primary,
-            PrimaryButtonText = "Delete",
-            CloseButtonText = "Cancel"
+            PrimaryButtonText = "删除",
+            CloseButtonText = "取消"
         };
 
 
@@ -40,7 +40,7 @@ internal class ClearEmptyFoldersDialog
         {
             var deletedFolders = await Task.Run(() => _skinManagerService.CleanCharacterFolders());
             var sb = new StringBuilder();
-            sb.AppendLine("Deleted folders:");
+            sb.AppendLine("删掉的文件夹：");
             foreach (var folder in deletedFolders)
             {
                 sb.AppendLine(folder.FullName);
@@ -48,7 +48,7 @@ internal class ClearEmptyFoldersDialog
 
             var message = sb.ToString();
 
-            _notificationManager.ShowNotification("Empty folders deleted", message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification("空文件夹已清理", message, TimeSpan.FromSeconds(5));
         }
     }
 }

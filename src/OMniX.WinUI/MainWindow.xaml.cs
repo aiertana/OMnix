@@ -1,4 +1,6 @@
-﻿using OMniX.WinUI.Helpers;
+﻿using Microsoft.UI.Xaml;
+using OMniX.WinUI.Helpers;
+using OMniX.WinUI.Helpers.Xaml;
 
 using Windows.UI.ViewManagement;
 
@@ -22,6 +24,20 @@ public sealed partial class MainWindow : WindowEx
         dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
         settings = new UISettings();
         settings.ColorValuesChanged += Settings_ColorValuesChanged; // cannot use FrameworkElement.ActualThemeChanged event
+    }
+
+    /// <summary>
+    ///     二开：全局点击音效。
+    ///     Content 就是 ShellPage，它是窗口内容的根元素，
+    ///     监听挂在它上面，等于整个窗口任何位置按下（包括空白区域）都能收到。
+    ///
+    ///     必须等 ActivationService 把 Content 设好之后再调，早了 Content 还是 null。
+    ///     音效开关走 UiSoundService.Enabled，设置里关掉就真的一声不出。
+    /// </summary>
+    public void AttachGlobalClick()
+    {
+        if (Content is FrameworkElement root)
+            MotionFx.AttachGlobalClick(root);
     }
 
     // this handles updating the caption button colors correctly when indows system theme is changed
