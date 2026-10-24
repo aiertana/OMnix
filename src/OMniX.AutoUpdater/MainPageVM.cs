@@ -157,7 +157,10 @@ public partial class MainPageVM : ObservableRecipient
             return null;
         }
 
-        var getOmniXAsset = newestVersionFound?.assets?.FirstOrDefault(a => a.name?.StartsWith("OMniX_") ?? false);
+        // 二开：附件名是 OMniX<版本>.zip（OMniX1.0.1.zip 这种），中间没有下划线。
+        // 原来写的是 "OMniX_" 前缀，永远匹配不上，于是每次都报
+        // 「找不到 OMniX 压缩包」，看着像作者忘了传附件，其实是前缀写错了。
+        var getOmniXAsset = newestVersionFound?.assets?.FirstOrDefault(a => a.name?.StartsWith("OMniX") ?? false);
 
         if (getOmniXAsset?.browser_download_url is null)
         {

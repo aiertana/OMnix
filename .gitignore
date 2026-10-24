@@ -6,6 +6,9 @@
 /*
 
 !/.gitignore
+
+# 全项目唯一的版本号来源（bumpVersion.ps1 会读写它）
+!/version.json
 !/README.md
 !/README_EN.md
 !/DISCLAIMER.md
