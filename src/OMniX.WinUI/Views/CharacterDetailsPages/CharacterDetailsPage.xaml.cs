@@ -312,6 +312,10 @@ public sealed partial class CharacterDetailsPage : Page
                     }
                 }
             }
+
+            // 二开：标记已处理。ModListArea 和 MainContentArea（空状态用）都绑了这个处理器，
+            // 不置 Handled 的话父子会各判一遍、各读一次拖放内容。
+            e.Handled = true;
         }
         finally
         {
@@ -332,6 +336,10 @@ public sealed partial class CharacterDetailsPage : Page
             {
                 await ViewModel.DragDropModAsync(await e.DataView.GetStorageItemsAsync());
             }
+
+            // 二开：同上。有 Mod 时 ModListArea 先接、空状态时 MainContentArea 接，
+            // 置 Handled 保证一次拖放只装一次。
+            e.Handled = true;
         }
         finally
         {

@@ -361,18 +361,21 @@
                     </StackPanel>
                 </Border>
 
+                <!--
+                    二开：AllowDrop 原来是 False —— 但下面那句注释已经写明了这块的存在意义：
+                    「有 Mod 时由 ModListArea 接拖放，没有 Mod 时（显示空状态）由 MainContentArea 接」。
+                    AllowDrop=False 的元素收不到任何拖放事件，事件也就不会冒泡下来，
+                    结果就是空状态那个「拖放到这里」的框纯属摆设：拖 zip 进去毫无反应。
+                    （有 Mod 时反而正常，因为 ModListArea 自己是 AllowDrop=True。）
+                    改成 True，由 ModListArea_OnDrop 处理完置 Handled，避免父子重复触发。
+                -->
                 <Grid
                     x:Name="MainContentArea"
                     Grid.Row="2"
-                    AllowDrop="False"
+                    AllowDrop="True"
                     Background="Transparent"
                     DragEnter="ModListArea_OnDragEnter"
                     Drop="ModListArea_OnDrop">
-
-                    <!--
-                        We need drop handling on both  MainContentArea and ModListArea, but only one is active at the time
-                        This is because of the "This character has no mods" page that is shown if there are no mods
-                    -->
 
                     <Grid>
                         <Grid.ColumnDefinitions>
