@@ -1,7 +1,11 @@
-# GitHub 上只保留 GitHub1.0 文件夹里的文档。
-# 源码（src/）、开发脚本、素材图片、打包产物一律不上传。
+# GitHub 上只放下面这几个文档，源码和开发文件一律不上传。
+# 本地 GitHub1.0/ 是打包上传用的素材副本，内容与根目录一致，本身也不跟踪。
 
 /*
-!/GitHub1.0/
-!/GitHub1.0/**
 !/.gitignore
+!/README.md
+!/README_EN.md
+!/DISCLAIMER.md
+!/LICENSE
+!/使用说明书.md
+!/使用说明.txt
