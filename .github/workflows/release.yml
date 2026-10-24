@@ -12,6 +12,12 @@ name: 出包并发布
 # 用法：
 #   git tag v1.1.6 && git push origin v1.1.6
 # 或者在 Actions 页面手动跑，指定版本号。
+#
+# 仓库以前其实有 CI（上游留下来的 dotnet-desktop.yml 等四个），
+# 但那几个跑出来全是 failure，清理上游遗留时一并删掉了。
+# 能跑通的关键在于 OMniX.WinUI.csproj 里是 <WindowsPackageType>None</WindowsPackageType>
+# —— 不打 MSIX，不需要证书和 MSIX 工具链，纯 dotnet publish 就能出包。
+# 这点以后别改，改成 MSIX 的话 CI 立刻就麻烦了。
 
 on:
   push:
@@ -39,7 +45,8 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: 定版本号
+      - name: 定版本号并刷到 csproj / README
+        id: ver
         shell: pwsh
         run: |
           $given = '${{ github.event.inputs.version }}'
@@ -54,18 +61,14 @@ jobs:
               $v = (Get-Content version.json -Raw -Encoding UTF8 | ConvertFrom-Json).version
           }
 
-          "VERSION=$v" | Out-File $env:GITHUB_ENV -Encoding utf8 -Append
           Write-Output "这次出: $v"
 
-      - name: 把版本号刷到 csproj / README
-        shell: pwsh
-        run: |
-          # 版本号唯一的来源是 tag，这里把它写进 version.json，
+          # 版本号唯一的来源是 tag，先写进 version.json，
           # 再用 bumpVersion.ps1 -Kind none 刷到 csproj 和两份 README。
           # -Kind none 是「不改版本、只把各处同步成最新」，
-          # 那条路径上的替换是按标签上下文做的，不会误伤 NuGet 包的版本号。
+          # 那条路径上的替换按标签上下文做，不会误伤 NuGet 包的版本号。
           $json = Get-Content version.json -Raw -Encoding UTF8 | ConvertFrom-Json
-          $json.version = $env:VERSION
+          $json.version = $v
           $json.updated = (Get-Date).ToString('yyyy-MM-dd')
           ($json | ConvertTo-Json) | Set-Content version.json -Encoding UTF8
 
@@ -75,6 +78,11 @@ jobs:
           Select-String -Path 'src\OMniX.WinUI\OMniX.WinUI.csproj' -Pattern 'VersionPrefix' |
               ForEach-Object { $_.Line.Trim() }
 
+          # 注意编码：pwsh 的 -Encoding utf8 会带 BOM，GitHub 解析 GITHUB_OUTPUT
+          # 时认不出第一行，后面几步拿到的就是空版本号，整个流程会在这一步之后的
+          # 地方莫名其妙地失败。必须用 utf8NoBOM。
+          "v=$v" | Out-File $env:GITHUB_OUTPUT -Encoding utf8NoBOM -Append
+
       - name: 取回上一版的包（算增量补丁要用）
         shell: pwsh
         env:
@@ -83,7 +91,7 @@ jobs:
           # mkrelease.ps1 是在 Releases\OMniX<版本>\OMniX\ 里找上一版做 diff 的。
           # CI 是全新 checkout，那个目录不存在，补丁会被整段跳过。
           # 这里先把上一个 Release 的整包拉下来解压到对应位置，补丁逻辑就能照常工作。
-          $cur = "v$env:VERSION"
+          $cur     = "v${{ steps.ver.outputs.v }}"
 
           $prevTag = gh release list --limit 10 --json tagName -q '.[].tagName' |
                      Where-Object { $_ -and $_ -ne $cur } |
@@ -95,7 +103,7 @@ jobs:
           }
 
           $prevVer = $prevTag.TrimStart('v')
-          $dir = Join-Path 'Releases' "OMniX$prevVer"
+          $dir     = Join-Path 'Releases' "OMniX$prevVer"
           New-Item -ItemType Directory -Force -Path $dir | Out-Null
 
           gh release download $prevTag --dir $dir --pattern 'OMniX*.zip' --clobber
@@ -121,9 +129,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $tag = "v$env:VERSION"
+          $ver = "${{ steps.ver.outputs.v }}"
+          $tag = "v$ver"
 
-          $zips = @(Get-ChildItem 'Releases' -Filter "OMniX$env:VERSION*.zip" | ForEach-Object { $_.FullName })
+          $zips = @(Get-ChildItem 'Releases' -Filter "OMniX$ver*.zip" | ForEach-Object { $_.FullName })
 
           if ($zips.Count -eq 0) {
               Write-Error "没找到要上传的包"
@@ -132,12 +141,12 @@ jobs:
 
           $zips | ForEach-Object { Write-Output "待上传: $_" }
 
-          # tag 是从 push 带过来的，Release 本体可能还没建
+          # tag 是 push 带过来的，Release 本体可能还没建
           $existing = gh release view $tag 2>$null
 
           if ($existing) {
               gh release upload $tag --clobber $zips
           }
           else {
-              gh release create $tag --title "OMniX $env:VERSION" --generate-notes $zips
+              gh release create $tag --title "OMniX $ver" --generate-notes $zips
           }

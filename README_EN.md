@@ -4,7 +4,7 @@ A Mod manager for Wuthering Waves (WuWa). Windows desktop app built with WinUI 3
 
 中文说明：[README.md](README.md)　·　完整使用说明书（中文）：[使用说明书.md](使用说明书.md)　·　Disclaimer: [DISCLAIMER.md](DISCLAIMER.md)　·　License: [GPL-3.0](LICENSE)
 
-Version: **1.1.5**
+Version: **1.1.6**
 
 ![UI Preview](Images/screenshot-home.png)
 
@@ -82,7 +82,7 @@ C:\Users\<user>\AppData\Local\OMniX\
 
 ## Source code and building
 
-This repository holds the **source code**. If you just want the app, grab `OMniX1.1.5.zip`
+This repository holds the **source code**. If you just want the app, grab `OMniX1.1.6.zip`
 from [Releases](https://github.com/aiertana/OMnix/releases) and unzip it.
 
 ### Prerequisites
