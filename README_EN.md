@@ -6,7 +6,7 @@ A Mod manager for Wuthering Waves (WuWa). Windows desktop app built with WinUI 3
 
 Version: **1.0.0**
 
-![UI Preview](https://aka.doubaocdn.com/s/Qv4lYzIMDQ)
+![UI Preview](Images/screenshot-home.png)
 
 ---
 

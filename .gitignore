@@ -19,5 +19,10 @@
 # 表情包的合集压缩包，内容与目录里的 png 重复，不上传
 /OMniX娘/OMix_表情包.zip
 
+# README 里用的界面预览图：Images 下只放行这一张，其它是原项目的旧截图
+!/Images/
+/Images/*
+!/Images/screenshot-home.png
+
 # 调试符号里有本地源码路径，不上传
 *.pdb

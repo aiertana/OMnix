@@ -6,7 +6,7 @@
 
 当前版本：**1.0.0**
 
-![界面预览](https://aka.doubaocdn.com/s/Qv4lYzIMDQ)
+![界面预览](Images/screenshot-home.png)
 
 ---
 
