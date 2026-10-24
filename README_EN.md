@@ -2,7 +2,7 @@
 
 A Mod manager for Wuthering Waves (WuWa). Windows desktop app built with WinUI 3 / .NET 9.
 
-中文说明：[README.md](README.md)　·　Disclaimer: [DISCLAIMER.md](DISCLAIMER.md)　·　License: [GPL-3.0](LICENSE)
+中文说明：[README.md](README.md)　·　完整使用说明书（中文）：[使用说明书.md](使用说明书.md)　·　Disclaimer: [DISCLAIMER.md](DISCLAIMER.md)　·　License: [GPL-3.0](LICENSE)
 
 Version: **1.0.0**
 
@@ -60,6 +60,9 @@ Characters, presets and enable states are stored locally, so you can copy them t
    <https://github.com/SpectrumQT/XXMI-Launcher/releases/latest>, or let you pick a path manually.
 
 > Mod files live in XXMI Launcher's `WWMI\Mods`. This tool only references them and ships no mods.
+
+The full illustrated walkthrough — installation, UI tour, every feature, settings and FAQ — lives in
+**[使用说明书.md](使用说明书.md)** *(Chinese only)*.
 
 ---
 

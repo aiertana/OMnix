@@ -2,7 +2,7 @@
 
 鸣潮（WuWa）的 Mod 管理器。Windows 桌面应用，WinUI 3 / .NET 9 写的。
 
-英文说明：[README_EN.md](README_EN.md)　·　免责声明：[DISCLAIMER.md](DISCLAIMER.md)　·　许可：[GPL-3.0](LICENSE)
+使用说明书：[使用说明书.md](使用说明书.md)　·　英文说明：[README_EN.md](README_EN.md)　·　免责声明：[DISCLAIMER.md](DISCLAIMER.md)　·　许可：[GPL-3.0](LICENSE)
 
 当前版本：**1.0.0**
 
@@ -57,6 +57,8 @@ OMniX **完全免费、开源**。没有会员版，没有激活码，也没有�
    <https://github.com/SpectrumQT/XXMI-Launcher/releases/latest> 下载，或者自己手动指定路径。
 
 > Mod 文件本体在 XXMI Launcher 的 `WWMI\Mods` 里，这个管理器只是引用它们，不自带任何 Mod。
+
+完整的图文说明（安装、界面、各项功能、设置、常见问题）见 **[使用说明书.md](使用说明书.md)**。
 
 ---
 
