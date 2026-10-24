@@ -189,26 +189,54 @@ public sealed class SkinManagerService : ISkinManagerService
 
                 foreach (var x in characterModList.Mods)
                 {
+                    // 二开：这段原本是「当前目录是禁用版，而同名的启用版也在 → 重命名避冲突」。
+                    // 但它没确认两个名字真的是两个东西：两个 GetFolderNameXxx 对已经带前缀的
+                    // 名字都会原样返回，于是两个 Exists 其实都在问「自己存在吗」，恒真。
+                    // 后果是目录被无限重命名（__1 → __2 → … 一路到 __290），
+                    // 而每次重命名又触发一次刷新，界面直接卡死。
+                    // 现在要求「剥掉前缀后的名字」必须真的和当前目录名不同，才算同时存在两份。
+                    var nameWithoutPrefix =
+                        ModFolderHelpers.GetFolderNameWithoutDisabledPrefix(modDirectory.Name);
+                    var nameWithPrefix =
+                        ModFolderHelpers.GetFolderNameWithDisabledPrefix(nameWithoutPrefix);
+
                     if (x.Mod.FullPath.AbsPathCompare(modDirectory.FullName)
-                        &&
-                        Directory.Exists(Path.Combine(characterModList.AbsModsFolderPath,
-                            ModFolderHelpers.GetFolderNameWithDisabledPrefix(modDirectory.Name)))
-                        &&
-                        Directory.Exists(Path.Combine(characterModList.AbsModsFolderPath,
-                            ModFolderHelpers.GetFolderNameWithoutDisabledPrefix(modDirectory.Name)))
+                        && !string.Equals(nameWithoutPrefix, modDirectory.Name, StringComparison.OrdinalIgnoreCase)
+                        && !string.Equals(nameWithPrefix, nameWithoutPrefix, StringComparison.OrdinalIgnoreCase)
+                        && Directory.Exists(Path.Combine(characterModList.AbsModsFolderPath, nameWithPrefix))
+                        && Directory.Exists(Path.Combine(characterModList.AbsModsFolderPath, nameWithoutPrefix))
                        )
                     {
                         var newName = modDirectory.Name;
 
-                        while (Directory.Exists(Path.Combine(characterModList.AbsModsFolderPath, newName)))
+                        // 上限 100 次：万一以后再出现「取不到新名字」的情况，
+                        // 宁可放弃这个 mod 也不能让界面卡在这儿不动。
+                        var renameAttempts = 0;
+                        while (Directory.Exists(Path.Combine(characterModList.AbsModsFolderPath, newName))
+                               && renameAttempts++ < 100)
                             newName = DuplicateModAffixHelper.AppendNumberAffix(newName);
+
+                        if (Directory.Exists(Path.Combine(characterModList.AbsModsFolderPath, newName)))
+                        {
+                            _logger.Error(
+                                "Could not find a free folder name for '{FolderName}' after 100 attempts, skipping",
+                                modDirectory.Name);
+                            continue;
+                        }
 
                         _logger.Warning(
                             "Mod '{ModName}' has both enabled and disabled folders, renaming folder",
                             modDirectory.Name);
 
                         duplicateModsFound.Add(new DuplicateMods(x.Mod.Name, newName));
-                        x.Mod.Rename(newName);
+
+                        // 自己改名会触发自身 watcher，进而又排一次刷新 —— 这里先关掉，
+                        // 不然一次更新能引发好几轮无谓的全量扫描。
+                        using (characterModList.DisableWatcher())
+                        {
+                            x.Mod.Rename(newName);
+                        }
+
                         mod = x;
                         mod.Mod.ClearCache();
                         orphanedMods.Remove(x);

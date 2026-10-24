@@ -88,11 +88,18 @@ public static class ModFolderHelpers
     /// <returns></returns>
     public static string GetFolderNameWithoutDisabledPrefix(string folderName)
     {
+        // 二开：原来用 Replace(前缀, "") 剥前缀。可 StartsWith 是忽略大小写的，
+        // Replace 却不是 —— 目录名叫「disabled_xxx」（小写）时一个字符都剥不掉，
+        // 函数原样返回，调用方就误以为「这名字本来就没禁用前缀」。
+        // SkinManagerService.RefreshModsAsync 正是拿它判断「启用版和禁用版是不是同时存在」，
+        // 一旦剥不掉，两个 Exists 就都退化成「自己存在吗」，永远为真，
+        // 于是同一个目录被无限次重命名（实测一路飙到 __290），整个界面卡死。
+        // 改成按长度截断，不碰大小写。
         if (folderName.StartsWith(DISABLED_PREFIX, StringComparison.CurrentCultureIgnoreCase))
-            return folderName.Replace(DISABLED_PREFIX, string.Empty);
+            return folderName[DISABLED_PREFIX.Length..];
 
         if (folderName.StartsWith(ALT_DISABLED_PREFIX, StringComparison.CurrentCultureIgnoreCase))
-            return folderName.Replace(ALT_DISABLED_PREFIX, string.Empty);
+            return folderName[ALT_DISABLED_PREFIX.Length..];
 
         return folderName;
     }
@@ -105,11 +112,14 @@ public static class ModFolderHelpers
     /// <returns></returns>
     public static string GetFolderNameWithDisabledPrefix(string folderName)
     {
+        // 二开：同样不能用 Replace —— 它对「小写 disabled_」不生效，会把原名返回。
+        // 这里统一成规范写法（DISABLED_ + 去掉前缀的部分），
+        // Windows 文件系统不区分大小写，所以规范化后的名字照样能找到磁盘上那个目录。
         if (folderName.StartsWith(DISABLED_PREFIX, StringComparison.CurrentCultureIgnoreCase))
-            return folderName;
+            return DISABLED_PREFIX + folderName[DISABLED_PREFIX.Length..];
 
         if (folderName.StartsWith(ALT_DISABLED_PREFIX, StringComparison.CurrentCultureIgnoreCase))
-            return folderName.Replace(ALT_DISABLED_PREFIX, DISABLED_PREFIX);
+            return DISABLED_PREFIX + folderName[ALT_DISABLED_PREFIX.Length..];
 
         return DISABLED_PREFIX + folderName;
     }
