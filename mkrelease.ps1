@@ -236,10 +236,24 @@ try {
 
     $za = [System.IO.Compression.ZipFile]::OpenRead($zip)
     try {
-        $zipEntry = $za.Entries | Where-Object { $_.FullName -eq 'OMniX\OMniX.exe' } | Select-Object -First 1
+        # 二开：zip 条目的分隔符不统一 ——
+        #   Windows PowerShell 5.1 的 Compress-Archive 写反斜杠 OMniX\OMniX.exe
+        #   PowerShell 7（CI 上用的）写正斜杠 OMniX/OMniX.exe
+        # 原来硬编码反斜杠，本地能过、CI 上永远匹配不到，于是报「包里找不到
+        # OMniX\OMniX.exe」—— 但包其实是好的，白卡一轮。这里先归一化再比。
+        $zipEntry = $za.Entries | Where-Object {
+            ($_.FullName -replace '/', '\') -eq 'OMniX\OMniX.exe'
+        } | Select-Object -First 1
 
         if ($zipEntry) {
             [System.IO.Compression.ZipFileExtensions]::ExtractToFile($zipEntry, $tmpExe, $true)
+        }
+        else {
+            # 真找不到时把实际条目打出来，省得下次还要靠猜
+            Write-Output "zip 里前 10 个条目："
+
+            $za.Entries | Select-Object -First 10 |
+                ForEach-Object { Write-Output ("  " + $_.FullName) }
         }
     }
     finally {
