@@ -948,7 +948,10 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             // 先复制到临时目录再交给更新器：原文件还在下载目录里，
             // 万一被用户挪走或清理，更新器装到一半就断了
-            var staged = Path.Combine(Path.GetTempPath(), "OMniX_Local_Update", file.Name);
+            // 二开：暂存目录也从 %TEMP% 挪到程序根目录。
+            // 作者的原话是「与 OMniX 相关的统一放在安装根目录，不然每次都找不到路径」——
+            // 放在程序目录下，出问题时一眼就能看到包在哪、装到哪了。
+            var staged = Path.Combine(App.ROOT_DIR, "OMniX Updates", file.Name);
             Directory.CreateDirectory(Path.GetDirectoryName(staged)!);
             File.Copy(file.Path, staged, true);
 

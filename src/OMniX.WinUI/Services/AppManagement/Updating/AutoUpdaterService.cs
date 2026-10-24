@@ -122,6 +122,9 @@ public class AutoUpdaterService
 
     private Error[]? _startSelfUpdateProcess(string? localZipPath = null)
     {
+        // 二开：原来这几条报错是英文的，只丢一句「folder does not exist」，
+        // 用户看到只会以为软件坏了。实际九成情况是：当前跑的是开发构建
+        // （bin\...\Debug 下那份），那个目录里本来就没打包更新器。
         if (!_currentAutoUpdaterFolder.Exists)
         {
             _logger.Error("Current auto updater folder does not exist. Could not find the update folder: {Folder}",
@@ -130,7 +133,10 @@ public class AutoUpdaterService
             {
                 Error.NotFound(
                     description:
-                    $"Current auto updater folder does not exist. Could not find the update folder: {_currentAutoUpdaterFolder.FullName}")
+                    $"找不到更新器目录：{_currentAutoUpdaterFolder.FullName}\n" +
+                    "程序根目录下得有「OMniX - Auto Updater」这个文件夹。\n" +
+                    "如果你跑的是源码里的开发构建（bin\\...\\Debug），那里不会带更新器——" +
+                    "请改用 Releases 里解压出来的正式版目录。")
             };
         }
 
@@ -144,7 +150,8 @@ public class AutoUpdaterService
             {
                 Error.NotFound(
                     description:
-                    $"Current auto updater folder does not contain the auto updater exe. Could not find {AutoUpdaterExe} in {_currentAutoUpdaterFolder.FullName}")
+                    $"更新器目录在，但里面没有 {AutoUpdaterExe}：{_currentAutoUpdaterFolder.FullName}\n" +
+                    "这个目录大概被清过，重新解压一份完整包覆盖即可。")
             };
         }
 
@@ -153,7 +160,7 @@ public class AutoUpdaterService
         if (isAutoUpdaterRunning)
         {
             _logger.Error("Auto updater is already running.");
-            return new[] { Error.Conflict(description: "Auto updater is already running.") };
+            return new[] { Error.Conflict(description: "更新器已经在运行了，先把那个窗口关掉再试。") };
         }
 
         try
