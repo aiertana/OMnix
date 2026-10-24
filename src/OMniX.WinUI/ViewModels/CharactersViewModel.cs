@@ -21,7 +21,9 @@ using OMniX.Core.GamesService.Interfaces;
 using OMniX.Core.GamesService.Models;
 using OMniX.Core.Helpers;
 using OMniX.Core.Services;
+using OMniX.Core.Services.CommandService.Models;
 using OMniX.Core.Services.GameBanana;
+using OMniX.WinUI.Models.Options;
 using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.Contracts.ViewModels;
 using OMniX.WinUI.Helpers;
@@ -2289,6 +2291,55 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     /// </summary>
     private const string XxmiLauncherUrl = "https://github.com/SpectrumQT/XXMI-Launcher/releases/latest";
 
+    /// <summary>
+    ///     二开：按「XXMI 文件夹」找出启动器 exe，注册成模型导入器命令。
+    ///     目录里真找到 exe 才算成功 —— 光有文件夹、里面没装启动器的，照样返回 false 让上层弹窗。
+    /// </summary>
+    private async Task<bool> TryRegisterLauncherFromFolderAsync()
+    {
+        try
+        {
+            var options = await _localSettingsService
+                .ReadSettingAsync<ModManagerOptions>(ModManagerOptions.Section);
+
+            var launcherRoot = options?.GimiRootFolderPath;
+
+            if (string.IsNullOrWhiteSpace(launcherRoot) || !Directory.Exists(launcherRoot))
+                return false;
+
+            var executable = LauncherLocator.FindLauncherExecutable(launcherRoot);
+
+            if (string.IsNullOrWhiteSpace(executable) || !File.Exists(executable))
+                return false;
+
+            var commandDefinition = new CommandDefinition
+            {
+                CommandDisplayName = $"Start {_gameService.GameInfo.GameModelImporterName}",
+                KillOnMainAppExit = false,
+                ExecutionOptions = new CommandExecutionOptions
+                {
+                    UseShellExecute = true,
+                    RunAsAdmin = true,
+                    Command = executable,
+                    Arguments = null,
+                    WorkingDirectory = Path.GetDirectoryName(executable),
+                    CreateWindow = true
+                }
+            };
+
+            await ThreeDMigtoProcessManager.SetCommandAsync(commandDefinition);
+
+            _logger.Information("按 XXMI 文件夹重新识别到启动器: {Executable}", executable);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, "按 XXMI 文件夹识别启动器失败");
+            return false;
+        }
+    }
+
     [RelayCommand]
     private async Task Start3DmigotoAsync()
     {
@@ -2311,6 +2362,13 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         var path = ThreeDMigtoProcessManager.ProcessPath;
 
         if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+            return true;
+
+        // 二开：只在设置页填了「XXMI 文件夹」、没走过首次配置的人，启动器命令记录是空的，
+        // 光看 ProcessPath 永远是空，点启动就弹「没有找到启动器」。
+        // 这里按那个文件夹重新识别一次 —— 设置页重置按钮提示的「下次会按 XXMI 文件夹重新识别」
+        // 指的就是这一步，之前只写了提示、没写实现。
+        if (await TryRegisterLauncherFromFolderAsync())
             return true;
 
         var message = new TextBlock
