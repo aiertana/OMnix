@@ -11,24 +11,27 @@ public partial class CharacterDetailsViewModel
         if (IsHardBusy)
             return false;
 
-        if (items is null || items.Count != 1)
+        // 二开：这里原来是 items.Count != 1 —— 一次拖两个以上就直接判无效。
+        // DragEnter 里拿到 false 就不会设置 AcceptedOperation，鼠标跟着变成禁止符，
+        // 看着像「这个页面不支持批量拖入」。而角色列表页（CharactersPage 的头像）
+        // 压根不做这个检查，所以那边反而能一次拖好几个进来，两个页面行为对不上。
+        // 改成逐个校验：只要每一项都是合法的 Mod 文件夹或压缩包就放行。
+        if (items is null || items.Count == 0)
             return false;
 
-        var mod = items.First();
+        foreach (var mod in items)
+        {
+            if (Directory.Exists(mod.Path))
+                continue;
 
-        var isDirectory = Directory.Exists(mod.Path);
+            if (!File.Exists(mod.Path))
+                return false;
 
-        if (isDirectory)
-            return true;
+            var fileExt = Path.GetExtension(mod.Name);
 
-        if (!File.Exists(mod.Path))
-            return false;
-
-        var fileExt = Path.GetExtension(mod.Name);
-
-        if (fileExt.IsNullOrEmpty() || !Constants.SupportedArchiveTypes.Contains(fileExt))
-            return false;
-
+            if (fileExt.IsNullOrEmpty() || !Constants.SupportedArchiveTypes.Contains(fileExt))
+                return false;
+        }
 
         return true;
     }

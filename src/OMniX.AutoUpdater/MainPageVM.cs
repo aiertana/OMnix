@@ -227,16 +227,70 @@ public partial class MainPageVM : ObservableRecipient
         //   永远匹配不上，于是每次都报「找不到 OMniX 压缩包」。）
         var assets = newestVersionFound?.assets ?? [];
 
-        var patchName = $"OMniX{VersionText(release.Version)}-patch-{VersionText(InstalledVersion)}.zip";
+        var versionText = VersionText(release.Version);
+        var patchName = $"OMniX{versionText}-patch-{VersionText(InstalledVersion)}.zip";
+        var fullName = $"OMniX{versionText}.zip";
+        var patchPrefix = $"OMniX{versionText}-patch-";
 
+        string? downloadUrl = null;
+        string? fileName = null;
+
+        // 二开：补丁改成按固定基准打包之后（见 PatchBaseVersion），补丁名里的
+        // 那个版本号是基准，未必是自己当前的版本。所以这里不强求精确匹配：
+        // 先找对着自己版本的，找不到就退一步，只要是同一个目标版本的补丁都能用。
+        // 补丁里放的是「基准 → 新版」的全部变化，装在比基准新的版本上，
+        // 只是多覆盖几份内容已经一样的文件，无害。
         var asset = assets.FirstOrDefault(a =>
                         string.Equals(a.name, patchName, StringComparison.OrdinalIgnoreCase)) ??
+                    assets.FirstOrDefault(a =>
+                        a.name is not null &&
+                        a.name.StartsWith(patchPrefix, StringComparison.OrdinalIgnoreCase) &&
+                        a.name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)) ??
                     assets.FirstOrDefault(a =>
                         a.name is not null &&
                         a.name.StartsWith("OMniX", StringComparison.OrdinalIgnoreCase) &&
                         !a.name.Contains("-patch-", StringComparison.OrdinalIgnoreCase));
 
-        if (asset?.browser_download_url is null)
+        if (asset?.browser_download_url is not null && asset.name is not null)
+        {
+            downloadUrl = asset.browser_download_url;
+            fileName = asset.name;
+        }
+
+        // 二开：API 限流时 assets 是空的（走的是 atom 那条路），
+        // 但附件本身挂在 github.com 的下载域名上，走 CDN，不受 API 限额影响。
+        // 按命名规则自己拼 URL，再用 HEAD 验一下存不存在 —— 存在就照常下载，
+        // 不必干等一小时限额恢复。
+        if (downloadUrl is null)
+        {
+            var baseUrl = $"https://github.com/aiertana/OMnix/releases/download/v{versionText}/";
+
+            Log("附件列表没拿到（API 限流），按命名规则拼链接试试");
+
+            // 依次试：对着自己版本的补丁 → 对着基准版本的补丁 → 整包
+            var candidates = new List<string> { patchName };
+
+            var basePatch = $"OMniX{versionText}-patch-{PatchBaseVersion}.zip";
+
+            if (!string.Equals(basePatch, patchName, StringComparison.OrdinalIgnoreCase))
+            {
+                candidates.Add(basePatch);
+            }
+
+            candidates.Add(fullName);
+
+            foreach (var candidate in candidates)
+            {
+                if (await UrlExistsAsync(baseUrl + candidate, cancellationToken))
+                {
+                    downloadUrl = baseUrl + candidate;
+                    fileName = candidate;
+                    break;
+                }
+            }
+        }
+
+        if (downloadUrl is null || fileName is null)
         {
             Stop(
                 "在最新的 Release 里没找到 OMniX 压缩包。可能是作者还没传完附件（上传要几分钟），" +
@@ -244,15 +298,15 @@ public partial class MainPageVM : ObservableRecipient
             return null;
         }
 
-        var isPatch = string.Equals(asset.name, patchName, StringComparison.OrdinalIgnoreCase);
+        var isPatch = fileName.StartsWith(patchPrefix, StringComparison.OrdinalIgnoreCase);
 
         Log(isPatch
-            ? $"找到增量补丁：{VersionText(InstalledVersion)} → {VersionText(release.Version)}"
+            ? $"找到增量补丁：{VersionText(InstalledVersion)} → {versionText}"
             : "没有适用于当前版本的补丁，改下完整包");
 
-        release.DownloadUrl = new Uri(asset.browser_download_url);
+        release.DownloadUrl = new Uri(downloadUrl);
         release.BrowserUrl = new Uri(newestVersionFound?.html_url ?? "https://github.com/aiertana/OMnix/releases");
-        release.FileName = asset.name ?? "OMniX.zip";
+        release.FileName = fileName;
 
         LatestVersion = release.Version.ToString();
 
@@ -567,10 +621,35 @@ public partial class MainPageVM : ObservableRecipient
     // Copied from OMniX.WinUI/Services/UpdateChecker.cs
     private const string ReleasesApiUrl = "https://api.github.com/repos/aiertana/OMnix/releases?per_page=2";
 
+    // 二开：API 限流时的退路。这是普通网页，不受每小时 60 次的匿名限额影响。
+    private const string ReleasesAtomUrl = "https://github.com/aiertana/OMnix/releases.atom";
+
+    // 二开：增量补丁的固定基准版本，要和 mkrelease.ps1 里的 $PatchBaseVersion 保持一致。
+    // 补丁里放的是「基准 → 新版本」的全部变化，所以基准以及它之后的任何版本
+    // 都能直接装同一个补丁（1.1.7 → 1.1.9 一步到位，不用先装 1.1.8）。
+    private const string PatchBaseVersion = "1.1.7";
+
     private async Task<ApiGitHubRelease?> GetLatestVersionAsync(CancellationToken cancellationToken)
     {
         Serilog.Log.Information("Checking for latest version...");
 
+        var fromApi = await TryGetLatestFromApiAsync(cancellationToken);
+        if (fromApi is not null)
+        {
+            return fromApi;
+        }
+
+        // 二开：GitHub 匿名 API 一小时只给 60 次，点几次「检查更新」就 403 了。
+        // 以前遇到这个就彻底没辙 —— 拿不到版本号，更新直接卡死，
+        // 用户看到的只是「闪退」或者一句看不懂的版本解析错误。
+        // releases.atom 是普通网页，不走 API 限额，用它兜底。
+        Log("GitHub API 取不到版本（多半是匿名限额用完），改读 releases.atom");
+
+        return await TryGetLatestFromAtomAsync(cancellationToken);
+    }
+
+    private async Task<ApiGitHubRelease?> TryGetLatestFromApiAsync(CancellationToken cancellationToken)
+    {
         using var httpClient = CreateHttpClient();
 
         var result = await httpClient.GetAsync(ReleasesApiUrl, cancellationToken);
@@ -596,7 +675,7 @@ public partial class MainPageVM : ObservableRecipient
         // 二开：原来直接 new Version(tag_name)，只要有一个 release 的 tag 不规范
         // （或者字段没解析出来），整个排序就抛异常，检查更新直接失败。
         // 改成只保留能解析出版本号的。
-        var latestVersion = gitHubReleases
+        return gitHubReleases
             .Where(r => !r.prerelease)
             .Select(r => new
             {
@@ -605,9 +684,68 @@ public partial class MainPageVM : ObservableRecipient
             })
             .Where(x => x.Parsed is not null)
             .OrderByDescending(x => x.Parsed)
-            .Select(x => x.Release);
+            .Select(x => x.Release)
+            .FirstOrDefault();
+    }
 
-        return latestVersion.FirstOrDefault();
+    /// <summary>
+    ///     从 releases.atom 读最新版本号。这是网页不是 API，不受每小时 60 次的限额影响。
+    ///     代价是拿不到附件列表，所以下面 IsNewerVersionAvailable 会按命名规则自己拼下载链接。
+    /// </summary>
+    private async Task<ApiGitHubRelease?> TryGetLatestFromAtomAsync(CancellationToken cancellationToken)
+    {
+        using var httpClient = CreateHttpClient();
+
+        var result = await httpClient.GetAsync(ReleasesAtomUrl, cancellationToken);
+        if (!result.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var text = await result.Content.ReadAsStringAsync(cancellationToken);
+
+        // atom 里第一个 <entry> 就是最新的那个 Release，
+        // 形如 <id>tag:github.com,2008:Repository/aiertana/OMnix/v1.1.8</id>
+        var match = Regex.Match(text, @"<id>tag:github\.com,2008:Repository/[^<]*?/([^/<]+)</id>");
+
+        if (!match.Success)
+        {
+            return null;
+        }
+
+        var tag = match.Groups[1].Value.Trim();
+
+        if (!Version.TryParse(tag.TrimStart('v'), out _))
+        {
+            return null;
+        }
+
+        return new ApiGitHubRelease
+        {
+            tag_name = tag,
+            prerelease = false,
+            html_url = $"https://github.com/aiertana/OMnix/releases/tag/{tag}"
+        };
+    }
+
+    /// <summary>
+    ///     附件到底存不存在。只发 HEAD，不下载正文。
+    /// </summary>
+    private async Task<bool> UrlExistsAsync(string url, CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var httpClient = CreateHttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Head, url);
+            using var response = await httpClient.SendAsync(request, cancellationToken);
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            Serilog.Log.Warning(ex, "检查附件是否存在失败: {Url}", url);
+            return false;
+        }
     }
 
     private HttpClient CreateHttpClient()

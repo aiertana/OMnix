@@ -111,6 +111,34 @@ else {
     Write-Output "自动更新器没打出来 —— 包里的更新按钮会失效，先看上面的编译错误"
 }
 
+# ---- 2.6 补齐更新器缺的 WinUI 运行时 ----
+# 二开：dotnet publish 对 UseWinUI 的项目并不会把 WinUI 运行时复制全 ——
+# 实测只有 229 个文件，Microsoft.UI.Xaml.dll（14 MB）、Microsoft.UI.Input.dll、
+# Microsoft.WindowsAppRuntime.dll、Microsoft.UI.Xaml.Controls.dll 等一个都不在。
+# 主程序那边是齐的（它自己要跑），所以两边文件数差了一截。
+#
+# 更新器是独立进程，只从自己所在目录加载。缺了 Microsoft.UI.Xaml.dll，
+# 它一启动就崩在 XAML 解析上：窗口白屏 + 弹「XAML parsing failed」，
+# 日志里只留下一行 "AutoUpdater OnLaunched" 之后就什么都没有 ——
+# 表现跟「更新器被增量更新覆盖坏了」几乎一样，非常难分辨，之前就误判过一次。
+#
+# 所以这里从旁边的主程序目录把缺的补上，并记个数。
+$runtimeFiles = Get-ChildItem $outApp -File | Where-Object {
+    $_.Name -match 'Xaml|WinUI|Microsoft\.Windows|InputState|Microsoft\.UI\.Input|Microsoft\.UI\.Composition|Interactive|Interactivity|WindowsAppSdk'
+}
+
+$copied = 0
+
+foreach ($f in $runtimeFiles) {
+    if (-not (Test-Path (Join-Path $auOut $f.Name))) {
+        Copy-Item $f.FullName -Destination $auOut -Force
+        $copied++
+    }
+}
+
+Write-Output ("  补了 " + $copied + " 个 WinUI 运行时文件，更新器共 " +
+    (Get-ChildItem $auOut -Recurse -File).Count + " 个文件")
+
 Write-Output ""
 Write-Output "=== 顶层 ==="
 Get-ChildItem -Path $outRoot | ForEach-Object {
@@ -136,15 +164,38 @@ Write-Output ("已打包: " + $zip + "  " + [math]::Round((Get-Item $zip).Length
 Write-Output ""
 Write-Output "=== 3.5 增量补丁 ==="
 
-# 基准 = Releases\OMniX<版本>\ 里比当前版本小的最大那个
-$prev = Get-ChildItem $releases -Directory |
-    Where-Object { $_.Name -match '^OMniX\d+(\.\d+)*$' } |
-    ForEach-Object {
-        try { [pscustomobject]@{ Dir = $_; Ver = [version]$_.Name.Substring(5) } } catch { $null }
-    } |
-    Where-Object { $null -ne $_ -and $_.Ver -lt [version]$Version -and (Test-Path (Join-Path $_.Dir.FullName 'OMniX')) } |
-    Sort-Object -Property Ver -Descending |
-    Select-Object -First 1
+# 二开：基准原来是「比当前版本小的最大那个」，也就是紧挨着的上一版。
+# 那样每个补丁只对上一版有效：1.1.7 想升到 1.1.9 必须先装 1.1.8，
+# 中间漏掉一版就装不了，只能下整包（一百多 MB）。
+#
+# 改成钉死一个基准版：$PatchBaseVersion。补丁里放的是「从基准到当前版本」
+# 的全部变化，于是基准以及它之后的任何版本都能直接装同一个补丁 ——
+# 1.1.7 → 1.1.9 一步到位，不用再一版一版爬。
+# 装在比基准更新的版本上也没问题：补丁里那些「基准→中间版本」的文件
+# 对方已经有了，覆盖一遍内容一样，无害。
+$PatchBaseVersion = '1.1.7'
+
+$patchBaseDir = Join-Path $releases ('OMniX' + $PatchBaseVersion)
+
+if ([version]$Version -gt [version]$PatchBaseVersion -and (Test-Path (Join-Path $patchBaseDir 'OMniX'))) {
+    $prev = [pscustomobject]@{
+        Dir = Get-Item $patchBaseDir
+        Ver = [version]$PatchBaseVersion
+    }
+
+    Write-Output ("固定基准: " + $PatchBaseVersion + "（基准及之后的版本都能直接装这个补丁）")
+}
+else {
+    # 基准目录不在本地（CI 上是全新环境，只有刚下的上一版），退回原来的「上一版」逻辑
+    $prev = Get-ChildItem $releases -Directory |
+        Where-Object { $_.Name -match '^OMniX\d+(\.\d+)*$' } |
+        ForEach-Object {
+            try { [pscustomobject]@{ Dir = $_; Ver = [version]$_.Name.Substring(5) } } catch { $null }
+        } |
+        Where-Object { $null -ne $_ -and $_.Ver -lt [version]$Version -and (Test-Path (Join-Path $_.Dir.FullName 'OMniX')) } |
+        Sort-Object -Property Ver -Descending |
+        Select-Object -First 1
+}
 
 if (-not $prev) {
     Write-Output "没有上一版的解压目录，跳过（第一次出包，或者旧目录被清了）"

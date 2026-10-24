@@ -52,27 +52,41 @@ public partial class App : Application
     {
         Log.Information("AutoUpdater OnLaunched");
 
-        MainWindow = new MainWindow();
-        MainWindow.Activate();
-        MainWindow.SetWindowSize(900, 600);
-        MainWindow.IsMaximizable = false;
-        MainWindow.IsMinimizable = false;
-        MainWindow.IsResizable = false;
-        MainWindow.Title = "OMniX 自动更新器";
-
-        var arguments = Environment.GetCommandLineArgs();
-
-        // 二开：第二个参数是「本地更新包路径」。
-        // 用户在设置页选了一个自己下载好的 zip 时，主程序把它传进来，
-        // 更新器就跳过 GitHub 检查和下载，直接拿这个包装。
-        var launchArgs = arguments.Skip(1).ToArray();
-
-        MainWindow.Content = new MainPage(
-            launchArgs.FirstOrDefault() ?? string.Empty,
-            launchArgs.Skip(1).FirstOrDefault() ?? string.Empty);
-        MainWindow.BringToFront();
-
+        // 二开：这行原来挂在方法最后。结果是 —— 只要 MainWindow / MainPage
+        // 的构造抛异常，handler 还没挂上，异常直接穿透出去，进程当场死掉。
+        // 日志里只剩孤零零一行 "OnLaunched"，什么都交代不了就闪退，
+        // 排查时只能靠猜（这次就是这么卡住的）。挂到最前面。
         UnhandledException += OnUnhandledException;
+
+        try
+        {
+            MainWindow = new MainWindow();
+            MainWindow.Activate();
+            MainWindow.SetWindowSize(900, 600);
+            MainWindow.IsMaximizable = false;
+            MainWindow.IsMinimizable = false;
+            MainWindow.IsResizable = false;
+            MainWindow.Title = "OMniX 自动更新器";
+
+            var arguments = Environment.GetCommandLineArgs();
+
+            // 二开：第二个参数是「本地更新包路径」。
+            // 用户在设置页选了一个自己下载好的 zip 时，主程序把它传进来，
+            // 更新器就跳过 GitHub 检查和下载，直接拿这个包装。
+            var launchArgs = arguments.Skip(1).ToArray();
+
+            MainWindow.Content = new MainPage(
+                launchArgs.FirstOrDefault() ?? string.Empty,
+                launchArgs.Skip(1).FirstOrDefault() ?? string.Empty);
+            MainWindow.BringToFront();
+        }
+        catch (Exception ex)
+        {
+            // 记下来再抛 —— 让上面挂的 handler 弹出提示，别让进程无声无息地死掉。
+            Log.Error(ex, "创建更新器界面时出错");
+            Log.CloseAndFlush();
+            throw;
+        }
     }
 
     private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
