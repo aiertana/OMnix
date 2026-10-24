@@ -24,7 +24,7 @@ OMniX **完全免费、开源**。没有会员版，没有激活码，也没有�
 
 其它渠道拿到的安装包，请不要用。
 
-<img src="src/OMniX.WinUI/Assets/About/group-qr.jpg" width="200" alt="交流群二维码" />
+<img src="OMniX/Assets/About/group-qr.jpg" width="200" alt="交流群二维码" />
 
 ---
 
@@ -111,9 +111,9 @@ OMniX/
 软件本身一直免费，以后也不会收费。
 
 <p>
-  <img src="src/OMniX.WinUI/Assets/About/wechat-pay.png" width="170" alt="微信" />
+  <img src="OMniX/Assets/About/wechat-pay.png" width="170" alt="微信" />
   &nbsp;&nbsp;&nbsp;
-  <img src="src/OMniX.WinUI/Assets/About/alipay-pay.png" width="170" alt="支付宝" />
+  <img src="OMniX/Assets/About/alipay-pay.png" width="170" alt="支付宝" />
 </p>
 
 ---

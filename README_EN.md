@@ -25,7 +25,7 @@ There are only two legitimate places to get it:
 
 Anything downloaded elsewhere should not be used.
 
-<img src="src/OMniX.WinUI/Assets/About/group-qr.jpg" width="200" alt="Community QR code" />
+<img src="OMniX/Assets/About/group-qr.jpg" width="200" alt="Community QR code" />
 
 *(The group chat is Chinese-language.)*
 
@@ -100,9 +100,9 @@ The app is and will stay free. If you find it useful and feel like buying me a b
 the QR codes are entirely optional — nothing is locked behind them.
 
 <p>
-  <img src="src/OMniX.WinUI/Assets/About/wechat-pay.png" width="170" alt="WeChat Pay" />
+  <img src="OMniX/Assets/About/wechat-pay.png" width="170" alt="WeChat Pay" />
   &nbsp;&nbsp;&nbsp;
-  <img src="src/OMniX.WinUI/Assets/About/alipay-pay.png" width="170" alt="Alipay" />
+  <img src="OMniX/Assets/About/alipay-pay.png" width="170" alt="Alipay" />
 </p>
 
 ---
