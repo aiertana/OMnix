@@ -2,7 +2,7 @@ name: 出包并发布
 
 # 二开之前：所有 Release 附件都是作者在电脑上跑脚本、手动上传的。
 # 1.1.4 和 1.1.5 就是这么出的事 —— bumpVersion.ps1 静默跳过了 csproj，
-# 编译出来的 exe 版本号一直是 1.1.3，包却照发不误，用户装完看到的还是旧版本。
+# 编译出来的 exe 版本号一直是 1.1.3，包却照发不误。
 #
 # 现在改成 push tag 就自动出包：
 #   · 版本号从 tag 推（v1.1.6 → 1.1.6），不会再出现「version.json 和 exe 对不上」
@@ -10,11 +10,8 @@ name: 出包并发布
 #   · 环境干净，不会有本地调试残留混进包里
 #
 # 用法：
-#   git tag v1.1.6 && git push origin v1.1.6
-# 或者在 Actions 页面手动跑，指定版本号。
+#   git tag v1.1.7 && git push origin v1.1.7
 #
-# 仓库以前其实有 CI（上游留下来的 dotnet-desktop.yml 等四个），
-# 但那几个跑出来全是 failure，清理上游遗留时一并删掉了。
 # 能跑通的关键在于 OMniX.WinUI.csproj 里是 <WindowsPackageType>None</WindowsPackageType>
 # —— 不打 MSIX，不需要证书和 MSIX 工具链，纯 dotnet publish 就能出包。
 # 这点以后别改，改成 MSIX 的话 CI 立刻就麻烦了。
@@ -26,7 +23,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: '要出的版本号，例如 1.1.6。留空就用 version.json 里的'
+        description: '要出的版本号，例如 1.1.7。留空就用 version.json 里的'
         required: false
 
 permissions:
@@ -45,43 +42,100 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: 定版本号并刷到 csproj / README
+      - name: 定版本号
         id: ver
         shell: pwsh
         run: |
+          # 二开：这里刻意不碰 bumpVersion.ps1。
+          # 之前在 CI 里 nested 调用 pwsh -File bumpVersion.ps1，1 秒就失败，
+          # 拿不到日志也说不清是编码还是执行策略的问题。改版本号就几行正则，
+          # 干脆内联，少一个失败点，也少一层猜。
+          $v = ''
+
           $given = '${{ github.event.inputs.version }}'
+          Write-Output "手动输入的版本号: [$given]"
 
           if ($given) {
               $v = $given
           }
-          elseif ($env:GITHUB_REF -match 'refs/tags/v(.+)') {
-              $v = $Matches[1]
+          elseif ($env:GITHUB_REF -like 'refs/tags/v*') {
+              # refs/tags/v1.1.6 -> 1.1.6，用 Substring 比正则直观
+              $v = $env:GITHUB_REF.Substring('refs/tags/v'.Length)
           }
           else {
               $v = (Get-Content version.json -Raw -Encoding UTF8 | ConvertFrom-Json).version
           }
 
-          Write-Output "这次出: $v"
+          Write-Output "最终版本号: [$v]"
 
-          # 版本号唯一的来源是 tag，先写进 version.json，
-          # 再用 bumpVersion.ps1 -Kind none 刷到 csproj 和两份 README。
-          # -Kind none 是「不改版本、只把各处同步成最新」，
-          # 那条路径上的替换按标签上下文做，不会误伤 NuGet 包的版本号。
-          $json = Get-Content version.json -Raw -Encoding UTF8 | ConvertFrom-Json
-          $json.version = $v
-          $json.updated = (Get-Date).ToString('yyyy-MM-dd')
-          ($json | ConvertTo-Json) | Set-Content version.json -Encoding UTF8
-
-          # 用 pwsh，别用 powershell —— 后者是 5.1，执行策略可能拦住脚本
-          pwsh -File bumpVersion.ps1 -Kind none
-
-          Select-String -Path 'src\OMniX.WinUI\OMniX.WinUI.csproj' -Pattern 'VersionPrefix' |
-              ForEach-Object { $_.Line.Trim() }
+          if (-not $v) {
+              throw "版本号是空的，tag 或 version.json 有问题"
+          }
 
           # 注意编码：pwsh 的 -Encoding utf8 会带 BOM，GitHub 解析 GITHUB_OUTPUT
-          # 时认不出第一行，后面几步拿到的就是空版本号，整个流程会在这一步之后的
-          # 地方莫名其妙地失败。必须用 utf8NoBOM。
+          # 时认不出第一行，后面几步拿到的就是空版本号。必须用 utf8NoBOM。
           "v=$v" | Out-File $env:GITHUB_OUTPUT -Encoding utf8NoBOM -Append
+
+      - name: 把版本号刷进 version.json 和两个 csproj
+        shell: pwsh
+        run: |
+          $v = "${{ steps.ver.outputs.v }}"
+          Write-Output "拿到版本号: [$v]"
+
+          if (-not $v) {
+              throw "上一步没传出发布版本号"
+          }
+
+          # ---- version.json ----
+          $jsonPath = Join-Path $PWD 'version.json'
+          Write-Output "version.json 存在: $(Test-Path $jsonPath)"
+
+          $json = Get-Content $jsonPath -Raw -Encoding UTF8 | ConvertFrom-Json
+          $json.version = $v
+          $json.updated = (Get-Date).ToString('yyyy-MM-dd')
+          $json | ConvertTo-Json -Depth 5 | Set-Content $jsonPath -Encoding utf8NoBOM
+
+          # ---- csproj ----
+          # 这两个才是真正决定编译产物的地方。1.1.4 / 1.1.5 就是这里没跟上，
+          # 包里 exe 的文件版本一直停在 1.1.3.0。
+          $targets = @(
+              (Join-Path $PWD 'src\OMniX.WinUI\OMniX.WinUI.csproj'),
+              (Join-Path $PWD 'src\OMniXLauncher\OMniXLauncher.csproj')
+          )
+
+          foreach ($file in $targets) {
+              Write-Output "处理 $file   存在=$(Test-Path $file)"
+
+              if (-not (Test-Path $file)) {
+                  throw "找不到 $file"
+              }
+
+              $content = Get-Content $file -Raw -Encoding UTF8
+              $content = $content -replace '<VersionPrefix>[^<]*</VersionPrefix>', "<VersionPrefix>$v</VersionPrefix>"
+              $content = $content -replace '(<Version>)[^<]*(</Version>)', "`$1$v`$2"
+              Set-Content $file -Value $content -Encoding utf8NoBOM -NoNewline
+
+              Select-String -Path $file -Pattern 'VersionPrefix|<Version>' |
+                  ForEach-Object { '    ' + $_.Line.Trim() }
+          }
+
+          # README 里的版本号不影响构建，顺手同步一下不折腾失败
+          foreach ($md in @('README.md', 'README_EN.md', '使用说明.txt', '使用说明书.md')) {
+              $p = Join-Path $PWD $md
+
+              if (-not (Test-Path $p)) {
+                  continue
+              }
+
+              try {
+                  $c = Get-Content $p -Raw -Encoding UTF8
+                  $c = $c -replace 'v\d+\.\d+\.\d+', "v$v"
+                  Set-Content $p -Value $c -Encoding utf8NoBOM -NoNewline
+              }
+              catch {
+                  Write-Output "  跳过 $md ：$($_.Exception.Message)"
+              }
+          }
 
       - name: 取回上一版的包（算增量补丁要用）
         shell: pwsh
@@ -90,8 +144,10 @@ jobs:
         run: |
           # mkrelease.ps1 是在 Releases\OMniX<版本>\OMniX\ 里找上一版做 diff 的。
           # CI 是全新 checkout，那个目录不存在，补丁会被整段跳过。
-          # 这里先把上一个 Release 的整包拉下来解压到对应位置，补丁逻辑就能照常工作。
-          $cur     = "v${{ steps.ver.outputs.v }}"
+          # 这里先把上一个 Release 的整包拉下来解压到对应位置。
+          $ver = "${{ steps.ver.outputs.v }}"
+          $cur = "v$ver"
+          Write-Output "当前版本: $cur"
 
           $prevTag = gh release list --limit 10 --json tagName -q '.[].tagName' |
                      Where-Object { $_ -and $_ -ne $cur } |
@@ -105,6 +161,7 @@ jobs:
           $prevVer = $prevTag.TrimStart('v')
           $dir     = Join-Path 'Releases' "OMniX$prevVer"
           New-Item -ItemType Directory -Force -Path $dir | Out-Null
+          Write-Output "上一版: $prevTag  ->  $dir"
 
           gh release download $prevTag --dir $dir --pattern 'OMniX*.zip' --clobber
 
@@ -118,11 +175,14 @@ jobs:
           }
 
           Expand-Archive $zip.FullName -DestinationPath $dir -Force
-          Write-Output "上一版 $prevVer 已就位：$($zip.Name)"
+          Write-Output "上一版已就位：$($zip.Name)"
 
       - name: 出包
         shell: pwsh
-        run: pwsh -File mkrelease.ps1
+        run: |
+          Write-Output "工作目录: $PWD"
+          Write-Output "version.json: $((Get-Content version.json -Raw -Encoding UTF8 | ConvertFrom-Json).version)"
+          pwsh -File mkrelease.ps1
 
       - name: 发布 Release
         shell: pwsh
