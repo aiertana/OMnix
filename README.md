@@ -78,29 +78,27 @@ Mod 文件本身**不在**这里，在 XXMI Launcher 的 `WWMI\Mods` 下。
 
 ---
 
-## 从源码编译
+## 源码
 
-```bat
-dotnet build src\OMniX.WinUI\OMniX.WinUI.csproj -c Debug -p:Platform=x64
-```
+这个仓库放的是**编译好的程序和文档**，源码不在这里。
 
-发布自包含版本（目标机器不用装 .NET 运行时）：
+需要源码的话，在交流群或者 GitHub 上找作者要就行 —— 按 GPL-3.0 的约定，
+拿到这个程序的人本来就有权向作者索取对应的源代码。
 
-```bat
-dotnet publish src\OMniX.WinUI\OMniX.WinUI.csproj -c Release /p:PublishProfile=FolderProfileSelfContained.pubxml
-```
-
-仓库结构：
+仓库里现在有什么：
 
 ```
 OMniX/
-├─ src/
-│  ├─ OMniX.WinUI/        主程序（WinUI 3 / .NET 9）
-│  ├─ OMniX.Core/         核心逻辑（Mod 处理、GameBanana 客户端、游戏服务等）
-│  ├─ OMniX.AutoUpdater/  自动更新器
-│  ├─ OMniXLauncher/      启动器源码
-│  └─ Elevator/           提权辅助（发布需要 VS 的 C++ 桌面开发组件）
-└─ 启动OMniX.exe          无窗口启动器，双击即用
+├─ OMniX/            编译好的程序，自带 .NET 运行时
+├─ OMniX娘/          表情包
+├─ Images/           界面预览图
+├─ 启动OMniX.exe     无窗口启动器，双击即用
+├─ README.md         项目首页
+├─ README_EN.md      英文说明
+├─ DISCLAIMER.md     免责声明
+├─ LICENSE           GPL-3.0
+├─ 使用说明.txt      快速上手
+└─ 使用说明书.md     完整图文说明
 ```
 
 ---

@@ -80,16 +80,28 @@ C:\Users\<user>\AppData\Local\OMniX\
 
 ---
 
-## Build from source
+## Source code
 
-```bat
-dotnet build src\OMniX.WinUI\OMniX.WinUI.csproj -c Debug -p:Platform=x64
+This repository ships the **compiled program and the docs only** — the sources
+are not published here.
+
+Need them? Just ask in the community group or open an issue. Under GPL-3.0, anyone
+who received the binary is entitled to the corresponding source from the author anyway.
+
+What's in this repo:
+
 ```
-
-Publish a self-contained build (no .NET runtime required on the target machine):
-
-```bat
-dotnet publish src\OMniX.WinUI\OMniX.WinUI.csproj -c Release /p:PublishProfile=FolderProfileSelfContained.pubxml
+OMniX/
+├─ OMniX/            compiled program, bundles the .NET runtime
+├─ OMniX娘/          sticker pack
+├─ Images/           UI preview screenshot
+├─ 启动OMniX.exe     silent launcher — double-click and go
+├─ README.md         this page
+├─ README_EN.md      English version
+├─ DISCLAIMER.md     disclaimer
+├─ LICENSE           GPL-3.0
+├─ 使用说明.txt      quick start
+└─ 使用说明书.md     full walkthrough (Chinese)
 ```
 
 ---
