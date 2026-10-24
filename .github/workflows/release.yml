@@ -1,0 +1,142 @@
+name: 出包并发布
+
+# 二开之前：所有 Release 附件都是作者在电脑上跑脚本、手动上传的。
+# 1.1.4 和 1.1.5 就是这么出的事 —— bumpVersion.ps1 静默跳过了 csproj，
+# 编译出来的 exe 版本号一直是 1.1.3，包却照发不误，用户装完看到的还是旧版本。
+#
+# 现在改成 push tag 就自动出包：
+#   · 版本号从 tag 推（v1.1.6 → 1.1.6），不会再出现「version.json 和 exe 对不上」
+#   · mkrelease.ps1 结尾会校验包内 exe 的文件版本，对不上就 exit 1，传不上去
+#   · 环境干净，不会有本地调试残留混进包里
+#
+# 用法：
+#   git tag v1.1.6 && git push origin v1.1.6
+# 或者在 Actions 页面手动跑，指定版本号。
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '要出的版本号，例如 1.1.6。留空就用 version.json 里的'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: 拉代码
+        uses: actions/checkout@v4
+
+      - name: 装 .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: 定版本号
+        shell: pwsh
+        run: |
+          $given = '${{ github.event.inputs.version }}'
+
+          if ($given) {
+              $v = $given
+          }
+          elseif ($env:GITHUB_REF -match 'refs/tags/v(.+)') {
+              $v = $Matches[1]
+          }
+          else {
+              $v = (Get-Content version.json -Raw -Encoding UTF8 | ConvertFrom-Json).version
+          }
+
+          "VERSION=$v" | Out-File $env:GITHUB_ENV -Encoding utf8 -Append
+          Write-Output "这次出: $v"
+
+      - name: 把版本号刷到 csproj / README
+        shell: pwsh
+        run: |
+          # 版本号唯一的来源是 tag，这里把它写进 version.json，
+          # 再用 bumpVersion.ps1 -Kind none 刷到 csproj 和两份 README。
+          # -Kind none 是「不改版本、只把各处同步成最新」，
+          # 那条路径上的替换是按标签上下文做的，不会误伤 NuGet 包的版本号。
+          $json = Get-Content version.json -Raw -Encoding UTF8 | ConvertFrom-Json
+          $json.version = $env:VERSION
+          $json.updated = (Get-Date).ToString('yyyy-MM-dd')
+          ($json | ConvertTo-Json) | Set-Content version.json -Encoding UTF8
+
+          powershell -File bumpVersion.ps1 -Kind none
+
+          Select-String -Path 'src\OMniX.WinUI\OMniX.WinUI.csproj' -Pattern 'VersionPrefix' |
+              ForEach-Object { $_.Line.Trim() }
+
+      - name: 取回上一版的包（算增量补丁要用）
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # mkrelease.ps1 是在 Releases\OMniX<版本>\OMniX\ 里找上一版做 diff 的。
+          # CI 是全新 checkout，那个目录不存在，补丁会被整段跳过。
+          # 这里先把上一个 Release 的整包拉下来解压到对应位置，补丁逻辑就能照常工作。
+          $cur = "v$env:VERSION"
+
+          $prevTag = gh release list --limit 10 --json tagName -q '.[].tagName' |
+                     Where-Object { $_ -and $_ -ne $cur } |
+                     Select-Object -First 1
+
+          if (-not $prevTag) {
+              Write-Output "没有上一版，这次只出整包"
+              exit 0
+          }
+
+          $prevVer = $prevTag.TrimStart('v')
+          $dir = Join-Path 'Releases' "OMniX$prevVer"
+          New-Item -ItemType Directory -Force -Path $dir | Out-Null
+
+          gh release download $prevTag --dir $dir --pattern 'OMniX*.zip' --clobber
+
+          $zip = Get-ChildItem $dir -Filter 'OMniX*.zip' |
+                 Where-Object { $_.Name -notlike '*-patch-*' } |
+                 Select-Object -First 1
+
+          if (-not $zip) {
+              Write-Output "上一个 Release 里没有整包，跳过补丁"
+              exit 0
+          }
+
+          Expand-Archive $zip.FullName -DestinationPath $dir -Force
+          Write-Output "上一版 $prevVer 已就位：$($zip.Name)"
+
+      - name: 出包
+        shell: pwsh
+        run: powershell -File mkrelease.ps1
+
+      - name: 发布 Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = "v$env:VERSION"
+
+          $zips = @(Get-ChildItem 'Releases' -Filter "OMniX$env:VERSION*.zip" | ForEach-Object { $_.FullName })
+
+          if ($zips.Count -eq 0) {
+              Write-Error "没找到要上传的包"
+              exit 1
+          }
+
+          $zips | ForEach-Object { Write-Output "待上传: $_" }
+
+          # tag 是从 push 带过来的，Release 本体可能还没建
+          $existing = gh release view $tag 2>$null
+
+          if ($existing) {
+              gh release upload $tag --clobber $zips
+          }
+          else {
+              gh release create $tag --title "OMniX $env:VERSION" --generate-notes $zips
+          }

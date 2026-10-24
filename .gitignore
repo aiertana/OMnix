@@ -16,6 +16,13 @@
 !/使用说明书.md
 !/使用说明.txt
 
+# CI：push tag 就自动出包、发 Release。
+# 根目录下第 6 行有 /* 把一切都忽略了，所以这里得逐层放行，
+# 不然 .github/ 整个进不了仓库，Actions 永远不会生效。
+!/.github/
+!/.github/workflows/
+!/.github/workflows/release.yml
+
 # 源码
 !/src/
 !/src/**
