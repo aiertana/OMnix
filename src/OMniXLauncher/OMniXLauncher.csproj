@@ -9,7 +9,7 @@
     <AssemblyName>启动OMniX</AssemblyName>
     <RootNamespace>OMniX.Launcher</RootNamespace>
     <ApplicationIcon>OMniX.ico</ApplicationIcon>
-    <Version>1.1.2</Version>
+    <Version>1.1.3</Version>
     <Authors>是湫</Authors>
     <Company>是湫</Company>
     <Product>OMniX</Product>
