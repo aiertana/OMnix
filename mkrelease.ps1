@@ -164,16 +164,12 @@ else {
     $changed = 0
     $total = 0
 
+    # 更新器只要有任何一个文件变了，就把整份新更新器记到账上，
+    # 最后由下面那段统一搬到 _New 里（理由见那边的注释）。
+    $auChanged = $false
+
     foreach ($f in (Get-ChildItem $outApp -Recurse -File)) {
-        $rel = $f.FullName.Substring($outApp.Length + 1)
-
-        # 更新器正在运行时盖不了自己 —— 补丁里把它改放到 OMniX - Auto Updater_New，
-        # 主程序下次启动时由 UpdateAutoUpdater() 盖到正式目录上。
-        $stageRel = $rel
-        if ($rel -like 'OMniX - Auto Updater\*') {
-            $stageRel = 'OMniX - Auto Updater_New\' + $rel.Substring(('OMniX - Auto Updater\').Length)
-        }
-
+        $rel     = $f.FullName.Substring($outApp.Length + 1)
         $oldFile = Join-Path $prevApp $rel
 
         if (Test-Path $oldFile) {
@@ -188,22 +184,53 @@ else {
             if ($h1 -eq $h2) { continue }
         }
 
-        $dest = Join-Path (Join-Path $patchStage 'OMniX') $stageRel
+        # 更新器自己更新不了自己（正在运行），所以补丁里不能直接盖正式目录，
+        # 要放到 OMniX - Auto Updater_New，交给主程序下次启动时处理。
+        # 它走的是下面那条「整份复制」的路子，这里只打标记。
+        if ($rel -like 'OMniX - Auto Updater\*') {
+            $auChanged = $true
+            continue
+        }
+
+        $dest = Join-Path (Join-Path $patchStage 'OMniX') $rel
         New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
         Copy-Item $f.FullName -Destination $dest -Force
         $changed++
         $total += $f.Length
     }
 
-    # 主程序只在 _New 里能找到 exe 时才肯换更新器，
-    # 更新器有变化、但 exe 恰好没变的情况补一份进去。
-    $auNewDir = Join-Path (Join-Path $patchStage 'OMniX') 'OMniX - Auto Updater_New'
-    if (Test-Path $auNewDir) {
-        $auExe = Join-Path (Join-Path $outApp 'OMniX - Auto Updater') 'OMniX - Auto Updater.exe'
-        if ((Test-Path $auExe) -and -not (Test-Path (Join-Path $auNewDir 'OMniX - Auto Updater.exe'))) {
-            Copy-Item $auExe -Destination $auNewDir -Force
+    # ---- 完整的更新器副本：这才是「更新以后更新器白屏闪退」的根治手段 ----
+    #
+    # 以前这里是把「变过的那几个文件」逐个塞进 _New —— 实测历史上只有 3 个
+    # （exe / dll / pdb）。而老版本主程序的 UpdateAutoUpdater() 是这么干的：
+    #     1. 删掉旧的更新器目录
+    #     2. 把 _New 整个移过来
+    # 它默认 _New 是一份完整的更新器。移过去之后目录里就只剩那 3 个文件，
+    # coreclr.dll / hostfxr.dll / resources.pri 全丢 —— 窗口弹得出来（WinUI 空壳），
+    # 但 XAML 资源和 .NET 运行时都找不到，于是白屏、然后闪退，
+    # 连日志都来不及写（写日志那行在 App 构造函数里，那时已经起不来了）。
+    #
+    # 只要有变化就放一整套，两边都对：
+    #   新版主程序 → 覆盖式 CopyFilesRecursively，没带的保持原样，没问题
+    #   旧版主程序 → 整个目录移过来，拿到的是完整的一套，也没问题
+    # 代价是补丁会变大（多带一整个更新器），但比让用户更新完用不了强得多。
+    if ($auChanged) {
+        $auSrc = Join-Path $outApp 'OMniX - Auto Updater'
+        $auDst = Join-Path (Join-Path $patchStage 'OMniX') 'OMniX - Auto Updater_New'
+
+        New-Item -ItemType Directory -Force -Path $auDst | Out-Null
+
+        foreach ($f in (Get-ChildItem $auSrc -Recurse -File)) {
+            $rel  = $f.FullName.Substring($auSrc.Length + 1)
+            $dest = Join-Path $auDst $rel
+            New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
+            Copy-Item $f.FullName -Destination $dest -Force
             $changed++
+            $total += $f.Length
         }
+
+        $count = (Get-ChildItem $auSrc -Recurse -File).Count
+        Write-Output ("  更新器有变化，补丁里放进了一整套完整副本（" + $count + " 个文件）")
     }
 
     if (Test-Path $patchZip) { Remove-Item $patchZip -Force }
