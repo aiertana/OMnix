@@ -88,10 +88,13 @@ public class ModDragAndDropService
                 return null;
 
             // 二开：把剩下的列到安装页左侧
-            BatchQueueNames.Clear();
+            UpdateBatchQueue(() =>
+            {
+                BatchQueueNames.Clear();
 
-            foreach (var pending in queue.Skip(1))
-                BatchQueueNames.Add(pending.Name);
+                foreach (var pending in queue.Skip(1))
+                    BatchQueueNames.Add(pending.Name);
+            });
 
             SetBatchTitle(firstMonitor, queue[0].Name, 1, queue.Count);
 
@@ -103,8 +106,64 @@ public class ModDragAndDropService
         return await InstallSingleAsync(modList, storageItems[0]);
     }
 
-    private static void SetBatchTitle(InstallMonitor monitor, string name, int index, int total) =>
-        monitor.Window.Title = $"安装 Mod - {name}（{index}/{total}）";
+    private static void SetBatchTitle(InstallMonitor monitor, string name, int index, int total)
+    {
+        // 二开：这个方法是在 Task.Run 的后台线程上被调用的
+        // （AddStorageItemFoldersAsync 本身跑在 Task.Run 里），
+        // 而 WinUI 的 Window 只能从 UI 线程碰。直接赋 Title 会抛
+        //   COMException 0x8001010E (RPC_E_WRONG_THREAD)
+        // 然后整个方法中断，界面弹出「An error occurred while adding the
+        // storage items. Reason:」—— 而且原因是空的，因为这是 COM 层抛的，
+        // 没有托管的消息文本，只能靠日志里的 HRESULT 才看得出来。
+        //
+        // 单个文件不会走到这里（只有批量才设标题），所以现象是
+        // 「一次拖一个能装，拖两个以上就报错」，很容易误判成拖放没被接受。
+        //
+        // 用 DispatcherQueue 切回 UI 线程。标题只是个提示，拿不到队列就跳过，
+        // 绝不能因为它把整批安装搞崩。
+        var window = monitor.Window;
+
+        if (window?.DispatcherQueue is not { } dispatcher)
+        {
+            return;
+        }
+
+        dispatcher.TryEnqueue(() =>
+        {
+            try
+            {
+                window.Title = $"安装 Mod - {name}（{index}/{total}）";
+            }
+            catch
+            {
+                // 窗口已经关了 —— 无所谓，标题不重要
+            }
+        });
+    }
+
+    /// <summary>
+    ///     二开：BatchQueueNames 绑在安装页左侧的列表上（ObservableCollection），
+    ///     属于 UI 对象，只能在 UI 线程改。批量导入整个跑在 Task.Run 里，
+    ///     直接 Add / Remove 和 SetBatchTitle 是同一个坑：RPC_E_WRONG_THREAD。
+    ///     这里统一切回 UI 线程执行。
+    /// </summary>
+    private static void UpdateBatchQueue(Action action)
+    {
+        var dispatcher = App.MainWindow?.DispatcherQueue;
+
+        if (dispatcher is null)
+        {
+            return;
+        }
+
+        if (dispatcher.HasThreadAccess)
+        {
+            action();
+            return;
+        }
+
+        dispatcher.TryEnqueue(() => action());
+    }
 
     /// <summary>
     ///     二开：批量队列。上一个安装窗口关掉之后再开下一个，避免同时弹一堆窗口。
@@ -121,13 +180,16 @@ public class ModDragAndDropService
             catch
             {
                 // 被取消就停掉整个队列
-                BatchQueueNames.Clear();
+                UpdateBatchQueue(() => BatchQueueNames.Clear());
                 return;
             }
 
             // 这一个开始装了，从左侧队列里划掉
-            if (BatchQueueNames.Count > 0)
-                BatchQueueNames.RemoveAt(0);
+            UpdateBatchQueue(() =>
+            {
+                if (BatchQueueNames.Count > 0)
+                    BatchQueueNames.RemoveAt(0);
+            });
 
             var next = await InstallSingleAsync(modList, queue[i]);
 
@@ -162,7 +224,7 @@ public class ModDragAndDropService
         }
 
         AutoAddRemaining = false;
-        BatchQueueNames.Clear();
+        UpdateBatchQueue(() => BatchQueueNames.Clear());
     }
 
     private async Task<InstallMonitor?> InstallSingleAsync(ICharacterModList modList, IStorageItem storageItem)
