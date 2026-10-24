@@ -2,6 +2,8 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
+using OMniX.WinUI.Services.Plugins;
 
 namespace OMniX.WinUI.Services;
 
@@ -41,8 +43,18 @@ public sealed class ModFixerService
     /// </summary>
     public ModFixerRelease? Latest { get; private set; }
 
-    public string CacheRoot => Path.Combine(
+    /// <summary>
+    ///     修复器跟其它插件放在一起：%LOCALAPPDATA%\OMniX\Plugins。
+    ///     放平不按版本分子目录 —— 用户自己从 GitHub 下好 exe 直接丢进这个文件夹，
+    ///     点修复就能用，不用等程序再下一遍。
+    /// </summary>
+    public string CacheRoot => PluginDependencyService.PluginsRoot;
+
+    /// <summary>老版本的下载位置（%LOCALAPPDATA%\OMniX\ModFixer），只用来搬家。</summary>
+    private static string LegacyCacheRoot => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OMniX", "ModFixer");
+
+    private bool _legacyChecked;
 
     private static HttpClient CreateClient()
     {
@@ -103,9 +115,13 @@ public sealed class ModFixerService
         }
     }
 
+    /// <summary>
+    ///     修复器的 exe 在哪：插件文件夹里已经有就用那个（可能是我下的，也可能是用户自己下的），
+    ///     没有才按官方资产名算一个预期路径。
+    /// </summary>
     public string GetLocalExePath(ModFixerRelease release)
     {
-        return Path.Combine(CacheRoot, release.Tag, release.AssetName);
+        return FindLocalExe() ?? Path.Combine(CacheRoot, release.AssetName);
     }
 
     public bool IsDownloaded(ModFixerRelease release)
@@ -115,14 +131,127 @@ public sealed class ModFixerService
     }
 
     /// <summary>
+    ///     在插件文件夹里找 Wuwa_Mod_Fixer*.exe（根目录 + 一层子目录），
+    ///     取文件名里版本号最大的那个。找不到返回 null。
+    /// </summary>
+    public string? FindLocalExe()
+    {
+        MigrateLegacyCache();
+
+        try
+        {
+            if (!Directory.Exists(CacheRoot))
+                return null;
+
+            var found = new List<string>();
+
+            foreach (var file in Directory.EnumerateFiles(CacheRoot, "Wuwa_Mod_Fixer*.exe",
+                         SearchOption.TopDirectoryOnly))
+                found.Add(file);
+
+            // 有人习惯建个文件夹单独放，扫一层就够，不往深处翻
+            foreach (var dir in Directory.EnumerateDirectories(CacheRoot))
+            {
+                try
+                {
+                    foreach (var file in Directory.EnumerateFiles(dir, "Wuwa_Mod_Fixer*.exe",
+                                 SearchOption.TopDirectoryOnly))
+                        found.Add(file);
+                }
+                catch (Exception)
+                {
+                    // 某个子目录没权限就跳过
+                }
+            }
+
+            return found
+                .Where(path => SafeLength(path) > 0)
+                .OrderByDescending(path => ParseVersion(Path.GetFileName(path)))
+                .FirstOrDefault();
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>从文件名里抠版本号：Wuwa_Mod_Fixer_v3.7.0.exe → 3.7.0</summary>
+    private static Version ParseVersion(string fileName)
+    {
+        var match = Regex.Match(fileName, @"(\d+)\.(\d+)(?:\.(\d+))?");
+
+        if (!match.Success)
+            return new Version(0, 0);
+
+        var major = int.Parse(match.Groups[1].Value);
+        var minor = int.Parse(match.Groups[2].Value);
+        var build = match.Groups[3].Success ? int.Parse(match.Groups[3].Value) : 0;
+
+        return new Version(major, minor, build);
+    }
+
+    private static long SafeLength(string path)
+    {
+        try
+        {
+            return new FileInfo(path).Length;
+        }
+        catch (Exception)
+        {
+            return 0;
+        }
+    }
+
+    /// <summary>
+    ///     老版本把 exe 下在 %LOCALAPPDATA%\OMniX\ModFixer\&lt;版本号&gt;\ 里，
+    ///     这里搬到插件文件夹，省得用户重下一遍。老目录原样留着不删。
+    /// </summary>
+    private void MigrateLegacyCache()
+    {
+        if (_legacyChecked)
+            return;
+
+        _legacyChecked = true;
+
+        try
+        {
+            if (!Directory.Exists(LegacyCacheRoot))
+                return;
+
+            var files = Directory.EnumerateFiles(LegacyCacheRoot, "Wuwa_Mod_Fixer*.exe",
+                SearchOption.AllDirectories).ToList();
+
+            if (files.Count == 0)
+                return;
+
+            Directory.CreateDirectory(CacheRoot);
+
+            foreach (var file in files)
+            {
+                var destination = Path.Combine(CacheRoot, Path.GetFileName(file));
+
+                if (!File.Exists(destination))
+                    File.Copy(file, destination);
+            }
+        }
+        catch (Exception)
+        {
+            // 搬不动就算了，不影响后面重新下载
+        }
+    }
+
+    /// <summary>
     ///     下载到本地缓存目录，带进度回调
     /// </summary>
     public async Task<string> DownloadAsync(ModFixerRelease release,
         IProgress<(double Percent, long Received, long Total)>? progress, CancellationToken ct = default)
     {
-        var target = GetLocalExePath(release);
+        // 下载目标写死成官方资产名，平铺在插件文件夹里。
+        // 不能用 GetLocalExePath —— 那里会优先返回本地已有的旧版本，
+        // 于是「点下载」变成什么都不做。
+        var target = Path.Combine(CacheRoot, release.AssetName);
 
-        if (IsDownloaded(release))
+        if (File.Exists(target) && SafeLength(target) > 0)
         {
             progress?.Report((100, release.Size, release.Size));
             return target;

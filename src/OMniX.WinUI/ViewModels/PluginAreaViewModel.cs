@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using OMniX.WinUI.Contracts.ViewModels;
+using OMniX.WinUI.Services;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Services.Notifications;
 using OMniX.WinUI.Services.Plugins;
@@ -34,6 +35,7 @@ public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
 
     private PluginCard? _dlss5Card;
     private PluginCard? _modCard;
+    private PluginCard? _fixerCard;
 
     public PluginAreaViewModel()
     {
@@ -78,6 +80,17 @@ public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
             ToggleCommand = ToggleModCommand
         };
 
+        _fixerCard = new PluginCard
+        {
+            Name = "Mod 修复器",
+            Glyph = "\uE90F",
+            BadgeBackground = new SolidColorBrush(ActiveTint),
+            BadgeForeground = new SolidColorBrush(ActiveText),
+            SecondaryText = "GitHub",
+            SecondaryCommand = OpenFixerSourceCommand,
+            PrimaryCommand = FixerPrimaryCommand
+        };
+
         var upcoming = new PluginCard
         {
             Name = "GameBanana 同步",
@@ -94,6 +107,7 @@ public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
 
         Plugins.Add(_dlss5Card);
         Plugins.Add(_modCard);
+        Plugins.Add(_fixerCard);
         Plugins.Add(upcoming);
 
         RefreshCards();
@@ -161,6 +175,19 @@ public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
                     ? "关掉后启动游戏不加载 Mod"
                     : "打开后启动游戏会加载 Mod";
             _modCard.ToggleText = state.ModLoaderActive ? "停用" : "启用";
+        }
+
+        if (_fixerCard is not null)
+        {
+            // 用户自己从 GitHub 下好丢进插件文件夹的也算数
+            var localExe = ModFixerService.Instance.FindLocalExe();
+
+            _fixerCard.IsAvailable = localExe is not null;
+            _fixerCard.Status = localExe is null ? "未下载" : "已就绪";
+            _fixerCard.Description = localExe is null
+                ? "Wuwa_Mod_Fixer 独立运行。也可以自己下好丢进插件文件夹，点修复时直接认。"
+                : "用的是 " + Path.GetFileName(localExe) + "，点角色的修复按钮就会跑它。";
+            _fixerCard.PrimaryText = localExe is null ? "下载修复器" : "打开文件夹";
         }
     }
 
@@ -406,6 +433,76 @@ public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
 
     [RelayCommand]
     private void OpenDlss5Source() => _dependencies.OpenUrl(PluginDependencyService.KitRepoUrl);
+
+    /// <summary>Mod 修复器卡主按钮：本地没有就下载最新版，已经有了就打开插件文件夹。</summary>
+    [RelayCommand]
+    private async Task FixerPrimaryAsync()
+    {
+        if (_fixerCard is null)
+            return;
+
+        if (ModFixerService.Instance.FindLocalExe() is not null)
+        {
+            await OpenFolderAsync(PluginsFolderPath);
+            return;
+        }
+
+        await DownloadFixerAsync(_fixerCard);
+    }
+
+    private async Task DownloadFixerAsync(PluginCard card)
+    {
+        if (card.IsDownloading)
+            return;
+
+        card.IsDownloading = true;
+        card.PrimaryEnabled = false;
+        card.DownloadIndeterminate = true;
+        card.DownloadPercent = 0;
+        card.DownloadText = "正在准备…";
+
+        var progress = new Progress<(double Percent, long Received, long Total)>(p =>
+        {
+            card.DownloadIndeterminate = p.Percent < 0;
+            card.DownloadPercent = p.Percent < 0 ? 0 : p.Percent;
+            card.DownloadText = p.Total > 0
+                ? $"{p.Received / 1024.0 / 1024.0:F1} / {p.Total / 1024.0 / 1024.0:F1} MB"
+                : "下载中…";
+        });
+
+        try
+        {
+            var service = ModFixerService.Instance;
+            var release = service.Latest ?? await service.GetLatestReleaseAsync();
+
+            if (release is null)
+            {
+                _notifications.ShowNotification("查不到修复器版本",
+                    "GitHub 打不开或者网络不通。也可以自己下好丢进插件文件夹，效果一样。", TimeSpan.FromSeconds(10));
+                return;
+            }
+
+            var path = await service.DownloadAsync(release, progress);
+
+            _notifications.ShowNotification("修复器已就位",
+                Path.GetFileName(path) + " 已放进插件文件夹，角色页点修复就会用它。", TimeSpan.FromSeconds(8));
+        }
+        catch (Exception e)
+        {
+            _notifications.ShowNotification("下载失败", e.Message, TimeSpan.FromSeconds(10));
+        }
+        finally
+        {
+            card.IsDownloading = false;
+            card.PrimaryEnabled = true;
+            card.DownloadIndeterminate = false;
+            RefreshCards();
+        }
+    }
+
+    [RelayCommand]
+    private void OpenFixerSource() =>
+        _dependencies.OpenUrl("https://github.com/Moonholder/Wuwa_Mod_Fixer/releases");
 
     [RelayCommand]
     private async Task OpenWwmiModsAsync()
