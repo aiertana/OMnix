@@ -186,9 +186,29 @@ public partial class MainPageVM : ObservableRecipient
 
         Log($"服务器上的最新版本：{newestVersionFound?.tag_name}");
 
+        // 二开：这里原来不判空，直接 new Version(null ?? "")。
+        // GitHub 的匿名 API 一小时只给 60 次，点几次「检查更新」就能撞上 403，
+        // 拿回来的 release 是 null，于是 new Version("") 抛
+        // "Version string portion was too short or too long" ——
+        // 界面上只剩这么一句，完全看不出是限流。
+        var newestText = (newestVersionFound?.tag_name ?? "").Trim().TrimStart('v');
+
+        if (!Version.TryParse(newestText, out var newestVersion))
+        {
+            Log($"取不到可用的版本号，原始值：[{newestVersionFound?.tag_name ?? "<空>"}]");
+
+            Stop(
+                "检查更新失败：没能从 GitHub 取到版本号。\n" +
+                "最常见的原因是匿名访问 GitHub API 的限额用完了（每小时 60 次），\n" +
+                "等一小时再试就行；也可能是网络不通。\n" +
+                $"这次拿到的原始值：{newestVersionFound?.tag_name ?? "<空>"}");
+
+            return null;
+        }
+
         var release = new GitHubRelease()
         {
-            Version = new Version(newestVersionFound?.tag_name?.Trim('v') ?? ""),
+            Version = newestVersion,
             PreRelease = newestVersionFound?.prerelease ?? false,
             PublishedAt = newestVersionFound?.published_at ?? DateTime.MinValue
         };
@@ -556,6 +576,15 @@ public partial class MainPageVM : ObservableRecipient
         var result = await httpClient.GetAsync(ReleasesApiUrl, cancellationToken);
         if (!result.IsSuccessStatusCode)
         {
+            // 二开：把状态码和响应体记下来。403 基本就是匿名 API 限额用完（60 次/小时）。
+            // 以前这里静默 return null，上层崩在 new Version("")，完全看不出真实原因。
+            var body = await result.Content.ReadAsStringAsync(cancellationToken);
+
+            Serilog.Log.Warning(
+                "GitHub API failed: {Status} {Body}",
+                result.StatusCode,
+                body.Length > 300 ? body.Substring(0, 300) : body);
+
             return null;
         }
 
@@ -564,8 +593,19 @@ public partial class MainPageVM : ObservableRecipient
         var gitHubReleases =
             (JsonConvert.DeserializeObject<ApiGitHubRelease[]>(text)) ?? Array.Empty<ApiGitHubRelease>();
 
-        var latestReleases = gitHubReleases.Where(r => !r.prerelease);
-        var latestVersion = latestReleases.OrderByDescending(r => new Version(r.tag_name?.Trim('v') ?? ""));
+        // 二开：原来直接 new Version(tag_name)，只要有一个 release 的 tag 不规范
+        // （或者字段没解析出来），整个排序就抛异常，检查更新直接失败。
+        // 改成只保留能解析出版本号的。
+        var latestVersion = gitHubReleases
+            .Where(r => !r.prerelease)
+            .Select(r => new
+            {
+                Release = r,
+                Parsed = Version.TryParse((r.tag_name ?? "").TrimStart('v'), out var v) ? v : null
+            })
+            .Where(x => x.Parsed is not null)
+            .OrderByDescending(x => x.Parsed)
+            .Select(x => x.Release);
 
         return latestVersion.FirstOrDefault();
     }
