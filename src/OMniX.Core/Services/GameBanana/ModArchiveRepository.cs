@@ -15,6 +15,7 @@ public sealed class ModArchiveRepository
 
     private DirectoryInfo _settingsDirectory = null!;
     private DirectoryInfo _modArchiveDirectory = null!;
+    private string _appDataFolder = string.Empty;
     private const string ModArchiveDirectoryName = "ModDownloads";
 
     private const string DownloadTempPrefix = ".TMP_DOWNLOAD";
@@ -28,11 +29,48 @@ public sealed class ModArchiveRepository
         _logger = logger.ForContext<ModArchiveRepository>();
     }
 
-    public Uri ArchiveDirectory => new(_modArchiveDirectory.FullName);
+    public Uri ArchiveDirectory => new(EnsureArchiveDirectory().FullName);
+
+    /// <summary>
+    ///     二开：InitializeAsync 不一定跑得到。启动时真正干活的那个 handler
+    ///     （叫 FirstTimeStartupActivationHandler，但它其实是默认处理器）
+    ///     会先检查 Mods 和 GIMI 目录在不在，只要有一个不存在它就整个不执行，
+    ///     改由 DefaultActivationHandler 接手 —— 而后者只负责导航到首页，
+    ///     不初始化任何服务。于是 _modArchiveDirectory 一直保持 null，
+    ///     用户一点设置页，SettingsViewModel 构造时读 ArchiveDirectory
+    ///     就 NullReferenceException，界面弹「出错了，建议重启」。
+    ///     对方电脑没配过目录（或者目录被挪走了）就正好走在这条路上。
+    ///
+    ///     读一个目录路径不该让页面崩掉。这里兜个底：没初始化过就按默认位置
+    ///     现建一个，并记一条警告，方便以后从日志里看出来是谁没初始化。
+    /// </summary>
+    private DirectoryInfo EnsureArchiveDirectory()
+    {
+        if (_modArchiveDirectory is not null)
+        {
+            return _modArchiveDirectory;
+        }
+
+        var folder = string.IsNullOrWhiteSpace(_appDataFolder)
+            ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OMniX")
+            : _appDataFolder;
+
+        _modArchiveDirectory = new DirectoryInfo(Path.Combine(folder, ModArchiveDirectoryName));
+        _modArchiveDirectory.Create();
+
+        _logger.Warning(
+            "ModArchiveRepository 尚未初始化就读取了 ArchiveDirectory，先用默认位置：{Path}",
+            _modArchiveDirectory.FullName);
+
+        return _modArchiveDirectory;
+    }
 
     public async Task InitializeAsync(string appDataFolder, Action<SetupOptions>? setup = null)
     {
         ReadOptions(setup);
+
+        // 记下来：万一之后没走完初始化就被读取，EnsureArchiveDirectory 能按这个位置兜底
+        _appDataFolder = appDataFolder;
 
         _settingsDirectory = new DirectoryInfo(appDataFolder);
         _settingsDirectory.Create();
