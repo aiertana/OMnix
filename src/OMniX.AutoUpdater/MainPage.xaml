@@ -28,28 +28,42 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Style="{ThemeResource TitleTextBlockStyle}"
-                Text="OMniX Auto Updater" />
+                Text="OMniX 自动更新器" />
             <TextBlock
                 VerticalAlignment="Center"
                 IsTextSelectionEnabled="True"
-                Text="The Auto updater will download the latest version from GitHub and overwrite the OMniX program files with it."
+                Text="更新器会从 GitHub 下载最新版本，然后把程序文件覆盖过去。"
                 TextWrapping="WrapWholeWords" />
             <TextBlock
                 VerticalAlignment="Center"
                 IsTextSelectionEnabled="True"
-                Text="It only replaces the files that come with OMniX — nothing in the folder gets deleted, so your own files are left as they are."
+                Text="只替换 OMniX 自带的文件，不删任何东西 —— 你自己放在 OMniX 目录里的文件不会被动。"
                 TextWrapping="WrapWholeWords" />
             <TextBlock
                 Margin="0,8"
                 IsTextSelectionEnabled="True"
                 Style="{ThemeResource BodyStrongTextBlockStyle}"
-                Text="OMniX will close during the update and reopen by itself when it's done."
+                Text="更新期间 OMniX 会退出，装完自己重新打开。这期间别关机。"
                 TextWrapping="WrapWholeWords" />
+
+            <!--  二开：本地导入模式 —— 不走网络，直接用用户选好的 zip  -->
+            <Border
+                Margin="0,12,0,0"
+                Padding="12,8"
+                Background="{ThemeResource ControlAltFillColorSecondaryBrush}"
+                CornerRadius="6"
+                Visibility="{x:Bind ViewModel.IsLocalUpdate, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock
+                    IsTextSelectionEnabled="True"
+                    Text="本地安装模式：使用你选择的更新包，不联网下载。"
+                    TextWrapping="WrapWholeWords" />
+            </Border>
+
             <Button
                 Margin="0,16,0,0"
                 HorizontalAlignment="Center"
                 Command="{x:Bind ViewModel.StartUpdateCommand}"
-                Content="Start Update Process" />
+                Content="开始更新" />
         </StackPanel>
 
 
@@ -75,7 +89,7 @@
                         Margin="0,16,8,16"
                         HorizontalAlignment="Left"
                         Style="{ThemeResource TitleTextBlockStyle}"
-                        Text="Updating to Version" />
+                        Text="正在更新到版本" />
 
                     <TextBlock
                         Margin="0,16,0,16"
@@ -92,7 +106,7 @@
                         NavigateUri="{x:Bind ViewModel.DefaultBrowserUri, Mode=OneWay}">
                         <HyperlinkButton.Content>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="0,0,4,0" Text="Latest Version" />
+                                <TextBlock Margin="0,0,4,0" Text="最新版本" />
                                 <FontIcon Glyph="&#xE8A7;" />
                             </StackPanel>
                         </HyperlinkButton.Content>
@@ -112,19 +126,19 @@
                 IsItemClickEnabled="False"
                 SelectionMode="Multiple">
                 <controls:SegmentedItem
-                    Content="Checking for Latest Version"
+                    Content="检查最新版本"
                     IsHitTestVisible="False"
                     IsSelected="{x:Bind ViewModel.UpdateProgress.CheckingForLatestUpdate, Mode=OneWay}" />
                 <controls:SegmentedItem
-                    Content="Downloading Latest Version"
+                    Content="下载更新"
                     IsHitTestVisible="False"
                     IsSelected="{x:Bind ViewModel.UpdateProgress.DownloadingLatestUpdate, Mode=OneWay}" />
                 <controls:SegmentedItem
-                    Content="Unzipping Download"
+                    Content="解压文件"
                     IsHitTestVisible="False"
                     IsSelected="{x:Bind ViewModel.UpdateProgress.ExtractingLatestUpdate, Mode=OneWay}" />
                 <controls:SegmentedItem
-                    Content="Installing OMniX"
+                    Content="安装 OMniX"
                     IsHitTestVisible="False"
                     IsSelected="{x:Bind ViewModel.UpdateProgress.InstallingLatestUpdate, Mode=OneWay}" />
             </controls:Segmented>
@@ -135,21 +149,21 @@
                 Margin="0,16,0,0"
                 HorizontalAlignment="Right"
                 Command="{x:Bind ViewModel.StartUpdateCancelCommand}"
-                Content="Cancel" />
+                Content="取消" />
 
             <Button
                 Grid.Row="2"
                 Margin="0,16,0,0"
                 HorizontalAlignment="Left"
                 Command="{x:Bind ViewModel.StartUpdateCommand}"
-                Content="Retry" />
+                Content="重试" />
 
             <Button
                 Grid.Row="2"
                 HorizontalAlignment="Center"
                 Background="{ThemeResource AccentFillColorSelectedTextBackgroundBrush}"
                 Command="{x:Bind ViewModel.StartOmniXCommand}"
-                Content="Start OMniX..."
+                Content="启动 OMniX…"
                 Visibility="{x:Bind ViewModel.FinishedSuccessfully, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
 

@@ -668,6 +668,25 @@
                                 VerticalAlignment="Center"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 Text="{x:Bind ViewModel.UpdateCheckMessage, Mode=OneWay}" />
+
+                            <!--  二开：网络下不动时，自己下载 zip 回来在这儿装  -->
+                            <Button AutomationProperties.Name="导入本地更新包" Command="{x:Bind ViewModel.ImportLocalUpdateCommand}">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <FontIcon VerticalAlignment="Center" FontSize="14" Glyph="&#xE8B5;" />
+                                    <TextBlock VerticalAlignment="Center" Text="导入本地更新包" />
+                                </StackPanel>
+                            </Button>
+
+                            <ProgressRing
+                                Width="16"
+                                Height="16"
+                                VerticalAlignment="Center"
+                                IsActive="{x:Bind ViewModel.IsImportingUpdate, Mode=OneWay}" />
+
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                Text="{x:Bind ViewModel.ImportMessage, Mode=OneWay}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Spacing="8" Visibility="{x:Bind ViewModel.ShowNewVersionAvailable, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}">

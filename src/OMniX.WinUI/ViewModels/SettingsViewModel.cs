@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO.Compression;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Windows.Storage.Pickers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -80,6 +82,12 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
     /// <summary>二开：这次更新属于「补丁」还是「新版本」</summary>
     [ObservableProperty] private string _updateKindText = string.Empty;
+
+    /// <summary>二开：正在导入本地更新包</summary>
+    [ObservableProperty] private bool _isImportingUpdate;
+
+    /// <summary>二开：导入到本地更新包后的结果提示</summary>
+    [ObservableProperty] private string _importMessage = string.Empty;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(IgnoreNewVersionCommand))]
@@ -862,6 +870,147 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         finally
         {
             IsCheckingUpdate = false;
+        }
+    }
+
+    /// <summary>
+    ///     二开：设置页「导入本地更新包」。
+    ///     网络下不动的时候，用户可以自己去 Release 页面把 zip 下回来，
+    ///     在这儿选文件就能装 —— 自动认出是完整包还是增量补丁、是哪个版本。
+    /// </summary>
+    [RelayCommand]
+    private async Task ImportLocalUpdateAsync()
+    {
+        if (IsImportingUpdate)
+            return;
+
+        var picker = new FileOpenPicker
+        {
+            SuggestedStartLocation = PickerLocationId.Downloads,
+            CommitButtonText = "用这个包更新"
+        };
+        picker.FileTypeFilter.Add(".zip");
+
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+        var file = await picker.PickSingleFileAsync();
+        if (file is null)
+            return;
+
+        IsImportingUpdate = true;
+        ImportMessage = "正在识别…";
+
+        try
+        {
+            var info = InspectLocalZip(file.Path);
+
+            if (info is null)
+            {
+                ImportMessage = "这不像 OMniX 更新包（包里得有 OMniX 文件夹）";
+                return;
+            }
+
+            var dialog = new ContentDialog
+            {
+                Title = "安装本地更新包",
+                PrimaryButtonText = "安装并重启",
+                CloseButtonText = "取消",
+                DefaultButton = ContentDialogButton.Primary,
+                XamlRoot = App.MainWindow.Content.XamlRoot
+            };
+
+            var panel = new StackPanel();
+
+            panel.Children.Add(new TextBlock
+            {
+                Text =
+                    $"识别结果：OMniX {info.Value.Version} · {(info.Value.IsPatch ? "增量补丁" : "完整包")}",
+                TextWrapping = TextWrapping.WrapWholeWords,
+                Margin = new Thickness(0, 0, 0, 8)
+            });
+
+            panel.Children.Add(new TextBlock
+            {
+                Text =
+                    $"包含 {info.Value.FileCount} 个文件，会覆盖到当前程序目录。\n" +
+                    "OMniX 目录里其它文件一个都不会删。装完 OMniX 会自己重新打开。",
+                TextWrapping = TextWrapping.WrapWholeWords
+            });
+
+            dialog.Content = panel;
+
+            if (await dialog.ShowAsync() != ContentDialogResult.Primary)
+            {
+                ImportMessage = "已取消";
+                return;
+            }
+
+            // 先复制到临时目录再交给更新器：原文件还在下载目录里，
+            // 万一被用户挪走或清理，更新器装到一半就断了
+            var staged = Path.Combine(Path.GetTempPath(), "OMniX_Local_Update", file.Name);
+            Directory.CreateDirectory(Path.GetDirectoryName(staged)!);
+            File.Copy(file.Path, staged, true);
+
+            ImportMessage = "正在启动更新器…";
+
+            var errors = _autoUpdaterService.StartSelfUpdateProcess(staged);
+
+            if (errors is not null)
+                ImportMessage = "启动更新器失败";
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, "导入本地更新包失败");
+            ImportMessage = "导入失败：" + e.Message;
+        }
+        finally
+        {
+            IsImportingUpdate = false;
+        }
+    }
+
+    /// <summary>
+    ///     二开：看一眼本地 zip 是不是 OMniX 更新包、是完整包还是增量补丁。
+    ///     判断依据：包里得有 OMniX\ 目录；文件名带 -patch- 的就是补丁，
+    ///     否则按文件数量分 —— 完整包上千个文件，补丁只有十几个。
+    /// </summary>
+    private static (string Version, bool IsPatch, int FileCount)? InspectLocalZip(string zipPath)
+    {
+        try
+        {
+            using var zip = ZipFile.OpenRead(zipPath);
+
+            var entries = zip.Entries.Where(e => !string.IsNullOrEmpty(e.Name)).ToList();
+            if (entries.Count == 0)
+                return null;
+
+            // 顶层目录名，形如 OMniX\
+            var root = entries
+                .Select(e => e.FullName.Replace('\\', '/'))
+                .Select(n => n.Contains('/') ? n.Split('/')[0] : string.Empty)
+                .FirstOrDefault(n => n.StartsWith("OMniX", StringComparison.OrdinalIgnoreCase));
+
+            if (string.IsNullOrEmpty(root))
+                return null;
+
+            var inner = entries
+                .Count(e => e.FullName.Replace('\\', '/').StartsWith(root + "/", StringComparison.OrdinalIgnoreCase));
+
+            if (inner == 0)
+                return null;
+
+            var fileName = Path.GetFileName(zipPath);
+            var version = Regex.Match(fileName, @"OMniX(\d+(?:\.\d+)*)", RegexOptions.IgnoreCase);
+
+            var isPatch = fileName.Contains("-patch-", StringComparison.OrdinalIgnoreCase) || inner < 300;
+
+            return (version.Success ? version.Groups[1].Value : "未知", isPatch, inner);
+        }
+        catch
+        {
+            // 不是 zip、文件损坏、没权限读 —— 都当成「不是更新包」
+            return null;
         }
     }
 

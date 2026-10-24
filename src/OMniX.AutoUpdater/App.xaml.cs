@@ -58,11 +58,18 @@ public partial class App : Application
         MainWindow.IsMaximizable = false;
         MainWindow.IsMinimizable = false;
         MainWindow.IsResizable = false;
-        MainWindow.Title = "OMniX Auto Updater";
+        MainWindow.Title = "OMniX 自动更新器";
 
         var arguments = Environment.GetCommandLineArgs();
 
-        MainWindow.Content = new MainPage(arguments.Skip(1).FirstOrDefault() ?? string.Empty);
+        // 二开：第二个参数是「本地更新包路径」。
+        // 用户在设置页选了一个自己下载好的 zip 时，主程序把它传进来，
+        // 更新器就跳过 GitHub 检查和下载，直接拿这个包装。
+        var launchArgs = arguments.Skip(1).ToArray();
+
+        MainWindow.Content = new MainPage(
+            launchArgs.FirstOrDefault() ?? string.Empty,
+            launchArgs.Skip(1).FirstOrDefault() ?? string.Empty);
         MainWindow.BringToFront();
 
         UnhandledException += OnUnhandledException;

@@ -94,7 +94,12 @@ public class AutoUpdaterService
     }
 
 
-    public Error[]? StartSelfUpdateProcess()
+    /// <summary>
+    ///     启动更新器。
+    ///     二开：<paramref name="localZipPath" /> 给了本地 zip 时，更新器会跳过
+    ///     查版本和下载，直接拿这个包装 —— 设置页「导入本地更新包」走这条路。
+    /// </summary>
+    public Error[]? StartSelfUpdateProcess(string? localZipPath = null)
     {
         if (HasStartedSelfUpdateProcess)
         {
@@ -106,7 +111,7 @@ public class AutoUpdaterService
         _logger.Information("Starting self update process...");
         try
         {
-            var errors = _startSelfUpdateProcess();
+            var errors = _startSelfUpdateProcess(localZipPath);
             return errors;
         }
         finally
@@ -115,7 +120,7 @@ public class AutoUpdaterService
         }
     }
 
-    private Error[]? _startSelfUpdateProcess()
+    private Error[]? _startSelfUpdateProcess(string? localZipPath = null)
     {
         if (!_currentAutoUpdaterFolder.Exists)
         {
@@ -158,7 +163,7 @@ public class AutoUpdaterService
             {
                 FileName = Path.Combine(_currentAutoUpdaterFolder.FullName, AutoUpdaterExe),
                 WorkingDirectory = _currentAutoUpdaterFolder.FullName,
-                Arguments = _updateChecker.CurrentVersion.ToString().Trim('v') ?? "",
+                Arguments = BuildArguments(localZipPath),
                 UseShellExecute = true
             });
 
@@ -181,6 +186,18 @@ public class AutoUpdaterService
 
         Application.Current.Exit();
         return null;
+    }
+
+    /// <summary>
+    ///     拼更新器的命令行参数：第一个是版本号，第二个（可选）是本地更新包路径。
+    ///     路径必须加引号 —— 用户下载目录动不动就带空格，
+    ///     不加引号更新器只能收到第一段，然后说文件不存在。
+    /// </summary>
+    private string BuildArguments(string? localZipPath)
+    {
+        var version = _updateChecker.CurrentVersion.ToString().Trim('v') ?? "";
+
+        return string.IsNullOrWhiteSpace(localZipPath) ? version : $"{version} \"{localZipPath}\"";
     }
 
     private static bool ContainsAutoUpdaterExe(DirectoryInfo directoryInfo)

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -45,9 +46,26 @@ public partial class MainPageVM : ObservableRecipient
     [ObservableProperty] private bool _stopped;
     [ObservableProperty] private string? _stopReason;
 
-    public MainPageVM(string installedOmniXVersion)
+    /// <summary>二开：本地导入的更新包路径。空着 = 走 GitHub 在线更新。</summary>
+    private readonly string _localZipPath;
+
+    /// <summary>二开：这次是拿本地 zip 装，不用联网。</summary>
+    public bool IsLocalUpdate => !string.IsNullOrWhiteSpace(_localZipPath) && File.Exists(_localZipPath);
+
+    public MainPageVM(string installedOmniXVersion, string localZipPath = "")
     {
         InstalledVersion = Version.TryParse(installedOmniXVersion, out var version) ? version : new Version(0, 0, 0, 0);
+        _localZipPath = localZipPath;
+    }
+
+    /// <summary>
+    ///     从文件名认版本：`OMniX1.0.3.zip` 和 `OMniX1.0.3-patch-1.0.2.zip` 都认得出来。
+    ///     认不出来返回 null，界面上就显示「本地包」。
+    /// </summary>
+    private static string? GuessVersionFromFileName(string zipPath)
+    {
+        var match = Regex.Match(Path.GetFileName(zipPath), @"OMniX(\d+(?:\.\d+)*)", RegexOptions.IgnoreCase);
+        return match.Success ? match.Groups[1].Value : null;
     }
 
     [RelayCommand(IncludeCancelCommand = true)]
@@ -61,25 +79,40 @@ public partial class MainPageVM : ObservableRecipient
         StopReason = null;
 
         Log(InstalledVersion.Equals(new Version(0, 0, 0, 0))
-            ? "Could not determine installed OMniX version..."
-            : $"Installed OMniX version: {InstalledVersion}");
+            ? "无法确定当前 OMniX 版本…"
+            : $"当前 OMniX 版本：{InstalledVersion}");
 
 
         try
         {
-            var release = await IsNewerVersionAvailable(cancellationToken);
-            UpdateProgress.NextStage();
-            if (Stopped || release is null)
-                return;
-
-            await Task.Delay(1000, cancellationToken);
-            await DownloadLatestVersion(release, cancellationToken);
-            UpdateProgress.NextStage();
-
-            if (Stopped)
+            if (IsLocalUpdate)
             {
-                CleanUp();
-                return;
+                // 二开：本地导入的包 —— 已经躺在磁盘上了，
+                // 不用查 GitHub、也不用下载，直接跳到解压那一步。
+                _zipPath = _localZipPath;
+                LatestVersion = GuessVersionFromFileName(_localZipPath) ?? "本地包";
+
+                UpdateProgress.NextStage(); // 检查版本（跳过）
+                UpdateProgress.NextStage(); // 下载（跳过）
+
+                Log($"使用本地更新包：{_localZipPath}");
+            }
+            else
+            {
+                var release = await IsNewerVersionAvailable(cancellationToken);
+                UpdateProgress.NextStage();
+                if (Stopped || release is null)
+                    return;
+
+                await Task.Delay(1000, cancellationToken);
+                await DownloadLatestVersion(release, cancellationToken);
+                UpdateProgress.NextStage();
+
+                if (Stopped)
+                {
+                    CleanUp();
+                    return;
+                }
             }
 
             await Task.Delay(1000, cancellationToken);
@@ -104,15 +137,15 @@ public partial class MainPageVM : ObservableRecipient
         }
         catch (TaskCanceledException e)
         {
-            Stop("User cancelled");
+            Stop("已取消");
         }
         catch (OperationCanceledException e)
         {
-            Stop("User cancelled");
+            Stop("已取消");
         }
         catch (Exception e)
         {
-            Log("An error occurred!", e.Message);
+            Log("出错了！", e.Message);
             Serilog.Log.Error(e, "An error occurred! Full error");
             Stop(e.Message);
         }
@@ -149,7 +182,7 @@ public partial class MainPageVM : ObservableRecipient
     {
         var newestVersionFound = await GetLatestVersionAsync(cancellationToken);
 
-        Log($"Newest version found: {newestVersionFound?.tag_name}");
+        Log($"服务器上的最新版本：{newestVersionFound?.tag_name}");
 
         var release = new GitHubRelease()
         {
@@ -160,7 +193,7 @@ public partial class MainPageVM : ObservableRecipient
 
         if (release.Version <= InstalledVersion)
         {
-            Stop("Installed version is newer than or equal to the newest version found on GitHub");
+            Stop("当前版本已经是最新，或者比服务器上的还新");
             return null;
         }
 
@@ -184,16 +217,16 @@ public partial class MainPageVM : ObservableRecipient
         if (asset?.browser_download_url is null)
         {
             Stop(
-                "Could not find OMniX archive in the newest release on GitHub. This may be due to the developer having to manually upload the zip which can take a few minutes. " +
-                "If the problem persists, then you may have to update OMniX manually");
+                "在最新的 Release 里没找到 OMniX 压缩包。可能是作者还没传完附件（上传要几分钟），" +
+                "过一会儿再试；一直这样也可以去 Release 页面手动下载，用设置页的「导入本地更新包」安装。");
             return null;
         }
 
         var isPatch = string.Equals(asset.name, patchName, StringComparison.OrdinalIgnoreCase);
 
         Log(isPatch
-            ? $"Found incremental patch {VersionText(InstalledVersion)} -> {VersionText(release.Version)}"
-            : "No patch for this version, downloading the full package");
+            ? $"找到增量补丁：{VersionText(InstalledVersion)} → {VersionText(release.Version)}"
+            : "没有适用于当前版本的补丁，改下完整包");
 
         release.DownloadUrl = new Uri(asset.browser_download_url);
         release.BrowserUrl = new Uri(newestVersionFound?.html_url ?? "https://github.com/aiertana/OMnix/releases");
@@ -231,13 +264,13 @@ public partial class MainPageVM : ObservableRecipient
         var httpClient = CreateHttpClient();
         httpClient.DefaultRequestHeaders.Add("Accept", "application/octet-stream");
 
-        Log("Downloading latest version...");
+        Log("正在下载最新版本…");
         var result = await httpClient.GetAsync(gitHubRelease.DownloadUrl, HttpCompletionOption.ResponseHeadersRead,
             cancellationToken);
 
         if (!result.IsSuccessStatusCode)
         {
-            Stop($"Failed to download latest version. Status Code: {result.StatusCode}, Reason: {result.ReasonPhrase}");
+            Stop($"下载失败。状态码：{result.StatusCode}，原因：{result.ReasonPhrase}");
             return;
         }
 
@@ -245,7 +278,7 @@ public partial class MainPageVM : ObservableRecipient
 
         await using var fileStream = File.Create(_zipPath);
         await stream.CopyToAsync(fileStream, cancellationToken);
-        Log($"Latest version downloaded from {gitHubRelease.DownloadUrl}");
+        Log($"下载完成，来自 {gitHubRelease.DownloadUrl}");
     }
 
     private async Task UnzipLatestVersion(CancellationToken cancellationToken)
@@ -264,12 +297,12 @@ public partial class MainPageVM : ObservableRecipient
         };
 
         process.Start();
-        Log("Extracting downloaded zip file...");
+        Log("正在解压压缩包…");
         await process.WaitForExitAsync(cancellationToken);
 
         if (process.ExitCode != 0)
         {
-            Stop($"Failed to extract downloaded zip file. Exit Code: {process.ExitCode}");
+            Stop($"解压失败。退出码：{process.ExitCode}");
             return;
         }
 
@@ -279,11 +312,11 @@ public partial class MainPageVM : ObservableRecipient
 
         if (_extractedOmniXFolder is null)
         {
-            Stop("Failed to find OMniX folder in extracted zip file");
+            Stop("解压出来的东西里没有 OMniX 文件夹，这不是有效的更新包");
             return;
         }
 
-        Log($"OMniX Application folder extracted successfully. Path: {_extractedOmniXFolder.FullName}");
+        Log($"解压完成，程序目录：{_extractedOmniXFolder.FullName}");
     }
 
     private async Task InstallLatestVersion()
@@ -291,7 +324,7 @@ public partial class MainPageVM : ObservableRecipient
         _installedOmniXFolder = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory)).Parent!;
         if (_installedOmniXFolder is null)
         {
-            Stop("Failed to find installed OMniX folder in path");
+            Stop("找不到已安装的 OMniX 目录");
             return;
         }
 
@@ -321,15 +354,15 @@ public partial class MainPageVM : ObservableRecipient
         if (!containsOmniXExe)
         {
             Stop(
-                $"Failed to find '{omnixExe}' in installed OMniX folder. Path: {_installedOmniXFolder}");
+                $"在 OMniX 目录里没找到 {omnixExe}，确认一下是不是装歪了。路径：{_installedOmniXFolder}");
             return;
         }
 
         if (!string.IsNullOrEmpty(systemFileFound))
         {
             Stop(
-                $"OMniX folder seems to contain windows system files, this should never happen. File Found: '{systemFileFound}' at " +
-                $"Path: {_installedOmniXFolder}");
+                $"OMniX 目录里出现了 Windows 系统文件，这不该发生，已中止。找到的是：'{systemFileFound}'，" +
+                $"路径：{_installedOmniXFolder}");
             return;
         }
 
@@ -340,11 +373,11 @@ public partial class MainPageVM : ObservableRecipient
         // 现在只把新版本带的文件盖上去，目录里原有的东西一律不动。
         var autoUpdaterFolderName = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Name;
 
-        Log("Applying update...", $"Path: {_installedOmniXFolder.FullName}");
+        Log("正在打补丁…", $"目录：{_installedOmniXFolder.FullName}");
 
         await Task.Run(() => { ApplyPatch(_extractedOmniXFolder, _installedOmniXFolder, autoUpdaterFolderName); });
 
-        Log("OMniX updated successfully");
+        Log("OMniX 更新完成");
     }
 
     /// <summary>
@@ -385,13 +418,13 @@ public partial class MainPageVM : ObservableRecipient
 
     private void CleanUp()
     {
-        Log("Cleaning up work dir...", WorkDir);
+        Log("正在清理临时文件…", WorkDir);
         if (Directory.Exists(WorkDir))
         {
             Directory.Delete(WorkDir, true);
         }
 
-        Log("Clean up finished");
+        Log("清理完成");
     }
 
     // Copied from OMniX.WinUI/Services/UpdateChecker.cs

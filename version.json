@@ -1,5 +1,5 @@
 ﻿{
-    "version":  "1.0.3",
+    "version":  "1.1.0",
     "updated":  "2026-10-24",
     "note":  "全项目唯一的版本号来源。改版本请用 bumpVersion.ps1 -Kind patch|minor|major，别手改这一行。"
 }
