@@ -155,6 +155,30 @@ public class AutoUpdaterService
             };
         }
 
+        // 二开：光有 exe 不够。
+        // 1.1.1 及更早的 UpdateAutoUpdater() 是「删掉旧目录、把 _New 整个移过来」，
+        // 而增量补丁里的 _New 只带 exe/dll/pdb 三个文件 —— 移过去之后更新器目录就剩这三个，
+        // .NET 运行时和 WinUI 资源全没了。之后每次点更新：窗口白一下、然后闪退，
+        // 连日志都写不出来（创建日志的代码在 App 构造里，那时已经起不来了）。
+        // 这里先把关，宁可明确报一句「请下整包覆盖」，也不去启动一个注定要崩的 exe。
+        var missingFile = FindMissingAutoUpdaterFile(_currentAutoUpdaterFolder);
+        if (missingFile is not null)
+        {
+            _logger.Error(
+                "Auto updater folder is incomplete, missing {Missing}. Folder: {Folder}",
+                missingFile, _currentAutoUpdaterFolder.FullName);
+
+            return new[]
+            {
+                Error.Failure(
+                    description:
+                    $"更新器目录不完整，缺 {missingFile}。\n" +
+                    "多半是之前某次增量更新把更新器覆盖坏了（旧逻辑会留下半套文件）。\n" +
+                    "修法：去 GitHub Releases 下载最新的 OMniX 完整包，解压后把整个「OMniX - Auto Updater」" +
+                    "文件夹覆盖到程序目录下，再点更新就正常了。")
+            };
+        }
+
         var isAutoUpdaterRunning = Process.GetProcessesByName(AutoUpdaterExe).Any();
 
         if (isAutoUpdaterRunning)
@@ -211,5 +235,29 @@ public class AutoUpdaterService
     {
         return directoryInfo.EnumerateFileSystemInfos().Any(f =>
             f.Name.Equals(AutoUpdaterExe, StringComparison.CurrentCultureIgnoreCase));
+    }
+
+    /// <summary>
+    ///     更新器能起来所必需的文件，少一个都会白屏闪退（self-contained 的 .NET 运行时 / WinUI 资源没了）。
+    ///     二开新增：用来识别被增量更新覆盖坏的更新器目录。
+    /// </summary>
+    private static readonly string[] RequiredAutoUpdaterFiles =
+    {
+        AutoUpdaterExe,
+        "OMniX - Auto Updater.dll",
+        "OMniX - Auto Updater.runtimeconfig.json",
+        "OMniX - Auto Updater.deps.json",
+        "resources.pri",
+        "coreclr.dll",
+        "hostfxr.dll"
+    };
+
+    private static string? FindMissingAutoUpdaterFile(DirectoryInfo folder)
+    {
+        foreach (var relative in RequiredAutoUpdaterFiles)
+            if (!File.Exists(Path.Combine(folder.FullName, relative)))
+                return relative;
+
+        return null;
     }
 }
