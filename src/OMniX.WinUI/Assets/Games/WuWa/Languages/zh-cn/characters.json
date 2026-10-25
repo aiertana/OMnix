@@ -101,7 +101,10 @@
   },
   {
     "InternalName": "Carlotta",
-    "DisplayName": "柯莱塔"
+    "DisplayName": "柯莱塔",
+    "Keys": [
+      "珂莱塔"
+    ]
   },
   {
     "InternalName": "Roccia",
@@ -173,58 +176,65 @@
   },
   {
     "InternalName": "Sigrika",
-    "DisplayName": "西格莉卡"
+    "DisplayName": "西格莉卡",
+    "Keys": [
+      "希格莉卡"
+    ]
   },
   {
     "InternalName": "Luuk",
-    "DisplayName": "陆·赫斯"
+    "DisplayName": "陆·赫斯",
+    "Keys": [
+      "陆・赫森",
+      "陆赫斯"
+    ]
   },
   {
     "InternalName": "Lucilla",
     "DisplayName": "洛瑟菈"
   },
-    {
-      "InternalName": "Aemeath",
-      "DisplayName": "爱弥斯"
-    },
-    {
-      "InternalName": "Denia",
-      "DisplayName": "达妮娅"
-    },
-    {
-      "InternalName": "Hiyuki",
-      "DisplayName": "绯雪"
-    },
-    {
-      "InternalName": "Lucy",
-      "DisplayName": "露西"
-    },
-    {
-      "InternalName": "Rebecca",
-      "DisplayName": "丽贝卡"
-    },
-    {
-      "InternalName": "Suisui",
-      "DisplayName": "穗穗"
-    },
-    {
-      "InternalName": "Qingxiao",
-      "DisplayName": "清宵"
-    },
-    {
-      "InternalName": "Jingran",
-      "DisplayName": "景燃"
-    },
-    {
-      "InternalName": "Suoming",
-      "DisplayName": "锁暝"
-    },
-    {
-      "InternalName": "Hsin",
-      "DisplayName": "心"
-    },
-    {
-      "InternalName": "Lily",
-      "DisplayName": "莉莉"
-    }
-  ]
+  {
+    "InternalName": "Aemeath",
+    "DisplayName": "爱弥斯"
+  },
+  {
+    "InternalName": "Denia",
+    "DisplayName": "达妮娅"
+  },
+  {
+    "InternalName": "Hiyuki",
+    "DisplayName": "绯雪"
+  },
+  {
+    "InternalName": "Lucy",
+    "DisplayName": "露西"
+  },
+  {
+    "InternalName": "Rebecca",
+    "DisplayName": "丽贝卡"
+  },
+  {
+    "InternalName": "Suisui",
+    "DisplayName": "穗穗"
+  },
+  {
+    "InternalName": "Qingxiao",
+    "DisplayName": "清宵"
+  },
+  {
+    "InternalName": "Jingran",
+    "DisplayName": "景燃"
+  },
+  {
+    "InternalName": "Suoming",
+    "DisplayName": "锁暝"
+  },
+  {
+    "InternalName": "Hsin",
+    "DisplayName": "心"
+  },
+  {
+    "InternalName": "Lily",
+    "DisplayName": "莉莉"
+  }
+]
