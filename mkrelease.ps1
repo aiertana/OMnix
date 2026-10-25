@@ -196,6 +196,14 @@ Get-ChildItem -Path $outRoot | ForEach-Object {
 # ---- 3. 压缩 ----
 Write-Output ""
 Write-Output "=== 3. 压缩 ==="
+
+# 二开：调试符号（.pdb）对用户没用，只让包变大（约 1.4 MB），打 zip 之前删掉
+$pdbFiles = @(Get-ChildItem $outRoot -Recurse -Filter '*.pdb' -File -ErrorAction SilentlyContinue)
+if ($pdbFiles.Count -gt 0) {
+    $pdbFiles | Remove-Item -Force
+    Write-Output ("清理调试符号: " + $pdbFiles.Count + " 个")
+}
+
 $zip = $outRoot + '.zip'
 if (Test-Path $zip) { Remove-Item $zip -Force }
 Compress-Archive -Path (Join-Path $outRoot '*') -DestinationPath $zip -Force
