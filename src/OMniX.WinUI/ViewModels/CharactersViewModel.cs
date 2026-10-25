@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -155,6 +155,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         _modPresetHandlerService = modPresetHandlerService;
         _busyService = busyService;
         _localizer = localizer;
+        _pinText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Pin", "置顶");
         _modRandomizationService = modRandomizationService;
         _windowManagerService = windowManagerService;
 
@@ -266,7 +267,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     {
         if (_isNavigating) return;
 
-        // 二开：排序期间先把“新增角色”占位卡拿掉，避免参与 IndexOf/Except 的索引计算
+        // 二开：排序期间先把"新增角色"占位卡拿掉，避免参与 IndexOf/Except 的索引计算
         var addCard = Characters.FirstOrDefault(character => character.IsAddCard);
         if (addCard is not null)
             Characters.Remove(addCard);
@@ -358,7 +359,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     }
 
     /// <summary>
-    ///     二开：清掉超过高亮时长的记录，让“新”标记自动失效，角色回到正常排序
+    ///     二开：清掉超过高亮时长的记录，让"新"标记自动失效，角色回到正常排序
     /// </summary>
     private void CleanupExpiredNewCharacters()
     {
@@ -374,14 +375,14 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     }
 
     /// <summary>
-    ///     二开：确保“新增角色”卡排在网格第一位
+    ///     二开：确保"新增角色"卡排在网格第一位
     /// </summary>
     private void EnsureAddCardFirst()
     {
         if (Characters.Count > 0 && Characters[0].IsAddCard)
             return;
 
-        // 占位卡需要借用真实角色做绑定回退；没有角色时不插（空列表里直接去“角色管理”新建）
+        // 占位卡需要借用真实角色做绑定回退；没有角色时不插（空列表里直接去"角色管理"新建）
         var fallback = _backendCharacters.FirstOrDefault()?.Character;
         if (fallback is null)
             return;
@@ -394,7 +395,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     /// </summary>
     private void UpdateOverviewStats()
     {
-        var itemName = _category?.DisplayNamePlural ?? "对象";
+        var itemName = _category?.DisplayNamePlural ?? _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_ItemFallback", "对象");
 
         // 二开：占位卡不算角色，统计里排除
         var visibleCharacters = Characters.Where(character => !character.IsAddCard).ToArray();
@@ -402,7 +403,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         var enabledMods = visibleCharacters.Sum(character => character.Mods.Count(mod => mod.IsEnabled));
 
         OverviewStatsText =
-            $"当前显示 {visibleCharacters.Length} / {_backendCharacters.Count} 个{itemName}，合计 {totalMods} 个 Mod · {enabledMods} 个已启用";
+            string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_StatusSummary", "当前显示 {0} / {1} 个{2}，合计 {3} 个 Mod · {4} 个已启用"), visibleCharacters.Length, _backendCharacters.Count, itemName, totalMods, enabledMods);
     }
 
     private IEnumerable<CharacterGridItemModel> FilterCharacters(
@@ -484,7 +485,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             FontSize = 12,
             Opacity = 0.75,
             TextWrapping = TextWrapping.Wrap,
-            Text = "清理掉的文件都进了系统回收站。要还原某个 Mod，点下面按钮打开回收站，右键「还原」即可回到原来的位置。"
+            Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RecycleBody", "清理掉的文件都进了系统回收站。要还原某个 Mod，点下面按钮打开回收站，右键「还原」即可回到原来的位置。")
         });
 
         if (history.Count == 0)
@@ -493,7 +494,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             {
                 Margin = new Thickness(0, 12, 0, 0),
                 Opacity = 0.8,
-                Text = "还没有清理过任何 Mod。"
+                Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RecycleEmpty", "还没有清理过任何 Mod。")
             });
         }
         else
@@ -504,7 +505,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             {
                 Margin = new Thickness(0, 12, 0, 0),
                 FontWeight = FontWeights.SemiBold,
-                Text = $"共 {history.Count} 条记录 · 累计 {totalMb:F1} MB"
+                Text = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RecycleSummary", "共 {0} 条记录 · 累计 {1:F1} MB"), history.Count, totalMb)
             });
 
             foreach (var entry in history.Take(15))
@@ -524,18 +525,18 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
                 {
                     FontSize = 12,
                     Opacity = 0.6,
-                    Text = $"…… 还有 {history.Count - 15} 条"
+                    Text = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RecycleMore", "…… 还有 {0} 条"), history.Count - 15)
                 });
             }
         }
 
         var dialog = new ContentDialog
         {
-            Title = "回收站",
+            Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RecycleTitle", "回收站"),
             Content = new ScrollViewer { Content = panel, MaxHeight = 420 },
-            PrimaryButtonText = "打开系统回收站",
-            SecondaryButtonText = history.Count > 0 ? "清空记录" : string.Empty,
-            CloseButtonText = "关闭",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RecycleOpen", "打开系统回收站"),
+            SecondaryButtonText = history.Count > 0 ? _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RecycleClear", "清空记录") : string.Empty,
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Close", "关闭"),
             DefaultButton = ContentDialogButton.Close,
             XamlRoot = App.MainWindow?.Content?.XamlRoot
         };
@@ -549,7 +550,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         else if (result == ContentDialogResult.Secondary)
         {
             CleanHistoryService.Instance.Clear();
-            NotificationManager.ShowNotification("已清空记录", "回收站里的文件不受影响",
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RecycleClearedTitle", "已清空记录"), _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RecycleClearedBody", "回收站里的文件不受影响"),
                 TimeSpan.FromSeconds(4));
         }
     }
@@ -598,14 +599,14 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         {
             var fallback = new ContentDialog
             {
-                Title = "无法检查更新",
+                Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_UpdateCheckFailedTitle", "无法检查更新"),
                 Content = new TextBlock
                 {
                     TextWrapping = TextWrapping.Wrap,
-                    Text = "连不上 GitHub（可能需要代理）。可以先到项目主页手动下载 Wuwa_Mod_Fixer。"
+                    Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_UpdateCheckFailedBody", "连不上 GitHub（可能需要代理）。可以先到项目主页手动下载 Wuwa_Mod_Fixer。")
                 },
-                PrimaryButtonText = "打开 GitHub 页面",
-                CloseButtonText = "关闭",
+                PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_OpenGithubPage", "打开 GitHub 页面"),
+                CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Close", "关闭"),
                 DefaultButton = ContentDialogButton.Primary,
                 XamlRoot = App.MainWindow?.Content?.XamlRoot
             };
@@ -627,7 +628,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         {
             FontSize = 18,
             FontWeight = FontWeights.SemiBold,
-            Text = installed ? $"Mod 修复器 {release.Tag}" : $"发现新版本 {release.Tag}"
+            Text = installed ? string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_FixerVersion", "Mod 修复器 {0}"), release.Tag) : string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NewVersionTag", "发现新版本 {0}"), release.Tag)
         };
 
         var meta = new TextBlock
@@ -650,7 +651,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             FontSize = 12,
             Opacity = 0.8,
             TextWrapping = TextWrapping.Wrap,
-            Text = installed ? "这个版本已经下载过，可以直接运行。" : "点下面按钮下载并运行（下载到本地缓存，不会安装到系统）。"
+            Text = installed ? _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_FixerAlreadyDownloaded", "这个版本已经下载过，可以直接运行。") : _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_FixerDownloadHint", "点下面按钮下载并运行（下载到本地缓存，不会安装到系统）。")
         };
 
         var progressBar = new ProgressBar
@@ -663,7 +664,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         var actionButton = new Button
         {
-            Content = installed ? "运行修复器" : "下载并运行",
+            Content = installed ? _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RunFixer", "运行修复器") : _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DownloadAndRun", "下载并运行"),
             HorizontalAlignment = HorizontalAlignment.Left
         };
 
@@ -677,10 +678,10 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         var dialog = new ContentDialog
         {
-            Title = installed ? "Mod 修复器" : "发现新版本",
+            Title = installed ? _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_FixerTitle", "Mod 修复器") : _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NewVersionTitle", "发现新版本"),
             Content = panel,
-            PrimaryButtonText = "查看 GitHub",
-            CloseButtonText = "关闭",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_ViewGithub", "查看 GitHub"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Close", "关闭"),
             DefaultButton = ContentDialogButton.Close,
             XamlRoot = App.MainWindow?.Content?.XamlRoot
         };
@@ -694,13 +695,13 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
                 if (!service.IsDownloaded(release))
                 {
                     progressBar.Visibility = Visibility.Visible;
-                    status.Text = "正在下载…";
+                    status.Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Downloading", "正在下载…");
 
                     var progress = new Progress<(double Percent, long Received, long Total)>(p =>
                     {
                         progressBar.Value = p.Percent;
                         status.Text =
-                            $"正在下载 {p.Received / 1024.0 / 1024.0:F1} MB / {p.Total / 1024.0 / 1024.0:F1} MB （{p.Percent:F0}%）";
+                            string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DownloadProgress", "正在下载 {0:F1} MB / {1:F1} MB （{2:F0}%）"), p.Received / 1024.0 / 1024.0, p.Total / 1024.0 / 1024.0, p.Percent);
                     });
 
                     await service.DownloadAsync(release, progress);
@@ -711,12 +712,12 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
                 service.Launch(service.GetLocalExePath(release));
 
-                NotificationManager.ShowNotification("已启动修复器", release.AssetName, TimeSpan.FromSeconds(4));
+                NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_FixerStarted", "已启动修复器"), release.AssetName, TimeSpan.FromSeconds(4));
             }
             catch (Exception e)
             {
                 _logger.Error(e, "Failed to download mod fixer");
-                status.Text = "下载失败：" + e.Message;
+                status.Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DownloadFailedPrefix", "下载失败：") + e.Message;
                 actionButton.IsEnabled = true;
             }
         };
@@ -751,7 +752,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
             if (duplicates.Count == 0)
             {
-                NotificationManager.ShowNotification("没有重复的 Mod", "扫描完成，没有发现同名残留",
+                NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NoDuplicatesTitle", "没有重复的 Mod"), _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NoDuplicatesBody", "扫描完成，没有发现同名残留"),
                     TimeSpan.FromSeconds(4));
                 return;
             }
@@ -765,7 +766,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
             panel.Children.Add(new TextBlock
             {
-                Text = $"发现 {duplicates.Count} 处同名目录（旧目录总共占 {totalMb:F1} MB）",
+                Text = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DuplicatesFound", "发现 {0} 处同名目录（旧目录总共占 {1:F1} MB）"), duplicates.Count, totalMb),
                 TextWrapping = TextWrapping.Wrap
             });
 
@@ -773,7 +774,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             {
                 panel.Children.Add(new TextBlock
                 {
-                    Text = $"内容完全一致的 {safe.Count} 处，可以安全清理；删除后进回收站，随时能恢复。",
+                    Text = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DuplicatesSafe", "内容完全一致的 {0} 处，可以安全清理；删除后进回收站，随时能恢复。"), safe.Count),
                     Foreground = new SolidColorBrush(Colors.ForestGreen),
                     TextWrapping = TextWrapping.Wrap
                 });
@@ -783,7 +784,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             {
                 panel.Children.Add(new TextBlock
                 {
-                    Text = $"内容有差异的 {risky.Count} 处，不会删除，需要你自己对比后再决定。",
+                    Text = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DuplicatesRisky", "内容有差异的 {0} 处，不会删除，需要你自己对比后再决定。"), risky.Count),
                     Foreground = new SolidColorBrush(Colors.Orange),
                     TextWrapping = TextWrapping.Wrap
                 });
@@ -806,7 +807,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             {
                 panel.Children.Add(new TextBlock
                 {
-                    Text = $"…… 还有 {duplicates.Count - 12} 处",
+                    Text = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DuplicatesMore", "…… 还有 {0} 处"), duplicates.Count - 12),
                     FontSize = 12,
                     Opacity = 0.6
                 });
@@ -814,10 +815,10 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
             var dialog = new ContentDialog
             {
-                Title = "清理同名残留",
+                Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CleanupTitle", "清理同名残留"),
                 Content = new ScrollViewer { Content = panel, MaxHeight = 420 },
-                PrimaryButtonText = safe.Count > 0 ? $"清理这 {safe.Count} 处" : "关闭",
-                CloseButtonText = "取消",
+                PrimaryButtonText = safe.Count > 0 ? string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CleanupThese", "清理这 {0} 处"), safe.Count) : _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Close", "关闭"),
+                CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消"),
                 DefaultButton = ContentDialogButton.Close,
                 XamlRoot = App.MainWindow?.Content?.XamlRoot
             };
@@ -831,8 +832,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             // 没有内容完全一致的可清理项时，别静默返回，要告诉用户为什么
             if (safe.Count == 0)
             {
-                NotificationManager.ShowNotification("没有可安全清理的重复项",
-                    $"发现 {duplicates.Count} 处同名目录，但内容都有差异，已全部保留，需要你自己对比后再删除",
+                NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NothingToCleanTitle", "没有可安全清理的重复项"),
+                    string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NothingToCleanBody", "发现 {0} 处同名目录，但内容都有差异，已全部保留，需要你自己对比后再删除"), duplicates.Count),
                     TimeSpan.FromSeconds(10));
                 return;
             }
@@ -883,20 +884,20 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             Characters.Clear();
             await OnNavigatedToCoreAsync(_category);
 
-            var message = $"已清理 {removed} 处重复 Mod，回收 {freedBytes / 1024.0 / 1024.0:F1} MB";
+            var message = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CleanupResult", "已清理 {0} 处重复 Mod，回收 {1:F1} MB"), removed, freedBytes / 1024.0 / 1024.0);
 
             if (failures.Count > 0)
-                message += $"，{failures.Count} 处失败";
+                message += string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CleanupFailures", "，{0} 处失败"), failures.Count);
 
             if (risky.Count > 0)
-                message += $"，{risky.Count} 处有差异已保留";
+                message += string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CleanupRiskyKept", "，{0} 处有差异已保留"), risky.Count);
 
-            NotificationManager.ShowNotification("清理完成", message, TimeSpan.FromSeconds(8));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CleanupDoneTitle", "清理完成"), message, TimeSpan.FromSeconds(8));
         }
         catch (Exception e)
         {
             _logger.Error(e, "Failed to clean duplicate mods");
-            NotificationManager.ShowNotification("清理失败", e.Message, TimeSpan.FromSeconds(8));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CleanupFailedTitle", "清理失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -910,17 +911,18 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     {
         var confirm = new ContentDialog
         {
-            Title = "刷新角色列表",
+            Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RefreshTitle", "刷新角色列表"),
             Content = new TextBlock
             {
                 TextWrapping = TextWrapping.Wrap,
-                Text = "刷新：重新读取当前目录，并自动整理可识别的旧管理器结构或错误角色分类名。\n\n" +
-                       "刷新并补充：整理后再补充缺失的默认角色文件夹。只会新增或移动可识别的真实 Mod 文件夹；" +
-                       "空旧目录会跳过，不会覆盖同名 Mod。"
+                Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RefreshBody",
+                    "刷新：重新读取当前目录，并自动整理可识别的旧管理器结构或错误角色分类名。\n\n" +
+                    "刷新并补充：整理后再补充缺失的默认角色文件夹。只会新增或移动可识别的真实 Mod 文件夹；" +
+                    "空旧目录会跳过，不会覆盖同名 Mod。")
             },
-            PrimaryButtonText = "刷新并补充",
-            SecondaryButtonText = "刷新",
-            CloseButtonText = "取消",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RefreshAndBootstrap", "刷新并补充"),
+            SecondaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Refresh", "刷新"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = App.MainWindow?.Content?.XamlRoot
         };
@@ -952,17 +954,17 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
                 var result = LegacyCharacterOrganizer.Migrate(scan);
 
                 var message = result.MovedMods > 0
-                    ? $"已整理 {result.MovedMods} 个 Mod"
-                    : "没有需要移动的 Mod";
+                    ? string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_OrganizeMoved", "已整理 {0} 个 Mod"), result.MovedMods)
+                    : _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NothingToMove", "没有需要移动的 Mod");
 
                 if (result.SkippedConflicts.Count > 0)
-                    message += $"，跳过 {result.SkippedConflicts.Count} 个同名目录";
+                    message += string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_OrganizeSkipped", "，跳过 {0} 个同名目录"), result.SkippedConflicts.Count);
 
                 if (result.RemovedEmptyFolders.Count > 0)
-                    message += $"，清理 {result.RemovedEmptyFolders.Count} 个空目录";
+                    message += string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_OrganizeEmpty", "，清理 {0} 个空目录"), result.RemovedEmptyFolders.Count);
 
                 _logger.Information("Legacy character organize: {Message}", message);
-                NotificationManager.ShowNotification("角色目录整理完成", message, TimeSpan.FromSeconds(6));
+                NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_OrganizeDoneTitle", "角色目录整理完成"), message, TimeSpan.FromSeconds(6));
             }
 
             await _skinManagerService.RefreshModsAsync();
@@ -974,8 +976,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
                 if (created > 0)
                 {
                     _logger.Information("Created {Count} missing character folders", created);
-                    NotificationManager.ShowNotification("已补充角色文件夹",
-                        $"新增 {created} 个缺失的角色目录", TimeSpan.FromSeconds(5));
+                    NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_BootstrapDoneTitle", "已补充角色文件夹"),
+                        string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_BootstrapAdded", "新增 {0} 个缺失的角色目录"), created), TimeSpan.FromSeconds(5));
                 }
             }
 
@@ -989,7 +991,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         catch (Exception e)
         {
             _logger.Error(e, "Failed to refresh character list");
-            NotificationManager.ShowNotification("刷新失败", e.Message, TimeSpan.FromSeconds(8));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RefreshFailedTitle", "刷新失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -1002,13 +1004,13 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         panel.Children.Add(new TextBlock
         {
-            Text = $"检测到 {scan.FolderCount} 个旧分类目录，里面有 {scan.ModCount} 个真实 Mod 文件夹可以整理。",
+            Text = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_ScanSummary", "检测到 {0} 个旧分类目录，里面有 {1} 个真实 Mod 文件夹可以整理。"), scan.FolderCount, scan.ModCount),
             TextWrapping = TextWrapping.Wrap
         });
 
         panel.Children.Add(new TextBlock
         {
-            Text = "只会移动分类目录里的真实 Mod 文件夹；空的旧目录会被清理，不会删除 Mod 内容，也不会覆盖同名目录。",
+            Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_MigrateExplain", "只会移动分类目录里的真实 Mod 文件夹；空的旧目录会被清理，不会删除 Mod 内容，也不会覆盖同名目录。"),
             TextWrapping = TextWrapping.Wrap,
             FontSize = 12,
             Opacity = 0.7
@@ -1017,7 +1019,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         panel.Children.Add(new TextBlock
         {
             Margin = new Thickness(0, 10, 0, 0),
-            Text = "准备整理到这些角色：" + string.Join("、", scan.TargetCharacters)
+            Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_MigrateTargetsPrefix", "准备整理到这些角色：") + string.Join("、", scan.TargetCharacters)
         });
 
         var skipCount = scan.Moves.Count(move => move.TargetExists);
@@ -1026,7 +1028,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         {
             panel.Children.Add(new TextBlock
             {
-                Text = $"其中 {skipCount} 个目标位置已经有同名目录，会被跳过（不会覆盖）",
+                Text = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_ScanSkips", "其中 {0} 个目标位置已经有同名目录，会被跳过（不会覆盖）"), skipCount),
                 FontSize = 12,
                 Opacity = 0.75,
                 Foreground = new SolidColorBrush(Colors.Orange)
@@ -1056,13 +1058,13 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             line.Children.Add(CreateFolderLink(
                 $"{move.TargetCategoryName}\\{move.CharacterInternalName}",
                 move.TargetModPath,
-                "目标位置还没有这个目录"));
+                _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_TargetMissing", "目标位置还没有这个目录")));
 
             if (move.TargetExists)
             {
                 line.Children.Add(new TextBlock
                 {
-                    Text = "[已存在，跳过]",
+                    Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_ExistsSkipped", "[已存在，跳过]"),
                     Margin = new Thickness(4, 0, 0, 0),
                     FontSize = 12,
                     Opacity = 0.75,
@@ -1078,7 +1080,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         {
             panel.Children.Add(new TextBlock
             {
-                Text = $"…… 还有 {scan.Moves.Count - 8} 个",
+                Text = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_ScanMore", "…… 还有 {0} 个"), scan.Moves.Count - 8),
                 FontSize = 12,
                 Opacity = 0.6
             });
@@ -1086,10 +1088,10 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         return new ContentDialog
         {
-            Title = "发现还没归类好的 Mod",
+            Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_MigrateFoundTitle", "发现还没归类好的 Mod"),
             Content = new ScrollViewer { Content = panel, MaxHeight = 420 },
-            PrimaryButtonText = "开始整理",
-            CloseButtonText = "先不处理",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_MigrateStart", "开始整理"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_MigrateLater", "先不处理"),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = App.MainWindow?.Content?.XamlRoot
         };
@@ -1111,7 +1113,10 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             Tag = path
         };
 
-        ToolTipService.SetToolTip(link, exists ? $"打开：{path}" : disabledHint ?? $"路径不存在：{path}");
+        var localizer = App.GetService<ILanguageLocalizer>();
+        var openTip = string.Format(localizer.GetLocalizedStringOrDefault("/Characters/CharVM_OpenPath", "打开：{0}"), path);
+        var missingTip = string.Format(localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PathMissing", "路径不存在：{0}"), path);
+        ToolTipService.SetToolTip(link, exists ? openTip : disabledHint ?? missingTip);
 
         link.Click += (_, _) => OpenInExplorer(path);
 
@@ -1191,15 +1196,15 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
             characterModel.ImageUri = newImageUri;
 
-            NotificationManager.ShowNotification("已更新角色头像", characterModel.Character.DisplayName,
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PortraitUpdatedTitle", "已更新角色头像"), characterModel.Character.DisplayName,
                 TimeSpan.FromSeconds(4));
         }
         catch (Exception e)
         {
             _logger.Error(e, "Could not set character image for {Character}", characterModel.Character.DisplayName);
 
-            NotificationManager.ShowNotification("设置头像失败",
-                characterModel.Character.IsCustomModObject ? e.Message : "只有自定义角色可以修改头像",
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PortraitFailedTitle", "设置头像失败"),
+                characterModel.Character.IsCustomModObject ? e.Message : _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PortraitCustomOnly", "只有自定义角色可以修改头像"),
                 TimeSpan.FromSeconds(8));
         }
     }
@@ -1227,14 +1232,16 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         // 改成「隐藏」——从 OMniX 列表里移除，重启也不会再出现。
         var dialog = new ContentDialog
         {
-            Title = "删除角色",
+            Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DeleteTitle", "删除角色"),
             Content = isCustom
-                ? $"确定删除「{characterModel.Character.DisplayName}」吗？\n" +
-                  "该角色的配置会被移除，Mod 文件夹会保留。"
-                : $"确定把「{characterModel.Character.DisplayName}」从列表里移除吗？\n" +
-                  "这是游戏内置角色，无法从游戏本身删除，只会从 OMniX 的列表里隐藏。",
-            PrimaryButtonText = isCustom ? "删除" : "移除",
-            CloseButtonText = "取消",
+                ? string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DeleteCustomConfirm",
+                      "确定删除「{0}」吗？\n该角色的配置会被移除，Mod 文件夹会保留。"),
+                    characterModel.Character.DisplayName)
+                : string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DeleteBuiltinConfirm",
+                      "确定把「{0}」从列表里移除吗？\n这是游戏内置角色，无法从游戏本身删除，只会从 OMniX 的列表里隐藏。"),
+                    characterModel.Character.DisplayName),
+            PrimaryButtonText = isCustom ? _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Delete", "删除") : _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Remove", "移除"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Close,
             XamlRoot = App.MainWindow?.Content?.XamlRoot
         };
@@ -1267,16 +1274,16 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             OnNavigatedTo(_category);
 
             NotificationManager.ShowNotification(
-                isCustom ? "已删除角色" : "已移除角色",
+                isCustom ? _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DeletedTitle", "已删除角色") : _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RemovedTitle", "已移除角色"),
                 isCustom
                     ? characterModel.Character.DisplayName
-                    : $"{characterModel.Character.DisplayName} 已从列表隐藏",
+                    : string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_HiddenFromList", "{0} 已从列表隐藏"), characterModel.Character.DisplayName),
                 TimeSpan.FromSeconds(4));
         }
         catch (Exception e)
         {
             _logger.Error(e, "Could not delete character {Character}", characterModel.Character.DisplayName);
-            NotificationManager.ShowNotification("删除失败", e.Message, TimeSpan.FromSeconds(8));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_DeleteFailedTitle", "删除失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -1328,7 +1335,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         catch (Exception e)
         {
             _logger.Error(e, "Could not create character {CharacterName}", displayName);
-            NotificationManager.ShowNotification("新增角色失败", e.Message, TimeSpan.FromSeconds(8));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_AddFailedTitle", "新增角色失败"), e.Message, TimeSpan.FromSeconds(8));
             return false;
         }
     }
@@ -1336,7 +1343,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     public async void OnNavigatedTo(object parameter)
     {
         // 二开：async void 里抛出的异常会直接终止进程，
-        // 新增角色后这里会重新跑一遍，必须兜住（之前“填完名字就闪退”就是这个原因）
+        // 新增角色后这里会重新跑一遍，必须兜住（之前"填完名字就闪退"就是这个原因）
         try
         {
             await OnNavigatedToCoreAsync(parameter);
@@ -1344,7 +1351,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         catch (Exception e)
         {
             _logger.Error(e, "Failed to load characters page");
-            NotificationManager.ShowNotification("加载角色列表失败", e.Message, TimeSpan.FromSeconds(8));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_LoadFailedTitle", "加载角色列表失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -1363,13 +1370,13 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         _category = category;
         CategoryPageTitle = category.ModCategory switch
         {
-            ModCategory.Character => "角色列表",
-            ModCategory.NPC => "NPC 列表",
-            ModCategory.Object => "物件列表",
-            ModCategory.Weapons => "武器列表",
+            ModCategory.Character => _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CatCharacters", "角色列表"),
+            ModCategory.NPC => _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CatNpcs", "NPC 列表"),
+            ModCategory.Object => _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CatObjects", "物件列表"),
+            ModCategory.Weapons => _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CatWeapons", "武器列表"),
             _ => $"{category.DisplayNamePlural}"
         };
-        ModToggleText = $"只显示有 Mod 的{category.DisplayNamePlural}";
+        ModToggleText = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_OnlyWithMods", "只显示有 Mod 的{0}"), category.DisplayNamePlural);
         ModEnabledToggleText = $"Show only {category.DisplayNamePlural} with Enabled Mods";
         ModNotificationsToggleText = $"Show only {category.DisplayNamePlural} with Mod Notifications";
         SearchBoxPlaceHolder = $"Search {category.DisplayNamePlural}...";
@@ -1707,7 +1714,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     [RelayCommand]
     private async Task CharacterClicked(CharacterGridItemModel characterModel)
     {
-        // 二开：点的是“新增角色”占位卡
+        // 二开：点的是"新增角色"占位卡
         if (characterModel.IsAddCard)
         {
             await PromptCreateCharacterAsync();
@@ -1772,15 +1779,17 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     /// <summary>
     ///     二开：下拉里「不指定」这一项的文案。选它（或者不改）就归到「其他」。
     /// </summary>
-    private const string ElementUnspecifiedText = "（不指定 · 默认其他）";
+    private string ElementUnspecifiedText =>
+        _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_ElementUnspecified", "（不指定 · 默认其他）");
 
-    private const string ElementOtherText = "其他";
+    private string ElementOtherText =>
+        _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Other", "其他");
 
     private async Task PromptCreateCharacterAsync()
     {
         var nameBox = new TextBox
         {
-            PlaceholderText = "输入角色名字…",
+            PlaceholderText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NamePlaceholder", "输入角色名字…"),
             HorizontalAlignment = HorizontalAlignment.Stretch
         };
 
@@ -1807,13 +1816,13 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             Spacing = 6
         };
 
-        panel.Children.Add(NewFieldLabel("角色名字"));
+        panel.Children.Add(NewFieldLabel(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NameLabel", "角色名字")));
         panel.Children.Add(nameBox);
-        panel.Children.Add(NewFieldLabel("所属属性"));
+        panel.Children.Add(NewFieldLabel(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_ElementLabel", "所属属性")));
         panel.Children.Add(elementBox);
         panel.Children.Add(new TextBlock
         {
-            Text = "不选择的话，会默认归到「其他」。",
+            Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_ElementHint", "不选择的话，会默认归到「其他」。"),
             FontSize = 11,
             Opacity = 0.7,
             TextWrapping = TextWrapping.WrapWholeWords
@@ -1821,10 +1830,10 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         var dialog = new ContentDialog
         {
-            Title = "新增角色",
+            Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_AddTitle", "新增角色"),
             Content = panel,
-            PrimaryButtonText = "确认创建",
-            CloseButtonText = "取消",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Create", "确认创建"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = App.MainWindow?.Content?.XamlRoot
         };
@@ -1845,8 +1854,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             return;
 
         if (usedFallback)
-            NotificationManager.ShowNotification("未指定属性",
-                $"已创建「{nameBox.Text}」，默认归类为「其他」。", TimeSpan.FromSeconds(6));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NoElementTitle", "未指定属性"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_CreatedAsOther", "已创建「{0}」，默认归类为「其他」。"), nameBox.Text), TimeSpan.FromSeconds(6));
     }
 
     /// <summary>
@@ -1982,14 +1991,12 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     }
 
 
-    [ObservableProperty] private string _pinText = DefaultPinText;
+    [ObservableProperty] private string _pinText = string.Empty;
 
     [ObservableProperty] private string _pinGlyph = DefaultPinGlyph;
 
     const string DefaultPinGlyph = "\uE718";
-    const string DefaultPinText = "置顶";
     const string DefaultUnpinGlyph = "\uE77A";
-    const string DefaultUnpinText = "取消置顶";
 
     /// <summary>
     ///     二开：右键菜单当前作用的角色。菜单项只传属性名，角色从这里取。
@@ -2004,12 +2011,12 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         DisableCharacterModsCommand.NotifyCanExecuteChanged();
         if (clickedCharacter.IsPinned)
         {
-            PinText = DefaultUnpinText;
+            PinText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Unpin", "取消置顶");
             PinGlyph = DefaultUnpinGlyph;
         }
         else
         {
-            PinText = DefaultPinText;
+            PinText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Pin", "置顶");
             PinGlyph = DefaultPinGlyph;
         }
     }
@@ -2043,16 +2050,16 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         var nameBox = new TextBox
         {
             Text = oldName,
-            PlaceholderText = "输入新的名字…",
+            PlaceholderText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RenamePlaceholder", "输入新的名字…"),
             MinWidth = 300
         };
 
         var dialog = new ContentDialog
         {
-            Title = "重命名角色",
+            Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RenameTitle", "重命名角色"),
             Content = nameBox,
-            PrimaryButtonText = "确认",
-            CloseButtonText = "取消",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Confirm", "确认"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = App.MainWindow?.Content?.XamlRoot
         };
@@ -2088,12 +2095,12 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
             OnNavigatedTo(_category);
 
-            NotificationManager.ShowNotification("已重命名", $"{oldName} → {newName}", TimeSpan.FromSeconds(4));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RenamedTitle", "已重命名"), string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RenameArrow", "{0} → {1}"), oldName, newName), TimeSpan.FromSeconds(4));
         }
         catch (Exception e)
         {
             _logger.Error(e, "Could not rename character {Character}", oldName);
-            NotificationManager.ShowNotification("重命名失败", e.Message, TimeSpan.FromSeconds(8));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_RenameFailedTitle", "重命名失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -2389,7 +2396,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             Content = message,
             PrimaryButtonText = "去下载",
             SecondaryButtonText = "自己设置路径",
-            CloseButtonText = "取消",
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary
         };
 
@@ -2660,7 +2667,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         if (!ok)
         {
             NotificationManager.ShowNotification(presetVm.IsPinned ? "取消置顶失败" : "置顶失败",
-                $"没找到叫「{presetVm.Name}」的预设", TimeSpan.FromSeconds(5));
+                string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetNotFound", "没找到叫「{0}」的预设"), presetVm.Name), TimeSpan.FromSeconds(5));
             return;
         }
 
@@ -2692,8 +2699,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         var ok = await Task.Run(() => _modPresetHandlerService.OverwritePresetWithCurrentAsync(presetVm.Name));
 
         if (ok)
-            NotificationManager.ShowNotification("已保存到预设",
-                $"「{presetVm.Name}」已更新为当前启用的 Mod 组合", TimeSpan.FromSeconds(6));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_SavedToPresetTitle", "已保存到预设"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetUpdated", "「{0}」已更新为当前启用的 Mod 组合"), presetVm.Name), TimeSpan.FromSeconds(6));
 
         await RefreshModPresetsAsync();
     }
@@ -2709,10 +2716,10 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         var dialog = new ContentDialog
         {
-            Title = "删除预设",
-            Content = $"确定要删除「{presetVm.Name}」吗？删除后无法恢复。",
-            PrimaryButtonText = "删除",
-            CloseButtonText = "取消",
+            Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetDeleteTitle", "删除预设"),
+            Content = string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetDeleteConfirm", "确定要删除「{0}」吗？删除后无法恢复。"), presetVm.Name),
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Delete", "删除"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Close
         };
 
@@ -2730,8 +2737,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
             PinnedPresets.Remove(presetVm.Name);
 
-            NotificationManager.ShowNotification("预设已删除",
-                $"「{presetVm.Name}」已删除", TimeSpan.FromSeconds(4));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetDeletedTitle", "预设已删除"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetDeleted", "「{0}」已删除"), presetVm.Name), TimeSpan.FromSeconds(4));
         }
 
         await RefreshModPresetsAsync();
@@ -2749,15 +2756,15 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         var input = new TextBox
         {
             Text = presetVm.Name,
-            PlaceholderText = "新的预设名称"
+            PlaceholderText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetNewNamePlaceholder", "新的预设名称")
         };
 
         var dialog = new ContentDialog
         {
-            Title = "重命名预设",
+            Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetRenameTitle", "重命名预设"),
             Content = input,
-            PrimaryButtonText = "保存",
-            CloseButtonText = "取消",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Save", "保存"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary
         };
 
@@ -2771,8 +2778,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         if (ModPresets.Any(preset => string.Equals(preset.Name, newName, StringComparison.OrdinalIgnoreCase)))
         {
-            NotificationManager.ShowNotification("名字重复",
-                $"已经有叫「{newName}」的预设了", TimeSpan.FromSeconds(5));
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NameTakenTitle", "名字重复"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetNameTaken", "已经有叫「{0}」的预设了"), newName), TimeSpan.FromSeconds(5));
             return;
         }
 
@@ -2789,7 +2796,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             if (PinnedPresets.Remove(presetVm.Name, out var pinnedIndex))
                 PinnedPresets[newName] = pinnedIndex;
 
-            NotificationManager.ShowNotification("预设已重命名",
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetRenamedTitle", "预设已重命名"),
                 $"「{presetVm.Name}」→「{newName}」", TimeSpan.FromSeconds(5));
         }
 
@@ -2958,14 +2965,14 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         var input = new TextBox
         {
             Text = GetNextPresetName(),
-            PlaceholderText = "给这个预设起个名字"
+            PlaceholderText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetNamePlaceholder", "给这个预设起个名字")
         };
 
         var dialog = new ContentDialog
         {
-            Title = "保存当前为预设",
-            PrimaryButtonText = "保存",
-            CloseButtonText = "取消",
+            Title = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_SaveAsPresetTitle", "保存当前为预设"),
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Save", "保存"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary,
             Content = new StackPanel
             {
@@ -2974,7 +2981,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
                 {
                     new TextBlock
                     {
-                        Text = "把当前已启用的 Mod 组合存成一个预设，以后从「Mod 预设」里一键切回来。",
+                        Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_SaveAsPresetBody", "把当前已启用的 Mod 组合存成一个预设，以后从「Mod 预设」里一键切回来。"),
                         TextWrapping = TextWrapping.Wrap
                     },
                     input
@@ -2991,14 +2998,14 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         if (string.IsNullOrWhiteSpace(name))
         {
-            NotificationManager.ShowNotification("名字不能为空", "没保存，重新点一次就行",
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NameEmptyTitle", "名字不能为空"), _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_NameEmptyBody", "没保存，重新点一次就行"),
                 TimeSpan.FromSeconds(4));
             return;
         }
 
         if (ModPresets.Any(preset => string.Equals(preset.Name, name, StringComparison.OrdinalIgnoreCase)))
         {
-            NotificationManager.ShowNotification("预设重名", $"已经有一个叫「{name}」的预设了，换个名字",
+            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetNameTakenTitle", "预设重名"), string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetNameTakenShort", "已经有一个叫「{0}」的预设了，换个名字"), name),
                 TimeSpan.FromSeconds(5));
             return;
         }
@@ -3012,8 +3019,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         await RefreshModPresetsAsync();
 
-        NotificationManager.ShowNotification("预设已保存",
-            $"「{name}」已保存当前启用的 Mod 组合", TimeSpan.FromSeconds(6));
+        NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetSavedTitle", "预设已保存"),
+            string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetSaved", "「{0}」已保存当前启用的 Mod 组合"), name), TimeSpan.FromSeconds(6));
     }
 
     /// <summary>

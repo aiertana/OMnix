@@ -133,4 +133,9 @@ The scripts folder there is cleared and rebuilt, and the NVIDIA DLSS library shi
   <data name="Shell_TutorialTip.ToolTipService.ToolTip" xml:space="preserve">
     <value>Open the guide on GitHub</value>
   </data>
+  <data name="Shell_NavSettings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Shell_NavCharacterList" xml:space="preserve"><value>Character list</value></data>
+  <data name="Shell_NavNpcList" xml:space="preserve"><value>NPC list</value></data>
+  <data name="Shell_NavObjectList" xml:space="preserve"><value>Object list</value></data>
+  <data name="Shell_NavWeaponList" xml:space="preserve"><value>Weapon list</value></data>
 </root>

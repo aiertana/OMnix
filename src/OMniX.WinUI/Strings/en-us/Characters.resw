@@ -77,4 +77,133 @@
   <data name="Gallery_SortLabel.Text" xml:space="preserve"><value>Sort:</value></data>
   <data name="Gallery_SortName.Content" xml:space="preserve"><value>Name</value></data>
   <data name="Gallery_ViewButton.Text" xml:space="preserve"><value>View</value></data>
-<data name="Gallery_DropInstallCaption" xml:space="preserve"><value>Release to install onto the current character</value></data><data name="PresetUnpinTip" xml:space="preserve"><value>Unpin</value></data><data name="PresetPinTip" xml:space="preserve"><value>Pin this preset</value></data><data name="ElementOtherLabel" xml:space="preserve"><value>Other</value></data><data name="AddCardToString" xml:space="preserve"><value>Add a character</value></data><data name="CharPage_PresetSaveTip.AutomationProperties.Name" xml:space="preserve"><value>Save</value></data><data name="CharPage_PresetRenameTip.AutomationProperties.Name" xml:space="preserve"><value>Rename</value></data><data name="CharPage_PresetDeleteTip.AutomationProperties.Name" xml:space="preserve"><value>Delete</value></data><data name="CharPage_RepairTip.AutomationProperties.Name" xml:space="preserve"><value>Repair</value></data><data name="CharPage_CleanDupTip.AutomationProperties.Name" xml:space="preserve"><value>Clean duplicates</value></data><data name="CharPage_RecycleBinTip.AutomationProperties.Name" xml:space="preserve"><value>Recycle Bin</value></data><data name="CharPage_RefreshTip.AutomationProperties.Name" xml:space="preserve"><value>Refresh characters</value></data><data name="CharPage_EnabledFilter.ToolTipService.ToolTip" xml:space="preserve"><value>Only show objects with at least one mod enabled</value></data><data name="Gallery_ViewToggle.OnContent" xml:space="preserve"><value>Gallery view</value></data><data name="Gallery_ViewToggle.OffContent" xml:space="preserve"><value>Detailed view</value></data><data name="Gallery_ViewToggle.AutomationProperties.Name" xml:space="preserve"><value>Toggle view mode</value></data></root>
+<data name="Gallery_DropInstallCaption" xml:space="preserve"><value>Release to install onto the current character</value></data><data name="PresetUnpinTip" xml:space="preserve"><value>Unpin</value></data><data name="PresetPinTip" xml:space="preserve"><value>Pin this preset</value></data><data name="ElementOtherLabel" xml:space="preserve"><value>Other</value></data><data name="AddCardToString" xml:space="preserve"><value>Add a character</value></data><data name="CharPage_PresetSaveTip.AutomationProperties.Name" xml:space="preserve"><value>Save</value></data><data name="CharPage_PresetRenameTip.AutomationProperties.Name" xml:space="preserve"><value>Rename</value></data><data name="CharPage_PresetDeleteTip.AutomationProperties.Name" xml:space="preserve"><value>Delete</value></data><data name="CharPage_RepairTip.AutomationProperties.Name" xml:space="preserve"><value>Repair</value></data><data name="CharPage_CleanDupTip.AutomationProperties.Name" xml:space="preserve"><value>Clean duplicates</value></data><data name="CharPage_RecycleBinTip.AutomationProperties.Name" xml:space="preserve"><value>Recycle Bin</value></data><data name="CharPage_RefreshTip.AutomationProperties.Name" xml:space="preserve"><value>Refresh characters</value></data><data name="CharPage_EnabledFilter.ToolTipService.ToolTip" xml:space="preserve"><value>Only show objects with at least one mod enabled</value></data><data name="Gallery_ViewToggle.OnContent" xml:space="preserve"><value>Gallery view</value></data><data name="Gallery_ViewToggle.OffContent" xml:space="preserve"><value>Detailed view</value></data><data name="Gallery_ViewToggle.AutomationProperties.Name" xml:space="preserve"><value>Toggle view mode</value></data>  <data name="CharVM_ItemFallback" xml:space="preserve"><value>items</value></data>
+  <data name="CharVM_RecycleTitle" xml:space="preserve"><value>Recycle bin</value></data>
+  <data name="CharVM_RecycleBody" xml:space="preserve"><value>Deleted files go to the Windows Recycle Bin. To bring a mod back, open the Recycle Bin below and choose Restore from the right-click menu.</value></data>
+  <data name="CharVM_RecycleEmpty" xml:space="preserve"><value>No mods have been cleaned up yet.</value></data>
+  <data name="CharVM_RecycleOpen" xml:space="preserve"><value>Open Recycle Bin</value></data>
+  <data name="CharVM_RecycleClear" xml:space="preserve"><value>Clear history</value></data>
+  <data name="CharVM_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="CharVM_RecycleClearedTitle" xml:space="preserve"><value>History cleared</value></data>
+  <data name="CharVM_RecycleClearedBody" xml:space="preserve"><value>Files in the Recycle Bin are untouched</value></data>
+  <data name="CharVM_UpdateCheckFailedTitle" xml:space="preserve"><value>Can't check for updates</value></data>
+  <data name="CharVM_UpdateCheckFailedBody" xml:space="preserve"><value>GitHub is unreachable (a proxy may help). You can also download Wuwa_Mod_Fixer from the project page yourself.</value></data>
+  <data name="CharVM_OpenGithubPage" xml:space="preserve"><value>Open GitHub page</value></data>
+  <data name="CharVM_FixerAlreadyDownloaded" xml:space="preserve"><value>This version is already downloaded and can be run right away.</value></data>
+  <data name="CharVM_FixerDownloadHint" xml:space="preserve"><value>Use the button below to download and run it (it lands in the local cache and is not installed system-wide).</value></data>
+  <data name="CharVM_RunFixer" xml:space="preserve"><value>Run fixer</value></data>
+  <data name="CharVM_DownloadAndRun" xml:space="preserve"><value>Download and run</value></data>
+  <data name="CharVM_FixerTitle" xml:space="preserve"><value>Mod fixer</value></data>
+  <data name="CharVM_NewVersionTitle" xml:space="preserve"><value>New version found</value></data>
+  <data name="CharVM_ViewGithub" xml:space="preserve"><value>View on GitHub</value></data>
+  <data name="CharVM_Downloading" xml:space="preserve"><value>Downloading…</value></data>
+  <data name="CharVM_FixerStarted" xml:space="preserve"><value>Fixer started</value></data>
+  <data name="CharVM_DownloadFailedPrefix" xml:space="preserve"><value>Download failed: </value></data>
+  <data name="CharVM_NoDuplicatesTitle" xml:space="preserve"><value>No duplicate mods</value></data>
+  <data name="CharVM_NoDuplicatesBody" xml:space="preserve"><value>Scan finished — no leftover folders with the same name</value></data>
+  <data name="CharVM_CleanupTitle" xml:space="preserve"><value>Clean up leftovers</value></data>
+  <data name="CharVM_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="CharVM_NothingToCleanTitle" xml:space="preserve"><value>Nothing safe to clean up</value></data>
+  <data name="CharVM_CleanupDoneTitle" xml:space="preserve"><value>Cleanup finished</value></data>
+  <data name="CharVM_CleanupFailedTitle" xml:space="preserve"><value>Cleanup failed</value></data>
+  <data name="CharVM_RefreshTitle" xml:space="preserve"><value>Refresh character list</value></data>
+  <data name="CharVM_Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="CharVM_RefreshAndBootstrap" xml:space="preserve"><value>Refresh and fill in</value></data>
+  <data name="CharVM_NothingToMove" xml:space="preserve"><value>No mods needed moving</value></data>
+  <data name="CharVM_OrganizeDoneTitle" xml:space="preserve"><value>Character folders organized</value></data>
+  <data name="CharVM_BootstrapDoneTitle" xml:space="preserve"><value>Character folders added</value></data>
+  <data name="CharVM_RefreshFailedTitle" xml:space="preserve"><value>Refresh failed</value></data>
+  <data name="CharVM_MigrateExplain" xml:space="preserve"><value>Only real mod folders inside category folders are moved; empty old folders are cleaned up. Mod contents are never deleted and folders with the same name are never overwritten.</value></data>
+  <data name="CharVM_MigrateTargetsPrefix" xml:space="preserve"><value>These characters will be used: </value></data>
+  <data name="CharVM_TargetMissing" xml:space="preserve"><value>The target does not exist yet</value></data>
+  <data name="CharVM_ExistsSkipped" xml:space="preserve"><value>[exists, skipped]</value></data>
+  <data name="CharVM_MigrateFoundTitle" xml:space="preserve"><value>Mods that are not filed yet</value></data>
+  <data name="CharVM_MigrateStart" xml:space="preserve"><value>Organize now</value></data>
+  <data name="CharVM_MigrateLater" xml:space="preserve"><value>Not now</value></data>
+  <data name="CharVM_PortraitUpdatedTitle" xml:space="preserve"><value>Character portrait updated</value></data>
+  <data name="CharVM_PortraitFailedTitle" xml:space="preserve"><value>Could not set the portrait</value></data>
+  <data name="CharVM_PortraitCustomOnly" xml:space="preserve"><value>Only custom characters can change their portrait</value></data>
+  <data name="CharVM_DeleteTitle" xml:space="preserve"><value>Delete character</value></data>
+  <data name="CharVM_DeleteCustomBody" xml:space="preserve"><value>The character entry is removed; the mod folder stays on disk.</value></data>
+  <data name="CharVM_DeleteBuiltinBody" xml:space="preserve"><value>This is a built-in character. It cannot be removed from the game itself — it is only hidden from the OMniX list.</value></data>
+  <data name="CharVM_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="CharVM_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="CharVM_DeletedTitle" xml:space="preserve"><value>Character deleted</value></data>
+  <data name="CharVM_RemovedTitle" xml:space="preserve"><value>Character removed</value></data>
+  <data name="CharVM_DeleteFailedTitle" xml:space="preserve"><value>Delete failed</value></data>
+  <data name="CharVM_AddFailedTitle" xml:space="preserve"><value>Could not add the character</value></data>
+  <data name="CharVM_LoadFailedTitle" xml:space="preserve"><value>Could not load the character list</value></data>
+  <data name="CharVM_CatCharacters" xml:space="preserve"><value>Character list</value></data>
+  <data name="CharVM_CatNpcs" xml:space="preserve"><value>NPC list</value></data>
+  <data name="CharVM_CatObjects" xml:space="preserve"><value>Object list</value></data>
+  <data name="CharVM_CatWeapons" xml:space="preserve"><value>Weapon list</value></data>
+  <data name="CharVM_NamePlaceholder" xml:space="preserve"><value>Enter a character name…</value></data>
+  <data name="CharVM_NameLabel" xml:space="preserve"><value>Character name</value></data>
+  <data name="CharVM_ElementLabel" xml:space="preserve"><value>Element</value></data>
+  <data name="CharVM_ElementHint" xml:space="preserve"><value>Leave it empty and the character goes to "Other".</value></data>
+  <data name="CharVM_AddTitle" xml:space="preserve"><value>Add character</value></data>
+  <data name="CharVM_Create" xml:space="preserve"><value>Create</value></data>
+  <data name="CharVM_NoElementTitle" xml:space="preserve"><value>No element selected</value></data>
+  <data name="CharVM_Pin" xml:space="preserve"><value>Pin</value></data>
+  <data name="CharVM_Unpin" xml:space="preserve"><value>Unpin</value></data>
+  <data name="CharVM_RenamePlaceholder" xml:space="preserve"><value>Enter a new name…</value></data>
+  <data name="CharVM_RenameTitle" xml:space="preserve"><value>Rename character</value></data>
+  <data name="CharVM_Confirm" xml:space="preserve"><value>Confirm</value></data>
+  <data name="CharVM_RenamedTitle" xml:space="preserve"><value>Renamed</value></data>
+  <data name="CharVM_RenameFailedTitle" xml:space="preserve"><value>Rename failed</value></data>
+  <data name="CharVM_ElementUnspecified" xml:space="preserve"><value>(unspecified — goes to Other)</value></data>
+  <data name="CharVM_Other" xml:space="preserve"><value>Other</value></data>
+  <data name="CharVM_StatusSummary" xml:space="preserve"><value>Showing {0} / {1} {2} · {3} mods · {4} enabled</value></data>
+  <data name="CharVM_RecycleSummary" xml:space="preserve"><value>{0} records · {1:F1} MB in total</value></data>
+  <data name="CharVM_RecycleMore" xml:space="preserve"><value>… and {0} more</value></data>
+  <data name="CharVM_FixerVersion" xml:space="preserve"><value>Mod fixer {0}</value></data>
+  <data name="CharVM_NewVersionTag" xml:space="preserve"><value>New version {0}</value></data>
+  <data name="CharVM_DownloadProgress" xml:space="preserve"><value>Downloading {0:F1} MB / {1:F1} MB ({2:F0}%)</value></data>
+  <data name="CharVM_DuplicatesFound" xml:space="preserve"><value>Found {0} folders with duplicate names ({1:F1} MB in the old folders)</value></data>
+  <data name="CharVM_DuplicatesSafe" xml:space="preserve"><value>{0} of them are identical and safe to clean up — deleted items go to the Recycle Bin and can be restored.</value></data>
+  <data name="CharVM_DuplicatesRisky" xml:space="preserve"><value>{0} differ in content and are left alone; compare them yourself before deciding.</value></data>
+  <data name="CharVM_DuplicatesMore" xml:space="preserve"><value>… and {0} more</value></data>
+  <data name="CharVM_CleanupThese" xml:space="preserve"><value>Clean up these {0}</value></data>
+  <data name="CharVM_NothingToCleanBody" xml:space="preserve"><value>Found {0} folders with duplicate names, but all of them differ in content — nothing was removed, compare them yourself.</value></data>
+  <data name="CharVM_CleanupResult" xml:space="preserve"><value>Cleaned up {0} duplicate mods and recovered {1:F1} MB</value></data>
+  <data name="CharVM_CleanupFailures" xml:space="preserve"><value>, {0} failed</value></data>
+  <data name="CharVM_CleanupRiskyKept" xml:space="preserve"><value>, {0} kept because they differ</value></data>
+  <data name="CharVM_OrganizeMoved" xml:space="preserve"><value>Organized {0} mods</value></data>
+  <data name="CharVM_OrganizeSkipped" xml:space="preserve"><value>, skipped {0} folders with the same name</value></data>
+  <data name="CharVM_OrganizeEmpty" xml:space="preserve"><value>, cleaned up {0} empty folders</value></data>
+  <data name="CharVM_BootstrapAdded" xml:space="preserve"><value>Added {0} missing character folders</value></data>
+  <data name="CharVM_ScanSummary" xml:space="preserve"><value>Found {0} old category folders containing {1} real mod folders that can be organized.</value></data>
+  <data name="CharVM_ScanSkips" xml:space="preserve"><value>{0} of the target folders already exist and will be skipped (nothing is overwritten)</value></data>
+  <data name="CharVM_ScanMore" xml:space="preserve"><value>… and {0} more</value></data>
+  <data name="CharVM_OpenPath" xml:space="preserve"><value>Open: {0}</value></data>
+  <data name="CharVM_PathMissing" xml:space="preserve"><value>Path not found: {0}</value></data>
+  <data name="CharVM_HiddenFromList" xml:space="preserve"><value>{0} is now hidden from the list</value></data>
+  <data name="CharVM_OnlyWithMods" xml:space="preserve"><value>Only show {0} with mods</value></data>
+  <data name="CharVM_CreatedAsOther" xml:space="preserve"><value>Created "{0}", filed under "Other" by default.</value></data>
+  <data name="CharVM_RenameArrow" xml:space="preserve"><value>{0} → {1}</value></data>
+  <data name="CharVM_PresetNotFound" xml:space="preserve"><value>No preset named "{0}"</value></data>
+  <data name="CharVM_PresetUpdated" xml:space="preserve"><value>"{0}" now holds the currently enabled mods</value></data>
+  <data name="CharVM_PresetDeleteConfirm" xml:space="preserve"><value>Delete "{0}"? This cannot be undone.</value></data>
+  <data name="CharVM_PresetDeleted" xml:space="preserve"><value>"{0}" deleted</value></data>
+  <data name="CharVM_PresetNameTaken" xml:space="preserve"><value>A preset named "{0}" already exists</value></data>
+  <data name="CharVM_PresetNameTakenShort" xml:space="preserve"><value>A preset named "{0}" already exists — pick another name</value></data>
+  <data name="CharVM_PresetSaved" xml:space="preserve"><value>"{0}" now holds the currently enabled mods</value></data>
+  <data name="CharVM_SavedToPresetTitle" xml:space="preserve"><value>Saved to preset</value></data>
+  <data name="CharVM_PresetDeleteTitle" xml:space="preserve"><value>Delete preset</value></data>
+  <data name="CharVM_PresetDeletedTitle" xml:space="preserve"><value>Preset deleted</value></data>
+  <data name="CharVM_PresetNewNamePlaceholder" xml:space="preserve"><value>New preset name</value></data>
+  <data name="CharVM_PresetRenameTitle" xml:space="preserve"><value>Rename preset</value></data>
+  <data name="CharVM_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="CharVM_NameTakenTitle" xml:space="preserve"><value>Name already used</value></data>
+  <data name="CharVM_PresetRenamedTitle" xml:space="preserve"><value>Preset renamed</value></data>
+  <data name="CharVM_PresetNamePlaceholder" xml:space="preserve"><value>Name this preset</value></data>
+  <data name="CharVM_SaveAsPresetTitle" xml:space="preserve"><value>Save current as preset</value></data>
+  <data name="CharVM_SaveAsPresetBody" xml:space="preserve"><value>Stores the currently enabled mods as a preset so you can switch back to it from Mod presets.</value></data>
+  <data name="CharVM_NameEmptyTitle" xml:space="preserve"><value>Name cannot be empty</value></data>
+  <data name="CharVM_NameEmptyBody" xml:space="preserve"><value>Nothing was saved — just try again</value></data>
+  <data name="CharVM_PresetNameTakenTitle" xml:space="preserve"><value>Preset name taken</value></data>
+  <data name="CharVM_PresetSavedTitle" xml:space="preserve"><value>Preset saved</value></data>
+  <data name="CharVM_RefreshBody" xml:space="preserve"><value>Refresh: re-reads the current folder and tidies up recognizable old-manager layouts or wrong character folder names.</value></data>
+  <data name="CharVM_DeleteCustomConfirm" xml:space="preserve"><value>Delete "{0}"?\nThe character entry is removed; the mod folder stays on disk.</value></data>
+  <data name="CharVM_DeleteBuiltinConfirm" xml:space="preserve"><value>Remove "{0}" from the list?\nThis is a built-in character: it cannot be deleted from the game, only hidden from the OMniX list.</value></data>
+</root>

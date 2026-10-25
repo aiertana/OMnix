@@ -1,5 +1,6 @@
 using Windows.System;
 using CommunityToolkitWrapper;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.GamesService;
 using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.Helpers;
@@ -9,6 +10,7 @@ using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.ViewModels;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
@@ -69,6 +71,17 @@ public sealed partial class ShellPage : Page
 
             BindingOperations.SetBinding(settingsItem.InfoBadge, OpacityProperty, bindings);
 
+            // 内建的「设置」项文案由 WinUI 自己按系统语言填，且会连 AutomationProperties.Name 一起设，
+            // 所以两个都要覆盖，并且要等 NavigationView 把模板铺完（延后一拍）再改。
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                var label = App.GetService<ILanguageLocalizer>()
+                    .GetLocalizedStringOrDefault("/ShellUi/Shell_NavSettings", "设置");
+
+                settingsItem.Content = label;
+                AutomationProperties.SetName(settingsItem, label);
+            });
+
             Bindings.Update();
         };
 
@@ -79,6 +92,24 @@ public sealed partial class ShellPage : Page
         DebugItem.Visibility = Visibility.Collapsed;
 
 #endif
+    }
+
+    /// <summary>
+    ///     二开：分类导航项文案。分类数据里存的是中文（逻辑代码也在用），
+    ///     所以只在界面上按当前语言换成对应文案。
+    /// </summary>
+    private static string ResolveCategoryLabel(ICategory category)
+    {
+        var localizer = App.GetService<ILanguageLocalizer>();
+
+        return category.ModCategory switch
+        {
+            ModCategory.Character => localizer.GetLocalizedStringOrDefault("/ShellUi/Shell_NavCharacterList", "角色列表"),
+            ModCategory.NPC => localizer.GetLocalizedStringOrDefault("/ShellUi/Shell_NavNpcList", "NPC 列表"),
+            ModCategory.Object => localizer.GetLocalizedStringOrDefault("/ShellUi/Shell_NavObjectList", "物件列表"),
+            ModCategory.Weapons => localizer.GetLocalizedStringOrDefault("/ShellUi/Shell_NavWeaponList", "武器列表"),
+            _ => category.DisplayNamePlural
+        };
     }
 
     private void GameServiceOnInitialized(object? sender, EventArgs e)
@@ -92,7 +123,7 @@ public sealed partial class ShellPage : Page
             {
                 var categoryViewItem = new NavigationViewItem()
                 {
-                    Content = category.DisplayNamePlural,
+                    Content = ResolveCategoryLabel(category),
                     Tag = category.InternalName.Id
                 };
                 NavigationHelper.SetNavigateToParameter(categoryViewItem, category);
