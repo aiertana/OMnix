@@ -738,4 +738,8 @@
   <data name="Startup_UnloadedFolderSelector.Title" xml:space="preserve">
     <value>卸载区文件夹（可选）</value>
   </data>
+  <data name="Plugin_Preparing" xml:space="preserve"><value>正在准备…</value></data>
+  <data name="Hp_BgTip.ToolTipService.ToolTip" xml:space="preserve"><value>右键可以换背景图</value></data>
+  <data name="Hp_SwitchGameTip.ToolTipService.ToolTip" xml:space="preserve"><value>切换当前游戏（会重启应用）</value></data>
+  <data name="Hp_ThemeTip.ToolTipService.ToolTip" xml:space="preserve"><value>切换浅色 / 深色主题</value></data>
 </root>

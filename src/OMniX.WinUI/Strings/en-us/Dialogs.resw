@@ -342,4 +342,8 @@ Only Mods OMniX tracks are disabled in the selected categories.</value>
   <data name="PluginDep_XxmiBtn.Content" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="PluginDep_XxmiBrowseBtn.Content" xml:space="preserve"><value>Browse…</value></data>
+  <data name="PluginDep_ManualOkTitle" xml:space="preserve"><value>Saved</value></data>
+  <data name="PluginDep_ManualOkMsg" xml:space="preserve"><value>This location takes priority and will be checked first from now on.</value></data>
+  <data name="PluginDep_ManualBadTitle" xml:space="preserve"><value>That location does not work</value></data>
 </root>

@@ -144,4 +144,11 @@
   <data name="Startup_Header.Text" xml:space="preserve">
     <value>首次启动时可以进行设置</value>
   </data>
+  <data name="Su_BackTip.ToolTipService.ToolTip" xml:space="preserve"><value>返回首页，之后可从首页的引导卡重新进入配置</value></data>
+  <data name="Su_HowItWorks.Text" xml:space="preserve"><value>保存后 OMniX 会在 Mods 文件夹内为每个角色创建一个文件夹，启用/禁用 Mod 时会给 Mod 文件夹加上 'DISABLED_' 前缀。</value></data>
+  <data name="Su_BackupHint.Text" xml:space="preserve"><value>使用前建议先备份你的文件/Mod</value></data>
+  <data name="Su_Reorganize.Text" xml:space="preserve"><value>勾上之后，程序会把现有的 Mod 按角色分到各自的文件夹里。实在对不上角色的，会放进「Others」文件夹。</value></data>
+  <data name="Su_ReorganizeWarn.Text" xml:space="preserve"><value>如果某个 Mod 文件夹里塞了好几个角色的名字，可能会被挪到错误角色的目录下。这套逻辑假设 Mod 是平铺存放的（皮肤文件夹直接躺在 Mods 里）。要是你自己搞了很深的嵌套结构，OMniX 认错皮肤的概率会比较高。</value></data>
+  <data name="Su_LaterHint.Text" xml:space="preserve"><value>以后也可以在设置页里打开。</value></data>
+  <data name="Su_DisableAll.Text" xml:space="preserve"><value>给所有 Mod 文件夹加上 DISABLED_ 前缀，让它们全部失效</value></data>
 </root>

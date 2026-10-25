@@ -323,7 +323,7 @@ public partial class PresetViewModel(
             var isStarted = await Task.Run(() => ElevatorService.StartElevator());
 
             if (!isStarted)
-                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationElevatorFailed", "启动 Elevator 失败"),
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationElevatorFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_ElevatorFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_ElevatorFailed", "启动 Elevator 失败"))),
                     "Elevator failed to start",
                     TimeSpan.FromSeconds(5));
 
@@ -333,7 +333,7 @@ public partial class PresetViewModel(
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("启动 Elevator 失败", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_ElevatorFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_ElevatorFailed", "启动 Elevator 失败")), e.Message, TimeSpan.FromSeconds(5));
         }
 
         IsBusy = false;

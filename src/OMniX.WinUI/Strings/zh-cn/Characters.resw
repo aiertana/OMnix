@@ -204,6 +204,58 @@
   <data name="CharVM_PresetNameTakenTitle" xml:space="preserve"><value>预设重名</value></data>
   <data name="CharVM_PresetSavedTitle" xml:space="preserve"><value>预设已保存</value></data>
   <data name="CharVM_RefreshBody" xml:space="preserve"><value>刷新：重新读取当前目录，并自动整理可识别的旧管理器结构或错误角色分类名。</value></data>
-  <data name="CharVM_DeleteCustomConfirm" xml:space="preserve"><value>确定删除「{0}」吗？\n该角色的配置会被移除，Mod 文件夹会保留。</value></data>
-  <data name="CharVM_DeleteBuiltinConfirm" xml:space="preserve"><value>确定把「{0}」从列表里移除吗？\n这是游戏内置角色，无法从游戏本身删除，只会从 OMniX 的列表里隐藏。</value></data>
+  <data name="CharVM_DeleteCustomConfirm" xml:space="preserve"><value>确定删除「{0}」吗？
+该角色的配置会被移除，Mod 文件夹会保留。</value></data>
+  <data name="CharVM_DeleteBuiltinConfirm" xml:space="preserve"><value>确定把「{0}」从列表里移除吗？
+这是游戏内置角色，无法从游戏本身删除，只会从 OMniX 的列表里隐藏。</value></data>
+  <data name="CharVM_NoCharacterFound" xml:space="preserve"><value>没有找到{0}</value></data>
+  <data name="CharVM_DuplicateEntry" xml:space="preserve"><value>{0}   {1} / {2}   {3} 个文件 · {4}</value></data>
+  <data name="CharVM_CanClean" xml:space="preserve"><value>可清理</value></data>
+  <data name="CharVM_HasDiff" xml:space="preserve"><value>有差异</value></data>
+  <data name="CharVM_AttrUpdatedBody" xml:space="preserve"><value>{0} → {1}</value></data>
+  <data name="CharVM_ModsDisabledBody" xml:space="preserve"><value>已禁用 {0} 的全部 Mod</value></data>
+  <data name="CharVM_NoLauncherBody" xml:space="preserve"><value>没有找到 XXMI Launcher（模型导入器）。
+
+· 点「去下载」打开 GitHub 发布页，下载解压后回到「设置 → 启动器文件夹」选中它所在的目录。
+· 已经装好了的，点「自己设置路径」直接去设置页指定。</value></data>
+  <data name="CharVM_LauncherGoneBody" xml:space="preserve"><value>记录里的启动器已经不存在了：
+{0}
+
+· 点「去下载」重新下载一份最新的。
+· 点「自己设置路径」重新指定位置。</value></data>
+  <data name="CharVM_PresetDefaultName" xml:space="preserve"><value>预设{0}</value></data>
+  <data name="CharVM_SortFrequentlyUsed" xml:space="preserve"><value>常用</value></data>
+  <data name="CharVM_SortAlphabetical" xml:space="preserve"><value>按名称</value></data>
+  <data name="CharVM_SortReleaseDate" xml:space="preserve"><value>发布日期</value></data>
+  <data name="CharVM_SortRarity" xml:space="preserve"><value>稀有度</value></data>
+  <data name="CharVM_SortModCount" xml:space="preserve"><value>Mod 数量</value></data>
+  <data name="CharVM_SortRecentlyAdded" xml:space="preserve"><value>最近添加</value></data>
+  <data name="CharVM_SearchPlaceholder" xml:space="preserve"><value>输入角色名字…</value></data>
+  <data name="CharVM_NewCharacter" xml:space="preserve"><value>新增角色</value></data>
+  <data name="CharVM_AttrUpdated" xml:space="preserve"><value>已更新属性</value></data>
+  <data name="CharVM_AttrUpdateFailed" xml:space="preserve"><value>修改属性失败</value></data>
+  <data name="CharVM_DisableModsFailed" xml:space="preserve"><value>禁用 Mod 时出错</value></data>
+  <data name="CharVM_ModsDisabled" xml:space="preserve"><value>已禁用 Mod</value></data>
+  <data name="CharVM_AddModFailed" xml:space="preserve"><value>添加 Mod 失败</value></data>
+  <data name="CharVM_BadGameBananaLink" xml:space="preserve"><value>GameBanana 链接不对</value></data>
+  <data name="CharVM_OpenModPageFailed" xml:space="preserve"><value>打开 Mod 页面失败</value></data>
+  <data name="CharVM_UnpinFailed" xml:space="preserve"><value>取消置顶失败</value></data>
+  <data name="CharVM_PinFailed" xml:space="preserve"><value>置顶失败</value></data>
+  <data name="CharVM_LauncherNotFound" xml:space="preserve"><value>没有找到启动器</value></data>
+  <data name="CharVM_GoDownload" xml:space="preserve"><value>去下载</value></data>
+  <data name="CharVM_SetPathYourself" xml:space="preserve"><value>自己设置路径</value></data>
+  <data name="Cp_RandomTip.ToolTipService.ToolTip" xml:space="preserve"><value>随机启用 Mod</value></data>
+  <data name="Cp_ApplyPresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>点击应用这个预设</value></data>
+  <data name="Cp_OverwritePresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>用当前已启用的 Mod 组合覆盖这个预设</value></data>
+  <data name="Cp_RenamePresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>给这个预设改名</value></data>
+  <data name="Cp_DeletePresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>删除这个预设</value></data>
+  <data name="Cp_SavePresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>把当前已启用的 Mod 组合存成一个预设</value></data>
+  <data name="Cp_ModFixerTip.ToolTipService.ToolTip" xml:space="preserve"><value>Mod 修复器：检查并下载最新版 Wuwa_Mod_Fixer</value></data>
+  <data name="Cp_OnlyEnabledTip.ToolTipService.ToolTip" xml:space="preserve"><value>仅显示至少启用了一个 Mod 的对象</value></data>
+  <data name="Cp_SortDirectionTip.ToolTipService.ToolTip" xml:space="preserve"><value>切换升序 / 降序</value></data>
+  <data name="Cp_CleanDupesTip.ToolTipService.ToolTip" xml:space="preserve"><value>清理重复 Mod 残留（删除后进回收站）</value></data>
+  <data name="Cp_RecycleBinTip.ToolTipService.ToolTip" xml:space="preserve"><value>回收站：查看清理记录，打开系统回收站还原</value></data>
+  <data name="Cp_RefreshTip.ToolTipService.ToolTip" xml:space="preserve"><value>刷新角色列表，并整理可识别的旧分类目录</value></data>
+  <data name="Cp_ConflictTip.ToolTipService.ToolTip" xml:space="preserve"><value>启用了多个 Mod / 皮肤冲突</value></data>
+  <data name="Cp_EnabledTip.ToolTipService.ToolTip" xml:space="preserve"><value>已启用 Mod</value></data>
 </root>

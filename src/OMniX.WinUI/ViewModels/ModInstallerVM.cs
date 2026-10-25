@@ -95,8 +95,10 @@ public partial class ModInstallerVM : ObservableRecipient, INavigationAware, IDi
 
     [ObservableProperty] private ObservableCollection<RootFolder> _rootFolder = new();
 
-    private const string AddRenameText = "改名后添加";
-    private const string AddReplaceText = "覆盖原来的 Mod";
+    private static string AddRenameText =>
+        App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_AddRename", "改名后添加");
+    private static string AddReplaceText =>
+        App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_AddReplace", "覆盖原来的 Mod");
     [ObservableProperty] private string _primaryButtonText = AddRenameText;
 
     [ObservableProperty] private bool _overwriteExistingMod;
@@ -574,8 +576,8 @@ public partial class ModInstallerVM : ObservableRecipient, INavigationAware, IDi
         }
         catch (Exception e)
         {
-            _logger.Error(e, "没能从剪贴板取到图片");
-            _notificationManager.ShowNotification("没能从剪贴板取到图片", e.Message,
+            _logger.Error(e, App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_ClipboardImageFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_ClipboardImageFailed", "没能从剪贴板取到图片")));
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_ClipboardImageFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_ClipboardImageFailed", "没能从剪贴板取到图片")), e.Message,
                 TimeSpan.FromSeconds(5));
             return;
         }
@@ -958,7 +960,7 @@ public partial class ModInstallerVM : ObservableRecipient, INavigationAware, IDi
                 catch (Exception e)
                 {
                     _logger.Error(e, "Failed to download image");
-                    _notificationManager.ShowNotification("从 modUrl 下载图片失败", e.Message,
+                    _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_UrlImageFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_UrlImageFailed", "从 modUrl 下载图片失败")), e.Message,
                         TimeSpan.FromSeconds(5));
                 }
             }
@@ -1019,8 +1021,8 @@ public partial class ModInstallerVM : ObservableRecipient, INavigationAware, IDi
         PInvoke.PlaySound("SystemAsterisk", null,
             SND_FLAGS.SND_ASYNC | SND_FLAGS.SND_ALIAS | SND_FLAGS.SND_NODEFAULT);
 
-        _notificationManager.ShowNotification("出错了",
-            "出错了 while adding the mod. See logs for more details",
+        _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_AddFailedTitle", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_AddFailedTitle", "出错了")),
+            App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_AddFailedBody", "添加 Mod 时出错了，详情见日志"),
             TimeSpan.FromSeconds(10));
 
         CloseRequested?.Invoke(this, new CloseRequestedArgs(CloseReasons.Error, e));

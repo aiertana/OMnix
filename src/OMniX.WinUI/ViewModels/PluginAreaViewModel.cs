@@ -247,7 +247,7 @@ public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
         card.SwitchEnabled = false;
         card.DownloadIndeterminate = true;
         card.DownloadPercent = 0;
-        card.DownloadText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Plugin_DownloadPreparing", "正在准备…");
+        card.DownloadText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Plugin_DownloadPreparing", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/HomePreset/Plugin_Preparing", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/HomePreset/Plugin_Preparing", "正在准备…")));
 
         var progress = new Progress<DownloadProgress>(p =>
         {
@@ -292,7 +292,7 @@ public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
         card.PrimaryEnabled = false;
         card.DownloadIndeterminate = true;
         card.DownloadPercent = 0;
-        card.DownloadText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Plugin_DownloadPreparing", "正在准备…");
+        card.DownloadText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Plugin_DownloadPreparing", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/HomePreset/Plugin_Preparing", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/HomePreset/Plugin_Preparing", "正在准备…")));
 
         var progress = new Progress<DownloadProgress>(p =>
         {
@@ -460,7 +460,7 @@ public partial class PluginAreaViewModel : ObservableRecipient, INavigationAware
         card.PrimaryEnabled = false;
         card.DownloadIndeterminate = true;
         card.DownloadPercent = 0;
-        card.DownloadText = "正在准备…";
+        card.DownloadText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/HomePreset/Plugin_Preparing", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/HomePreset/Plugin_Preparing", "正在准备…"));
 
         var progress = new Progress<(double Percent, long Received, long Total)>(p =>
         {

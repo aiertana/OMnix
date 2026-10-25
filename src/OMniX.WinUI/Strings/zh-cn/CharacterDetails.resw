@@ -260,7 +260,8 @@
     <value>取消</value>
   </data>
   <data name="Pane_DeleteDialogContent" xml:space="preserve">
-    <value>确定要删除「{0}」吗？\n文件会被移到回收站，之后可以还原。</value>
+    <value>确定要删除「{0}」吗？
+文件会被移到回收站，之后可以还原。</value>
   </data>
   <data name="Pane_DeleteDialogPrimary" xml:space="preserve">
     <value>删除</value>
@@ -329,7 +330,8 @@
     <value>这个角色还没有 Mod</value>
   </data>
   <data name="Page_NoMoreSkinsToolTip" xml:space="preserve">
-    <value>这个角色目前只有默认皮肤。\n安装带有多套皮肤的游戏内 Mod 后，这里会出现可选皮肤。</value>
+    <value>这个角色目前只有默认皮肤。
+安装带有多套皮肤的游戏内 Mod 后，这里会出现可选皮肤。</value>
   </data>
   <data name="Page_SelectSkinButtonToolTip" xml:space="preserve">
     <value>切换游戏内显示的皮肤（快捷键 F1）</value>
@@ -430,4 +432,18 @@
   <data name="Toolbar_ViewToggle.OnContent" xml:space="preserve">
     <value>画廊视图</value>
   </data>
+  <data name="Cg_SingleModTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾选后同一时间只允许启用一个 Mod。</value></data>
+  <data name="Cd_AddFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>添加 Mod 文件夹</value></data>
+  <data name="Cd_AddArchiveTip.ToolTipService.ToolTip" xml:space="preserve"><value>从压缩包中添加 Mod</value></data>
+  <data name="Cd_SingleModTip.ToolTipService.ToolTip" xml:space="preserve"><value>开启后同一时间只允许启用一个 Mod</value></data>
+  <data name="Cd_SavePrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>读取选中 Mod 在 d3dx_user.ini 中的 3Dmigoto 偏好设置，并保存到该 Mod 的 .JASM_Config.json</value></data>
+  <data name="Cd_LoadPrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>从 .JASM_Config.json 读取选中 Mod 的偏好设置并写入 d3dx_user.ini 供 3Dmigoto 使用</value></data>
+  <data name="Cc_LocateTip.ToolTipService.ToolTip" xml:space="preserve"><value>在 Mod 总览中定位</value></data>
+  <data name="Cc_EditTip.ToolTipService.ToolTip" xml:space="preserve"><value>编辑角色</value></data>
+  <data name="Mp_RenameTip.ToolTipService.ToolTip" xml:space="preserve"><value>修改 Mod 显示名称</value></data>
+  <data name="Mp_PickIniTip.ToolTipService.ToolTip" xml:space="preserve"><value>指定 OMniX 读取该 Mod 的 .ini 文件</value></data>
+  <data name="Mp_IgnoreIniTip.ToolTipService.ToolTip" xml:space="preserve"><value>OMniX 将不再查找 merged.ini / Script.ini，并忽略该 Mod 的按键切换</value></data>
+  <data name="Mp_CharacterImageTip.ToolTipService.ToolTip" xml:space="preserve"><value>角色头像</value></data>
+  <data name="Mp_EditHotkeyTip.ToolTipService.ToolTip" xml:space="preserve"><value>编辑按键原始值</value></data>
+  <data name="Mp_RecycleTip.ToolTipService.ToolTip" xml:space="preserve"><value>把 Mod 文件夹移到回收站，可随时还原</value></data>
 </root>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Pd_AddedToPreset" xml:space="preserve"><value>已加进预设</value></data>
+  <data name="Pd_AddToPresetFailed" xml:space="preserve"><value>加进预设失败</value></data>
+  <data name="Pd_ElevatorFailed" xml:space="preserve"><value>启动 Elevator 失败</value></data>
+  <data name="Pr_EmptyPresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾选后，新预设里不会启用任何 Mod</value></data>
+  <data name="Pr_AutoSyncTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾选后，创建预设和切换预设时 OMniX 会自动同步偏好设置</value></data>
+  <data name="Pr_SavePrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>从 d3dx_user.ini 读取当前启用 Mod 的偏好，存进各自的 .JASM_Config.json</value></data>
+  <data name="Pr_LoadPrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>从 .JASM_Config.json 读取偏好，写进 d3dx_user.ini 让 3DMigoto 生效</value></data>
+  <data name="Pr_ManualSyncTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾选后可以自己手动同步偏好，不用让 Elevator 代劳</value></data>
+  <data name="Pr_ApplyTip.ToolTipService.ToolTip" xml:space="preserve"><value>启用这个预设里的所有 Mod，并把预设里的偏好写回 Mod</value></data>
+  <data name="Pr_DeleteTip.ToolTipService.ToolTip" xml:space="preserve"><value>永久删除这个预设</value></data>
+  <data name="Pr_InfoTip.ToolTipService.ToolTip" xml:space="preserve"><value>打开一个带说明的弹窗</value></data>
+  <data name="Pr_ClearPrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>清空存在 Mod 的 .JASM_ModConfig.json 里的偏好</value></data>
+  <data name="Pd_SavePrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>读取这个 Mod 当前的 3Dmigoto 用户 ini，把设置存进当前预设</value></data>
+</root>

@@ -64,7 +64,7 @@ public partial class ModPageVM : ObservableRecipient
         _moddableObject = moddableObject;
         ModPage = modPage;
         _window = window;
-        _window.Title = "下载 Mod 文件";
+        _window.Title = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_DownloadTitle", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_DownloadTitle", "下载 Mod 文件"));
         _ct = ctsToken;
         Initialize();
     }
@@ -137,10 +137,10 @@ public partial class ModPageVM : ObservableRecipient
 
     private Task LogErrorAndClose(Exception e)
     {
-        _logger.Error(e, "读取 Mod 更新信息失败");
+        _logger.Error(e, App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_ReadUpdateFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_ReadUpdateFailed", "读取 Mod 更新信息失败")));
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
-            App.GetService<NotificationManager>().ShowNotification("读取 Mod 更新信息失败",
+            App.GetService<NotificationManager>().ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_ReadUpdateFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_ReadUpdateFailed", "读取 Mod 更新信息失败")),
                 e.Message, TimeSpan.FromSeconds(10));
         });
         _window.Close();
@@ -213,9 +213,9 @@ public partial class ModPageVM : ObservableRecipient
         }
         catch (Exception e)
         {
-            _logger.Error(e, "下载 Mod 文件失败");
+            _logger.Error(e, App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_DownloadFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_DownloadFailed", "下载 Mod 文件失败")));
 
-            _notificationManager.ShowNotification("下载 Mod 文件失败",
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_DownloadFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_DownloadFailed", "下载 Mod 文件失败")),
                 e.Message, TimeSpan.FromSeconds(10));
 
             Reset();
@@ -319,9 +319,9 @@ public partial class ModPageVM : ObservableRecipient
         }
         catch (Exception e)
         {
-            _logger.Error(e, "安装 Mod 文件失败");
+            _logger.Error(e, App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_InstallFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_InstallFailed", "安装 Mod 文件失败")));
 
-            _notificationManager.ShowNotification("安装 Mod 文件失败",
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_InstallFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mp_InstallFailed", "安装 Mod 文件失败")),
                 e.InnerException?.Message ?? e.Message, TimeSpan.FromSeconds(10));
 
             fileInfoVm.Status = ModFileInfoVm.InstallStatus.Downloaded;

@@ -396,4 +396,6 @@ Click "Open official launcher" and press start inside it. It will load according
   <data name="ThemeSvc_Standard" xml:space="preserve">
     <value>Standard</value>
   </data>
+  <data name="PluginDepSvc_ManualEmpty" xml:space="preserve"><value>Pick a folder first</value></data>
+  <data name="PluginDepSvc_ManualInvalid" xml:space="preserve"><value>That folder does not contain XXMI Launcher: {0}</value></data>
 </root>

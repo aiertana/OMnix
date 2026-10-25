@@ -204,6 +204,58 @@
   <data name="CharVM_PresetNameTakenTitle" xml:space="preserve"><value>Preset name taken</value></data>
   <data name="CharVM_PresetSavedTitle" xml:space="preserve"><value>Preset saved</value></data>
   <data name="CharVM_RefreshBody" xml:space="preserve"><value>Refresh: re-reads the current folder and tidies up recognizable old-manager layouts or wrong character folder names.</value></data>
-  <data name="CharVM_DeleteCustomConfirm" xml:space="preserve"><value>Delete "{0}"?\nThe character entry is removed; the mod folder stays on disk.</value></data>
-  <data name="CharVM_DeleteBuiltinConfirm" xml:space="preserve"><value>Remove "{0}" from the list?\nThis is a built-in character: it cannot be deleted from the game, only hidden from the OMniX list.</value></data>
+  <data name="CharVM_DeleteCustomConfirm" xml:space="preserve"><value>Delete "{0}"?
+The character entry is removed; the mod folder stays on disk.</value></data>
+  <data name="CharVM_DeleteBuiltinConfirm" xml:space="preserve"><value>Remove "{0}" from the list?
+This is a built-in character: it cannot be deleted from the game, only hidden from the OMniX list.</value></data>
+  <data name="CharVM_NoCharacterFound" xml:space="preserve"><value>No {0} found</value></data>
+  <data name="CharVM_DuplicateEntry" xml:space="preserve"><value>{0}   {1} / {2}   {3} files · {4}</value></data>
+  <data name="CharVM_CanClean" xml:space="preserve"><value>Cleanable</value></data>
+  <data name="CharVM_HasDiff" xml:space="preserve"><value>Differs</value></data>
+  <data name="CharVM_AttrUpdatedBody" xml:space="preserve"><value>{0} → {1}</value></data>
+  <data name="CharVM_ModsDisabledBody" xml:space="preserve"><value>All mods for {0} have been disabled</value></data>
+  <data name="CharVM_NoLauncherBody" xml:space="preserve"><value>Could not find XXMI Launcher (the model importer).
+
+· Use "Download" to open the GitHub release page — extract it, then pick its folder under Settings → Launcher folder.
+· Already installed? Use "Set the path myself" to point at it.</value></data>
+  <data name="CharVM_LauncherGoneBody" xml:space="preserve"><value>The launcher on record no longer exists:
+{0}
+
+· Use "Download" to grab a fresh copy.
+· Use "Set the path myself" to point at it again.</value></data>
+  <data name="CharVM_PresetDefaultName" xml:space="preserve"><value>Preset {0}</value></data>
+  <data name="CharVM_SortFrequentlyUsed" xml:space="preserve"><value>Frequently used</value></data>
+  <data name="CharVM_SortAlphabetical" xml:space="preserve"><value>By name</value></data>
+  <data name="CharVM_SortReleaseDate" xml:space="preserve"><value>Release date</value></data>
+  <data name="CharVM_SortRarity" xml:space="preserve"><value>Rarity</value></data>
+  <data name="CharVM_SortModCount" xml:space="preserve"><value>Mod count</value></data>
+  <data name="CharVM_SortRecentlyAdded" xml:space="preserve"><value>Recently added</value></data>
+  <data name="CharVM_SearchPlaceholder" xml:space="preserve"><value>Type a character name…</value></data>
+  <data name="CharVM_NewCharacter" xml:space="preserve"><value>New character</value></data>
+  <data name="CharVM_AttrUpdated" xml:space="preserve"><value>Attribute updated</value></data>
+  <data name="CharVM_AttrUpdateFailed" xml:space="preserve"><value>Could not update the attribute</value></data>
+  <data name="CharVM_DisableModsFailed" xml:space="preserve"><value>Error while disabling mods</value></data>
+  <data name="CharVM_ModsDisabled" xml:space="preserve"><value>Mods disabled</value></data>
+  <data name="CharVM_AddModFailed" xml:space="preserve"><value>Could not add the mod</value></data>
+  <data name="CharVM_BadGameBananaLink" xml:space="preserve"><value>That is not a valid GameBanana link</value></data>
+  <data name="CharVM_OpenModPageFailed" xml:space="preserve"><value>Could not open the mod page</value></data>
+  <data name="CharVM_UnpinFailed" xml:space="preserve"><value>Could not unpin</value></data>
+  <data name="CharVM_PinFailed" xml:space="preserve"><value>Could not pin</value></data>
+  <data name="CharVM_LauncherNotFound" xml:space="preserve"><value>Launcher not found</value></data>
+  <data name="CharVM_GoDownload" xml:space="preserve"><value>Download</value></data>
+  <data name="CharVM_SetPathYourself" xml:space="preserve"><value>Set the path myself</value></data>
+  <data name="Cp_RandomTip.ToolTipService.ToolTip" xml:space="preserve"><value>Enable random mods</value></data>
+  <data name="Cp_ApplyPresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>Click to apply this preset</value></data>
+  <data name="Cp_OverwritePresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>Overwrite this preset with the mods enabled right now</value></data>
+  <data name="Cp_RenamePresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>Rename this preset</value></data>
+  <data name="Cp_DeletePresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>Delete this preset</value></data>
+  <data name="Cp_SavePresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>Save the mods enabled right now as a preset</value></data>
+  <data name="Cp_ModFixerTip.ToolTipService.ToolTip" xml:space="preserve"><value>Mod fixer: check for and download the latest Wuwa_Mod_Fixer</value></data>
+  <data name="Cp_OnlyEnabledTip.ToolTipService.ToolTip" xml:space="preserve"><value>Only show objects with at least one mod enabled</value></data>
+  <data name="Cp_SortDirectionTip.ToolTipService.ToolTip" xml:space="preserve"><value>Switch between ascending and descending</value></data>
+  <data name="Cp_CleanDupesTip.ToolTipService.ToolTip" xml:space="preserve"><value>Clean up leftovers from duplicate mods (deleted ones go to the recycle bin)</value></data>
+  <data name="Cp_RecycleBinTip.ToolTipService.ToolTip" xml:space="preserve"><value>Recycle bin: review what was cleaned and restore it from the system recycle bin</value></data>
+  <data name="Cp_RefreshTip.ToolTipService.ToolTip" xml:space="preserve"><value>Refresh the character list and tidy up recognizable old category folders</value></data>
+  <data name="Cp_ConflictTip.ToolTipService.ToolTip" xml:space="preserve"><value>Several mods or skins are enabled and they conflict</value></data>
+  <data name="Cp_EnabledTip.ToolTipService.ToolTip" xml:space="preserve"><value>Mods enabled</value></data>
 </root>

@@ -217,7 +217,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     }
 
     private CharacterGridItemModel NoCharacterFound =>
-        new(new Character("None", $"没有找到{_category.DisplayNamePlural}"));
+        new(new Character("None", string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_NoCharacterFound", "没有找到{0}"), _category.DisplayNamePlural)));
 
     public void AutoSuggestBox_TextChanged(string text)
     {
@@ -794,8 +794,13 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             {
                 panel.Children.Add(new TextBlock
                 {
-                    Text = $"{(pair.Identical ? "可清理" : "有差异")}   {pair.CharacterDisplayName} / " +
-                           $"{Path.GetFileName(pair.SourcePath)}   {pair.SourceFileCount} 个文件 · {pair.SizeText}" +
+                    Text = string.Format(
+                           App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_DuplicateEntry", "{0}   {1} / {2}   {3} 个文件 · {4}"),
+                           pair.Identical
+                               ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_CanClean", "可清理")
+                               : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_HasDiff", "有差异"),
+                           pair.CharacterDisplayName, Path.GetFileName(pair.SourcePath),
+                           pair.SourceFileCount, pair.SizeText) +
                            (pair.Identical ? string.Empty : $"   ({pair.Note})"),
                     FontSize = 12,
                     Opacity = 0.85,
@@ -1853,7 +1858,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_ElementUnspecified", "（不指定 · 默认其他）");
 
     private string ElementOtherText =>
-        _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Other", "其他");
+        _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Other", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_Other", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_Other", "其他")));
 
     private async Task PromptCreateCharacterAsync()
     {
@@ -2219,15 +2224,15 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
             OnNavigatedTo(_category);
 
-            var label = isOther ? "其他" : character.Element.DisplayName;
+            var label = isOther ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_Other", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_Other", "其他")) : character.Element.DisplayName;
 
-            NotificationManager.ShowNotification("已更新属性", $"{character.DisplayName} → {label}",
+            NotificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_AttrUpdated", "已更新属性"), string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_AttrUpdatedBody", "{0} → {1}"), character.DisplayName, label),
                 TimeSpan.FromSeconds(4));
         }
         catch (Exception e)
         {
             _logger.Error(e, "Could not set element for character {Character}", character.DisplayName);
-            NotificationManager.ShowNotification("修改属性失败", e.Message, TimeSpan.FromSeconds(8));
+            NotificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_AttrUpdateFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_AttrUpdateFailed", "修改属性失败")), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -2309,13 +2314,13 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         catch (Exception e)
         {
             _logger.Error(e, "禁用 Mod 时出错 for character {Character}", character.Character.InternalName);
-            NotificationManager.ShowNotification("禁用 Mod 时出错", e.Message, TimeSpan.FromSeconds(6));
+            NotificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_DisableModsFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_DisableModsFailed", "禁用 Mod 时出错")), e.Message, TimeSpan.FromSeconds(6));
             return;
         }
 
         character.SetMods(updatedMods);
         await RefreshMultipleModsWarningAsync();
-        NotificationManager.ShowNotification("已禁用 Mod", $"Alls mods for {character.Character.DisplayName} have been disabled", null);
+        NotificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_ModsDisabled", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_ModsDisabled", "已禁用 Mod")), string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_ModsDisabledBody", "已禁用 {0} 的全部 Mod"), character.Character.DisplayName), null);
     }
 
     [RelayCommand]
@@ -2452,20 +2457,18 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         {
             TextWrapping = TextWrapping.WrapWholeWords,
             Text = string.IsNullOrWhiteSpace(path)
-                ? "没有找到 XXMI Launcher（模型导入器）。\n\n" +
-                  "· 点「去下载」打开 GitHub 发布页，下载解压后回到「设置 → 启动器文件夹」选中它所在的目录。\n" +
-                  "· 已经装好了的，点「自己设置路径」直接去设置页指定。"
-                : $"记录里的启动器已经不存在了：\n{path}\n\n" +
-                  "· 点「去下载」重新下载一份最新的。\n" +
-                  "· 点「自己设置路径」重新指定位置。"
+                ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_NoLauncherBody", "没有找到 XXMI Launcher（模型导入器）。\n\n· 点「去下载」打开 GitHub 发布页，下载解压后回到「设置 → 启动器文件夹」选中它所在的目录。\n· 已经装好了的，点「自己设置路径」直接去设置页指定。")
+                : string.Format(
+                  App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_LauncherGoneBody", "记录里的启动器已经不存在了：\n{0}\n\n· 点「去下载」重新下载一份最新的。\n· 点「自己设置路径」重新指定位置。"),
+                  path)
         };
 
         var dialog = new ContentDialog
         {
-            Title = "没有找到启动器",
+            Title = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_LauncherNotFound", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_LauncherNotFound", "没有找到启动器")),
             Content = message,
-            PrimaryButtonText = "去下载",
-            SecondaryButtonText = "自己设置路径",
+            PrimaryButtonText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_GoDownload", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_GoDownload", "去下载")),
+            SecondaryButtonText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_SetPathYourself", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_SetPathYourself", "自己设置路径")),
             CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary
         };
@@ -2531,8 +2534,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         }
         catch (Exception e)
         {
-            _logger.Error(e, "添加 Mod 失败");
-            NotificationManager.ShowNotification("添加 Mod 失败", e.Message, TimeSpan.FromSeconds(10));
+            _logger.Error(e, App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_AddModFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_AddModFailed", "添加 Mod 失败")));
+            NotificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_AddModFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_AddModFailed", "添加 Mod 失败")), e.Message, TimeSpan.FromSeconds(10));
         }
         finally
         {
@@ -2558,7 +2561,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         if (!GameBananaUrlHelper.TryGetModIdFromUrl(uri, out _))
         {
-            NotificationManager.ShowNotification("GameBanana 链接不对", "", null);
+            NotificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_BadGameBananaLink", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_BadGameBananaLink", "GameBanana 链接不对")), "", null);
             return;
         }
 
@@ -2569,8 +2572,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         }
         catch (Exception e)
         {
-            _logger.Error(e, "打开 Mod 页面失败");
-            NotificationManager.ShowNotification("打开 Mod 页面失败", e.Message, TimeSpan.FromSeconds(10));
+            _logger.Error(e, App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_OpenModPageFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_OpenModPageFailed", "打开 Mod 页面失败")));
+            NotificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_OpenModPageFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_OpenModPageFailed", "打开 Mod 页面失败")), e.Message, TimeSpan.FromSeconds(10));
         }
         finally
         {
@@ -2736,7 +2739,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
         if (!ok)
         {
-            NotificationManager.ShowNotification(presetVm.IsPinned ? "取消置顶失败" : "置顶失败",
+            NotificationManager.ShowNotification(presetVm.IsPinned ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_UnpinFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_UnpinFailed", "取消置顶失败")) : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_PinFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_PinFailed", "置顶失败")),
                 string.Format(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PresetNotFound", "没找到叫「{0}」的预设"), presetVm.Name), TimeSpan.FromSeconds(5));
             return;
         }
@@ -2917,7 +2920,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         /// </summary>
         public static Dictionary<string, DateTime> RecentAccessTimes { get; } = new();
 
-        public const string FrequentlyUsedSortName = "常用";
+        public static string FrequentlyUsedSortName =>
+        App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_SortFrequentlyUsed", "常用");
 
         /// <summary>
         ///     二开：按最近打开排序，最常点开的排前面。
@@ -2938,7 +2942,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
                     characters.ThenBy(x => x.Character.DisplayName
                     ));
 
-        public const string AlphabeticalSortName = "按名称";
+        public static string AlphabeticalSortName =>
+        App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_SortAlphabetical", "按名称");
 
         public static GridItemSorter Alphabetical { get; } =
             new(
@@ -2950,7 +2955,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
                         ));
 
 
-        public const string ReleaseDateSortName = "发布日期";
+        public static string ReleaseDateSortName =>
+        App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_SortReleaseDate", "发布日期");
 
         public static GridItemSorter ReleaseDate { get; } =
             new(
@@ -2964,7 +2970,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
                     ));
 
 
-        public const string RaritySortName = "稀有度";
+        public static string RaritySortName =>
+        App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_SortRarity", "稀有度");
 
         public static GridItemSorter Rarity { get; } =
             new(
@@ -2978,7 +2985,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
                     ));
 
 
-        public const string ModCountSortName = "Mod 数量";
+        public static string ModCountSortName =>
+        App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_SortModCount", "Mod 数量");
 
         public static GridItemSorter ModCount { get; } =
             new(
@@ -2992,7 +3000,8 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
                     ));
 
 
-        public const string ModRecentlyAddedName = "最近添加";
+        public static string ModRecentlyAddedName =>
+        App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_SortRecentlyAdded", "最近添加");
 
         public static GridItemSorter ModRecentlyAdded { get; } =
             new(
@@ -3101,10 +3110,10 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         var index = 1;
 
         while (ModPresets.Any(preset =>
-                   string.Equals(preset.Name, $"预设{index}", StringComparison.OrdinalIgnoreCase)))
+                   string.Equals(preset.Name, string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_PresetDefaultName", "预设{0}"), index), StringComparison.OrdinalIgnoreCase)))
             index++;
 
-        return $"预设{index}";
+        return string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_PresetDefaultName", "预设{0}"), index);
     }
 }
 

@@ -656,4 +656,35 @@ OMniX 目录里其它文件一个都不会删。装完 OMniX 会自己重新打�
   <data name="ImportLocalUpdateButton.AutomationProperties.Name" xml:space="preserve">
     <value>导入本地更新包</value>
   </data>
+  <data name="Ab_NewSection.Text" xml:space="preserve"><value>新板块</value></data>
+  <data name="Ab_Contents.Text" xml:space="preserve"><value>内容</value></data>
+  <data name="Set_ExportIntro.Text" xml:space="preserve"><value>这会把 OMniX 管理的所有 Mod 导出到你选择的文件夹。导出是复制操作，不会删除原有 Mod。</value></data>
+  <data name="Set_ExportKeepLayoutTip.ToolTipService.ToolTip" xml:space="preserve"><value>保持 OMniX 的目录结构，例如：角色/某个皮肤 Mod</value></data>
+  <data name="Set_ExportKeepLayout.Text" xml:space="preserve"><value>导出时保持「角色名/Mods」的目录结构</value></data>
+  <data name="Set_ExportStripConfigTip.ToolTipService.ToolTip" xml:space="preserve"><value>此操作会递归删除所有以 .JASM_ 开头的文件和文件夹</value></data>
+  <data name="Set_ExportStripConfig.Text" xml:space="preserve"><value>从导出的 Mod 中移除 OMniX 配置文件</value></data>
+  <data name="Set_ExportToggleStateTip.ToolTipService.ToolTip" xml:space="preserve"><value>为导出的 Mod 添加或移除「DISABLED_」前缀</value></data>
+  <data name="Set_ExportToggleState.Text" xml:space="preserve"><value>修改导出 Mod 的启用状态</value></data>
+  <data name="Set_OpenAppFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>打开 OMniX 所在的文件夹</value></data>
+  <data name="Set_RememberSizeTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾选后，退出 OMniX 时会记住窗口大小</value></data>
+  <data name="Set_RememberPosTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾选后，退出 OMniX 时会记住窗口位置</value></data>
+  <data name="Set_GameSupport.Text" xml:space="preserve"><value>OMniX 目前支持《鸣潮》(Wuthering Waves)，每个游戏的设置分开保存</value></data>
+  <data name="Set_Language.Text" xml:space="preserve"><value>界面语言</value></data>
+  <data name="Set_LanguageHint.Text" xml:space="preserve"><value>目前可用的语言有限，功能仍在完善中</value></data>
+  <data name="Set_OpenModsTip.ToolTipService.ToolTip" xml:space="preserve"><value>在资源管理器里打开 Mods 文件夹</value></data>
+  <data name="Set_UpdaterFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>更新文件夹路径</value></data>
+  <data name="Set_RestartAfterSaveTip.ToolTipService.ToolTip" xml:space="preserve"><value>保存后会重新启动应用</value></data>
+  <data name="Set_ModUpdateCheck.Text" xml:space="preserve"><value>Mod 更新检查</value></data>
+  <data name="Set_ModUpdateCheckDesc.Text" xml:space="preserve"><value>启动时和后台定期检查，只查超过 1 小时没查过的 Mod；手动检查不受这个限制</value></data>
+  <data name="Set_AutoCheck.Content" xml:space="preserve"><value>自动检查</value></data>
+  <data name="Set_NextCheck.Text" xml:space="preserve"><value>下次检查</value></data>
+  <data name="Set_Elevator.Text" xml:space="preserve"><value>提权进程</value></data>
+  <data name="Set_Start.Content" xml:space="preserve"><value>启动</value></data>
+  <data name="Set_About.Text" xml:space="preserve"><value>关于</value></data>
+  <data name="Set_AboutTagline.Text" xml:space="preserve"><value>让大量 Mod 的管理变得简单</value></data>
+  <data name="Cmd_NotDoneTip.ToolTipService.ToolTip" xml:space="preserve"><value>还没做</value></data>
+  <data name="Cmd_KillOnExitTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾上之后，OMniX 关掉时这个进程也会被结束</value></data>
+  <data name="Cmd_RunAsAdminTip.ToolTipService.ToolTip" xml:space="preserve"><value>用管理员权限启动这个程序</value></data>
+  <data name="Cmd_ShellExecuteTip.ToolTipService.ToolTip" xml:space="preserve"><value>交给操作系统去拉起程序（ShellExecute）</value></data>
+  <data name="Cmd_NewWindowTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾上会在单独的窗口里跑（暂不可用）</value></data>
 </root>

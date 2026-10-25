@@ -738,4 +738,8 @@ New location: {3}
   <data name="Startup_UnloadedFolderSelector.Title" xml:space="preserve">
     <value>Uninstall area folder (optional)</value>
   </data>
+  <data name="Plugin_Preparing" xml:space="preserve"><value>Preparing…</value></data>
+  <data name="Hp_BgTip.ToolTipService.ToolTip" xml:space="preserve"><value>Right-click to change the background image</value></data>
+  <data name="Hp_SwitchGameTip.ToolTipService.ToolTip" xml:space="preserve"><value>Switch the current game (the app restarts)</value></data>
+  <data name="Hp_ThemeTip.ToolTipService.ToolTip" xml:space="preserve"><value>Switch between light and dark theme</value></data>
 </root>

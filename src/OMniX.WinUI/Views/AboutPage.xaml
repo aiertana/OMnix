@@ -55,8 +55,8 @@
 
             <Border Style="{StaticResource AboutCardStyle}">
                 <StackPanel Spacing="10">
-                    <TextBlock Style="{StaticResource AboutCardTitleStyle}" Text="新板块" />
-                    <TextBlock Style="{StaticResource AboutBodyStyle}" Text="内容" />
+                    <TextBlock l:Uids.Uid="/SettingsUi/Ab_NewSection" Style="{StaticResource AboutCardTitleStyle}" Text="新板块" />
+                    <TextBlock l:Uids.Uid="/SettingsUi/Ab_Contents" Style="{StaticResource AboutBodyStyle}" Text="内容" />
                 </StackPanel>
             </Border>
         -->

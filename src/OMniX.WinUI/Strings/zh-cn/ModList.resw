@@ -270,4 +270,19 @@
   <data name="ModInst_ReplaceDupInPresetText.Text" xml:space="preserve">
     <value>在预设里用新 Mod 替换重复的 Mod</value>
   </data>
+  <data name="Mg_DropFailed" xml:space="preserve"><value>拖入失败</value></data>
+  <data name="Mg_DropInvalid" xml:space="preserve"><value>拖入的内容不是有效的 Mod 文件夹或压缩包。</value></data>
+  <data name="Mg_SaveImageFailed" xml:space="preserve"><value>保存图片失败</value></data>
+  <data name="Mg_DontAskAgain" xml:space="preserve"><value>不再询问</value></data>
+  <data name="Mg_DeleteConfirm" xml:space="preserve"><value>确定要删除「{0}」吗？删除后可以在回收站里找回。</value></data>
+  <data name="Mg_DeleteModTitle" xml:space="preserve"><value>删除 Mod</value></data>
+  <data name="Mg_Delete" xml:space="preserve"><value>删除</value></data>
+  <data name="Mg_Cancel" xml:space="preserve"><value>取消</value></data>
+  <data name="Mg_DeleteFailed" xml:space="preserve"><value>删除失败</value></data>
+  <data name="Mg_ModDeleted" xml:space="preserve"><value>已删除 Mod</value></data>
+  <data name="Mg_MovedToBin" xml:space="preserve"><value>「{0}」已移到回收站</value></data>
+  <data name="Mp_DownloadTitle" xml:space="preserve"><value>下载 Mod 文件</value></data>
+  <data name="Mp_ReadUpdateFailed" xml:space="preserve"><value>读取 Mod 更新信息失败</value></data>
+  <data name="Mp_DownloadFailed" xml:space="preserve"><value>下载 Mod 文件失败</value></data>
+  <data name="Mp_InstallFailed" xml:space="preserve"><value>安装 Mod 文件失败</value></data>
 </root>

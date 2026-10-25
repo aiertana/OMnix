@@ -76,4 +76,10 @@
   <data name="Win_OpenModFolderTip.ToolTipService.ToolTip" xml:space="preserve">
     <value>打开 Mod 文件夹…</value>
   </data>
+  <data name="Wu_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>打开 Mod 文件夹…</value></data>
+  <data name="Wu_DismissTip.ToolTipService.ToolTip" xml:space="preserve"><value>清掉这条通知并关掉这个窗口</value></data>
+  <data name="Wu_BrowserTip.ToolTipService.ToolTip" xml:space="preserve"><value>用默认浏览器打开…</value></data>
+  <data name="Gb_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>打开 Mod 文件夹…</value></data>
+  <data name="Gb_CloseTip.ToolTipService.ToolTip" xml:space="preserve"><value>关闭窗口</value></data>
+  <data name="Gb_BrowserTip.ToolTipService.ToolTip" xml:space="preserve"><value>用默认浏览器打开…</value></data>
 </root>

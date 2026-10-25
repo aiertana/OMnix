@@ -342,4 +342,8 @@ Mods 根目录下的空文件夹同样会删。</value>
   <data name="PluginDep_XxmiBtn.Content" xml:space="preserve">
     <value>去下载</value>
   </data>
+  <data name="PluginDep_XxmiBrowseBtn.Content" xml:space="preserve"><value>浏览…</value></data>
+  <data name="PluginDep_ManualOkTitle" xml:space="preserve"><value>已记住</value></data>
+  <data name="PluginDep_ManualOkMsg" xml:space="preserve"><value>这个位置会优先使用，之后每次检测都先找它。</value></data>
+  <data name="PluginDep_ManualBadTitle" xml:space="preserve"><value>这个位置不对</value></data>
 </root>

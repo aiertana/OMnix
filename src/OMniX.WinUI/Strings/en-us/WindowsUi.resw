@@ -76,4 +76,10 @@
   <data name="Win_OpenModFolderTip.ToolTipService.ToolTip" xml:space="preserve">
     <value>Open mod folder…</value>
   </data>
+  <data name="Wu_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open the mod folder…</value></data>
+  <data name="Wu_DismissTip.ToolTipService.ToolTip" xml:space="preserve"><value>Clear this notification and close the window</value></data>
+  <data name="Wu_BrowserTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open in the default browser…</value></data>
+  <data name="Gb_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open the mod folder…</value></data>
+  <data name="Gb_CloseTip.ToolTipService.ToolTip" xml:space="preserve"><value>Close the window</value></data>
+  <data name="Gb_BrowserTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open in the default browser…</value></data>
 </root>

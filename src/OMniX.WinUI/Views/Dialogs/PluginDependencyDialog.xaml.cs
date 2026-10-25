@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Windows.Storage.Pickers;
 using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.Services.Plugins;
 
@@ -65,6 +66,46 @@ public sealed partial class PluginDependencyDialog : ContentDialog
 
     private void OpenWwmi_OnClick(object sender, RoutedEventArgs e) =>
         _dependencies.OpenUrl(PluginDependencyService.WwmiRepoUrl);
+
+    /// <summary>
+    ///     二开：认不出来的时候让用户自己指。指定的位置会记下来，以后优先用它。
+    /// </summary>
+    private async void BrowseXxmi_OnClick(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var folderPicker = new FolderPicker();
+            folderPicker.FileTypeFilter.Add("*");
+
+            WinRT.Interop.InitializeWithWindow.Initialize(folderPicker,
+                WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow));
+
+            var folder = await folderPicker.PickSingleFolderAsync();
+
+            if (folder is null)
+                return;
+
+            var error = _dependencies.SetXxmiRootManually(folder.Path);
+
+            Refresh();
+
+            if (error is null)
+                ShowTip(InfoBarSeverity.Success,
+                    _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_ManualOkTitle", "已记住"),
+                    _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_ManualOkMsg",
+                        "这个位置会优先使用，之后每次检测都先找它。"));
+            else
+                ShowTip(InfoBarSeverity.Error,
+                    _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_ManualBadTitle", "这个位置不对"),
+                    error);
+        }
+        catch (Exception ex)
+        {
+            ShowTip(InfoBarSeverity.Error,
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_ManualBadTitle", "这个位置不对"),
+                ex.Message);
+        }
+    }
 
     private async void DownloadKit_OnClick(object sender, RoutedEventArgs e)
     {

@@ -396,4 +396,6 @@ Mods/分类/角色/&lt;Mod 文件夹&gt;
   <data name="ThemeSvc_Standard" xml:space="preserve">
     <value>标准版</value>
   </data>
+  <data name="PluginDepSvc_ManualEmpty" xml:space="preserve"><value>先选一个文件夹</value></data>
+  <data name="PluginDepSvc_ManualInvalid" xml:space="preserve"><value>这个文件夹里没有 XXMI Launcher：{0}</value></data>
 </root>

@@ -56,7 +56,7 @@ public partial class ModsOverviewVM(
     [ObservableProperty] private string _targetPath = string.Empty;
 
     /// <summary>二开：Hero 卡下面那行统计，刷新和批量操作后更新</summary>
-    [ObservableProperty] private string _statText = "查看全部模组状态，批量开关模组资源";
+    [ObservableProperty] private string _statText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_StatHint", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_StatHint", "查看全部模组状态，批量开关模组资源"));
 
     public async void OnNavigatedTo(object parameter)
     {
@@ -262,8 +262,8 @@ public partial class ModsOverviewVM(
         var mods = GetAllNodes().OfType<ModModelNode>().ToList();
         var enabled = mods.Count(m => m.IsEnabled);
         StatText = mods.Count == 0
-            ? "还没读到 Mod，检查一下游戏目录"
-            : $"共 {mods.Count} 个 Mod · 已启用 {enabled} 个";
+            ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NoModsYet", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NoModsYet", "还没读到 Mod，检查一下游戏目录"))
+            : string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Summary", "共 {0} 个 Mod · 已启用 {1} 个"), mods.Count, enabled);
     }
 
     /// <summary>
@@ -292,8 +292,8 @@ public partial class ModsOverviewVM(
 
         if (mods.Count == 0)
         {
-            _notificationManager.ShowNotification(enable ? "已经全部启用了" : "已经全部停用了",
-                $"当前没有需要改动的 Mod", TimeSpan.FromSeconds(4));
+            _notificationManager.ShowNotification(enable ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_AllEnabledAlready", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_AllEnabledAlready", "已经全部启用了")) : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_AllDisabledAlready", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_AllDisabledAlready", "已经全部停用了")),
+                App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NothingToChange", "当前没有需要改动的 Mod"), TimeSpan.FromSeconds(4));
             return;
         }
 
@@ -322,10 +322,10 @@ public partial class ModsOverviewVM(
         UpdateStats();
 
         _notificationManager.ShowNotification(
-            enable ? "已全部启用" : "已全部停用",
+            enable ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_AllEnabled", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_AllEnabled", "已全部启用")) : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_AllDisabled", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_AllDisabled", "已全部停用")),
             failed == 0
-                ? $"处理了 {done} 个 Mod"
-                : $"成功 {done} 个，失败 {failed} 个（多半是文件夹被占用）",
+                ? string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_BulkDone", "处理了 {0} 个 Mod"), done)
+                : string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_BulkPartial", "成功 {0} 个，失败 {1} 个（多半是文件夹被占用）"), done, failed),
             TimeSpan.FromSeconds(6));
     }
 
@@ -343,8 +343,8 @@ public partial class ModsOverviewVM(
 
         if (presets.Count == 0)
         {
-            _notificationManager.ShowNotification("还没有预设",
-                "先去「预设配置」把现在的 Mod 组合存成一个预设，这里就能一键切换",
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NoPresetTitle", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NoPresetTitle", "还没有预设")),
+                App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NoPresetBody", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NoPresetBody", "先去「预设配置」把现在的 Mod 组合存成一个预设，这里就能一键切换")),
                 TimeSpan.FromSeconds(7));
 
             return;
@@ -354,7 +354,7 @@ public partial class ModsOverviewVM(
         var list = new ListView
         {
             ItemsSource = presets
-                .Select(preset => $"{preset.Name}（{preset.Mods.Count} 个 Mod）")
+                .Select(preset => string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_PresetItem", "{0}（{1} 个 Mod）"), preset.Name, preset.Mods.Count))
                 .ToList(),
             SelectionMode = ListViewSelectionMode.Single,
             SelectedIndex = 0,
@@ -364,10 +364,10 @@ public partial class ModsOverviewVM(
 
         var dialog = new ContentDialog
         {
-            Title = "启用预设",
+            Title = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_EnablePresetTitle", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_EnablePresetTitle", "启用预设")),
             Content = list,
-            PrimaryButtonText = "启用",
-            CloseButtonText = "取消",
+            PrimaryButtonText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Enable", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Enable", "启用")),
+            CloseButtonText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Cancel", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Cancel", "取消")),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = App.MainWindow.Content.XamlRoot
         };
@@ -384,7 +384,7 @@ public partial class ModsOverviewVM(
 
         // 3DMigoto 在跑、又开了自动同步的话，Apply 里会等几秒再回写偏好，
         // 先给个"正在启用"，不然这段时间界面一点反应都没有
-        _notificationManager.ShowNotification("正在启用预设", $"「{preset.Name}」", TimeSpan.FromSeconds(4));
+        _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_EnablingPreset", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_EnablingPreset", "正在启用预设")), string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_PresetQuoted", "「{0}」"), preset.Name), TimeSpan.FromSeconds(4));
 
         var result = await _modPresetHandlerService.ApplyModPresetAsync(preset.Name);
 
@@ -395,8 +395,8 @@ public partial class ModsOverviewVM(
         if (result.HasNotification)
             _notificationManager.ShowNotification(result.Notification);
         else
-            _notificationManager.ShowNotification("已启用预设",
-                $"「{preset.Name}」里的 Mod 已经启用", TimeSpan.FromSeconds(6));
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_PresetEnabled", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_PresetEnabled", "已启用预设")),
+                string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_PresetEnabledBody", "「{0}」里的 Mod 已经启用"), preset.Name), TimeSpan.FromSeconds(6));
     }
 
     /// <summary>二开：一键停用全部</summary>
@@ -420,22 +420,22 @@ public partial class ModsOverviewVM(
                 continue;
 
             multiCount += enabledCount;
-            conflicts.Add($"{moddableObject.ModdableObject.DisplayName}（{enabledCount} 个）");
+            conflicts.Add(string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_ConflictItem", "{0}（{1} 个）"), moddableObject.ModdableObject.DisplayName, enabledCount));
         }
 
         if (conflicts.Count == 0)
         {
-            _notificationManager.ShowNotification("没有发现冲突", "每个角色最多只启用了一个 Mod",
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NoConflictTitle", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NoConflictTitle", "没有发现冲突")), App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NoConflictBody", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NoConflictBody", "每个角色最多只启用了一个 Mod")),
                 TimeSpan.FromSeconds(5));
             return;
         }
 
         var preview = string.Join("、", conflicts.Take(6));
         if (conflicts.Count > 6)
-            preview += $" 等 {conflicts.Count} 个角色";
+            preview += string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_AndMore", " 等 {0} 个角色"), conflicts.Count);
 
-        _notificationManager.ShowNotification("发现可能的冲突",
-            $"{preview} 同时启用了多个 Mod，游戏一般只会加载其中一个",
+        _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_ConflictTitle", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_ConflictTitle", "发现可能的冲突")),
+            string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_ConflictBody", "{0} 同时启用了多个 Mod，游戏一般只会加载其中一个"), preview),
             TimeSpan.FromSeconds(10));
     }
 
@@ -444,7 +444,7 @@ public partial class ModsOverviewVM(
     private async Task RefreshListAsync()
     {
         await Refresh();
-        _notificationManager.ShowNotification("已刷新", StatText, TimeSpan.FromSeconds(4));
+        _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Refreshed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Refreshed", "已刷新")), StatText, TimeSpan.FromSeconds(4));
     }
 
 
@@ -535,8 +535,8 @@ public partial class ModsOverviewVM(
             // 否则回来时在线程池线程上改 UI 绑定会抛 0x8001010E
             if (!await ApplyModStateAsync(modNode, wantEnabled))
             {
-                _notificationManager.ShowNotification("找不到这个 Mod",
-                    "Mod 列表可能已刷新，请重新进入 Mod 总览", TimeSpan.FromSeconds(8));
+                _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_ModNotFoundTitle", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_ModNotFoundTitle", "找不到这个 Mod")),
+                    App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_ModNotFoundBody", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_ModNotFoundBody", "Mod 列表可能已刷新，请重新进入 Mod 总览")), TimeSpan.FromSeconds(8));
                 return;
             }
         }
@@ -554,7 +554,7 @@ public partial class ModsOverviewVM(
 
             // 把具体原因显示出来，方便判断是文件占用、命名冲突还是别的
             _notificationManager.ShowNotification(
-                wantEnabled ? "启用 Mod 失败" : "停用 Mod 失败",
+                wantEnabled ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_EnableFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_EnableFailed", "启用 Mod 失败")) : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_DisableFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_DisableFailed", "停用 Mod 失败")),
                 $"{modNode.Mod.Name}：{e.Message}",
                 TimeSpan.FromSeconds(10));
 
@@ -580,7 +580,7 @@ public partial class ModsOverviewVM(
             var dir = new DirectoryInfo(modNode.Mod.FolderPath.TrimEnd(Path.DirectorySeparatorChar));
             if (!dir.Exists)
             {
-                _notificationManager.ShowNotification("重命名失败", $"找不到文件夹：{dir.FullName}",
+                _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_RenameFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_RenameFailed", "重命名失败")), string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_RenameNoFolder", "找不到文件夹：{0}"), dir.FullName),
                     TimeSpan.FromSeconds(6));
                 return;
             }
@@ -597,7 +597,7 @@ public partial class ModsOverviewVM(
 
             if (Directory.Exists(target) || File.Exists(target))
             {
-                _notificationManager.ShowNotification("重命名失败", $"已存在同名文件夹「{targetName}」",
+                _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_RenameFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_RenameFailed", "重命名失败")), string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_RenameDuplicate", "已存在同名文件夹「{0}」"), targetName),
                     TimeSpan.FromSeconds(8));
                 return;
             }
@@ -609,7 +609,7 @@ public partial class ModsOverviewVM(
         catch (Exception e)
         {
             _logger.Error(e, "Could not rename mod {ModName}", modNode.Mod.Name);
-            _notificationManager.ShowNotification("重命名失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_RenameFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_RenameFailed", "重命名失败")), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -631,7 +631,7 @@ public partial class ModsOverviewVM(
         var dir = new DirectoryInfo(currentPath);
 
         if (!dir.Exists)
-            throw new DirectoryNotFoundException($"Mod 文件夹不存在：{currentPath}");
+            throw new DirectoryNotFoundException(string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_ModFolderMissing", "Mod 文件夹不存在：{0}"), currentPath));
 
         var hasDisabledPrefix = ModFolderHelpers.FolderHasDisabledPrefix(dir.Name);
 
@@ -646,7 +646,7 @@ public partial class ModsOverviewVM(
         var target = Path.Combine(dir.Parent!.FullName, newName);
 
         if (Directory.Exists(target) || File.Exists(target))
-            throw new IOException($"已存在同名文件夹「{newName}」，请先处理它再操作");
+            throw new IOException(string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_DuplicateFolder", "已存在同名文件夹「{0}」，请先处理它再操作"), newName));
 
         dir.MoveTo(target);
     }
@@ -794,7 +794,7 @@ public partial class ModdableObjectNode : BaseNode, IHasChildItems<ModModelNode>
     /// <summary>
     ///     二开：角色行显示的统计，比如“3/5 已启用”
     /// </summary>
-    public string ModSummaryText => $"{EnabledModCount}/{Mods.Count} 已启用";
+    public string ModSummaryText => string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_EnabledRatio", "{0}/{1} 已启用"), EnabledModCount, Mods.Count);
 
     /// <summary>
     ///     二开：某个 Mod 的启用状态变化后刷新统计
@@ -842,9 +842,9 @@ public partial class ModModelNode : BaseNode
     /// <summary>
     ///     按钮文字：已启用显示“不启用”，未启用显示“启用”
     /// </summary>
-    public string ToggleButtonText => IsEnabled ? "不启用" : "启用";
+    public string ToggleButtonText => IsEnabled ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NotEnabled", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_NotEnabled", "不启用")) : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Enable", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Enable", "启用"));
 
-    public string EnabledText => IsEnabled ? "已启用" : "未启用";
+    public string EnabledText => IsEnabled ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_EnabledShort", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_EnabledShort", "已启用")) : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_DisabledShort", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_DisabledShort", "未启用"));
 
     public bool IsDisabled => !IsEnabled;
 

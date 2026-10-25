@@ -12,6 +12,7 @@ using System.IO;
 using Windows.Storage;
 using OMniX.WinUI.Services.ModHandling;
 using OMniX.WinUI.Services.Notifications;
+using OMniX.Core.Contracts.Services;
 
 namespace OMniX.WinUI.ViewModels.CharacterGalleryViewModels
 {
@@ -173,7 +174,7 @@ namespace OMniX.WinUI.ViewModels.CharacterGalleryViewModels
             }
             catch (Exception e)
             {
-                notificationService.ShowNotification("保存图片失败", e.Message, null);
+                notificationService.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mg_SaveImageFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mg_SaveImageFailed", "保存图片失败")), e.Message, null);
             }
         },
         () => CanSaveImage);

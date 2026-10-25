@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Mi_AddRename" xml:space="preserve"><value>Add under a new name</value></data>
+  <data name="Mi_AddReplace" xml:space="preserve"><value>Replace the existing mod</value></data>
+  <data name="Mi_ClipboardImageFailed" xml:space="preserve"><value>Couldn't read an image from the clipboard</value></data>
+  <data name="Mi_UrlImageFailed" xml:space="preserve"><value>Could not download the image from modUrl</value></data>
+  <data name="Mi_AddFailedTitle" xml:space="preserve"><value>Something went wrong</value></data>
+  <data name="Mi_AddFailedBody" xml:space="preserve"><value>Something went wrong while adding the mod — see the logs for details</value></data>
+  <data name="Mi_StandaloneTitle" xml:space="preserve"><value>Installing a mod needs both "what" and "for whom"</value></data>
+  <data name="Mi_StandaloneBody" xml:space="preserve"><value>Two ways:
+
+· Drag a zip or a mod folder straight into the main window — drop several at once for a batch import, and you will be asked which character each one is for
+
+· Or pick a character in Character list and use the install button there — it fills the character in for you</value></data>
+  <data name="Mi_DisplayNamePlaceholder.PlaceholderText" xml:space="preserve"><value>The name shown inside OMniX</value></data>
+  <data name="Mi_ReplaceInPresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>Presets will swap this duplicate mod for the newly installed version. Mutually exclusive with "Replace the older version with the new mod" above.</value></data>
+  <data name="Mi_TopMostTip.ToolTipService.ToolTip" xml:space="preserve"><value>Keep the window on top</value></data>
+  <data name="Mi_RefetchTip.ToolTipService.ToolTip" xml:space="preserve"><value>Fetch the information from the mod page again</value></data>
+  <data name="Mi_RootFolderHint.Content" xml:space="preserve"><value>The root folder is usually the level that holds merged.ini / Script.ini.
+Preview images are picked up from the folder automatically, so "Add mod" is usually all you need.</value></data>
+  <data name="Mi_OnlyThisTip.ToolTipService.ToolTip" xml:space="preserve"><value>When checked, only this one stays enabled and the other mods of that character are disabled</value></data>
+  <data name="Mi_ReplaceInPresetsTip.ToolTipService.ToolTip" xml:space="preserve"><value>Replace the old mod referenced by every preset with this newly installed version</value></data>
+  <data name="Mi_AddAsIsTip.ToolTipService.ToolTip" xml:space="preserve"><value>Add it as it is, without changing any field. During a batch import the rest of the queue is installed with the defaults.</value></data>
+</root>

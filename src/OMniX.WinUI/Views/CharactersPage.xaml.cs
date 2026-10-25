@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Serilog;
+using OMniX.Core.Contracts.Services;
 
 namespace OMniX.WinUI.Views;
 
@@ -62,22 +63,22 @@ public sealed partial class CharactersPage : Page
     }
 
     /// <summary>
-    ///     二开：点"新增角色"卡片，输入名字后直接创建
+    ///     二开：点App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_NewCharacter", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_NewCharacter", "新增角色"))卡片，输入名字后直接创建
     /// </summary>
     private async void AddCharacterCard_OnClick(object sender, RoutedEventArgs e)
     {
         var nameBox = new TextBox
         {
-            PlaceholderText = "输入角色名字…",
+            PlaceholderText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_SearchPlaceholder", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_SearchPlaceholder", "输入角色名字…")),
             MinWidth = 280
         };
 
         var dialog = new ContentDialog
         {
-            Title = "新增角色",
+            Title = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_NewCharacter", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_NewCharacter", "新增角色")),
             Content = nameBox,
-            PrimaryButtonText = "确认创建",
-            CloseButtonText = "取消",
+            PrimaryButtonText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_Create", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_Create", "确认创建")),
+            CloseButtonText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/CharVM_Cancel", "取消")),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = XamlRoot
         };

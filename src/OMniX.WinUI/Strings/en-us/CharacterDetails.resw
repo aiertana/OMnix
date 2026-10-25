@@ -260,7 +260,8 @@
     <value>Cancel</value>
   </data>
   <data name="Pane_DeleteDialogContent" xml:space="preserve">
-    <value>Delete &quot;{0}&quot;?\nThe files will be moved to the recycle bin and can be restored.</value>
+    <value>Delete &quot;{0}&quot;?
+The files will be moved to the recycle bin and can be restored.</value>
   </data>
   <data name="Pane_DeleteDialogPrimary" xml:space="preserve">
     <value>Delete</value>
@@ -329,7 +330,8 @@
     <value>No mods for this character yet</value>
   </data>
   <data name="Page_NoMoreSkinsToolTip" xml:space="preserve">
-    <value>This character currently only has its default skin.\nInstall an in-game mod with multiple skins to make more skins selectable here.</value>
+    <value>This character currently only has its default skin.
+Install an in-game mod with multiple skins to make more skins selectable here.</value>
   </data>
   <data name="Page_SelectSkinButtonToolTip" xml:space="preserve">
     <value>Switch the in-game skin (shortcut F1)</value>
@@ -430,4 +432,18 @@
   <data name="Toolbar_ViewToggle.OnContent" xml:space="preserve">
     <value>Gallery view</value>
   </data>
+  <data name="Cg_SingleModTip.ToolTipService.ToolTip" xml:space="preserve"><value>When checked, only one mod can be enabled at a time.</value></data>
+  <data name="Cd_AddFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>Add a mod folder</value></data>
+  <data name="Cd_AddArchiveTip.ToolTipService.ToolTip" xml:space="preserve"><value>Add a mod from an archive</value></data>
+  <data name="Cd_SingleModTip.ToolTipService.ToolTip" xml:space="preserve"><value>When on, only one mod can be enabled at a time</value></data>
+  <data name="Cd_SavePrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>Read the selected mod's 3Dmigoto preferences from d3dx_user.ini and save them into that mod's .JASM_Config.json</value></data>
+  <data name="Cd_LoadPrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>Read the selected mod's preferences from .JASM_Config.json into d3dx_user.ini for 3Dmigoto</value></data>
+  <data name="Cc_LocateTip.ToolTipService.ToolTip" xml:space="preserve"><value>Locate it in the mods overview</value></data>
+  <data name="Cc_EditTip.ToolTipService.ToolTip" xml:space="preserve"><value>Edit character</value></data>
+  <data name="Mp_RenameTip.ToolTipService.ToolTip" xml:space="preserve"><value>Change the display name of this mod</value></data>
+  <data name="Mp_PickIniTip.ToolTipService.ToolTip" xml:space="preserve"><value>Pick the .ini file OMniX reads for this mod</value></data>
+  <data name="Mp_IgnoreIniTip.ToolTipService.ToolTip" xml:space="preserve"><value>OMniX stops looking for merged.ini / Script.ini and ignores the hotkey toggles of this mod</value></data>
+  <data name="Mp_CharacterImageTip.ToolTipService.ToolTip" xml:space="preserve"><value>Character image</value></data>
+  <data name="Mp_EditHotkeyTip.ToolTipService.ToolTip" xml:space="preserve"><value>Edit the raw hotkey value</value></data>
+  <data name="Mp_RecycleTip.ToolTipService.ToolTip" xml:space="preserve"><value>Move the mod folder to the recycle bin — you can restore it any time</value></data>
 </root>

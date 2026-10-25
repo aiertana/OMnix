@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Storage;
 using OMniX.WinUI.Services.Notifications;
+using OMniX.Core.Contracts.Services;
 
 namespace OMniX.WinUI.ViewModels.CharacterGalleryViewModels;
 
@@ -28,8 +29,8 @@ public partial class CharacterGalleryViewModel
     {
         if (!CanDragDropMod(items) || _modList is null)
         {
-            App.GetService<NotificationManager>().ShowNotification("拖入失败",
-                "拖入的内容不是有效的 Mod 文件夹或压缩包。", TimeSpan.FromSeconds(5));
+            App.GetService<NotificationManager>().ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mg_DropFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mg_DropFailed", "拖入失败")),
+                App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mg_DropInvalid", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mg_DropInvalid", "拖入的内容不是有效的 Mod 文件夹或压缩包。")), TimeSpan.FromSeconds(5));
             return;
         }
 
@@ -46,7 +47,7 @@ public partial class CharacterGalleryViewModel
         catch (Exception e)
         {
             _logger.Error(e, "Failed to drag and drop mod in gallery view");
-            App.GetService<NotificationManager>().ShowNotification("拖入失败", e.Message, TimeSpan.FromSeconds(8));
+            App.GetService<NotificationManager>().ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mg_DropFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModList/Mg_DropFailed", "拖入失败")), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 }

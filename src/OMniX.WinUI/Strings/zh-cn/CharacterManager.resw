@@ -167,4 +167,14 @@
   <data name="Valid_PathFormat" xml:space="preserve"><value>路径格式不正确</value></data>
   <data name="Valid_RarityMax" xml:space="preserve"><value>稀有度不能大于 10</value></data>
   <data name="Valid_RarityMin" xml:space="preserve"><value>稀有度不能小于 0</value></data>
+  <data name="Ec_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>打开这个角色的 Mod 文件夹</value></data>
+  <data name="Ec_ConfirmTip.ToolTipService.ToolTip" xml:space="preserve"><value>会先弹窗确认</value></data>
+  <data name="Ec_OpenFixerTip.ToolTipService.ToolTip" xml:space="preserve"><value>用修复器打开这个 Mod（MOD 目录自动填入）</value></data>
+  <data name="Ec_RenameTip.ToolTipService.ToolTip" xml:space="preserve"><value>重命名（点一下就能在上面直接改）</value></data>
+  <data name="Ec_OpenModFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>打开这个 Mod 的文件夹</value></data>
+  <data name="Ec_DeleteModTip.ToolTipService.ToolTip" xml:space="preserve"><value>从磁盘删除这个 Mod</value></data>
+  <data name="Ec_AddedAtTip.ToolTipService.ToolTip" xml:space="preserve"><value>添加到 OMniX 的时间</value></data>
+  <data name="Ec_DiscardTip.ToolTipService.ToolTip" xml:space="preserve"><value>放弃还没保存的修改</value></data>
+  <data name="Ec_SaveTip.ToolTipService.ToolTip" xml:space="preserve"><value>把修改写入磁盘</value></data>
+  <data name="Ec_ResetTip.ToolTipService.ToolTip" xml:space="preserve"><value>把角色数据恢复成默认值</value></data>
 </root>

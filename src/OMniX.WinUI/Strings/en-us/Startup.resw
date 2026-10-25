@@ -144,4 +144,11 @@
   <data name="Startup_Header.Text" xml:space="preserve">
     <value>First time startup</value>
   </data>
+  <data name="Su_BackTip.ToolTipService.ToolTip" xml:space="preserve"><value>Back to the home page — you can re-enter the setup from the guide card there</value></data>
+  <data name="Su_HowItWorks.Text" xml:space="preserve"><value>After saving, OMniX creates one folder per character inside Mods, and toggling a mod adds or removes the 'DISABLED_' prefix on its folder.</value></data>
+  <data name="Su_BackupHint.Text" xml:space="preserve"><value>Back up your files and mods before you start</value></data>
+  <data name="Su_Reorganize.Text" xml:space="preserve"><value>When checked, the existing mods are sorted into each character's folder. Anything that cannot be matched ends up in "Others".</value></data>
+  <data name="Su_ReorganizeWarn.Text" xml:space="preserve"><value>If a mod folder mentions several character names it may end up under the wrong character. This logic assumes mods are stored flat, with skin folders sitting directly in Mods. With deeply nested layouts OMniX is much more likely to misread skins.</value></data>
+  <data name="Su_LaterHint.Text" xml:space="preserve"><value>You can also turn this on later in the settings page.</value></data>
+  <data name="Su_DisableAll.Text" xml:space="preserve"><value>Add the DISABLED_ prefix to every mod folder so none of them load</value></data>
 </root>

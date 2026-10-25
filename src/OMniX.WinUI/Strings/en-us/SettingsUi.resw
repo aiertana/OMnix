@@ -652,4 +652,35 @@ Sorry for the inconvenience.</value>
   <data name="ImportLocalUpdateButton.AutomationProperties.Name" xml:space="preserve">
     <value>Import local update package</value>
   </data>
+  <data name="Ab_NewSection.Text" xml:space="preserve"><value>New section</value></data>
+  <data name="Ab_Contents.Text" xml:space="preserve"><value>Contents</value></data>
+  <data name="Set_ExportIntro.Text" xml:space="preserve"><value>This exports every mod OMniX manages to the folder you pick. It is a copy — your existing mods stay untouched.</value></data>
+  <data name="Set_ExportKeepLayoutTip.ToolTipService.ToolTip" xml:space="preserve"><value>Keep the OMniX folder layout, for example Character/Some skin mod</value></data>
+  <data name="Set_ExportKeepLayout.Text" xml:space="preserve"><value>Keep the "Character/Mods" layout when exporting</value></data>
+  <data name="Set_ExportStripConfigTip.ToolTipService.ToolTip" xml:space="preserve"><value>This recursively deletes every file and folder whose name starts with .JASM_</value></data>
+  <data name="Set_ExportStripConfig.Text" xml:space="preserve"><value>Remove the OMniX config files from the exported mods</value></data>
+  <data name="Set_ExportToggleStateTip.ToolTipService.ToolTip" xml:space="preserve"><value>Add or remove the "DISABLED_" prefix on the exported mods</value></data>
+  <data name="Set_ExportToggleState.Text" xml:space="preserve"><value>Change the enabled state of the exported mods</value></data>
+  <data name="Set_OpenAppFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open the folder OMniX lives in</value></data>
+  <data name="Set_RememberSizeTip.ToolTipService.ToolTip" xml:space="preserve"><value>When checked, the window size is remembered when OMniX exits</value></data>
+  <data name="Set_RememberPosTip.ToolTipService.ToolTip" xml:space="preserve"><value>When checked, the window position is remembered when OMniX exits</value></data>
+  <data name="Set_GameSupport.Text" xml:space="preserve"><value>OMniX currently supports Wuthering Waves, and settings are kept separate per game</value></data>
+  <data name="Set_Language.Text" xml:space="preserve"><value>Interface language</value></data>
+  <data name="Set_LanguageHint.Text" xml:space="preserve"><value>The language selection is still limited and being worked on</value></data>
+  <data name="Set_OpenModsTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open the Mods folder in File Explorer</value></data>
+  <data name="Set_UpdaterFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>Updater folder path</value></data>
+  <data name="Set_RestartAfterSaveTip.ToolTipService.ToolTip" xml:space="preserve"><value>The app restarts after saving</value></data>
+  <data name="Set_ModUpdateCheck.Text" xml:space="preserve"><value>Mod update check</value></data>
+  <data name="Set_ModUpdateCheckDesc.Text" xml:space="preserve"><value>Checks on startup and periodically in the background, but only mods that were not checked in the last hour; manual checks are never throttled</value></data>
+  <data name="Set_AutoCheck.Content" xml:space="preserve"><value>Check automatically</value></data>
+  <data name="Set_NextCheck.Text" xml:space="preserve"><value>Next check</value></data>
+  <data name="Set_Elevator.Text" xml:space="preserve"><value>Elevated process</value></data>
+  <data name="Set_Start.Content" xml:space="preserve"><value>Start</value></data>
+  <data name="Set_About.Text" xml:space="preserve"><value>About</value></data>
+  <data name="Set_AboutTagline.Text" xml:space="preserve"><value>Managing a lot of mods, made simple</value></data>
+  <data name="Cmd_NotDoneTip.ToolTipService.ToolTip" xml:space="preserve"><value>Not implemented yet</value></data>
+  <data name="Cmd_KillOnExitTip.ToolTipService.ToolTip" xml:space="preserve"><value>When checked, this process is closed as well when OMniX exits</value></data>
+  <data name="Cmd_RunAsAdminTip.ToolTipService.ToolTip" xml:space="preserve"><value>Start this program as administrator</value></data>
+  <data name="Cmd_ShellExecuteTip.ToolTipService.ToolTip" xml:space="preserve"><value>Let Windows launch the program (ShellExecute)</value></data>
+  <data name="Cmd_NewWindowTip.ToolTipService.ToolTip" xml:space="preserve"><value>Runs it in a separate window (not available yet)</value></data>
 </root>

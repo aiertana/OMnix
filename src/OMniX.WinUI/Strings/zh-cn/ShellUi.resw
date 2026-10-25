@@ -138,4 +138,7 @@
   <data name="Shell_NavNpcList" xml:space="preserve"><value>NPC 列表</value></data>
   <data name="Shell_NavObjectList" xml:space="preserve"><value>物件列表</value></data>
   <data name="Shell_NavWeaponList" xml:space="preserve"><value>武器列表</value></data>
+  <data name="Shell_PluginNotReady" xml:space="preserve"><value>插件还没配好</value></data>
+  <data name="Shell_PluginNotReadyBody" xml:space="preserve"><value>游戏可执行文件或部署包目录不对，再点一次开关重新填。</value></data>
+  <data name="Sh_GuideTip.ToolTipService.ToolTip" xml:space="preserve"><value>打开 GitHub 上的使用说明</value></data>
 </root>

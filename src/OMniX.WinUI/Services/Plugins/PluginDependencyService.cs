@@ -120,6 +120,15 @@ public sealed class PluginDependencyService
     /// <summary>上次成功定位到的 XXMI 根目录。下次直接用它，省掉整盘扫描</summary>
     private const string XxmiRootSettingKey = "PluginDependency.XxmiRoot";
 
+    /// <summary>用户在对话框里手动指定的 XXMI 根目录，优先级最高</summary>
+    private const string XxmiRootManualKey = "PluginDependency.XxmiRootManual";
+
+    /// <summary>
+    ///     二开：鸣潮真正跑起来的 exe。XXMI 配置里记的是进程名（Wuthering Waves.exe），
+    ///     DLSS5 要铺进去的是这个，所以先用它试。
+    /// </summary>
+    private const string WuWaGameExeName = "Client-Win64-Shipping.exe";
+
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly Dlss5PluginService _dlss5;
     private readonly ILocalSettingsService _localSettings;
@@ -127,6 +136,10 @@ public sealed class PluginDependencyService
     private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     private string _rememberedXxmiRoot = string.Empty;
+    private string _manualXxmiRoot = string.Empty;
+
+    /// <summary>游戏路径只在每轮启动里补一次，别每次刷新都去写设置</summary>
+    private bool _gamePathApplied;
 
     private static readonly TimeSpan DetectCacheLifetime = TimeSpan.FromSeconds(15);
 
@@ -148,6 +161,8 @@ public sealed class PluginDependencyService
         var xxmiRoot = ResolveXxmiInstallation(out var xxmiLauncher);
         var wwmiRoot = string.IsNullOrWhiteSpace(xxmiRoot) ? string.Empty : ResolveWwmiFolder(xxmiRoot);
 
+        ApplyGamePathFromXxmi(xxmiRoot);
+
         _logger.Information("插件依赖检测：XXMI={XxmiRoot} 启动器={Launcher} WWMI={WwmiRoot}",
             string.IsNullOrWhiteSpace(xxmiRoot) ? "(未找到)" : xxmiRoot,
             string.IsNullOrWhiteSpace(xxmiLauncher) ? "(未找到)" : xxmiLauncher,
@@ -160,6 +175,118 @@ public sealed class PluginDependencyService
             WwmiRoot = wwmiRoot,
             KitDir = _dlss5.ResolveKitDirectory()
         };
+    }
+
+    /// <summary>
+    ///     二开：XXMI 的配置文件里记着鸣潮装在哪（Importers.WWMI.Importer.game_folder）。
+    ///     插件要用的游戏路径还没配过时，顺手从这儿填上 —— 「启动游戏」也就能直接用了。
+    /// </summary>
+    private void ApplyGamePathFromXxmi(string xxmiRoot)
+    {
+        if (_gamePathApplied || string.IsNullOrWhiteSpace(xxmiRoot))
+            return;
+
+        _gamePathApplied = true;
+
+        try
+        {
+            // 已经配好并且文件还在就别动它
+            if (!string.IsNullOrWhiteSpace(_dlss5.GameExePath) && File.Exists(_dlss5.GameExePath))
+                return;
+
+            var gameExe = TryReadGameExeFromXxmi(xxmiRoot);
+
+            if (string.IsNullOrWhiteSpace(gameExe))
+                return;
+
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await _dlss5.SaveGamePathAsync(gameExe);
+                    _logger.Information("从 XXMI 配置读到游戏路径并填好：{GameExe}", gameExe);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex, "写入游戏路径失败");
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.Debug(ex, "从 XXMI 配置读游戏路径失败");
+        }
+    }
+
+    /// <summary>
+    ///     二开：从 XXMI Launcher Config.json 里解析鸣潮的 exe。
+    ///     XXMI 记的是进程名（Wuthering Waves.exe）和相对目录（Client/Binaries/Win64），
+    ///     DLSS5 要铺进去的是 Client-Win64-Shipping.exe，所以先试它、再退回 XXMI 记的名字。
+    /// </summary>
+    public static string? TryReadGameExeFromXxmi(string xxmiRoot)
+    {
+        if (string.IsNullOrWhiteSpace(xxmiRoot))
+            return null;
+
+        try
+        {
+            var configPath = Path.Combine(xxmiRoot, XxmiConfigFileName);
+
+            if (!File.Exists(configPath))
+                return null;
+
+            var importer = JObject.Parse(File.ReadAllText(configPath))["Importers"]?["WWMI"]?["Importer"];
+
+            if (importer is null)
+                return null;
+
+            var gameFolder = importer["game_folder"]?.ToString();
+
+            if (string.IsNullOrWhiteSpace(gameFolder) || !Directory.Exists(gameFolder))
+                return null;
+
+            var exeNames = importer["game_exe_names"]?.ToObject<string[]>() ?? [];
+            var relPaths = importer["process_exe_rel_paths"]?.ToObject<string[]>() ?? [];
+
+            // XXMI 记的是 Client/Binaries/Win64（正斜杠），拼进路径前先换成系统分隔符
+            var relativePaths = relPaths
+                .Select(relPath => relPath.Replace('/', Path.DirectorySeparatorChar)
+                    .Replace('\\', Path.DirectorySeparatorChar))
+                .Append(string.Empty)
+                .ToArray();
+
+            foreach (var exeName in new[] { WuWaGameExeName }.Concat(exeNames))
+            foreach (var relPath in relativePaths)
+            {
+                var candidate = string.IsNullOrWhiteSpace(relPath)
+                    ? Path.Combine(gameFolder, exeName)
+                    : Path.Combine(gameFolder, relPath, exeName);
+
+                if (File.Exists(candidate))
+                    return candidate;
+            }
+
+            // exe 改名过：在 XXMI 记的那几个目录里按名字找一遍
+            foreach (var folder in relativePaths
+                         .Select(relPath => string.IsNullOrWhiteSpace(relPath)
+                             ? gameFolder
+                             : Path.Combine(gameFolder, relPath))
+                         .Where(Directory.Exists))
+            {
+                var found = Directory.EnumerateFiles(folder, "*.exe", SearchOption.TopDirectoryOnly)
+                    .FirstOrDefault(file => string.Equals(Path.GetFileName(file), WuWaGameExeName,
+                        StringComparison.OrdinalIgnoreCase));
+
+                if (!string.IsNullOrWhiteSpace(found))
+                    return found;
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.ForContext<PluginDependencyService>().Debug(ex, "读 XXMI 配置里的游戏路径失败");
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -203,6 +330,10 @@ public sealed class PluginDependencyService
     private IEnumerable<string> EnumerateXxmiCandidates()
     {
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        // 二开：用户在对话框里手动指定的位置说了算 —— 装在再刁钻的地方也能救回来
+        if (!string.IsNullOrWhiteSpace(_manualXxmiRoot) && seen.Add(_manualXxmiRoot))
+            yield return _manualXxmiRoot;
 
         foreach (var candidate in GetConfiguredXxmiPaths())
         {
@@ -556,11 +687,47 @@ public sealed class PluginDependencyService
             _rememberedXxmiRoot =
                 await _localSettings.ReadSettingAsync<string>(XxmiRootSettingKey, SettingScope.App) ??
                 string.Empty;
+
+            _manualXxmiRoot =
+                await _localSettings.ReadSettingAsync<string>(XxmiRootManualKey, SettingScope.App) ??
+                string.Empty;
         }
         catch (Exception ex)
         {
             _logger.Debug(ex, "读取上次的 XXMI 位置失败");
         }
+    }
+
+    /// <summary>
+    ///     二开：用户在对话框里手动指定 XXMI 根目录。这个位置优先级最高，
+    ///     以后每次检测都先用它。返回 null 表示设置成功，否则返回给用户看的错误说明。
+    /// </summary>
+    public string? SetXxmiRootManually(string? folder)
+    {
+        if (string.IsNullOrWhiteSpace(folder))
+            return _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_ManualEmpty",
+                "先选一个文件夹");
+
+        if (!TryResolveXxmiRoot(folder, out var root, out _) || string.IsNullOrWhiteSpace(root))
+            return string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_ManualInvalid",
+                "这个文件夹里没有 XXMI Launcher：{0}"), folder);
+
+        _manualXxmiRoot = root;
+        _xxmiCache = (DateTimeOffset.MinValue, string.Empty, string.Empty);
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await _localSettings.SaveSettingAsync(XxmiRootManualKey, root, SettingScope.App);
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "保存手动指定的 XXMI 位置失败");
+            }
+        });
+
+        return null;
     }
 
     private void RememberXxmiRoot(string root)

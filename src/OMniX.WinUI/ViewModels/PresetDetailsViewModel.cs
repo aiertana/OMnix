@@ -240,13 +240,13 @@ public sealed partial class PresetDetailsViewModel(
             ModEntries.Insert(0, modEntryVm);
             _backendModEntries.Insert(0, modEntryVm);
 
-            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationAdded", "已加进预设"),
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationAdded", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_AddedToPreset", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_AddedToPreset", "已加进预设"))),
                 $"Added mod '{modEntryVm.Name}' to preset {PresetName}",
                 null);
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationAddFailed", "加进预设失败"), e.Message, null);
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationAddFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_AddToPresetFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_AddToPresetFailed", "加进预设失败"))), e.Message, null);
         }
         finally
         {
@@ -304,13 +304,13 @@ public sealed partial class PresetDetailsViewModel(
 
             await Task.Run(() => _modPresetService.DeleteModEntryAsync(PresetName, vm.ModId));
 
-            _notificationManager.ShowNotification("已加进预设",
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_AddedToPreset", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_AddedToPreset", "已加进预设")),
                 $"Added mod '{modEntryVm.Name}' to preset {PresetName}",
                 null);
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("加进预设失败", e.Message, null);
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_AddToPresetFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_AddToPresetFailed", "加进预设失败")), e.Message, null);
         }
         finally
         {

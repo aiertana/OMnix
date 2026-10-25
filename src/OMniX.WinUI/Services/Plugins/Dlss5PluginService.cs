@@ -165,6 +165,13 @@ public sealed class Dlss5PluginService
         return null;
     }
 
+    /// <summary>
+    ///     二开：只写游戏路径。部署包和游戏路径是两个键，
+    ///     补游戏路径的时候不能顺手把部署包那个键清掉。
+    /// </summary>
+    public async Task SaveGamePathAsync(string gameExePath) =>
+        await _settings.SaveSettingAsync(GamePathKey, gameExePath);
+
     public string ResolveKitDirectory()
     {
         var configured = KitDirectory;

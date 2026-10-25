@@ -7,6 +7,7 @@ using OMniX.WinUI.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using OMniX.Core.Contracts.Services;
 
 namespace OMniX.WinUI.Views;
 
@@ -47,7 +48,7 @@ public sealed partial class ModInstallerPage : Page, IDisposable
     {
         var title = new TextBlock
         {
-            Text = "安装 Mod 需要先指定「装什么」和「装到谁身上」",
+            Text = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_StandaloneTitle", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_StandaloneTitle", "安装 Mod 需要先指定「装什么」和「装到谁身上」")),
             FontSize = 20,
             TextWrapping = TextWrapping.WrapWholeWords
         };
@@ -57,10 +58,7 @@ public sealed partial class ModInstallerPage : Page, IDisposable
             Margin = new Thickness(0, 14, 0, 0),
             LineHeight = 24,
             Text =
-                "两种方式：\n\n" +
-                "· 把 zip 或 Mod 文件夹直接拖进主窗口 —— 一次拖几个就是批量导入，\n" +
-                "  程序会挨个问你要装到哪个角色\n\n" +
-                "· 去「角色列表」选中角色，用那边的安装按钮 —— 角色会自动带上，不用再选",
+                App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModInstaller/Mi_StandaloneBody", "两种方式：\n\n· 把 zip 或 Mod 文件夹直接拖进主窗口 —— 一次拖几个就是批量导入，\n  程序会挨个问你要装到哪个角色\n\n· 去「角色列表」选中角色，用那边的安装按钮 —— 角色会自动带上，不用再选"),
             TextWrapping = TextWrapping.WrapWholeWords
         };
 

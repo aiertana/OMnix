@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Mo_NothingToChange" xml:space="preserve"><value>当前没有需要改动的 Mod</value></data>
+  <data name="Mo_Summary" xml:space="preserve"><value>共 {0} 个 Mod · 已启用 {1} 个</value></data>
+  <data name="Mo_BulkDone" xml:space="preserve"><value>处理了 {0} 个 Mod</value></data>
+  <data name="Mo_BulkPartial" xml:space="preserve"><value>成功 {0} 个，失败 {1} 个（多半是文件夹被占用）</value></data>
+  <data name="Mo_PresetItem" xml:space="preserve"><value>{0}（{1} 个 Mod）</value></data>
+  <data name="Mo_PresetQuoted" xml:space="preserve"><value>「{0}」</value></data>
+  <data name="Mo_PresetEnabledBody" xml:space="preserve"><value>「{0}」里的 Mod 已经启用</value></data>
+  <data name="Mo_ConflictItem" xml:space="preserve"><value>{0}（{1} 个）</value></data>
+  <data name="Mo_AndMore" xml:space="preserve"><value> 等 {0} 个角色</value></data>
+  <data name="Mo_ConflictBody" xml:space="preserve"><value>{0} 同时启用了多个 Mod，游戏一般只会加载其中一个</value></data>
+  <data name="Mo_RenameNoFolder" xml:space="preserve"><value>找不到文件夹：{0}</value></data>
+  <data name="Mo_RenameDuplicate" xml:space="preserve"><value>已存在同名文件夹「{0}」</value></data>
+  <data name="Mo_ModFolderMissing" xml:space="preserve"><value>Mod 文件夹不存在：{0}</value></data>
+  <data name="Mo_DuplicateFolder" xml:space="preserve"><value>已存在同名文件夹「{0}」，请先处理它再操作</value></data>
+  <data name="Mo_EnabledRatio" xml:space="preserve"><value>{0}/{1} 已启用</value></data>
+  <data name="Mo_StatHint" xml:space="preserve"><value>查看全部模组状态，批量开关模组资源</value></data>
+  <data name="Mo_NoModsYet" xml:space="preserve"><value>还没读到 Mod，检查一下游戏目录</value></data>
+  <data name="Mo_AllEnabledAlready" xml:space="preserve"><value>已经全部启用了</value></data>
+  <data name="Mo_AllDisabledAlready" xml:space="preserve"><value>已经全部停用了</value></data>
+  <data name="Mo_AllEnabled" xml:space="preserve"><value>已全部启用</value></data>
+  <data name="Mo_AllDisabled" xml:space="preserve"><value>已全部停用</value></data>
+  <data name="Mo_NoPresetTitle" xml:space="preserve"><value>还没有预设</value></data>
+  <data name="Mo_NoPresetBody" xml:space="preserve"><value>先去「预设配置」把现在的 Mod 组合存成一个预设，这里就能一键切换</value></data>
+  <data name="Mo_EnablePresetTitle" xml:space="preserve"><value>启用预设</value></data>
+  <data name="Mo_Enable" xml:space="preserve"><value>启用</value></data>
+  <data name="Mo_Cancel" xml:space="preserve"><value>取消</value></data>
+  <data name="Mo_EnablingPreset" xml:space="preserve"><value>正在启用预设</value></data>
+  <data name="Mo_PresetEnabled" xml:space="preserve"><value>已启用预设</value></data>
+  <data name="Mo_NoConflictTitle" xml:space="preserve"><value>没有发现冲突</value></data>
+  <data name="Mo_NoConflictBody" xml:space="preserve"><value>每个角色最多只启用了一个 Mod</value></data>
+  <data name="Mo_ConflictTitle" xml:space="preserve"><value>发现可能的冲突</value></data>
+  <data name="Mo_Refreshed" xml:space="preserve"><value>已刷新</value></data>
+  <data name="Mo_ModNotFoundTitle" xml:space="preserve"><value>找不到这个 Mod</value></data>
+  <data name="Mo_ModNotFoundBody" xml:space="preserve"><value>Mod 列表可能已刷新，请重新进入 Mod 总览</value></data>
+  <data name="Mo_EnableFailed" xml:space="preserve"><value>启用 Mod 失败</value></data>
+  <data name="Mo_DisableFailed" xml:space="preserve"><value>停用 Mod 失败</value></data>
+  <data name="Mo_RenameFailed" xml:space="preserve"><value>重命名失败</value></data>
+  <data name="Mo_NotEnabled" xml:space="preserve"><value>不启用</value></data>
+  <data name="Mo_EnabledShort" xml:space="preserve"><value>已启用</value></data>
+  <data name="Mo_DisabledShort" xml:space="preserve"><value>未启用</value></data>
+  <data name="Mo_RenameTitle" xml:space="preserve"><value>重命名 Mod</value></data>
+  <data name="Mo_Ok" xml:space="preserve"><value>确定</value></data>
+  <data name="Mo_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>打开文件夹</value></data>
+  <data name="Mo_ToggleTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾选启用，取消停用</value></data>
+  <data name="Mo_RenameModTip.ToolTipService.ToolTip" xml:space="preserve"><value>重命名这个 Mod</value></data>
+  <data name="Mo_OpenModFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>打开 Mod 文件夹</value></data>
+</root>

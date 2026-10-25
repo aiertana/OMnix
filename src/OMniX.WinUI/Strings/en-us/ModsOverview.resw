@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Mo_NothingToChange" xml:space="preserve"><value>No mods need changing right now</value></data>
+  <data name="Mo_Summary" xml:space="preserve"><value>{0} mods · {1} enabled</value></data>
+  <data name="Mo_BulkDone" xml:space="preserve"><value>Handled {0} mods</value></data>
+  <data name="Mo_BulkPartial" xml:space="preserve"><value>{0} succeeded, {1} failed (usually a locked folder)</value></data>
+  <data name="Mo_PresetItem" xml:space="preserve"><value>{0} ({1} mods)</value></data>
+  <data name="Mo_PresetQuoted" xml:space="preserve"><value>"{0}"</value></data>
+  <data name="Mo_PresetEnabledBody" xml:space="preserve"><value>The mods in "{0}" are enabled</value></data>
+  <data name="Mo_ConflictItem" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Mo_AndMore" xml:space="preserve"><value> and {0} more characters</value></data>
+  <data name="Mo_ConflictBody" xml:space="preserve"><value>{0} have more than one mod enabled — the game usually loads only one of them</value></data>
+  <data name="Mo_RenameNoFolder" xml:space="preserve"><value>Folder not found: {0}</value></data>
+  <data name="Mo_RenameDuplicate" xml:space="preserve"><value>A folder named "{0}" already exists</value></data>
+  <data name="Mo_ModFolderMissing" xml:space="preserve"><value>Mod folder does not exist: {0}</value></data>
+  <data name="Mo_DuplicateFolder" xml:space="preserve"><value>A folder named "{0}" already exists — deal with it first</value></data>
+  <data name="Mo_EnabledRatio" xml:space="preserve"><value>{0}/{1} enabled</value></data>
+  <data name="Mo_StatHint" xml:space="preserve"><value>Review every mod at once and toggle them in bulk</value></data>
+  <data name="Mo_NoModsYet" xml:space="preserve"><value>No mods read yet — check the game folder</value></data>
+  <data name="Mo_AllEnabledAlready" xml:space="preserve"><value>Everything is already enabled</value></data>
+  <data name="Mo_AllDisabledAlready" xml:space="preserve"><value>Everything is already disabled</value></data>
+  <data name="Mo_AllEnabled" xml:space="preserve"><value>All enabled</value></data>
+  <data name="Mo_AllDisabled" xml:space="preserve"><value>All disabled</value></data>
+  <data name="Mo_NoPresetTitle" xml:space="preserve"><value>No presets yet</value></data>
+  <data name="Mo_NoPresetBody" xml:space="preserve"><value>Save the current mod combo as a preset under Presets — then you can switch here in one click</value></data>
+  <data name="Mo_EnablePresetTitle" xml:space="preserve"><value>Enable preset</value></data>
+  <data name="Mo_Enable" xml:space="preserve"><value>Enable</value></data>
+  <data name="Mo_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Mo_EnablingPreset" xml:space="preserve"><value>Enabling preset</value></data>
+  <data name="Mo_PresetEnabled" xml:space="preserve"><value>Preset enabled</value></data>
+  <data name="Mo_NoConflictTitle" xml:space="preserve"><value>No conflicts found</value></data>
+  <data name="Mo_NoConflictBody" xml:space="preserve"><value>Every character has at most one mod enabled</value></data>
+  <data name="Mo_ConflictTitle" xml:space="preserve"><value>Possible conflicts found</value></data>
+  <data name="Mo_Refreshed" xml:space="preserve"><value>Refreshed</value></data>
+  <data name="Mo_ModNotFoundTitle" xml:space="preserve"><value>Cannot find that mod</value></data>
+  <data name="Mo_ModNotFoundBody" xml:space="preserve"><value>The mod list may have refreshed — please reopen the mods overview</value></data>
+  <data name="Mo_EnableFailed" xml:space="preserve"><value>Could not enable the mod</value></data>
+  <data name="Mo_DisableFailed" xml:space="preserve"><value>Could not disable the mod</value></data>
+  <data name="Mo_RenameFailed" xml:space="preserve"><value>Rename failed</value></data>
+  <data name="Mo_NotEnabled" xml:space="preserve"><value>Don't enable</value></data>
+  <data name="Mo_EnabledShort" xml:space="preserve"><value>Enabled</value></data>
+  <data name="Mo_DisabledShort" xml:space="preserve"><value>Not enabled</value></data>
+  <data name="Mo_RenameTitle" xml:space="preserve"><value>Rename mod</value></data>
+  <data name="Mo_Ok" xml:space="preserve"><value>OK</value></data>
+  <data name="Mo_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open folder</value></data>
+  <data name="Mo_ToggleTip.ToolTipService.ToolTip" xml:space="preserve"><value>Check to enable, uncheck to disable</value></data>
+  <data name="Mo_RenameModTip.ToolTipService.ToolTip" xml:space="preserve"><value>Rename this mod</value></data>
+  <data name="Mo_OpenModFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open the mod folder</value></data>
+</root>

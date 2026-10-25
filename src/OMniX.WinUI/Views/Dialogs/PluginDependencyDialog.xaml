@@ -54,12 +54,21 @@
                     TextWrapping="Wrap" />
             </StackPanel>
 
-            <Button
-                x:Name="XxmiButton"
+            <StackPanel
                 Grid.Column="2"
-                Click="OpenXxmi_OnClick"
-                Content="去下载"
-                l:Uids.Uid="/Dialogs/PluginDep_XxmiBtn"/>
+                Orientation="Horizontal"
+                Spacing="6">
+                <Button
+                    x:Name="XxmiButton"
+                    Click="OpenXxmi_OnClick"
+                    Content="去下载"
+                    l:Uids.Uid="/Dialogs/PluginDep_XxmiBtn" />
+                <Button
+                    x:Name="XxmiBrowseButton"
+                    Click="BrowseXxmi_OnClick"
+                    Content="浏览…"
+                    l:Uids.Uid="/Dialogs/PluginDep_XxmiBrowseBtn" />
+            </StackPanel>
         </Grid>
 
         <!--  WWMI  -->

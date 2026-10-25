@@ -3,6 +3,7 @@ using CommunityToolkit.WinUI.UI;
 using OMniX.WinUI.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using OMniX.Core.Contracts.Services;
 
 namespace OMniX.WinUI.Views;
 
@@ -122,10 +123,10 @@ public sealed partial class ModsOverviewPage : Page
 
         var dialog = new ContentDialog
         {
-            Title = "重命名 Mod",
+            Title = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_RenameTitle", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_RenameTitle", "重命名 Mod")),
             Content = nameBox,
-            PrimaryButtonText = "确定",
-            CloseButtonText = "取消",
+            PrimaryButtonText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Ok", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Ok", "确定")),
+            CloseButtonText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Cancel", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ModsOverview/Mo_Cancel", "取消")),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = XamlRoot
         };

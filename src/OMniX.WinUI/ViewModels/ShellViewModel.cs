@@ -320,8 +320,8 @@ public partial class ShellViewModel : ObservableRecipient
 
             if (!state.Ready)
             {
-                NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ShellUi/Shell_NotificationNotConfiguredTitle", "插件还没配好"),
-                    _localizer.GetLocalizedStringOrDefault("/ShellUi/Shell_NotificationNotConfiguredBody", "游戏可执行文件或部署包目录不对，再点一次开关重新填。"), TimeSpan.FromSeconds(8));
+                NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ShellUi/Shell_NotificationNotConfiguredTitle", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ShellUi/Shell_PluginNotReady", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ShellUi/Shell_PluginNotReady", "插件还没配好"))),
+                    _localizer.GetLocalizedStringOrDefault("/ShellUi/Shell_NotificationNotConfiguredBody", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ShellUi/Shell_PluginNotReadyBody", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ShellUi/Shell_PluginNotReadyBody", "游戏可执行文件或部署包目录不对，再点一次开关重新填。"))), TimeSpan.FromSeconds(8));
                 await RefreshDlss5Async();
                 return;
             }
@@ -353,8 +353,8 @@ public partial class ShellViewModel : ObservableRecipient
 
             if (result.NeedsSetup)
             {
-                NotificationManager.ShowNotification("插件还没配好",
-                    "游戏可执行文件或部署包目录不对，再点一次开关重新填。", TimeSpan.FromSeconds(8));
+                NotificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ShellUi/Shell_PluginNotReady", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ShellUi/Shell_PluginNotReady", "插件还没配好")),
+                    App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ShellUi/Shell_PluginNotReadyBody", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ShellUi/Shell_PluginNotReadyBody", "游戏可执行文件或部署包目录不对，再点一次开关重新填。")), TimeSpan.FromSeconds(8));
                 return;
             }
 

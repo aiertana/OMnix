@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Pd_AddedToPreset" xml:space="preserve"><value>Added to the preset</value></data>
+  <data name="Pd_AddToPresetFailed" xml:space="preserve"><value>Could not add to the preset</value></data>
+  <data name="Pd_ElevatorFailed" xml:space="preserve"><value>Could not start Elevator</value></data>
+  <data name="Pr_EmptyPresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>When checked, new presets start with no mod enabled</value></data>
+  <data name="Pr_AutoSyncTip.ToolTipService.ToolTip" xml:space="preserve"><value>When checked, OMniX syncs preferences automatically when a preset is created or switched</value></data>
+  <data name="Pr_SavePrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>Read the enabled mods' preferences from d3dx_user.ini into each one's .JASM_Config.json</value></data>
+  <data name="Pr_LoadPrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>Read the preferences from .JASM_Config.json into d3dx_user.ini so 3DMigoto picks them up</value></data>
+  <data name="Pr_ManualSyncTip.ToolTipService.ToolTip" xml:space="preserve"><value>When checked you sync the preferences yourself instead of letting Elevator do it</value></data>
+  <data name="Pr_ApplyTip.ToolTipService.ToolTip" xml:space="preserve"><value>Enable every mod in this preset and write the preset's preferences back to the mods</value></data>
+  <data name="Pr_DeleteTip.ToolTipService.ToolTip" xml:space="preserve"><value>Delete this preset for good</value></data>
+  <data name="Pr_InfoTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open a dialog that explains it</value></data>
+  <data name="Pr_ClearPrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>Clear the preferences stored in each mod's .JASM_ModConfig.json</value></data>
+  <data name="Pd_SavePrefsTip.ToolTipService.ToolTip" xml:space="preserve"><value>Read this mod's current 3Dmigoto user ini and store the settings in the preset</value></data>
+</root>

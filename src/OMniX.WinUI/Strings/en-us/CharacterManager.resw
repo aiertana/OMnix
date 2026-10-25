@@ -167,4 +167,14 @@ Changing it after creation makes OMniX treat this as a new character.</value></d
   <data name="Valid_PathFormat" xml:space="preserve"><value>Invalid path format</value></data>
   <data name="Valid_RarityMax" xml:space="preserve"><value>Rarity cannot be greater than 10</value></data>
   <data name="Valid_RarityMin" xml:space="preserve"><value>Rarity cannot be less than 0</value></data>
+  <data name="Ec_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open this character's mod folder</value></data>
+  <data name="Ec_ConfirmTip.ToolTipService.ToolTip" xml:space="preserve"><value>Asks for confirmation first</value></data>
+  <data name="Ec_OpenFixerTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open this mod with the fixer (the MOD folder is filled in for you)</value></data>
+  <data name="Ec_RenameTip.ToolTipService.ToolTip" xml:space="preserve"><value>Rename (click once to edit it right above)</value></data>
+  <data name="Ec_OpenModFolderTip.ToolTipService.ToolTip" xml:space="preserve"><value>Open this mod's folder</value></data>
+  <data name="Ec_DeleteModTip.ToolTipService.ToolTip" xml:space="preserve"><value>Delete this mod from disk</value></data>
+  <data name="Ec_AddedAtTip.ToolTipService.ToolTip" xml:space="preserve"><value>When it was added to OMniX</value></data>
+  <data name="Ec_DiscardTip.ToolTipService.ToolTip" xml:space="preserve"><value>Discard the changes that are not saved yet</value></data>
+  <data name="Ec_SaveTip.ToolTipService.ToolTip" xml:space="preserve"><value>Write the changes to disk</value></data>
+  <data name="Ec_ResetTip.ToolTipService.ToolTip" xml:space="preserve"><value>Reset the character data back to defaults</value></data>
 </root>
