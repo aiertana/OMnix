@@ -64,15 +64,15 @@
             </CommandBar>
 
             <TextBox
-                x:Name="SearchBox"
-                Grid.Column="1"
-                MinWidth="400"
-                MaxHeight="32"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                PlaceholderText="搜索 Mod…"
-            l:Uids.Uid="/HomePreset/Preset_DetailsSearchPlaceholder"
-                TextChanged="SearchBox_OnTextChanged" />
+    x:Name="SearchBox"
+    Grid.Column="1"
+    MinWidth="400"
+    MaxHeight="32"
+    HorizontalAlignment="Right"
+    VerticalAlignment="Center"
+    PlaceholderText="搜索 Mod…"
+    l:Uids.Uid="/HomePreset/Preset_DetailsSearchPlaceholder"
+    TextChanged="SearchBox_OnTextChanged"/>
         </Grid>
 
 
@@ -222,7 +222,7 @@
 
                                 <StackPanel>
                                     <TextBlock HorizontalAlignment="Center" Text="加进预设的时间："
-            l:Uids.Uid="/HomePreset/Preset_DetailsAddedAtLabel" />
+            l:Uids.Uid="/HomePreset/Preset_DetailsAddedAtLabel"/>
                                     <TextBlock HorizontalAlignment="Center" Text="{x:Bind AddedAt}" />
                                 </StackPanel>
 
@@ -236,11 +236,11 @@
                                     HorizontalAlignment="Center"
                                     Foreground="Red"
                                     Text="硬盘上找不到这个 Mod！"
-            l:Uids.Uid="/HomePreset/Preset_DetailsMissingWarning" />
+            l:Uids.Uid="/HomePreset/Preset_DetailsMissingWarning"/>
 
                                 <StackPanel>
                                     <TextBlock HorizontalAlignment="Center" Text="原来的路径："
-            l:Uids.Uid="/HomePreset/Preset_DetailsOriginalPathLabel" />
+            l:Uids.Uid="/HomePreset/Preset_DetailsOriginalPathLabel"/>
                                     <TextBlock
                                         HorizontalAlignment="Center"
                                         IsTextSelectionEnabled="True"

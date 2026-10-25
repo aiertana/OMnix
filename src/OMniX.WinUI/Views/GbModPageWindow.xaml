@@ -46,7 +46,7 @@
                         FontSize="20"
                         FontWeight="Bold"
                         Text="从 GameBanana 下载 Mod"
-            l:Uids.Uid="/WindowsUi/Win_GbDownloadTitle" />
+            l:Uids.Uid="/WindowsUi/Win_GbDownloadTitle"/>
 
                     <controls:LinkButton
                         Link="{x:Bind ViewModel.CharacterModListPath, Mode=OneWay}"
@@ -62,7 +62,7 @@
                             <StackPanel>
                                 <ProgressRing IsActive="True" />
                                 <TextBlock Text="正在从 GameBanana 读取 Mod 信息…"
-            l:Uids.Uid="/WindowsUi/Win_ModUpdateLoading" />
+            l:Uids.Uid="/WindowsUi/Win_ModUpdateLoading"/>
                             </StackPanel>
                         </Grid>
 
@@ -197,7 +197,7 @@
                             Margin="10,0"
                             VerticalAlignment="Center"
                             Text="Mod 页面："
-            l:Uids.Uid="/WindowsUi/Win_ModPageLabel" />
+            l:Uids.Uid="/WindowsUi/Win_ModPageLabel"/>
                         <controls:LinkButton
                             VerticalAlignment="Center"
                             Link="{x:Bind ViewModel.ModPage, Mode=OneWay}"

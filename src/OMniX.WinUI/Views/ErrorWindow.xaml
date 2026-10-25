@@ -43,7 +43,7 @@
                     VerticalAlignment="Center"
                     Style="{ThemeResource TitleTextBlockStyle}"
                     Text="出错了："
-            l:Uids.Uid="/WindowsUi/Win_ErrorTitle" />
+            l:Uids.Uid="/WindowsUi/Win_ErrorTitle"/>
 
             </StackPanel>
 
@@ -65,14 +65,14 @@
                     FontSize="18"
                     Style="{ThemeResource BodyStrongTextBlockStyle}"
                     Text="程序碰到了一个没处理好的问题。这会儿 OMniX 可能不太稳定，建议重启一下。"
-            l:Uids.Uid="/WindowsUi/Win_ErrorDescription" />
+            l:Uids.Uid="/WindowsUi/Win_ErrorDescription"/>
 
                 <TextBlock
                     Margin="0,4"
                     IsTextSelectionEnabled="True"
                     Style="{ThemeResource BodyStrongTextBlockStyle}"
                     Text="出错位置："
-            l:Uids.Uid="/WindowsUi/Win_ErrorStackTraceLabel" />
+            l:Uids.Uid="/WindowsUi/Win_ErrorStackTraceLabel"/>
 
                 <StackPanel
                     Padding="12"
@@ -90,7 +90,7 @@
                         Margin="4,0"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
                         Text="里面还有一个异常"
-            l:Uids.Uid="/WindowsUi/Win_ErrorInnerExceptionTitle" />
+            l:Uids.Uid="/WindowsUi/Win_ErrorInnerExceptionTitle"/>
                     <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{x:Bind ViewModel.InnerExceptionMessage, Mode=OneWay}" />
 
                     <TextBlock
@@ -98,7 +98,7 @@
                         IsTextSelectionEnabled="True"
                         Style="{ThemeResource BodyStrongTextBlockStyle}"
                         Text="出错位置："
-            l:Uids.Uid="/WindowsUi/Win_ErrorStackTraceLabel" />
+            l:Uids.Uid="/WindowsUi/Win_ErrorStackTraceLabel"/>
 
                     <StackPanel
                         Padding="12"

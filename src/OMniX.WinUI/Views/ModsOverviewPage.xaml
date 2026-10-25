@@ -90,7 +90,7 @@
                     <TextBlock
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Text="对该文件夹运行命令：" l:Uids.Uid="/ModList/ModsOv_RunCmdLabel" />
+                        Text="对该文件夹运行命令：" l:Uids.Uid="/ModList/ModsOv_RunCmdLabel"/>
                     <Button
                         Grid.Column="1"
                         HorizontalAlignment="Right"
@@ -125,7 +125,7 @@
 
 
                                     <StackPanel>
-                                        <TextBlock IsTextSelectionEnabled="True" Text="完整命令：" l:Uids.Uid="/ModList/ModsOv_FullCmdLabel" />
+                                        <TextBlock IsTextSelectionEnabled="True" Text="完整命令：" l:Uids.Uid="/ModList/ModsOv_FullCmdLabel"/>
                                         <TextBlock
                                             Padding="6,0,0,0"
                                             IsTextSelectionEnabled="True"
@@ -135,7 +135,7 @@
                                     </StackPanel>
 
                                     <StackPanel>
-                                        <TextBlock IsTextSelectionEnabled="True" Text="工作目录：" l:Uids.Uid="/ModList/ModsOv_WorkDirLabel" />
+                                        <TextBlock IsTextSelectionEnabled="True" Text="工作目录：" l:Uids.Uid="/ModList/ModsOv_WorkDirLabel"/>
                                         <TextBlock
                                             Padding="6,0,0,0"
                                             IsTextSelectionEnabled="True"
@@ -159,12 +159,12 @@
                                 </StackPanel>
 
                                 <Button
-                                    Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    Command="{x:Bind RunCommand}"
-                                    CommandParameter="{x:Bind}"
-                                    Content="运行" l:Uids.Uid="/ModList/ModsOv_Run"
-                                    Style="{ThemeResource AccentButtonStyle}" />
+    Grid.Column="1"
+    VerticalAlignment="Center"
+    Command="{x:Bind RunCommand}"
+    CommandParameter="{x:Bind}"
+    Content="运行" l:Uids.Uid="/ModList/ModsOv_Run"
+    Style="{ThemeResource AccentButtonStyle}"/>
                             </Grid>
 
                         </DataTemplate>
@@ -233,7 +233,7 @@
                         x:Name="GoToCharacterButton"
                         Grid.Column="2"
                         Click="GoToCharacterButton_OnClick"
-                        Content="前往角色" l:Uids.Uid="/ModList/ModsOv_GoToCharacter" />
+                        Content="前往角色" l:Uids.Uid="/ModList/ModsOv_GoToCharacter"/>
 
                 </Grid>
 
@@ -272,16 +272,16 @@
                             ToolTipService.ToolTip="{x:Bind Mod.Name}" />
 
                         <TextBlock
-                            FontSize="12"
-                            Foreground="{ThemeResource SystemFillColorSuccessBrush}"
-                            Text="已启用" l:Uids.Uid="/ModList/ModRow_Enabled"
-                            Visibility="{x:Bind IsEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+    FontSize="12"
+    Foreground="{ThemeResource SystemFillColorSuccessBrush}"
+    Text="已启用" l:Uids.Uid="/ModList/ModRow_Enabled"
+    Visibility="{x:Bind IsEnabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <TextBlock
-                            FontSize="12"
-                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                            Text="未启用" l:Uids.Uid="/ModList/ModRow_Disabled"
-                            Visibility="{x:Bind IsDisabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+    FontSize="12"
+    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+    Text="未启用" l:Uids.Uid="/ModList/ModRow_Disabled"
+    Visibility="{x:Bind IsDisabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <!--  二开：重命名  -->
                         <Button
@@ -304,7 +304,7 @@
                         Grid.Column="3"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
-                        <TextBlock Margin="0,0,4,0" Text="添加于：" l:Uids.Uid="/ModList/ModRow_AddedLabel" />
+                        <TextBlock Margin="0,0,4,0" Text="添加于：" l:Uids.Uid="/ModList/ModRow_AddedLabel"/>
                         <TextBlock Text="{x:Bind Mod.DateAdded}" />
                     </StackPanel>
 
@@ -341,16 +341,16 @@
                 VerticalAlignment="Center"
                 FontSize="12"
                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                Text="OMNIX  /  Mod 总览" l:Uids.Uid="/ModList/ModsOv_Breadcrumb" />
+                Text="OMNIX  /  Mod 总览" l:Uids.Uid="/ModList/ModsOv_Breadcrumb"/>
 
             <AutoSuggestBox
-                x:Name="SearchBox"
-                Grid.Column="1"
-                MinWidth="220"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                PlaceholderText="输入后按回车搜索Mod…" l:Uids.Uid="/ModList/ModsOv_Search"
-                QuerySubmitted="SearchBox_OnQuerySubmitted" />
+    x:Name="SearchBox"
+    Grid.Column="1"
+    MinWidth="220"
+    HorizontalAlignment="Right"
+    VerticalAlignment="Center"
+    PlaceholderText="输入后按回车搜索Mod…" l:Uids.Uid="/ModList/ModsOv_Search"
+    QuerySubmitted="SearchBox_OnQuerySubmitted"/>
         </Grid>
 
         <!--  Hero 卡  -->
@@ -425,7 +425,7 @@
                     Spacing="12">
                     <TextBlock FontSize="38" FontWeight="Bold">
                         <Run Foreground="{ThemeResource OmniXAuxPinkBrush}" Text="Mod" />
-                        <Run Foreground="{ThemeResource OmniXAuxPurpleBrush}" Text=" 总览" l:Uids.Uid="/ModList/ModsOv_HeroSuffix" />
+                        <Run Foreground="{ThemeResource OmniXAuxPurpleBrush}" Text=" 总览" l:Uids.Uid="/ModList/ModsOv_HeroSuffix"/>
                     </TextBlock>
 
                     <TextBlock
@@ -445,7 +445,7 @@
                             <TextBlock
                                 FontSize="12"
                                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="批量管理" l:Uids.Uid="/ModList/ModsOv_BatchManage" />
+                                Text="批量管理" l:Uids.Uid="/ModList/ModsOv_BatchManage"/>
                         </Border>
                         <Border
                             Padding="12,5"
@@ -455,7 +455,7 @@
                             <TextBlock
                                 FontSize="12"
                                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="状态监控" l:Uids.Uid="/ModList/ModsOv_StatusMonitor" />
+                                Text="状态监控" l:Uids.Uid="/ModList/ModsOv_StatusMonitor"/>
                         </Border>
                         <Border
                             Padding="12,5"
@@ -465,7 +465,7 @@
                             <TextBlock
                                 FontSize="12"
                                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="冲突检测" l:Uids.Uid="/ModList/ModsOv_ConflictDetect" />
+                                Text="冲突检测" l:Uids.Uid="/ModList/ModsOv_ConflictDetect"/>
                         </Border>
                     </StackPanel>
                 </StackPanel>
@@ -502,10 +502,10 @@
                             </Border>
                             <TextBlock
                                 Style="{StaticResource QuickActionTitleStyle}"
-                                Text="启用预设" l:Uids.Uid="/ModList/ModsOv_EnablePresetTitle" />
+                                Text="启用预设" l:Uids.Uid="/ModList/ModsOv_EnablePresetTitle"/>
                             <TextBlock
                                 Style="{StaticResource QuickActionDescStyle}"
-                                Text="选一个预设，启用里面的 Mod" l:Uids.Uid="/ModList/ModsOv_EnablePresetDesc" />
+                                Text="选一个预设，启用里面的 Mod" l:Uids.Uid="/ModList/ModsOv_EnablePresetDesc"/>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -532,10 +532,10 @@
                             </Border>
                             <TextBlock
                                 Style="{StaticResource QuickActionTitleStyle}"
-                                Text="全部禁用" l:Uids.Uid="/ModList/ModsOv_DisableAllTitle" />
+                                Text="全部禁用" l:Uids.Uid="/ModList/ModsOv_DisableAllTitle"/>
                             <TextBlock
                                 Style="{StaticResource QuickActionDescStyle}"
-                                Text="一键关闭所有 Mod" l:Uids.Uid="/ModList/ModsOv_DisableAllDesc" />
+                                Text="一键关闭所有 Mod" l:Uids.Uid="/ModList/ModsOv_DisableAllDesc"/>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -562,10 +562,10 @@
                             </Border>
                             <TextBlock
                                 Style="{StaticResource QuickActionTitleStyle}"
-                                Text="冲突检查" l:Uids.Uid="/ModList/ModsOv_CheckConflictsTitle" />
+                                Text="冲突检查" l:Uids.Uid="/ModList/ModsOv_CheckConflictsTitle"/>
                             <TextBlock
                                 Style="{StaticResource QuickActionDescStyle}"
-                                Text="扫描同角色多开的情况" l:Uids.Uid="/ModList/ModsOv_CheckConflictsDesc" />
+                                Text="扫描同角色多开的情况" l:Uids.Uid="/ModList/ModsOv_CheckConflictsDesc"/>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -592,10 +592,10 @@
                             </Border>
                             <TextBlock
                                 Style="{StaticResource QuickActionTitleStyle}"
-                                Text="刷新列表" l:Uids.Uid="/ModList/ModsOv_RefreshTitle" />
+                                Text="刷新列表" l:Uids.Uid="/ModList/ModsOv_RefreshTitle"/>
                             <TextBlock
                                 Style="{StaticResource QuickActionDescStyle}"
-                                Text="重新读取 Mod 目录" l:Uids.Uid="/ModList/ModsOv_RefreshDesc" />
+                                Text="重新读取 Mod 目录" l:Uids.Uid="/ModList/ModsOv_RefreshDesc"/>
                         </StackPanel>
                     </Grid>
                 </Border>

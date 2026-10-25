@@ -46,7 +46,7 @@
                         FontSize="20"
                         FontWeight="Bold"
                         Text="发现有新的可下载文件"
-            l:Uids.Uid="/WindowsUi/Win_ModUpdateTitle" />
+            l:Uids.Uid="/WindowsUi/Win_ModUpdateTitle"/>
 
                     <controls:LinkButton
                         Link="{x:Bind ViewModel.ModPath, Mode=OneWay}"
@@ -62,7 +62,7 @@
                             <StackPanel>
                                 <ProgressRing IsActive="True" />
                                 <TextBlock Text="正在从 GameBanana 读取 Mod 信息…"
-            l:Uids.Uid="/WindowsUi/Win_ModUpdateLoading" />
+            l:Uids.Uid="/WindowsUi/Win_ModUpdateLoading"/>
                             </StackPanel>
                         </Grid>
 
@@ -117,12 +117,12 @@
                                                     Text="{x:Bind Description}" />
 
                                                 <TextBlock
-                                                    Grid.Row="0"
-                                                    Grid.Column="1"
-                                                    HorizontalAlignment="Right"
-                                                    Text="上次检查之后更新的"
-            l:Uids.Uid="/WindowsUi/Win_ModFileUpdatedSinceLast"
-                                                    Visibility="{Binding Path=IsNew, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverter}}" />
+    Grid.Row="0"
+    Grid.Column="1"
+    HorizontalAlignment="Right"
+    Text="上次检查之后更新的"
+    l:Uids.Uid="/WindowsUi/Win_ModFileUpdatedSinceLast"
+    Visibility="{Binding Path=IsNew, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                                 <StackPanel Grid.Row="1" Grid.Column="1">
                                                     <Grid>
@@ -180,14 +180,14 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Button
-                        Width="200"
-                        Height="50"
-                        HorizontalAlignment="Left"
-                        Command="{x:Bind ViewModel.IgnoreAndCloseCommand}"
-                        Content="忽略并关闭"
-            l:Uids.Uid="/WindowsUi/Win_IgnoreAndCloseButton"
-                        IsEnabled="{x:Bind ViewModel.IsNotBusy, Mode=OneWay}"
-                        ToolTipService.ToolTip="清掉这条通知并关掉这个窗口" />
+    Width="200"
+    Height="50"
+    HorizontalAlignment="Left"
+    Command="{x:Bind ViewModel.IgnoreAndCloseCommand}"
+    Content="忽略并关闭"
+    l:Uids.Uid="/WindowsUi/Win_IgnoreAndCloseButton"
+    IsEnabled="{x:Bind ViewModel.IsNotBusy, Mode=OneWay}"
+    ToolTipService.ToolTip="清掉这条通知并关掉这个窗口"/>
 
                     <StackPanel
                         Grid.Column="1"
@@ -196,7 +196,7 @@
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
                         CornerRadius="4">
                         <TextBlock Text="上次检查："
-            l:Uids.Uid="/WindowsUi/Win_LastUpdateCheckLabel" />
+            l:Uids.Uid="/WindowsUi/Win_LastUpdateCheckLabel"/>
                         <TextBlock Text="{x:Bind ViewModel.LastUpdateCheck, Mode=OneWay}" />
                     </StackPanel>
 
@@ -220,7 +220,7 @@
                             Margin="10,0"
                             VerticalAlignment="Center"
                             Text="Mod 页面："
-            l:Uids.Uid="/WindowsUi/Win_ModPageLabel" />
+            l:Uids.Uid="/WindowsUi/Win_ModPageLabel"/>
                         <controls:LinkButton
                             VerticalAlignment="Center"
                             Link="{x:Bind ViewModel.ModPage, Mode=OneWay}"

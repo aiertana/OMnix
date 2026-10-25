@@ -40,7 +40,7 @@
                 FontWeight="SemiBold"
                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                 Text="导出范围"
-                l:Uids.Uid="/Dialogs/ModExport_ScopeHeader" />
+                l:Uids.Uid="/Dialogs/ModExport_ScopeHeader"/>
 
             <RadioButtons
                 x:Name="ScopeRadio"
@@ -74,12 +74,12 @@
                     Padding="8,2"
                     Click="SelectAllCharacters_OnClick"
                     Content="全选"
-                    l:Uids.Uid="/Dialogs/ModExport_SelectAllBtn" />
+                    l:Uids.Uid="/Dialogs/ModExport_SelectAllBtn"/>
                 <Button
                     Padding="8,2"
                     Click="SelectNoneCharacters_OnClick"
                     Content="全不选"
-                    l:Uids.Uid="/Dialogs/ModExport_SelectNoneBtn" />
+                    l:Uids.Uid="/Dialogs/ModExport_SelectNoneBtn"/>
             </StackPanel>
 
             <Border
@@ -117,7 +117,7 @@
                 FontWeight="SemiBold"
                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                 Text="导出格式"
-                l:Uids.Uid="/Dialogs/ModExport_FormatHeader" />
+                l:Uids.Uid="/Dialogs/ModExport_FormatHeader"/>
             <RadioButtons x:Name="FormatRadio" MaxColumns="2" SelectedIndex="0" />
         </StackPanel>
 
@@ -128,7 +128,7 @@
                 FontWeight="SemiBold"
                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                 Text="保存到"
-                l:Uids.Uid="/Dialogs/ModExport_SaveToHeader" />
+                l:Uids.Uid="/Dialogs/ModExport_SaveToHeader"/>
 
             <Grid ColumnSpacing="8">
                 <Grid.ColumnDefinitions>
@@ -145,7 +145,7 @@
                     Padding="14,6"
                     Click="Browse_OnClick"
                     Content="浏览…"
-                    l:Uids.Uid="/Dialogs/ModExport_BrowseBtn" />
+                    l:Uids.Uid="/Dialogs/ModExport_BrowseBtn"/>
             </Grid>
         </StackPanel>
 
@@ -155,7 +155,7 @@
             Grid.Row="4"
             Content="移除 OMniX 配置文件（.OMniX_ 前缀，别人用不上）"
             IsChecked="True"
-            l:Uids.Uid="/Dialogs/ModExport_RemoveSettingsCheck" />
+            l:Uids.Uid="/Dialogs/ModExport_RemoveSettingsCheck"/>
 
         <!--  进度  -->
         <StackPanel
@@ -179,6 +179,6 @@
             Text="导出只是复制，不会改动原有 Mod。zip 只打包不二次压缩，速度跟直接复制差不多。中途可以暂停或取消，取消时会把没写完的半成品删掉。"
             TextWrapping="Wrap"
             VerticalAlignment="Bottom"
-            l:Uids.Uid="/Dialogs/ModExport_Description" />
+            l:Uids.Uid="/Dialogs/ModExport_Description"/>
     </Grid>
 </ContentDialog>

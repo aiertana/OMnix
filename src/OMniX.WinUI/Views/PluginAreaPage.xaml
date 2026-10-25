@@ -50,24 +50,24 @@
                             FontWeight="SemiBold"
                             Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                             Text="插件专区"
-            l:Uids.Uid="/HomePreset/Plugin_PageTitle" />
+            l:Uids.Uid="/HomePreset/Plugin_PageTitle"/>
                         <TextBlock
-                            FontSize="12"
-                            Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                            Text="插件独立于管理器：删掉插件文件不影响 Mod 管理和游戏启动，出问题也只影响它自己。"
-            l:Uids.Uid="/HomePreset/Plugin_PageDescription"
-                            TextWrapping="Wrap" />
+    FontSize="12"
+    Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+    Text="插件独立于管理器：删掉插件文件不影响 Mod 管理和游戏启动，出问题也只影响它自己。"
+    l:Uids.Uid="/HomePreset/Plugin_PageDescription"
+    TextWrapping="Wrap"/>
                     </StackPanel>
 
                     <Button
-                        Grid.Column="2"
-                        Height="36"
-                        Padding="16,0"
-                        VerticalAlignment="Center"
-                        Command="{Binding OpenPluginsFolderCommand}"
-                        Content="打开插件文件夹"
-            l:Uids.Uid="/HomePreset/Plugin_OpenFolderButton"
-                        Style="{ThemeResource OmniXGhostButtonStyle}" />
+    Grid.Column="2"
+    Height="36"
+    Padding="16,0"
+    VerticalAlignment="Center"
+    Command="{Binding OpenPluginsFolderCommand}"
+    Content="打开插件文件夹"
+    l:Uids.Uid="/HomePreset/Plugin_OpenFolderButton"
+    Style="{ThemeResource OmniXGhostButtonStyle}"/>
                 </Grid>
             </Border>
 

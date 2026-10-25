@@ -73,16 +73,16 @@
             <!--  ===== 标题 =====  -->
             <StackPanel Margin="0,0,0,6" Spacing="2">
                 <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="关于 OMniX"
-            l:Uids.Uid="/HomePreset/About_Title" />
+            l:Uids.Uid="/HomePreset/About_Title"/>
                 <TextBlock Style="{StaticResource AboutMutedStyle}" Text="OMniX 是什么、能做什么、谁做的"
-            l:Uids.Uid="/HomePreset/About_Subtitle" />
+            l:Uids.Uid="/HomePreset/About_Subtitle"/>
             </StackPanel>
 
             <!--  ===== 这是什么 =====  -->
             <Border Style="{StaticResource AboutCardStyle}">
                 <StackPanel Spacing="4">
                     <TextBlock Style="{StaticResource AboutCardTitleStyle}" Text="这是什么"
-            l:Uids.Uid="/HomePreset/About_WhatIsCardTitle" />
+            l:Uids.Uid="/HomePreset/About_WhatIsCardTitle"/>
                     <TextBlock
                         Margin="0,6,0,0"
                         FontSize="20"
@@ -93,12 +93,12 @@
                         Margin="0,8,0,0"
                         Style="{StaticResource AboutBodyStyle}"
                         Text="鸣潮的 Mod 管理器。按角色整理 Mod、一键开关、存预设、跟 3Dmigoto 同步，Mod 文件本身还在 XXMI Launcher 的目录里，这个程序只负责管。"
-            l:Uids.Uid="/HomePreset/About_Description" />
+            l:Uids.Uid="/HomePreset/About_Description"/>
                     <TextBlock
                         Margin="0,6,0,0"
                         Style="{StaticResource AboutMutedStyle}"
                         Text="完全免费、开源，不收任何费用。有人跟你要钱才给安装包，那就是骗子。"
-            l:Uids.Uid="/HomePreset/About_FreeNotice" />
+            l:Uids.Uid="/HomePreset/About_FreeNotice"/>
                 </StackPanel>
             </Border>
 
@@ -106,7 +106,7 @@
             <Border Style="{StaticResource AboutCardStyle}">
                 <StackPanel Spacing="10">
                     <TextBlock Style="{StaticResource AboutCardTitleStyle}" Text="能做什么"
-            l:Uids.Uid="/HomePreset/About_FeaturesCardTitle" />
+            l:Uids.Uid="/HomePreset/About_FeaturesCardTitle"/>
 
                     <Grid ColumnSpacing="12">
                         <Grid.ColumnDefinitions>
@@ -114,12 +114,12 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="角色管理"
-            l:Uids.Uid="/HomePreset/About_FeatureCharactersLabel" />
+            l:Uids.Uid="/HomePreset/About_FeatureCharactersLabel"/>
                         <TextBlock
                             Grid.Column="1"
                             Style="{StaticResource AboutBodyStyle}"
                             Text="角色以头像墙列出，可搜索、置顶、隐藏，也能自己新建"
-            l:Uids.Uid="/HomePreset/About_FeatureCharactersDesc" />
+            l:Uids.Uid="/HomePreset/About_FeatureCharactersDesc"/>
                     </Grid>
 
                     <Grid ColumnSpacing="12">
@@ -128,12 +128,12 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="Mod 开关"
-            l:Uids.Uid="/HomePreset/About_FeatureToggleLabel" />
+            l:Uids.Uid="/HomePreset/About_FeatureToggleLabel"/>
                         <TextBlock
                             Grid.Column="1"
                             Style="{StaticResource AboutBodyStyle}"
                             Text="单个 Mod 或整个角色一键启用 / 禁用"
-            l:Uids.Uid="/HomePreset/About_FeatureToggleDesc" />
+            l:Uids.Uid="/HomePreset/About_FeatureToggleDesc"/>
                     </Grid>
 
                     <Grid ColumnSpacing="12">
@@ -142,12 +142,12 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="Mod 预设"
-            l:Uids.Uid="/HomePreset/About_FeaturePresetLabel" />
+            l:Uids.Uid="/HomePreset/About_FeaturePresetLabel"/>
                         <TextBlock
                             Grid.Column="1"
                             Style="{StaticResource AboutBodyStyle}"
                             Text="一套 Mod 组合存成预设，切换时批量应用，可导出可复制"
-            l:Uids.Uid="/HomePreset/About_FeaturePresetDesc" />
+            l:Uids.Uid="/HomePreset/About_FeaturePresetDesc"/>
                     </Grid>
 
                     <Grid ColumnSpacing="12">
@@ -156,12 +156,12 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="Mod 编辑"
-            l:Uids.Uid="/HomePreset/About_FeatureEditLabel" />
+            l:Uids.Uid="/HomePreset/About_FeatureEditLabel"/>
                         <TextBlock
                             Grid.Column="1"
                             Style="{StaticResource AboutBodyStyle}"
                             Text="改名称、作者、描述、星级，调整 Mod 内部的分段与优先级"
-            l:Uids.Uid="/HomePreset/About_FeatureEditDesc" />
+            l:Uids.Uid="/HomePreset/About_FeatureEditDesc"/>
                     </Grid>
 
                     <Grid ColumnSpacing="12">
@@ -170,12 +170,12 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="回收站"
-            l:Uids.Uid="/HomePreset/About_FeatureRecycleLabel" />
+            l:Uids.Uid="/HomePreset/About_FeatureRecycleLabel"/>
                         <TextBlock
                             Grid.Column="1"
                             Style="{StaticResource AboutBodyStyle}"
                             Text="删掉的 Mod 先进回收站，误删了还能恢复"
-            l:Uids.Uid="/HomePreset/About_FeatureRecycleDesc" />
+            l:Uids.Uid="/HomePreset/About_FeatureRecycleDesc"/>
                     </Grid>
 
                     <Grid ColumnSpacing="12">
@@ -184,12 +184,12 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="更新检测"
-            l:Uids.Uid="/HomePreset/About_FeatureUpdateLabel" />
+            l:Uids.Uid="/HomePreset/About_FeatureUpdateLabel"/>
                         <TextBlock
                             Grid.Column="1"
                             Style="{StaticResource AboutBodyStyle}"
                             Text="比对本地文件时间戳，把有变动的 Mod 标出来"
-            l:Uids.Uid="/HomePreset/About_FeatureUpdateDesc" />
+            l:Uids.Uid="/HomePreset/About_FeatureUpdateDesc"/>
                     </Grid>
 
                     <Grid ColumnSpacing="12">
@@ -198,12 +198,12 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="Mod 修复"
-            l:Uids.Uid="/HomePreset/About_FeatureFixerLabel" />
+            l:Uids.Uid="/HomePreset/About_FeatureFixerLabel"/>
                         <TextBlock
                             Grid.Column="1"
                             Style="{StaticResource AboutBodyStyle}"
                             Text="内置 Wuwa Mod Fixer，可直接在程序里下载并运行"
-            l:Uids.Uid="/HomePreset/About_FeatureFixerDesc" />
+            l:Uids.Uid="/HomePreset/About_FeatureFixerDesc"/>
                     </Grid>
 
                     <Grid ColumnSpacing="12">
@@ -212,12 +212,12 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="启动游戏"
-            l:Uids.Uid="/HomePreset/About_FeatureLaunchLabel" />
+            l:Uids.Uid="/HomePreset/About_FeatureLaunchLabel"/>
                         <TextBlock
                             Grid.Column="1"
                             Style="{StaticResource AboutBodyStyle}"
                             Text="配好路径后能直接拉起 XXMI Launcher 和游戏本体"
-            l:Uids.Uid="/HomePreset/About_FeatureLaunchDesc" />
+            l:Uids.Uid="/HomePreset/About_FeatureLaunchDesc"/>
                     </Grid>
 
                     <Grid ColumnSpacing="12">
@@ -226,12 +226,12 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="迁移"
-            l:Uids.Uid="/HomePreset/About_FeatureMigrateLabel" />
+            l:Uids.Uid="/HomePreset/About_FeatureMigrateLabel"/>
                         <TextBlock
                             Grid.Column="1"
                             Style="{StaticResource AboutBodyStyle}"
                             Text="Mod 可以在角色之间移动或复制"
-            l:Uids.Uid="/HomePreset/About_FeatureMigrateDesc" />
+            l:Uids.Uid="/HomePreset/About_FeatureMigrateDesc"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -262,11 +262,11 @@
                             FontSize="16"
                             FontWeight="SemiBold"
                             Text="是湫"
-            l:Uids.Uid="/HomePreset/About_AuthorName" />
+            l:Uids.Uid="/HomePreset/About_AuthorName"/>
                         <TextBlock Style="{StaticResource AboutMutedStyle}" Text="程序 · 界面 · 动效"
-            l:Uids.Uid="/HomePreset/About_AuthorRole" />
+            l:Uids.Uid="/HomePreset/About_AuthorRole"/>
                         <TextBlock Style="{StaticResource AboutMutedStyle}" Text="有什么想加的、用着不顺手的，都能提。"
-            l:Uids.Uid="/HomePreset/About_AuthorNote" />
+            l:Uids.Uid="/HomePreset/About_AuthorNote"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -275,7 +275,7 @@
             <Border Style="{StaticResource AboutCardStyle}">
                 <StackPanel Spacing="12">
                     <TextBlock Style="{StaticResource AboutCardTitleStyle}" Text="交流群"
-            l:Uids.Uid="/HomePreset/About_GroupCardTitle" />
+            l:Uids.Uid="/HomePreset/About_GroupCardTitle"/>
 
                     <Grid ColumnSpacing="18">
                         <Grid.ColumnDefinitions>
@@ -295,9 +295,9 @@
                             VerticalAlignment="Center"
                             Spacing="6">
                             <TextBlock Style="{StaticResource AboutBodyStyle}" Text="扫一扫进群，用着有问题、想加什么功能，都能在这儿说。"
-            l:Uids.Uid="/HomePreset/About_GroupBody" />
+            l:Uids.Uid="/HomePreset/About_GroupBody"/>
                             <TextBlock Style="{StaticResource AboutMutedStyle}" Text="群里也能拿到最新版安装包，别的地方下的请不要用。"
-            l:Uids.Uid="/HomePreset/About_GroupWarning" />
+            l:Uids.Uid="/HomePreset/About_GroupWarning"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
@@ -307,12 +307,12 @@
             <Border Style="{StaticResource AboutCardStyle}">
                 <StackPanel Spacing="12">
                     <TextBlock Style="{StaticResource AboutCardTitleStyle}" Text="请我喝杯奶茶"
-            l:Uids.Uid="/HomePreset/About_DonateCardTitle" />
+            l:Uids.Uid="/HomePreset/About_DonateCardTitle"/>
 
                     <TextBlock
                         Style="{StaticResource AboutBodyStyle}"
                         Text="软件一直免费，这个纯粹是自愿的 —— 觉得好用、想支持一下再扫，不扫也完全没关系。"
-            l:Uids.Uid="/HomePreset/About_DonateBody" />
+            l:Uids.Uid="/HomePreset/About_DonateBody"/>
 
                     <StackPanel
                         Margin="0,4,0,0"
@@ -329,7 +329,7 @@
                                 HorizontalAlignment="Center"
                                 Style="{StaticResource AboutMutedStyle}"
                                 Text="微信"
-            l:Uids.Uid="/HomePreset/About_WechatLabel" />
+            l:Uids.Uid="/HomePreset/About_WechatLabel"/>
                         </StackPanel>
 
                         <StackPanel Spacing="6">
@@ -343,7 +343,7 @@
                                 HorizontalAlignment="Center"
                                 Style="{StaticResource AboutMutedStyle}"
                                 Text="支付宝"
-            l:Uids.Uid="/HomePreset/About_AlipayLabel" />
+            l:Uids.Uid="/HomePreset/About_AlipayLabel"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -353,7 +353,7 @@
             <Border Style="{StaticResource AboutCardStyle}">
                 <StackPanel Spacing="8">
                     <TextBlock Style="{StaticResource AboutCardTitleStyle}" Text="项目主页"
-            l:Uids.Uid="/HomePreset/About_RepoCardTitle" />
+            l:Uids.Uid="/HomePreset/About_RepoCardTitle"/>
 
                     <Grid ColumnSpacing="12">
                         <Grid.ColumnDefinitions>
@@ -368,11 +368,11 @@
                     </Grid>
 
                     <Button
-                        Margin="0,10,0,0"
-                        Click="OpenProjectButton_OnClick"
-                        Content="打开项目主页"
-            l:Uids.Uid="/HomePreset/About_OpenRepoButton"
-                        Style="{ThemeResource OmniXGhostButtonStyle}" />
+    Margin="0,10,0,0"
+    Click="OpenProjectButton_OnClick"
+    Content="打开项目主页"
+    l:Uids.Uid="/HomePreset/About_OpenRepoButton"
+    Style="{ThemeResource OmniXGhostButtonStyle}"/>
                 </StackPanel>
             </Border>
 

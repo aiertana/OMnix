@@ -27,14 +27,14 @@
             </Grid.ColumnDefinitions>
 
 
-            <TextBlock Margin="0,8,0,8" Text="新建角色" l:Uids.Uid="/CharacterManager/CreateChar_PageTitle" />
+            <TextBlock Margin="0,8,0,8" Text="新建角色" l:Uids.Uid="/CharacterManager/CreateChar_PageTitle"/>
 
             <ScrollViewer Grid.Row="1" Grid.Column="0">
 
                 <StackPanel Spacing="8">
 
                     <StackPanel>
-                        <TextBlock Text="角色立绘" l:Uids.Uid="/CharacterManager/CreateChar_ImageSectionLabel" />
+                        <TextBlock Text="角色立绘" l:Uids.Uid="/CharacterManager/CreateChar_ImageSectionLabel"/>
                         <local:InputWrapper InputField="{x:Bind ViewModel.Form.Image}">
                             <local:InputWrapper.Input>
                                 <controls:CustomImage
@@ -62,7 +62,7 @@
                                 Header="内部名（必填）"
                                 PlaceholderText="{x:Bind ViewModel.Form.InternalName.PlaceHolderText, Mode=OneWay}"
                                 Text="{x:Bind ViewModel.Form.InternalName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                l:Uids.Uid="/CharacterManager/CreateChar_InternalNameBox" />
+                                l:Uids.Uid="/CharacterManager/CreateChar_InternalNameBox"/>
                         </local:InputWrapper.Input>
 
                         <local:InputWrapper.HelpInfo>
@@ -82,7 +82,7 @@
                                 Header="显示名称"
                                 PlaceholderText="{x:Bind ViewModel.Form.DisplayName.PlaceHolderText, Mode=OneWay}"
                                 Text="{x:Bind ViewModel.Form.DisplayName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                l:Uids.Uid="/CharacterManager/CreateChar_DisplayNameBox" />
+                                l:Uids.Uid="/CharacterManager/CreateChar_DisplayNameBox"/>
                         </local:InputWrapper.Input>
                     </local:InputWrapper>
 
@@ -93,7 +93,7 @@
                                 Header="Mod 文件名"
                                 PlaceholderText="{x:Bind ViewModel.Form.ModFilesName.PlaceHolderText, Mode=OneWay}"
                                 Text="{x:Bind ViewModel.Form.ModFilesName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                l:Uids.Uid="/CharacterManager/CreateChar_ModFilesNameBox" />
+                                l:Uids.Uid="/CharacterManager/CreateChar_ModFilesNameBox"/>
                         </local:InputWrapper.Input>
 
                         <local:InputWrapper.HelpInfo>
@@ -110,7 +110,7 @@
                     <local:InputWrapper InputField="{x:Bind ViewModel.Form.ReleaseDate}">
                         <local:InputWrapper.Input>
                             <CalendarDatePicker Date="{x:Bind ViewModel.Form.ReleaseDate.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="上线日期"
-                                l:Uids.Uid="/CharacterManager/CreateChar_ReleaseDatePicker" />
+                                l:Uids.Uid="/CharacterManager/CreateChar_ReleaseDatePicker"/>
                         </local:InputWrapper.Input>
                     </local:InputWrapper>
 
@@ -127,7 +127,7 @@
                                     TickFrequency="1"
                                     TickPlacement="Outside"
                                     Value="{x:Bind ViewModel.Form.Rarity.Value, Mode=TwoWay}"
-                                    l:Uids.Uid="/CharacterManager/CreateChar_RaritySlider" />
+                                    l:Uids.Uid="/CharacterManager/CreateChar_RaritySlider"/>
                                 <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.Form.Rarity.Value, Mode=OneWay}" />
                             </StackPanel>
                         </local:InputWrapper.Input>
@@ -139,14 +139,14 @@
                                 Header="属性"
                                 ItemsSource="{x:Bind ViewModel.Elements}"
                                 SelectedItem="{x:Bind ViewModel.SelectedElement, Mode=TwoWay}"
-                                l:Uids.Uid="/CharacterManager/CreateChar_ElementCombo" />
+                                l:Uids.Uid="/CharacterManager/CreateChar_ElementCombo"/>
                         </local:InputWrapper.Input>
                     </local:InputWrapper>
 
                     <local:InputWrapper InputField="{x:Bind ViewModel.Form.IsMultiMod}">
                         <local:InputWrapper.Input>
                             <CheckBox Content="允许多个 Mod 同时启用" IsChecked="{x:Bind ViewModel.Form.IsMultiMod.Value, Mode=TwoWay}"
-                                l:Uids.Uid="/CharacterManager/CreateChar_MultiModCheck" />
+                                l:Uids.Uid="/CharacterManager/CreateChar_MultiModCheck"/>
                         </local:InputWrapper.Input>
 
                         <local:InputWrapper.HelpInfo>
@@ -189,20 +189,20 @@
                         VerticalAlignment="Center"
                         FontSize="16"
                         Text="搜索关键字"
-                        l:Uids.Uid="/CharacterManager/CreateChar_KeysHeader" />
+                        l:Uids.Uid="/CharacterManager/CreateChar_KeysHeader"/>
                     <TextBox
                         Grid.Column="1"
                         MinWidth="140"
                         PlaceholderText="新关键字…"
                         Text="{x:Bind ViewModel.NewKeyNameInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        l:Uids.Uid="/CharacterManager/CreateChar_NewKeyBox" />
+                        l:Uids.Uid="/CharacterManager/CreateChar_NewKeyBox"/>
                     <Button
                         Grid.Column="2"
                         Margin="8,0,10,0"
                         HorizontalAlignment="Right"
                         Command="{x:Bind ViewModel.AddNewKeyCommand}"
                         Content="添加关键字"
-                        l:Uids.Uid="/CharacterManager/CreateChar_AddKeyButton" />
+                        l:Uids.Uid="/CharacterManager/CreateChar_AddKeyButton"/>
 
                     <Button
                         Grid.Column="3"
@@ -215,7 +215,7 @@
                                         IsTextSelectionEnabled="True"
                                         TextWrapping="WrapWholeWords"
                                         Text="OMniX 用关键字来提升搜索命中率。有些角色有多个名字或俗称，都可以加成关键字。"
-                                        l:Uids.Uid="/CharacterManager/CreateChar_KeysHelp" />
+                                        l:Uids.Uid="/CharacterManager/CreateChar_KeysHelp"/>
                                 </Grid>
                             </Flyout>
                         </Button.Flyout>
@@ -247,7 +247,7 @@
                                         Command="{Binding ElementName=CreateCharacterPageName, Path=ViewModel.RemoveKeyCommand, Mode=OneWay}"
                                         CommandParameter="{Binding Mode=OneTime}"
                                         Content="移除"
-                                        l:Uids.Uid="/CharacterManager/CreateChar_RemoveKeyButton" />
+                                        l:Uids.Uid="/CharacterManager/CreateChar_RemoveKeyButton"/>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>

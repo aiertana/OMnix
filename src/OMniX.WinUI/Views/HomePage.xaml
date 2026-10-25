@@ -107,7 +107,7 @@
                             FontSize="12.5"
                             Foreground="#CCFFFFFF"
                             Text="欢迎使用 OMniX"
-            l:Uids.Uid="/HomePreset/Home_WelcomeText" />
+            l:Uids.Uid="/HomePreset/Home_WelcomeText"/>
                         <TextBlock
                             FontSize="27"
                             FontWeight="Bold"
@@ -192,22 +192,22 @@
                                 FontWeight="SemiBold"
                                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                 Text="还没配置游戏与 Mods 路径"
-            l:Uids.Uid="/HomePreset/Home_SetupHintTitle" />
+            l:Uids.Uid="/HomePreset/Home_SetupHintTitle"/>
                             <TextBlock
                                 FontSize="11.5"
                                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                                 Text="完成配置后才能浏览和启用 Mod，也可以稍后在设置页里配置。"
-            l:Uids.Uid="/HomePreset/Home_SetupHintBody" />
+            l:Uids.Uid="/HomePreset/Home_SetupHintBody"/>
                         </StackPanel>
 
                         <Button
-                            Grid.Column="2"
-                            Height="36"
-                            Padding="16,0"
-                            Command="{x:Bind ViewModel.OpenSetupCommand}"
-                            Content="开始配置"
-            l:Uids.Uid="/HomePreset/Home_OpenSetupButton"
-                            Style="{ThemeResource OmniXAccentButtonStyle}" />
+    Grid.Column="2"
+    Height="36"
+    Padding="16,0"
+    Command="{x:Bind ViewModel.OpenSetupCommand}"
+    Content="开始配置"
+    l:Uids.Uid="/HomePreset/Home_OpenSetupButton"
+    Style="{ThemeResource OmniXAccentButtonStyle}"/>
                     </Grid>
                 </Border>
             </Grid>
@@ -219,11 +219,11 @@
                 Orientation="Vertical"
                 Spacing="2">
                 <TextBlock Style="{ThemeResource OmniXSectionTitleStyle}" Text="功能模块"
-            l:Uids.Uid="/HomePreset/Home_ModulesSectionTitle" />
+            l:Uids.Uid="/HomePreset/Home_ModulesSectionTitle"/>
                 <TextBlock
                     Style="{ThemeResource OmniXSectionSubtitleStyle}"
                     Text="点开就用，常用的都在这里"
-            l:Uids.Uid="/HomePreset/Home_ModulesSectionSubtitle" />
+            l:Uids.Uid="/HomePreset/Home_ModulesSectionSubtitle"/>
             </StackPanel>
 
             <Grid Grid.Row="3" ColumnSpacing="18">
@@ -281,13 +281,13 @@
                                 FontWeight="SemiBold"
                                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                 Text="Mod 管理"
-            l:Uids.Uid="/HomePreset/Home_ModCardTitle" />
+            l:Uids.Uid="/HomePreset/Home_ModCardTitle"/>
                             <TextBlock
-                                FontSize="12"
-                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="浏览已安装的 Mod，启用 / 禁用、刷新和整理。"
-            l:Uids.Uid="/HomePreset/Home_ModCardDescription"
-                                TextWrapping="Wrap" />
+    FontSize="12"
+    Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+    Text="浏览已安装的 Mod，启用 / 禁用、刷新和整理。"
+    l:Uids.Uid="/HomePreset/Home_ModCardDescription"
+    TextWrapping="Wrap"/>
                         </StackPanel>
 
                         <StackPanel
@@ -296,26 +296,26 @@
                             Orientation="Horizontal"
                             Spacing="10">
                             <Button
-                                Height="34"
-                                Padding="16,0"
-                                Command="{x:Bind ViewModel.OpenModLibraryCommand}"
-                                Content="Mod 总览"
-            l:Uids.Uid="/HomePreset/Home_OpenModLibraryButton"
-                                Style="{ThemeResource OmniXAccentButtonStyle}" />
+    Height="34"
+    Padding="16,0"
+    Command="{x:Bind ViewModel.OpenModLibraryCommand}"
+    Content="Mod 总览"
+    l:Uids.Uid="/HomePreset/Home_OpenModLibraryButton"
+    Style="{ThemeResource OmniXAccentButtonStyle}"/>
                             <Button
-                                Height="34"
-                                Padding="16,0"
-                                Command="{x:Bind ViewModel.OpenCharactersCommand}"
-                                Content="角色管理"
-            l:Uids.Uid="/HomePreset/Home_OpenCharactersButton"
-                                Style="{ThemeResource OmniXGhostButtonStyle}" />
+    Height="34"
+    Padding="16,0"
+    Command="{x:Bind ViewModel.OpenCharactersCommand}"
+    Content="角色管理"
+    l:Uids.Uid="/HomePreset/Home_OpenCharactersButton"
+    Style="{ThemeResource OmniXGhostButtonStyle}"/>
                             <Button
-                                Height="34"
-                                Padding="16,0"
-                                Command="{x:Bind ViewModel.OpenCharacterGalleryCommand}"
-                                Content="角色图库"
-            l:Uids.Uid="/HomePreset/Home_OpenGalleryButton"
-                                Style="{ThemeResource OmniXGhostButtonStyle}" />
+    Height="34"
+    Padding="16,0"
+    Command="{x:Bind ViewModel.OpenCharacterGalleryCommand}"
+    Content="角色图库"
+    l:Uids.Uid="/HomePreset/Home_OpenGalleryButton"
+    Style="{ThemeResource OmniXGhostButtonStyle}"/>
                         </StackPanel>
 
                         <!--  二开：顶部流光条，参考稿的 card::after  -->
@@ -374,7 +374,7 @@
                                         FontSize="10.5"
                                         Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                                         Text="即将开放"
-            l:Uids.Uid="/HomePreset/Home_PluginBadgeText" />
+            l:Uids.Uid="/HomePreset/Home_PluginBadgeText"/>
                                 </Border>
                             </Grid>
 
@@ -383,13 +383,13 @@
                                 FontWeight="SemiBold"
                                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                                 Text="插件专区"
-            l:Uids.Uid="/HomePreset/Home_PluginCardTitle" />
+            l:Uids.Uid="/HomePreset/Home_PluginCardTitle"/>
                             <TextBlock
-                                FontSize="12"
-                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="用插件扩展 OMniX：外部工具、批处理、选择器等。"
-            l:Uids.Uid="/HomePreset/Home_PluginCardDescription"
-                                TextWrapping="Wrap" />
+    FontSize="12"
+    Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+    Text="用插件扩展 OMniX：外部工具、批处理、选择器等。"
+    l:Uids.Uid="/HomePreset/Home_PluginCardDescription"
+    TextWrapping="Wrap"/>
                         </StackPanel>
 
                         <StackPanel
@@ -398,26 +398,26 @@
                             Orientation="Horizontal"
                             Spacing="10">
                             <Button
-                                Height="34"
-                                Padding="16,0"
-                                Command="{x:Bind ViewModel.OpenPluginAreaCommand}"
-                                Content="进入专区"
-            l:Uids.Uid="/HomePreset/Home_OpenPluginAreaButton"
-                                Style="{ThemeResource OmniXAccentButtonStyle}" />
+    Height="34"
+    Padding="16,0"
+    Command="{x:Bind ViewModel.OpenPluginAreaCommand}"
+    Content="进入专区"
+    l:Uids.Uid="/HomePreset/Home_OpenPluginAreaButton"
+    Style="{ThemeResource OmniXAccentButtonStyle}"/>
                             <Button
-                                Height="34"
-                                Padding="16,0"
-                                Command="{x:Bind ViewModel.OpenPresetsCommand}"
-                                Content="预设配置"
-            l:Uids.Uid="/HomePreset/Home_OpenPresetsButton"
-                                Style="{ThemeResource OmniXGhostButtonStyle}" />
+    Height="34"
+    Padding="16,0"
+    Command="{x:Bind ViewModel.OpenPresetsCommand}"
+    Content="预设配置"
+    l:Uids.Uid="/HomePreset/Home_OpenPresetsButton"
+    Style="{ThemeResource OmniXGhostButtonStyle}"/>
                             <Button
-                                Height="34"
-                                Padding="16,0"
-                                Command="{x:Bind ViewModel.OpenModInstallerCommand}"
-                                Content="安装 Mod"
-            l:Uids.Uid="/HomePreset/Home_OpenModInstallerButton"
-                                Style="{ThemeResource OmniXGhostButtonStyle}" />
+    Height="34"
+    Padding="16,0"
+    Command="{x:Bind ViewModel.OpenModInstallerCommand}"
+    Content="安装 Mod"
+    l:Uids.Uid="/HomePreset/Home_OpenModInstallerButton"
+    Style="{ThemeResource OmniXGhostButtonStyle}"/>
                         </StackPanel>
 
                         <!--  二开：顶部流光条  -->
@@ -443,11 +443,11 @@
                 Orientation="Vertical"
                 Spacing="2">
                 <TextBlock Style="{ThemeResource OmniXSectionTitleStyle}" Text="更多功能区"
-            l:Uids.Uid="/HomePreset/Home_MoreSectionTitle" />
+            l:Uids.Uid="/HomePreset/Home_MoreSectionTitle"/>
                 <TextBlock
                     Style="{ThemeResource OmniXSectionSubtitleStyle}"
                     Text="预留位置，后续功能直接填进这些卡里"
-            l:Uids.Uid="/HomePreset/Home_MoreSectionSubtitle" />
+            l:Uids.Uid="/HomePreset/Home_MoreSectionSubtitle"/>
             </StackPanel>
 
             <Grid Grid.Row="5" ColumnSpacing="18">
@@ -468,13 +468,13 @@
                             FontSize="12.5"
                             Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                             Text="预留功能区"
-            l:Uids.Uid="/HomePreset/Home_PlaceholderTitle" />
+            l:Uids.Uid="/HomePreset/Home_PlaceholderTitle"/>
                         <TextBlock
                             HorizontalAlignment="Center"
                             FontSize="10.5"
                             Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                             Text="敬请期待"
-            l:Uids.Uid="/HomePreset/Home_PlaceholderSubtitle" />
+            l:Uids.Uid="/HomePreset/Home_PlaceholderSubtitle"/>
                     </StackPanel>
                 </Border>
 
@@ -489,13 +489,13 @@
                             FontSize="12.5"
                             Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                             Text="预留功能区"
-                            l:Uids.Uid="/HomePreset/Home_PlaceholderTitle" />
+                            l:Uids.Uid="/HomePreset/Home_PlaceholderTitle"/>
                         <TextBlock
                             HorizontalAlignment="Center"
                             FontSize="10.5"
                             Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                             Text="敬请期待"
-                            l:Uids.Uid="/HomePreset/Home_PlaceholderSubtitle" />
+                            l:Uids.Uid="/HomePreset/Home_PlaceholderSubtitle"/>
                     </StackPanel>
                 </Border>
 
@@ -510,13 +510,13 @@
                             FontSize="12.5"
                             Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                             Text="预留功能区"
-                            l:Uids.Uid="/HomePreset/Home_PlaceholderTitle" />
+                            l:Uids.Uid="/HomePreset/Home_PlaceholderTitle"/>
                         <TextBlock
                             HorizontalAlignment="Center"
                             FontSize="10.5"
                             Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                             Text="敬请期待"
-                            l:Uids.Uid="/HomePreset/Home_PlaceholderSubtitle" />
+                            l:Uids.Uid="/HomePreset/Home_PlaceholderSubtitle"/>
                     </StackPanel>
                 </Border>
             </Grid>

@@ -116,7 +116,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Horizontal" Spacing="12">
-                <TextBlock Style="{StaticResource PageTitleStyle}" Text="设置" l:Uids.Uid="Settings_Title" />
+                <TextBlock Style="{StaticResource PageTitleStyle}" Text="设置" l:Uids.Uid="Settings_Title"/>
                 <Border
                     Padding="10,2"
                     VerticalAlignment="Center"
@@ -136,7 +136,7 @@
                 l:Uids.Uid="/SettingsUi/OpenAppFolderButton">
                 <StackPanel Orientation="Horizontal" Spacing="6">
                     <FontIcon FontSize="14" Glyph="&#xE8B7;" />
-                    <TextBlock Text="程序目录" l:Uids.Uid="/SettingsUi/OpenAppFolderLabel" />
+                    <TextBlock Text="程序目录" l:Uids.Uid="/SettingsUi/OpenAppFolderLabel"/>
                 </StackPanel>
             </Button>
         </Grid>
@@ -148,7 +148,7 @@
                 HorizontalAlignment="Left">
 
                 <!--  ===== 外观  =====  -->
-                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="外观" l:Uids.Uid="/SettingsUi/SecAppearance" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="外观" l:Uids.Uid="/SettingsUi/SecAppearance"/>
 
                 <!--  二开：界面风格（简易版 / 标准版），只切动效，配色不变  -->
                 <Border Style="{StaticResource SettingCardStyle}">
@@ -159,12 +159,12 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
-                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="界面风格" l:Uids.Uid="/SettingsUi/StyleCardTitle" />
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="界面风格" l:Uids.Uid="/SettingsUi/StyleCardTitle"/>
                             <TextBlock
                                 Style="{StaticResource CardDescStyle}"
                                 Text="配色两种风格一样，差的是动效：标准版有流动光斑、悬停抬起和按压反馈，简易版是静态玻璃"
                                 TextWrapping="Wrap"
-                                l:Uids.Uid="/SettingsUi/StyleCardDesc" />
+                                l:Uids.Uid="/SettingsUi/StyleCardDesc"/>
                         </StackPanel>
 
                         <StackPanel
@@ -178,14 +178,14 @@
                                 Content="标准版"
                                 GroupName="AppStyle"
                                 IsChecked="{x:Bind ViewModel.IsStandardStyle, Mode=OneWay}"
-                                l:Uids.Uid="/SettingsUi/StyleStandard" />
+                                l:Uids.Uid="/SettingsUi/StyleStandard"/>
                             <RadioButton
                                 Command="{x:Bind ViewModel.SwitchStyleCommand}"
                                 CommandParameter="Simple"
                                 Content="简易版"
                                 GroupName="AppStyle"
                                 IsChecked="{x:Bind ViewModel.IsSimpleStyle, Mode=OneWay}"
-                                l:Uids.Uid="/SettingsUi/StyleSimple" />
+                                l:Uids.Uid="/SettingsUi/StyleSimple"/>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -199,12 +199,12 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
-                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="配色" l:Uids.Uid="/SettingsUi/PaletteCardTitle" />
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="配色" l:Uids.Uid="/SettingsUi/PaletteCardTitle"/>
                             <TextBlock
                                 Style="{StaticResource CardDescStyle}"
                                 Text="两套色系，和明暗模式是两回事：暖白珊瑚是 1.0 版那套，冷调蓝是冷白底配蓝色主色"
                                 TextWrapping="Wrap"
-                                l:Uids.Uid="/SettingsUi/PaletteCardDesc" />
+                                l:Uids.Uid="/SettingsUi/PaletteCardDesc"/>
                         </StackPanel>
 
                         <StackPanel
@@ -218,14 +218,14 @@
                                 Content="暖白珊瑚"
                                 GroupName="AppPalette"
                                 IsChecked="{x:Bind ViewModel.IsWarmPalette, Mode=OneWay}"
-                                l:Uids.Uid="/SettingsUi/PaletteWarm" />
+                                l:Uids.Uid="/SettingsUi/PaletteWarm"/>
                             <RadioButton
                                 Command="{x:Bind ViewModel.SwitchPaletteCommand}"
                                 CommandParameter="Blue"
                                 Content="冷调蓝"
                                 GroupName="AppPalette"
                                 IsChecked="{x:Bind ViewModel.IsBluePalette, Mode=OneWay}"
-                                l:Uids.Uid="/SettingsUi/PaletteBlue" />
+                                l:Uids.Uid="/SettingsUi/PaletteBlue"/>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -238,12 +238,12 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
-                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="交互音效" l:Uids.Uid="/SettingsUi/SoundCardTitle" />
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="交互音效" l:Uids.Uid="/SettingsUi/SoundCardTitle"/>
                             <TextBlock
                                 Style="{StaticResource CardDescStyle}"
                                 Text="点击按钮和卡片时播放一声轻响。切到简易版会自动静音"
                                 TextWrapping="Wrap"
-                                l:Uids.Uid="/SettingsUi/SoundCardDesc" />
+                                l:Uids.Uid="/SettingsUi/SoundCardDesc"/>
                         </StackPanel>
 
                         <ToggleSwitch
@@ -262,8 +262,8 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
-                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="窗口" l:Uids.Uid="/SettingsUi/WindowCardTitle" />
-                            <TextBlock Style="{StaticResource CardDescStyle}" Text="记住上次退出时的窗口状态，下次打开直接还原" l:Uids.Uid="/SettingsUi/WindowCardDesc" />
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="窗口" l:Uids.Uid="/SettingsUi/WindowCardTitle"/>
+                            <TextBlock Style="{StaticResource CardDescStyle}" Text="记住上次退出时的窗口状态，下次打开直接还原" l:Uids.Uid="/SettingsUi/WindowCardDesc"/>
                         </StackPanel>
 
                         <StackPanel
@@ -277,20 +277,20 @@
                                 Content="大小"
                                 IsChecked="{x:Bind ViewModel.PersistWindowSize, Mode=OneWay}"
                                 ToolTipService.ToolTip="勾选后，退出 OMniX 时会记住窗口大小"
-                                l:Uids.Uid="/SettingsUi/WindowSize" />
+                                l:Uids.Uid="/SettingsUi/WindowSize"/>
                             <CheckBox
                                 Command="{x:Bind ViewModel.WindowSizePositionToggleCommand}"
                                 CommandParameter="position"
                                 Content="位置"
                                 IsChecked="{x:Bind ViewModel.PersistWindowPosition, Mode=OneWay}"
                                 ToolTipService.ToolTip="勾选后，退出 OMniX 时会记住窗口位置"
-                                l:Uids.Uid="/SettingsUi/WindowPosition" />
+                                l:Uids.Uid="/SettingsUi/WindowPosition"/>
                         </StackPanel>
                     </Grid>
                 </Border>
 
                 <!--  ===== 游戏与路径  =====  -->
-                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="游戏与路径" l:Uids.Uid="/SettingsUi/SecGamePaths" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="游戏与路径" l:Uids.Uid="/SettingsUi/SecGamePaths"/>
 
                 <Border Style="{StaticResource SettingCardStyle}">
                     <Grid>
@@ -300,7 +300,7 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
-                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="游戏" l:Uids.Uid="/Settings/GameSelectorSectionHeader" />
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="游戏" l:Uids.Uid="/Settings/GameSelectorSectionHeader"/>
                             <TextBlock
                                 Style="{StaticResource CardDescStyle}"
                                 Text="OMniX 目前支持《鸣潮》(Wuthering Waves)，每个游戏的设置分开保存"
@@ -353,7 +353,7 @@
                         SelectedFolderValue="{x:Bind ViewModel.PathToGIMIFolderPicker.Path, Mode=TwoWay}"
                         Title="启动器文件夹"
                         ValidationErrorText="{x:Bind ViewModel.PathToGIMIFolderPicker.ValidationMessages, Mode=OneWay}"
-                        l:Uids.Uid="/Settings/3dmigotoFolderSelector" />
+                        l:Uids.Uid="/Settings/3dmigotoFolderSelector"/>
                 </Border>
 
                 <Border Style="{StaticResource SettingCardStyle}">
@@ -364,20 +364,20 @@
                             SelectedFolderValue="{x:Bind ViewModel.PathToModsFolderPicker.Path, Mode=TwoWay}"
                             Title="Mods 文件夹"
                             ValidationErrorText="{x:Bind ViewModel.PathToModsFolderPicker.ValidationMessages, Mode=OneWay}"
-                            l:Uids.Uid="/Settings/ModsFolderSelector" />
+                            l:Uids.Uid="/Settings/ModsFolderSelector"/>
 
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <Button Command="{x:Bind ViewModel.OpenModsFolderCommand}" ToolTipService.ToolTip="在资源管理器里打开 Mods 文件夹" l:Uids.Uid="/SettingsUi/OpenModsFolderButton">
                                 <StackPanel Orientation="Horizontal" Spacing="6">
                                     <FontIcon FontSize="14" Glyph="&#xE838;" />
-                                    <TextBlock Text="打开 Mods 文件夹" l:Uids.Uid="/SettingsUi/OpenModsFolderLabel" />
+                                    <TextBlock Text="打开 Mods 文件夹" l:Uids.Uid="/SettingsUi/OpenModsFolderLabel"/>
                                 </StackPanel>
                             </Button>
                             <Button
                                 Command="{x:Bind ViewModel.SaveSettingsCommand}"
                                 Content="保存路径"
                                 ToolTipService.ToolTip="更新文件夹路径"
-                                l:Uids.Uid="/SettingsUi/SavePathsButton" />
+                                l:Uids.Uid="/SettingsUi/SavePathsButton"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -391,19 +391,19 @@
                             SelectedFolderValue="{x:Bind ViewModel.PathToPluginsFolderPicker.Path, Mode=TwoWay}"
                             Title="插件文件夹"
                             ValidationErrorText="{x:Bind ViewModel.PathToPluginsFolderPicker.ValidationMessages, Mode=OneWay}"
-                            l:Uids.Uid="/SettingsUi/PluginsFolderSelector" />
+                            l:Uids.Uid="/SettingsUi/PluginsFolderSelector"/>
 
                         <TextBlock
                             Style="{StaticResource CardDescStyle}"
                             Text="XXMI、DLSS5 部署包、Mod 修复器下载后存放的位置。默认在 C 盘，空间紧张可以改到别的盘，改完点下面的「保存路径」。"
                             TextWrapping="WrapWholeWords"
-                            l:Uids.Uid="/SettingsUi/PluginsFolderDesc" />
+                            l:Uids.Uid="/SettingsUi/PluginsFolderDesc"/>
 
                         <Button
                             Command="{x:Bind ViewModel.SaveSettingsCommand}"
                             Content="保存路径"
                             ToolTipService.ToolTip="保存后会重新启动应用"
-                            l:Uids.Uid="/SettingsUi/SavePathsRestartButton" />
+                            l:Uids.Uid="/SettingsUi/SavePathsRestartButton"/>
                     </StackPanel>
                 </Border>
 
@@ -415,8 +415,8 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
-                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="皮肤当作独立角色" l:Uids.Uid="/SettingsUi/SkinsAsCharTitle" />
-                            <TextBlock Style="{StaticResource CardDescStyle}" Text="开启后，一个角色的每个皮肤会单独列在角色墙里，而不是折叠在角色详情里" l:Uids.Uid="/SettingsUi/SkinsAsCharDesc" />
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="皮肤当作独立角色" l:Uids.Uid="/SettingsUi/SkinsAsCharTitle"/>
+                            <TextBlock Style="{StaticResource CardDescStyle}" Text="开启后，一个角色的每个皮肤会单独列在角色墙里，而不是折叠在角色详情里" l:Uids.Uid="/SettingsUi/SkinsAsCharDesc"/>
                         </StackPanel>
 
                         <CheckBox
@@ -425,7 +425,7 @@
                             Command="{x:Bind ViewModel.ToggleCharacterSkinsAsCharactersCommand}"
                             Content="启用"
                             IsChecked="{x:Bind ViewModel.CharacterAsSkinsCheckbox, Mode=TwoWay}"
-                            l:Uids.Uid="/SettingsUi/SkinsAsCharEnable" />
+                            l:Uids.Uid="/SettingsUi/SkinsAsCharEnable"/>
                     </Grid>
                 </Border>
 
@@ -437,8 +437,8 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
-                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="路径重置" l:Uids.Uid="/SettingsUi/ResetPathsTitle" />
-                            <TextBlock Style="{StaticResource CardDescStyle}" Text="启动器或游戏程序换了位置时，把记下的路径清掉，下次会重新让程序自己找" l:Uids.Uid="/SettingsUi/ResetPathsDesc" />
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="路径重置" l:Uids.Uid="/SettingsUi/ResetPathsTitle"/>
+                            <TextBlock Style="{StaticResource CardDescStyle}" Text="启动器或游戏程序换了位置时，把记下的路径清掉，下次会重新让程序自己找" l:Uids.Uid="/SettingsUi/ResetPathsDesc"/>
                         </StackPanel>
 
                         <StackPanel
@@ -461,19 +461,19 @@
                 </Border>
 
                 <!--  ===== Mod 管理  =====  -->
-                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="Mod 管理" l:Uids.Uid="/SettingsUi/SecModMgmt" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="Mod 管理" l:Uids.Uid="/SettingsUi/SecModMgmt"/>
 
                 <Border Style="{StaticResource SettingCardStyle}">
                     <StackPanel Spacing="10">
                         <StackPanel>
-                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="批量操作" l:Uids.Uid="/SettingsUi/BatchOpsTitle" />
-                            <TextBlock Style="{StaticResource CardDescStyle}" Text="整理、清理、批量禁用，作用范围都是当前的 Mods 文件夹" l:Uids.Uid="/SettingsUi/BatchOpsDesc" />
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="批量操作" l:Uids.Uid="/SettingsUi/BatchOpsTitle"/>
+                            <TextBlock Style="{StaticResource CardDescStyle}" Text="整理、清理、批量禁用，作用范围都是当前的 Mods 文件夹" l:Uids.Uid="/SettingsUi/BatchOpsDesc"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <Button Command="{x:Bind ViewModel.ReorganizeModsCommand}" Content="重新整理 Mod" l:Uids.Uid="/SettingsUi/BatchReorganize" />
-                            <Button Command="{x:Bind ViewModel.ShowCleanModsFolderDialogCommand}" Content="清理空文件夹" l:Uids.Uid="/SettingsUi/BatchClean" />
-                            <Button Command="{x:Bind ViewModel.ShowDisableAllModsDialogCommand}" Content="禁用全部 Mod" l:Uids.Uid="/SettingsUi/BatchDisableAll" />
+                            <Button Command="{x:Bind ViewModel.ReorganizeModsCommand}" Content="重新整理 Mod" l:Uids.Uid="/SettingsUi/BatchReorganize"/>
+                            <Button Command="{x:Bind ViewModel.ShowCleanModsFolderDialogCommand}" Content="清理空文件夹" l:Uids.Uid="/SettingsUi/BatchClean"/>
+                            <Button Command="{x:Bind ViewModel.ShowDisableAllModsDialogCommand}" Content="禁用全部 Mod" l:Uids.Uid="/SettingsUi/BatchDisableAll"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -487,11 +487,11 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel>
-                                <TextBlock Style="{StaticResource CardTitleStyle}" Text="下载缓存" l:Uids.Uid="/SettingsUi/CacheTitle" />
+                                <TextBlock Style="{StaticResource CardTitleStyle}" Text="下载缓存" l:Uids.Uid="/SettingsUi/CacheTitle"/>
                                 <TextBlock
                                     Style="{StaticResource CardDescStyle}"
                                     Text="用 OMniX 下载 Mod 时会顺手存一份压缩包。这里限制它最多占多少空间，超出的会在启动时自动清掉"
-                                    l:Uids.Uid="/SettingsUi/CacheDesc" />
+                                    l:Uids.Uid="/SettingsUi/CacheDesc"/>
                             </StackPanel>
 
                             <StackPanel
@@ -499,8 +499,8 @@
                                 VerticalAlignment="Top"
                                 Orientation="Horizontal"
                                 Spacing="8">
-                                <controls:LinkButton Link="{x:Bind ViewModel.ArchiveCacheFolderPath}" Text="打开缓存目录" l:Uids.Uid="/SettingsUi/CacheOpenFolder" />
-                                <Button Command="{x:Bind ViewModel.ClearModCacheCommand}" Content="清空缓存" l:Uids.Uid="/SettingsUi/CacheClear" />
+                                <controls:LinkButton Link="{x:Bind ViewModel.ArchiveCacheFolderPath}" Text="打开缓存目录" l:Uids.Uid="/SettingsUi/CacheOpenFolder"/>
+                                <Button Command="{x:Bind ViewModel.ClearModCacheCommand}" Content="清空缓存" l:Uids.Uid="/SettingsUi/CacheClear"/>
                             </StackPanel>
                         </Grid>
 
@@ -526,7 +526,7 @@
                                 Text="{x:Bind ViewModel.MaxCacheSizeString, Mode=OneWay}" />
 
                             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Style="{StaticResource CardDescStyle}" Text="当前占用 " l:Uids.Uid="/SettingsUi/CacheCurrentUsage" />
+                                <TextBlock Style="{StaticResource CardDescStyle}" Text="当前占用 " l:Uids.Uid="/SettingsUi/CacheCurrentUsage"/>
                                 <TextBlock Style="{StaticResource CardDescStyle}" Text="{x:Bind ViewModel.ModCacheSizeGB, Mode=OneWay}" />
                                 <TextBlock Style="{StaticResource CardDescStyle}" Text=" GB" />
                             </StackPanel>
@@ -535,7 +535,7 @@
                 </Border>
 
                 <!--  ===== 自动化  =====  -->
-                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="自动化" l:Uids.Uid="/SettingsUi/SecAutomation" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="自动化" l:Uids.Uid="/SettingsUi/SecAutomation"/>
 
                 <Border Style="{StaticResource SettingCardStyle}">
                     <StackPanel Spacing="8">
@@ -564,7 +564,7 @@
 
                         <StackPanel Orientation="Horizontal" Spacing="16">
                             <StackPanel Orientation="Horizontal" Spacing="6">
-                                <TextBlock VerticalAlignment="Center" Style="{StaticResource CardDescStyle}" Text="当前状态" l:Uids.Uid="/SettingsUi/ModCheckerStatusLabel" />
+                                <TextBlock VerticalAlignment="Center" Style="{StaticResource CardDescStyle}" Text="当前状态" l:Uids.Uid="/SettingsUi/ModCheckerStatusLabel"/>
                                 <Border
                                     Padding="8,1"
                                     VerticalAlignment="Center"
@@ -591,7 +591,7 @@
 
                         <StackPanel>
                             <TextBlock Style="{StaticResource CardTitleStyle}" Text="提权进程" l:Uids.Uid="/Settings/ElevatorSectionHeader" />
-                            <TextBlock Style="{StaticResource CardDescStyle}" Text="游戏内刷新 Mod 需要一个以管理员权限运行的辅助进程" l:Uids.Uid="/SettingsUi/ElevatorDesc" />
+                            <TextBlock Style="{StaticResource CardDescStyle}" Text="游戏内刷新 Mod 需要一个以管理员权限运行的辅助进程" l:Uids.Uid="/SettingsUi/ElevatorDesc"/>
                         </StackPanel>
 
                         <StackPanel
@@ -615,7 +615,7 @@
                 </Border>
 
                 <!--  ===== 扩展  =====  -->
-                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="扩展" l:Uids.Uid="/SettingsUi/SecExtensions" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="扩展" l:Uids.Uid="/SettingsUi/SecExtensions"/>
 
                 <controls1:SettingsCard
                     Margin="0,0,0,6"
@@ -624,16 +624,16 @@
                     Header="自定义命令"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE716;}"
                     IsClickEnabled="True"
-                    l:Uids.Uid="/SettingsUi/CustomCommandsCard" />
+                    l:Uids.Uid="/SettingsUi/CustomCommandsCard"/>
 
                 <!--  ===== 备份  =====  -->
-                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="备份" l:Uids.Uid="/SettingsUi/SecBackup" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderStyle}" Text="备份" l:Uids.Uid="/SettingsUi/SecBackup"/>
 
                 <Border Style="{StaticResource SettingCardStyle}">
                     <StackPanel Spacing="10">
                         <StackPanel>
-                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="导出 / 备份模组" l:Uids.Uid="/SettingsUi/ExportBackupTitle" />
-                            <TextBlock Style="{StaticResource CardDescStyle}" Text="按角色或全量把 Mod 打包成 zip、或复制成文件夹。导出过程中可以随时暂停、取消，不会改动原有 Mod" l:Uids.Uid="/SettingsUi/ExportBackupDesc" />
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="导出 / 备份模组" l:Uids.Uid="/SettingsUi/ExportBackupTitle"/>
+                            <TextBlock Style="{StaticResource CardDescStyle}" Text="按角色或全量把 Mod 打包成 zip、或复制成文件夹。导出过程中可以随时暂停、取消，不会改动原有 Mod" l:Uids.Uid="/SettingsUi/ExportBackupDesc"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Spacing="12">
@@ -642,7 +642,7 @@
                                 Command="{x:Bind ViewModel.OpenModExportPanelCommand}"
                                 l:Uids.Uid="/SettingsUi/OpenExportPanelButton">
                                 <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <TextBlock VerticalAlignment="Center" Text="打开导出面板" l:Uids.Uid="/SettingsUi/OpenExportPanelLabel" />
+                                    <TextBlock VerticalAlignment="Center" Text="打开导出面板" l:Uids.Uid="/SettingsUi/OpenExportPanelLabel"/>
                                     <FontIcon VerticalAlignment="Center" FontSize="16" Glyph="&#xEDE1;" />
                                 </StackPanel>
                             </Button>
@@ -651,7 +651,7 @@
                                 VerticalAlignment="Center"
                                 Style="{ThemeResource CaptionTextBlockStyle}"
                                 Text="默认保存到程序目录下的 OMniX Exports"
-                                l:Uids.Uid="/SettingsUi/ExportDefaultPath" />
+                                l:Uids.Uid="/SettingsUi/ExportDefaultPath"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -671,11 +671,11 @@
 
                         <StackPanel Spacing="4">
                             <StackPanel Orientation="Horizontal" Spacing="2">
-                                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="作者：" l:Uids.Uid="/SettingsUi/AuthorLabel" />
+                                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="作者：" l:Uids.Uid="/SettingsUi/AuthorLabel"/>
                                 <TextBlock
                                     IsTextSelectionEnabled="True"
                                     Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="是湫" />
+                                    Text="是湫"  l:Uids.Uid="/HomePreset/About_AuthorName"/>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" Spacing="2">
@@ -699,7 +699,7 @@
                             <Button AutomationProperties.Name="检查更新" Command="{x:Bind ViewModel.CheckUpdateCommand}" l:Uids.Uid="/SettingsUi/CheckUpdateButton">
                                 <StackPanel Orientation="Horizontal" Spacing="6">
                                     <FontIcon VerticalAlignment="Center" FontSize="14" Glyph="&#xE895;" />
-                                    <TextBlock VerticalAlignment="Center" Text="检查更新" l:Uids.Uid="/SettingsUi/CheckUpdateLabel" />
+                                    <TextBlock VerticalAlignment="Center" Text="检查更新" l:Uids.Uid="/SettingsUi/CheckUpdateLabel"/>
                                 </StackPanel>
                             </Button>
 
@@ -718,7 +718,7 @@
                             <Button AutomationProperties.Name="导入本地更新包" Command="{x:Bind ViewModel.ImportLocalUpdateCommand}" l:Uids.Uid="/SettingsUi/ImportLocalUpdateButton">
                                 <StackPanel Orientation="Horizontal" Spacing="6">
                                     <FontIcon VerticalAlignment="Center" FontSize="14" Glyph="&#xE8B5;" />
-                                    <TextBlock VerticalAlignment="Center" Text="导入本地更新包" l:Uids.Uid="/SettingsUi/ImportLocalUpdateLabel" />
+                                    <TextBlock VerticalAlignment="Center" Text="导入本地更新包" l:Uids.Uid="/SettingsUi/ImportLocalUpdateLabel"/>
                                 </StackPanel>
                             </Button>
 
@@ -736,7 +736,7 @@
 
                         <StackPanel Orientation="Horizontal" Spacing="8" Visibility="{x:Bind ViewModel.ShowNewVersionAvailable, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}">
                             <FontIcon VerticalAlignment="Center" FontSize="14" Glyph="&#xE896;" />
-                            <TextBlock VerticalAlignment="Center" Text="有新版本：" l:Uids.Uid="/SettingsUi/NewVersionLabel" />
+                            <TextBlock VerticalAlignment="Center" Text="有新版本：" l:Uids.Uid="/SettingsUi/NewVersionLabel"/>
                             <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.LatestVersion, Mode=OneWay}" />
 
                             <!--  二开：这次是补丁还是新版本  -->
@@ -748,7 +748,7 @@
                                 <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind ViewModel.UpdateKindText, Mode=OneWay}" />
                             </Border>
 
-                            <controls:LinkButton Link="https://github.com/aiertana/OMnix/releases/latest" Text="看看更新了什么" l:Uids.Uid="/SettingsUi/WhatsNewLink" />
+                            <controls:LinkButton Link="https://github.com/aiertana/OMnix/releases/latest" Text="看看更新了什么" l:Uids.Uid="/SettingsUi/WhatsNewLink"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Spacing="8" Visibility="{x:Bind ViewModel.ShowNewVersionAvailable, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}">
@@ -756,13 +756,13 @@
                                 <Button.Flyout>
                                     <Flyout ShouldConstrainToRootBounds="False">
                                         <StackPanel Spacing="8">
-                                            <TextBlock TextWrapping="WrapWholeWords" Text="OMniX 会退出，由自带的更新器下载新版本、自动替换文件，完成后自己重新打开。这期间别关机。" l:Uids.Uid="/SettingsUi/AutoUpdateFlyoutText" />
-                                            <Button Command="{x:Bind ViewModel.UpdateOmniXCommand}" Content="是，自动更新并重启" l:Uids.Uid="/SettingsUi/AutoUpdateYes" />
+                                            <TextBlock TextWrapping="WrapWholeWords" Text="OMniX 会退出，由自带的更新器下载新版本、自动替换文件，完成后自己重新打开。这期间别关机。" l:Uids.Uid="/SettingsUi/AutoUpdateFlyoutText"/>
+                                            <Button Command="{x:Bind ViewModel.UpdateOmniXCommand}" Content="是，自动更新并重启" l:Uids.Uid="/SettingsUi/AutoUpdateYes"/>
                                         </StackPanel>
                                     </Flyout>
                                 </Button.Flyout>
                                 <StackPanel Orientation="Horizontal" Spacing="6">
-                                    <TextBlock VerticalAlignment="Center" Text="更新到" l:Uids.Uid="/SettingsUi/UpdateToLabel" />
+                                    <TextBlock VerticalAlignment="Center" Text="更新到" l:Uids.Uid="/SettingsUi/UpdateToLabel"/>
                                     <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.LatestVersion, Mode=OneWay}" />
                                     <FontIcon VerticalAlignment="Center" Glyph="&#xE896;" />
                                 </StackPanel>
@@ -773,7 +773,7 @@
                                 Command="{x:Bind ViewModel.IgnoreNewVersionCommand}"
                                 Content="忽略这次"
                                 Visibility="{x:Bind ViewModel.ShowNewVersionAvailable, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}"
-                                l:Uids.Uid="/SettingsUi/IgnoreUpdateButton" />
+                                l:Uids.Uid="/SettingsUi/IgnoreUpdateButton"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

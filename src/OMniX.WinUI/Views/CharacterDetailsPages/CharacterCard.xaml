@@ -107,7 +107,7 @@
                     Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                     Style="{ThemeResource BodyTextStyle}"
                     Text="已收录 Mod"
-                    l:Uids.Uid="/CharacterDetails/Card_TrackedModsLabel" />
+                    l:Uids.Uid="/CharacterDetails/Card_TrackedModsLabel"/>
                 <TextBlock
                     Style="{ThemeResource BodyTextStyle}"
                     FontWeight="SemiBold"
@@ -127,7 +127,7 @@
                     HorizontalAlignment="Center"
                     Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                     Text="当前游戏内皮肤"
-                    l:Uids.Uid="/CharacterDetails/Card_CurrentSkinLabel" />
+                    l:Uids.Uid="/CharacterDetails/Card_CurrentSkinLabel"/>
                 <TextBlock
                     HorizontalAlignment="Center"
                     FontFamily="{StaticResource GenshinFont}"
@@ -135,14 +135,14 @@
                     TextWrapping="WrapWholeWords"
                     Text="{x:Bind ViewModel.SelectedSkin.DisplayName, Mode=OneWay, FallbackValue=Default}" />
                 <Button
-                    x:Name="SelectSkinButtonElement"
-                    Margin="0,14,0,0"
-                    HorizontalAlignment="Center"
-                    Content="选择皮肤"
-                    l:Uids.Uid="/CharacterDetails/Card_SelectSkinButton"
-                    Flyout="{StaticResource SelectInGameSkin}"
-                    IsEnabled="{x:Bind ViewModel.CanChangeInGameSkins, Mode=OneWay}"
-                    Style="{StaticResource OmniXSoftButtonStyle}">
+    x:Name="SelectSkinButtonElement"
+    Margin="0,14,0,0"
+    HorizontalAlignment="Center"
+    Content="选择皮肤"
+    l:Uids.Uid="/CharacterDetails/Card_SelectSkinButton"
+    Flyout="{StaticResource SelectInGameSkin}"
+    IsEnabled="{x:Bind ViewModel.CanChangeInGameSkins, Mode=OneWay}"
+    Style="{StaticResource OmniXSoftButtonStyle}">
 
                     <Button.KeyboardAccelerators>
                         <KeyboardAccelerator Key="F1" />
@@ -151,15 +151,15 @@
 
                 <!--  二开：只有一个皮肤时显示这行灰字，比一个点不动的灰按钮清楚  -->
                 <TextBlock
-                    x:Name="NoMoreSkinsTextBlock"
-                    Margin="0,14,0,0"
-                    HorizontalAlignment="Center"
-                    FontSize="12"
-                    Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                    Text="暂无其他皮肤"
-                    l:Uids.Uid="/CharacterDetails/Card_NoMoreSkins"
-                    TextAlignment="Center"
-                    Visibility="Collapsed" />
+    x:Name="NoMoreSkinsTextBlock"
+    Margin="0,14,0,0"
+    HorizontalAlignment="Center"
+    FontSize="12"
+    Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+    Text="暂无其他皮肤"
+    l:Uids.Uid="/CharacterDetails/Card_NoMoreSkins"
+    TextAlignment="Center"
+    Visibility="Collapsed"/>
             </StackPanel>
 
 
@@ -168,11 +168,11 @@
 
         <StackPanel Grid.Row="2" Margin="0,0,0,8">
             <Button
-                HorizontalAlignment="Center"
-                Command="{x:Bind ViewModel.DisableAllModsCommand}"
-                Content="禁用全部 Mod"
-                l:Uids.Uid="/CharacterDetails/Card_DisableAllButton"
-                Style="{StaticResource OmniXGhostButtonStyle}" />
+    HorizontalAlignment="Center"
+    Command="{x:Bind ViewModel.DisableAllModsCommand}"
+    Content="禁用全部 Mod"
+    l:Uids.Uid="/CharacterDetails/Card_DisableAllButton"
+    Style="{StaticResource OmniXGhostButtonStyle}"/>
         </StackPanel>
     </Grid>
 </UserControl>

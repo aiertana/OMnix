@@ -26,7 +26,7 @@
             Opacity="0.75"
             Text="左边那两个开关要靠下面这几样东西。缺的可以在这里补，补完再打开开关。"
             TextWrapping="Wrap"
-            l:Uids.Uid="/Dialogs/PluginDep_Intro" />
+            l:Uids.Uid="/Dialogs/PluginDep_Intro"/>
 
         <!--  XXMI Launcher  -->
         <Grid ColumnSpacing="12">
@@ -59,7 +59,7 @@
                 Grid.Column="2"
                 Click="OpenXxmi_OnClick"
                 Content="去下载"
-                l:Uids.Uid="/Dialogs/PluginDep_XxmiBtn" />
+                l:Uids.Uid="/Dialogs/PluginDep_XxmiBtn"/>
         </Grid>
 
         <!--  WWMI  -->
@@ -93,7 +93,7 @@
                 Grid.Column="2"
                 Click="OpenWwmi_OnClick"
                 Content="说明"
-                l:Uids.Uid="/Dialogs/PluginDep_WwmiBtn" />
+                l:Uids.Uid="/Dialogs/PluginDep_WwmiBtn"/>
         </Grid>
 
         <!--  DLSS5 部署包  -->
@@ -114,7 +114,7 @@
                 Grid.Column="1"
                 VerticalAlignment="Center"
                 Spacing="2">
-                <TextBlock FontWeight="SemiBold" Text="DLSS5 部署包" l:Uids.Uid="/Dialogs/PluginDep_KitTitle" />
+                <TextBlock FontWeight="SemiBold" Text="DLSS5 部署包" l:Uids.Uid="/Dialogs/PluginDep_KitTitle"/>
                 <TextBlock
                     x:Name="KitText"
                     FontSize="11"
@@ -127,7 +127,7 @@
                 Grid.Column="2"
                 Click="DownloadKit_OnClick"
                 Content="自动下载"
-                l:Uids.Uid="/Dialogs/PluginDep_KitBtn" />
+                l:Uids.Uid="/Dialogs/PluginDep_KitBtn"/>
         </Grid>
 
         <InfoBar

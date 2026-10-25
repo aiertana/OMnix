@@ -21,7 +21,7 @@
             Margin="8,0,8,0"
             HorizontalAlignment="Stretch"
             Spacing="4">
-            <TextBlock Style="{StaticResource PageTitleStyle}" Text="命令设置" l:Uids.Uid="/SettingsUi/CommandsTitle" />
+            <TextBlock Style="{StaticResource PageTitleStyle}" Text="命令设置" l:Uids.Uid="/SettingsUi/CommandsTitle"/>
 
 
             <controls:SettingsCard
@@ -29,7 +29,7 @@
                 Header="新建命令"
                 HeaderIcon="{winUi:FontIcon Glyph=&#xE70F;}"
                 l:Uids.Uid="/SettingsUi/CommandsNewCard">
-                <Button Command="{x:Bind ViewModel.OpenCreateCommandCommand}" Content="新建命令" l:Uids.Uid="/SettingsUi/CommandsNewButton" />
+                <Button Command="{x:Bind ViewModel.OpenCreateCommandCommand}" Content="新建命令" l:Uids.Uid="/SettingsUi/CommandsNewButton"/>
             </controls:SettingsCard>
 
             <controls:SettingsExpander
@@ -75,7 +75,7 @@
                                                         TextTrimming="CharacterEllipsis"
                                                         ToolTipService.ToolTip="{x:Bind CommandDisplayName}"
                                                         Text="显示名称："
-                                                        l:Uids.Uid="/SettingsUi/CmdDefDisplayName" />
+                                                        l:Uids.Uid="/SettingsUi/CmdDefDisplayName"/>
                                                     <TextBlock
                                                         FontSize="16"
                                                         IsTextSelectionEnabled="True"
@@ -90,7 +90,7 @@
                                                         TextTrimming="CharacterEllipsis"
                                                         ToolTipService.ToolTip="{x:Bind Id}"
                                                         Text="命令 ID："
-                                                        l:Uids.Uid="/SettingsUi/CmdDefId" />
+                                                        l:Uids.Uid="/SettingsUi/CmdDefId"/>
                                                     <TextBlock
                                                         FontSize="10"
                                                         IsTextSelectionEnabled="True"
@@ -112,14 +112,14 @@
                                                     <Button.Flyout>
                                                         <Flyout>
                                                             <StackPanel>
-                                                                <TextBlock Text="确定要运行这条命令吗？" l:Uids.Uid="/SettingsUi/CmdDefRunConfirm" />
+                                                                <TextBlock Text="确定要运行这条命令吗？" l:Uids.Uid="/SettingsUi/CmdDefRunConfirm"/>
                                                                 <Button
                                                                     HorizontalAlignment="Center"
                                                                     Command="{x:Bind RunCommand}"
                                                                     CommandParameter="{x:Bind}"
                                                                     Content="运行"
                                                                     Style="{ThemeResource AccentButtonStyle}"
-                                                                    l:Uids.Uid="/SettingsUi/CmdDefRunConfirmButton" />
+                                                                    l:Uids.Uid="/SettingsUi/CmdDefRunConfirmButton"/>
                                                             </StackPanel>
                                                         </Flyout>
                                                     </Button.Flyout>
@@ -130,7 +130,7 @@
                                                     Command="{x:Bind EditCommand}"
                                                     CommandParameter="{x:Bind}"
                                                     Content="编辑"
-                                                    l:Uids.Uid="/SettingsUi/CmdDefEditButton" />
+                                                    l:Uids.Uid="/SettingsUi/CmdDefEditButton"/>
 
                                                 <Button
                                                     VerticalAlignment="Center"
@@ -140,13 +140,13 @@
                                                     <Button.Flyout>
                                                         <Flyout x:Name="DeleteFlyout">
                                                             <StackPanel>
-                                                                <TextBlock Text="确定要删除这条命令吗？" l:Uids.Uid="/SettingsUi/CmdDefDeleteConfirm" />
+                                                                <TextBlock Text="确定要删除这条命令吗？" l:Uids.Uid="/SettingsUi/CmdDefDeleteConfirm"/>
                                                                 <Button
                                                                     HorizontalAlignment="Center"
                                                                     Command="{x:Bind DeleteCommand}"
                                                                     CommandParameter="{x:Bind}"
                                                                     Content="删除"
-                                                                    l:Uids.Uid="/SettingsUi/CmdDefDeleteConfirmButton" />
+                                                                    l:Uids.Uid="/SettingsUi/CmdDefDeleteConfirmButton"/>
                                                             </StackPanel>
                                                         </Flyout>
                                                     </Button.Flyout>
@@ -161,7 +161,7 @@
                                                     TextTrimming="CharacterEllipsis"
                                                     ToolTipService.ToolTip="{x:Bind Executable}"
                                                     Text="程序： "
-                                                    l:Uids.Uid="/SettingsUi/CmdDefExecutable" />
+                                                    l:Uids.Uid="/SettingsUi/CmdDefExecutable"/>
                                                 <TextBlock
                                                     IsTextSelectionEnabled="True"
                                                     TextTrimming="CharacterEllipsis"
@@ -173,7 +173,7 @@
                                                     TextTrimming="CharacterEllipsis"
                                                     ToolTipService.ToolTip="{x:Bind WorkingDirectory}"
                                                     Text="工作目录： "
-                                                    l:Uids.Uid="/SettingsUi/CmdDefWorkingDir" />
+                                                    l:Uids.Uid="/SettingsUi/CmdDefWorkingDir"/>
                                                 <TextBlock
                                                     IsTextSelectionEnabled="True"
                                                     TextTrimming="CharacterEllipsis"
@@ -185,7 +185,7 @@
                                                     TextTrimming="CharacterEllipsis"
                                                     ToolTipService.ToolTip="{x:Bind Arguments}"
                                                     Text="参数： "
-                                                    l:Uids.Uid="/SettingsUi/CmdDefArguments" />
+                                                    l:Uids.Uid="/SettingsUi/CmdDefArguments"/>
                                                 <TextBlock
                                                     IsTextSelectionEnabled="True"
                                                     TextTrimming="CharacterEllipsis"
@@ -247,7 +247,7 @@
                                                     TextTrimming="CharacterEllipsis"
                                                     ToolTipService.ToolTip="{x:Bind CommandDisplayName}"
                                                     Text="显示名称： "
-                                                    l:Uids.Uid="/SettingsUi/CmdRunningDisplayName" />
+                                                    l:Uids.Uid="/SettingsUi/CmdRunningDisplayName"/>
                                                 <TextBlock
                                                     FontSize="16"
                                                     IsTextSelectionEnabled="True"
@@ -261,7 +261,7 @@
                                                     TextTrimming="CharacterEllipsis"
                                                     ToolTipService.ToolTip="{x:Bind FullCommand}"
                                                     Text="完整命令： "
-                                                    l:Uids.Uid="/SettingsUi/CmdRunningFull" />
+                                                    l:Uids.Uid="/SettingsUi/CmdRunningFull"/>
                                                 <TextBlock
                                                     IsTextSelectionEnabled="True"
                                                     TextTrimming="CharacterEllipsis"
@@ -275,7 +275,7 @@
                                                     TextTrimming="CharacterEllipsis"
                                                     ToolTipService.ToolTip="{x:Bind Id}"
                                                     Text="命令 ID： "
-                                                    l:Uids.Uid="/SettingsUi/CmdRunningId" />
+                                                    l:Uids.Uid="/SettingsUi/CmdRunningId"/>
                                                 <TextBlock
                                                     FontSize="10"
                                                     IsTextSelectionEnabled="True"
@@ -291,7 +291,7 @@
                                             Command="{x:Bind KillCommand}"
                                             CommandParameter="{x:Bind}"
                                             Content="结束进程"
-                                            l:Uids.Uid="/SettingsUi/CmdRunningKill" />
+                                            l:Uids.Uid="/SettingsUi/CmdRunningKill"/>
 
                                     </Grid>
                                 </DataTemplate>

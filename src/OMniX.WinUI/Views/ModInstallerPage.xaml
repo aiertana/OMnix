@@ -22,20 +22,20 @@
             <MenuFlyoutItem
                 Command="{x:Bind ViewModel.SetModPreviewImageCommand, Mode=OneWay}"
                 CommandParameter="{Binding}"
-                Text="设置为 Mod 预览图" l:Uids.Uid="/ModList/ModInst_SetPreview" />
+                Text="设置为 Mod 预览图" l:Uids.Uid="/ModList/ModInst_SetPreview"/>
         </MenuFlyout>
 
         <MenuFlyout x:Name="FolderFlyout">
             <MenuFlyoutItem
                 Command="{x:Bind ViewModel.SetRootFolderCommand, Mode=OneWay}"
                 CommandParameter="{Binding}"
-                Text="设为 Mod 根目录" l:Uids.Uid="/ModList/ModInst_SetRootFolder" />
+                Text="设为 Mod 根目录" l:Uids.Uid="/ModList/ModInst_SetRootFolder"/>
             <!--  TODO: Enable Later  -->
             <MenuFlyoutItem
                 Command="{x:Bind ViewModel.SetShaderFixesFolderCommand}"
                 CommandParameter="{Binding}"
                 Visibility="Collapsed"
-                Text="设为 ShaderFixes 目录" l:Uids.Uid="/ModList/ModInst_SetShaderFixes" />
+                Text="设为 ShaderFixes 目录" l:Uids.Uid="/ModList/ModInst_SetShaderFixes"/>
         </MenuFlyout>
 
         <DataTemplate x:Key="RootFolderTemplate" x:DataType="viewModels:RootFolder">
@@ -88,14 +88,14 @@
 
     <Grid>
         <ContentDialog
-            x:Name="DuplicateModDialog"
-            l:Uids.Uid="/ModList/ModInst_DuplicateDialog"
-            Title="已经有同名文件夹了"
-            CloseButtonText="取消"
-            DefaultButton="Primary"
-            IsPrimaryButtonEnabled="{x:Bind ViewModel.CanExecuteDialogCommand, Mode=OneWay}"
-            PrimaryButtonCommand="{x:Bind ViewModel.AddModDialogCommand, Mode=OneWay}"
-            PrimaryButtonText="{x:Bind ViewModel.PrimaryButtonText, Mode=OneWay}">
+    x:Name="DuplicateModDialog"
+    l:Uids.Uid="/ModList/ModInst_DuplicateDialog"
+    Title="已经有同名文件夹了"
+    CloseButtonText="取消"
+    DefaultButton="Primary"
+    IsPrimaryButtonEnabled="{x:Bind ViewModel.CanExecuteDialogCommand, Mode=OneWay}"
+    PrimaryButtonCommand="{x:Bind ViewModel.AddModDialogCommand, Mode=OneWay}"
+    PrimaryButtonText="{x:Bind ViewModel.PrimaryButtonText, Mode=OneWay}">
             <ContentDialog.Content>
                 <Grid MinWidth="500">
                     <Grid.RowDefinitions>
@@ -118,48 +118,48 @@
 
 
                         <StackPanel Margin="4">
-                            <TextBlock Text="新 Mod" l:Uids.Uid="/ModList/ModInst_NewMod" />
+                            <TextBlock Text="新 Mod" l:Uids.Uid="/ModList/ModInst_NewMod"/>
                             <TextBox
-                                Margin="4"
-                                Header="显示名称" PlaceholderText="在 OMniX 里显示的名字" l:Uids.Uid="/ModList/ModInst_DisplayName"
-                                IsEnabled="{x:Bind ViewModel.OverwriteExistingMod, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
-                                Text="{x:Bind ViewModel.CustomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    Margin="4"
+    Header="显示名称" PlaceholderText="在 OMniX 里显示的名字" l:Uids.Uid="/ModList/ModInst_DisplayName"
+    IsEnabled="{x:Bind ViewModel.OverwriteExistingMod, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
+    Text="{x:Bind ViewModel.CustomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <TextBox
-                                Margin="4"
-                                Header="文件夹名" PlaceholderText="在磁盘上使用的文件夹名" l:Uids.Uid="/ModList/ModInst_FolderName"
-                                IsEnabled="{x:Bind ViewModel.OverwriteExistingMod, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
-                                Text="{x:Bind ViewModel.ModFolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    Margin="4"
+    Header="文件夹名" PlaceholderText="在磁盘上使用的文件夹名" l:Uids.Uid="/ModList/ModInst_FolderName"
+    IsEnabled="{x:Bind ViewModel.OverwriteExistingMod, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
+    Text="{x:Bind ViewModel.ModFolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Margin="4">
-                            <TextBlock Text="已存在的 Mod" l:Uids.Uid="/ModList/ModInst_ExistingMod" />
+                            <TextBlock Text="已存在的 Mod" l:Uids.Uid="/ModList/ModInst_ExistingMod"/>
                             <TextBox
-                                Margin="4"
-                                Header="显示名称" PlaceholderText="在 OMniX 里显示的名字" l:Uids.Uid="/ModList/ModInst_DisplayName2"
-                                IsEnabled="{x:Bind ViewModel.OverwriteExistingMod, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
-                                Text="{x:Bind ViewModel.DuplicateModCustomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    Margin="4"
+    Header="显示名称" PlaceholderText="在 OMniX 里显示的名字" l:Uids.Uid="/ModList/ModInst_DisplayName2"
+    IsEnabled="{x:Bind ViewModel.OverwriteExistingMod, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
+    Text="{x:Bind ViewModel.DuplicateModCustomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <TextBox
-                                Margin="4"
-                                Header="文件夹名" PlaceholderText="在磁盘上使用的文件夹名" l:Uids.Uid="/ModList/ModInst_FolderName2"
-                                IsEnabled="{x:Bind ViewModel.OverwriteExistingMod, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
-                                Text="{x:Bind ViewModel.DuplicateModFolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <controls:LinkButton Link="{x:Bind ViewModel.DuplicateModPath, Mode=OneWay}" Text="打开已有的 Mod 文件夹..." l:Uids.Uid="/ModList/ModInst_OpenExistingFolder" />
+    Margin="4"
+    Header="文件夹名" PlaceholderText="在磁盘上使用的文件夹名" l:Uids.Uid="/ModList/ModInst_FolderName2"
+    IsEnabled="{x:Bind ViewModel.OverwriteExistingMod, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
+    Text="{x:Bind ViewModel.DuplicateModFolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <controls:LinkButton Link="{x:Bind ViewModel.DuplicateModPath, Mode=OneWay}" Text="打开已有的 Mod 文件夹..." l:Uids.Uid="/ModList/ModInst_OpenExistingFolder"/>
                         </StackPanel>
 
                     </Grid>
 
                     <StackPanel Grid.Row="2">
                         <CheckBox
-                            Margin="4"
-                            Content="覆盖已有的 Mod" l:Uids.Uid="/ModList/ModInst_Overwrite"
-                            IsChecked="{x:Bind ViewModel.OverwriteExistingMod, Mode=TwoWay}" />
+    Margin="4"
+    Content="覆盖已有的 Mod" l:Uids.Uid="/ModList/ModInst_Overwrite"
+    IsChecked="{x:Bind ViewModel.OverwriteExistingMod, Mode=TwoWay}"/>
 
                         <CheckBox
                             Margin="4"
                             Command="{x:Bind ViewModel.ToggleReplaceDuplicateModInPresetCommand}"
                             IsChecked="{x:Bind ViewModel.ReplaceDuplicateModInPreset, Mode=OneWay}"
                             ToolTipService.ToolTip="预设里会把这个重复的 Mod 换成新装的版本。与上面的「用新 Mod 替换旧版本」互斥。" l:Uids.Uid="/ModList/ModInst_ReplaceDupInPreset">
-                            <TextBlock TextWrapping="WrapWholeWords" Text="在预设里用新 Mod 替换重复的 Mod" l:Uids.Uid="/ModList/ModInst_ReplaceDupInPresetText" />
+                            <TextBlock TextWrapping="WrapWholeWords" Text="在预设里用新 Mod 替换重复的 Mod" l:Uids.Uid="/ModList/ModInst_ReplaceDupInPresetText"/>
                         </CheckBox>
                     </StackPanel>
 
@@ -231,27 +231,27 @@
                     IsActive="{x:Bind ViewModel.IsRetrievingModInfo, Mode=OneWay}" />
 
                 <TextBox
-                    Grid.Row="1"
-                    Header="Mod 页面链接" PlaceholderText="粘贴 GameBanana 链接，会自动填好名称、作者和预览图" l:Uids.Uid="/ModList/ModInst_ModUrl"
-                    IsReadOnly="{x:Bind ViewModel.IsRetrievingModInfo, Mode=OneWay}"
-                    KeyDown="UrlTextBox_KeyDown"
-                    Text="{x:Bind ViewModel.ModUrl, Mode=TwoWay}" />
+    Grid.Row="1"
+    Header="Mod 页面链接" PlaceholderText="粘贴 GameBanana 链接，会自动填好名称、作者和预览图" l:Uids.Uid="/ModList/ModInst_ModUrl"
+    IsReadOnly="{x:Bind ViewModel.IsRetrievingModInfo, Mode=OneWay}"
+    KeyDown="UrlTextBox_KeyDown"
+    Text="{x:Bind ViewModel.ModUrl, Mode=TwoWay}"/>
                 <TextBox
-                    Grid.Row="2"
-                    Header="显示名称" PlaceholderText="在 OMniX 里显示的名字，留空就用文件夹名" l:Uids.Uid="/ModList/ModInst_CustomName"
-                    IsReadOnly="{x:Bind ViewModel.IsRetrievingModInfo, Mode=OneWay}"
-                    Text="{x:Bind ViewModel.CustomName, Mode=TwoWay}" />
+    Grid.Row="2"
+    Header="显示名称" PlaceholderText="在 OMniX 里显示的名字，留空就用文件夹名" l:Uids.Uid="/ModList/ModInst_CustomName"
+    IsReadOnly="{x:Bind ViewModel.IsRetrievingModInfo, Mode=OneWay}"
+    Text="{x:Bind ViewModel.CustomName, Mode=TwoWay}"/>
                 <TextBox
-                    Grid.Row="3"
-                    Header="作者" PlaceholderText="Mod 的作者" l:Uids.Uid="/ModList/ModInst_Author"
-                    IsReadOnly="{x:Bind ViewModel.IsRetrievingModInfo, Mode=OneWay}"
-                    Text="{x:Bind ViewModel.Author, Mode=TwoWay}" />
+    Grid.Row="3"
+    Header="作者" PlaceholderText="Mod 的作者" l:Uids.Uid="/ModList/ModInst_Author"
+    IsReadOnly="{x:Bind ViewModel.IsRetrievingModInfo, Mode=OneWay}"
+    Text="{x:Bind ViewModel.Author, Mode=TwoWay}"/>
                 <TextBox
-                    Grid.Row="4"
-                    Margin="0,0,0,8"
-                    AcceptsReturn="False"
-                    Header="备注" PlaceholderText="随便写点什么，会显示在角色详情页的 Mod 卡片上" l:Uids.Uid="/ModList/ModInst_Notes"
-                    Text="{x:Bind ViewModel.Description, Mode=TwoWay}" />
+    Grid.Row="4"
+    Margin="0,0,0,8"
+    AcceptsReturn="False"
+    Header="备注" PlaceholderText="随便写点什么，会显示在角色详情页的 Mod 卡片上" l:Uids.Uid="/ModList/ModInst_Notes"
+    Text="{x:Bind ViewModel.Description, Mode=TwoWay}"/>
 
                 <!--  二开：批量导入时把还没装的列在这里，装完一个划掉一个  -->
                 <Border
@@ -269,7 +269,7 @@
 
                         <StackPanel Margin="2,0,0,6" Orientation="Horizontal" Spacing="6">
                             <FontIcon FontSize="13" Glyph="&#xE8B7;" />
-                            <TextBlock Text="批量导入队列（还没装的）" l:Uids.Uid="/ModList/ModInst_BatchQueue" />
+                            <TextBlock Text="批量导入队列（还没装的）" l:Uids.Uid="/ModList/ModInst_BatchQueue"/>
                         </StackPanel>
 
                         <ScrollViewer
@@ -330,7 +330,7 @@
 
                     <StackPanel Margin="0,0,0,12" Orientation="Horizontal">
                         <FontIcon Margin="4,0" Glyph="{x:Bind ViewModel.RootFolderIcon}" />
-                        <TextBlock Margin="4,0" Text="Mod 文件夹：" l:Uids.Uid="/ModList/ModInst_ModFolderLabel" />
+                        <TextBlock Margin="4,0" Text="Mod 文件夹：" l:Uids.Uid="/ModList/ModInst_ModFolderLabel"/>
                         <TextBlock Text="{x:Bind ViewModel.LastSelectedRootFolder.Name, Mode=OneWay, FallbackValue=未知}" />
                         <FontIcon Margin="4,0" Glyph="&#xEA62;" />
                         <TextBlock Text="{x:Bind ViewModel.ModCharacterName, Mode=OneWay}" />
@@ -341,7 +341,7 @@
 
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Margin="4,0" Glyph="{x:Bind ViewModel.SelectedImageIcon}" />
-                        <TextBlock Margin="4,0" Text="预览图来源：" l:Uids.Uid="/ModList/ModInst_ImageSourceLabel" />
+                        <TextBlock Margin="4,0" Text="预览图来源：" l:Uids.Uid="/ModList/ModInst_ImageSourceLabel"/>
                         <TextBlock Text="{x:Bind ViewModel.ImageSource, Mode=OneWay}" />
                     </StackPanel>
                     <StackPanel
@@ -353,7 +353,7 @@
                             IsChecked="True"
                             IsEnabled="False" />
                         <CheckBox Content="Url" IsEnabled="False" />
-                        <CheckBox Content="Mod 文件" IsEnabled="False" l:Uids.Uid="/ModList/ModInst_ModFile" />
+                        <CheckBox Content="Mod 文件" IsEnabled="False" l:Uids.Uid="/ModList/ModInst_ModFile"/>
                         <CheckBox Content="Ignore" IsEnabled="False" />
                     </StackPanel>
 
@@ -386,7 +386,7 @@
 
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Margin="4,0" Glyph="{x:Bind ViewModel.SelectedMergeIniIcon}" />
-                            <TextBlock Margin="4,0" Text="MergedIniFile 文件夹：" l:Uids.Uid="/ModList/ModInst_MergedIniLabel" />
+                            <TextBlock Margin="4,0" Text="MergedIniFile 文件夹：" l:Uids.Uid="/ModList/ModInst_MergedIniLabel"/>
                             <TextBlock Text="Auto" />
                         </StackPanel>
 
@@ -399,16 +399,16 @@
 
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Margin="4,0" Glyph="{x:Bind ViewModel.ShaderFixesFolderIcon}" />
-                            <TextBlock Margin="4,0" Text="ShaderFixes 文件夹：" l:Uids.Uid="/ModList/ModInst_ShaderFixesLabel" />
+                            <TextBlock Margin="4,0" Text="ShaderFixes 文件夹：" l:Uids.Uid="/ModList/ModInst_ShaderFixesLabel"/>
                             <TextBlock Text="{x:Bind ViewModel.LastSelectedShaderFixesFolder.Name, Mode=OneWay, FallbackValue=Unknown}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <CheckBox Content="Auto" IsEnabled="False" />
                             <CheckBox
-                                Content="手动选择" l:Uids.Uid="/ModList/ModInst_ManualPick"
-                                IsChecked="True"
-                                IsEnabled="False" />
+    Content="手动选择" l:Uids.Uid="/ModList/ModInst_ManualPick"
+    IsChecked="True"
+    IsEnabled="False"/>
                             <CheckBox Content="Ignore" IsEnabled="False" />
                         </StackPanel>
 
@@ -433,17 +433,17 @@
 
                     <StackPanel>
                         <CheckBox
-                            Margin="4,0"
-                            Command="{x:Bind ViewModel.EnableOnlyToggleCommand}"
-                            Content="启用这个 Mod，并禁用同角色的其他 Mod" ToolTipService.ToolTip="勾选后只启用这一个，同角色的其它 Mod 会被禁用" l:Uids.Uid="/ModList/ModInst_EnableOnly"
-                            IsChecked="{x:Bind ViewModel.EnableThisMod, Mode=OneWay}" />
+    Margin="4,0"
+    Command="{x:Bind ViewModel.EnableOnlyToggleCommand}"
+    Content="启用这个 Mod，并禁用同角色的其他 Mod" ToolTipService.ToolTip="勾选后只启用这一个，同角色的其它 Mod 会被禁用" l:Uids.Uid="/ModList/ModInst_EnableOnly"
+    IsChecked="{x:Bind ViewModel.EnableThisMod, Mode=OneWay}"/>
 
                         <CheckBox
-                            Margin="4,0"
-                            Command="{x:Bind ViewModel.ToggleReplaceModToUpdateInPresetCommand}"
-                            Content="在预设里用这个新 Mod 替换旧版本" ToolTipService.ToolTip="把所有预设里引用的旧 Mod 换成这个新装的版本" l:Uids.Uid="/ModList/ModInst_ReplaceUpdate"
-                            IsChecked="{x:Bind ViewModel.ReplaceModToUpdateInPreset, Mode=OneWay}"
-                            Visibility="{x:Bind ViewModel.IsUpdatingMod, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+    Margin="4,0"
+    Command="{x:Bind ViewModel.ToggleReplaceModToUpdateInPresetCommand}"
+    Content="在预设里用这个新 Mod 替换旧版本" ToolTipService.ToolTip="把所有预设里引用的旧 Mod 换成这个新装的版本" l:Uids.Uid="/ModList/ModInst_ReplaceUpdate"
+    IsChecked="{x:Bind ViewModel.ReplaceModToUpdateInPreset, Mode=OneWay}"
+    Visibility="{x:Bind ViewModel.IsUpdatingMod, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </StackPanel>
 
                     <StackPanel
@@ -462,10 +462,10 @@
                             </Button.KeyboardAccelerators>
                         </Button>
                         <Button
-                            MinWidth="120"
-                            Command="{x:Bind ViewModel.AddModCommand}"
-                            Content="添加 Mod" l:Uids.Uid="/ModList/ModInst_AddMod"
-                            Style="{StaticResource OmniXAccentButtonStyle}">
+    MinWidth="120"
+    Command="{x:Bind ViewModel.AddModCommand}"
+    Content="添加 Mod" l:Uids.Uid="/ModList/ModInst_AddMod"
+    Style="{StaticResource OmniXAccentButtonStyle}">
                             <Button.KeyboardAccelerators>
                                 <KeyboardAccelerator Key="S" Modifiers="Control" />
                             </Button.KeyboardAccelerators>

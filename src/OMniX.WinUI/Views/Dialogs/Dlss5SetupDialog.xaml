@@ -27,10 +27,10 @@
             IsOpen="True"
             Message="这个插件要往游戏目录里铺加载器、ReShade 和 DLSS5，所以得先告诉它游戏在哪、部署包在哪。"
             Severity="Warning"
-            l:Uids.Uid="/Dialogs/Dlss5_Info1" />
+            l:Uids.Uid="/Dialogs/Dlss5_Info1"/>
 
         <StackPanel Spacing="6">
-            <TextBlock FontWeight="SemiBold" Text="游戏可执行文件" l:Uids.Uid="/Dialogs/Dlss5_GameExeHeader" />
+            <TextBlock FontWeight="SemiBold" Text="游戏可执行文件" l:Uids.Uid="/Dialogs/Dlss5_GameExeHeader"/>
             <Grid ColumnSpacing="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -43,18 +43,18 @@
                     Grid.Column="1"
                     Click="BrowseGameExe_OnClick"
                     Content="浏览…"
-                    l:Uids.Uid="/Dialogs/Dlss5_BrowseExeBtn" />
+                    l:Uids.Uid="/Dialogs/Dlss5_BrowseExeBtn"/>
             </Grid>
             <TextBlock
                 FontSize="11"
                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                 Text="选 Client-Win64-Shipping.exe 本体，它的上一级目录就是部署目标 Win64。"
                 TextWrapping="Wrap"
-                l:Uids.Uid="/Dialogs/Dlss5_GameExeHint" />
+                l:Uids.Uid="/Dialogs/Dlss5_GameExeHint"/>
         </StackPanel>
 
         <StackPanel Spacing="6">
-            <TextBlock FontWeight="SemiBold" Text="DLSS5 部署包目录" l:Uids.Uid="/Dialogs/Dlss5_KitDirHeader" />
+            <TextBlock FontWeight="SemiBold" Text="DLSS5 部署包目录" l:Uids.Uid="/Dialogs/Dlss5_KitDirHeader"/>
             <Grid ColumnSpacing="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -63,19 +63,19 @@
                 <TextBox
                     x:Name="KitDirBox"
                     PlaceholderText="…\WWMI-DLSS5-Deploy（里面有 install.ps1）"
-                    l:Uids.Uid="/Dialogs/Dlss5_KitDirBox" />
+                    l:Uids.Uid="/Dialogs/Dlss5_KitDirBox"/>
                 <Button
                     Grid.Column="1"
                     Click="BrowseKitDir_OnClick"
                     Content="浏览…"
-                    l:Uids.Uid="/Dialogs/Dlss5_BrowseKitBtn" />
+                    l:Uids.Uid="/Dialogs/Dlss5_BrowseKitBtn"/>
             </Grid>
             <TextBlock
                 FontSize="11"
                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                 Text="就是那份带 install.ps1 / files 的部署包。插件只调用它的脚本，不会复制走里面的东西。"
                 TextWrapping="Wrap"
-                l:Uids.Uid="/Dialogs/Dlss5_KitDirHint" />
+                l:Uids.Uid="/Dialogs/Dlss5_KitDirHint"/>
         </StackPanel>
 
         <InfoBar
@@ -84,6 +84,6 @@
             IsOpen="True"
             Message="点「保存并开启」会弹一次管理员授权，然后清空并重建游戏目录下的 scripts，把加载器和运行时硬链接进去。原有的 Mods 在 XXMI 目录里，不会被删。"
             Severity="Informational"
-            l:Uids.Uid="/Dialogs/Dlss5_Info2" />
+            l:Uids.Uid="/Dialogs/Dlss5_Info2"/>
     </StackPanel>
 </ContentDialog>

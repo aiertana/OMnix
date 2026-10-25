@@ -30,14 +30,14 @@
                 Grid.Row="0"
                 Margin="0,0,0,10"
                 Style="{StaticResource TitleTextBlockStyle}"
-                Text="选择 Mod" l:Uids.Uid="/ModList/ModSel_Title" />
+                Text="选择 Mod" l:Uids.Uid="/ModList/ModSel_Title"/>
 
             <TextBox
-                Grid.Column="1"
-                MinWidth="400"
-                HorizontalAlignment="Right"
-                PlaceholderText="搜索 Mod…" l:Uids.Uid="/ModList/ModSel_Search"
-                TextChanged="TextBox_OnTextChanged" />
+    Grid.Column="1"
+    MinWidth="400"
+    HorizontalAlignment="Right"
+    PlaceholderText="搜索 Mod…" l:Uids.Uid="/ModList/ModSel_Search"
+    TextChanged="TextBox_OnTextChanged"/>
         </Grid>
 
 
@@ -78,7 +78,7 @@
                             <TextBlock Text="{x:Bind Name}" TextWrapping="WrapWholeWords" />
 
                             <StackPanel Grid.Row="1">
-                                <TextBlock Text="添加时间：" l:Uids.Uid="/ModList/ModSel_AddedLabel" />
+                                <TextBlock Text="添加时间：" l:Uids.Uid="/ModList/ModSel_AddedLabel"/>
                                 <TextBlock Text="{x:Bind DateAdded}" />
                             </StackPanel>
 
@@ -96,7 +96,7 @@
                 MinWidth="200"
                 Background="{ThemeResource AccentFillColorSelectedTextBackgroundBrush}"
                 Command="{x:Bind ViewModel.SelectModsCommand}"
-                Content="选择这个 Mod" l:Uids.Uid="/ModList/ModSel_Select" />
+                Content="选择这个 Mod" l:Uids.Uid="/ModList/ModSel_Select"/>
         </Grid>
 
     </Grid>

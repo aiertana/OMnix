@@ -276,7 +276,7 @@
                             <!--  原来是 E82D，这个码位在 Segoe Fluent Icons 里没有，一直显示成方块  -->
                             <FontIcon FontSize="12" Glyph="&#xE8A5;" />
                             <TextBlock FontSize="12" Text="查看使用教程"
-            l:Uids.Uid="/ShellUi/Shell_TutorialText" />
+            l:Uids.Uid="/ShellUi/Shell_TutorialText"/>
                         </StackPanel>
                     </Button>
 

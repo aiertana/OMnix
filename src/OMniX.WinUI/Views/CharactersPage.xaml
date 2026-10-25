@@ -155,7 +155,7 @@
                     <MenuFlyoutItem
                         Command="{x:Bind ViewModel.DisableCharacterModsCommand}"
                         CommandParameter="{Binding}"
-                        Text="禁用该角色全部 Mod" l:Uids.Uid="/Characters/CharPage_DisableAllMods" />
+                        Text="禁用该角色全部 Mod" l:Uids.Uid="/Characters/CharPage_DisableAllMods"/>
                 </MenuFlyoutSubItem>
             </MenuFlyout>
         </Grid.Resources>
@@ -167,13 +167,13 @@
         </Grid.RowDefinitions>
 
         <ContentDialog
-            x:Name="SelectProcessDialog"
-            l:Uids.Uid="/Characters/CharPage_PickProcess"
-            Title="选择程序路径"
-            DefaultButton="Primary"
-            IsPrimaryButtonEnabled="{x:Bind ViewModel.SimpleSelectProcessDialogVM.PathPicker.IsValid, Mode=OneWay}"
-            PrimaryButtonText="保存"
-            SecondaryButtonText="取消">
+    x:Name="SelectProcessDialog"
+    l:Uids.Uid="/Characters/CharPage_PickProcess"
+    Title="选择程序路径"
+    DefaultButton="Primary"
+    IsPrimaryButtonEnabled="{x:Bind ViewModel.SimpleSelectProcessDialogVM.PathPicker.IsValid, Mode=OneWay}"
+    PrimaryButtonText="保存"
+    SecondaryButtonText="取消">
             <Grid MinWidth="500" MinHeight="200">
 
                 <Grid.RowDefinitions>
@@ -188,7 +188,7 @@
                         Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                         IsTextSelectionEnabled="True"
                         TextWrapping="WrapWholeWords"
-                        Text="选择要启动的程序路径。保存后，点击启动按钮即可直接启动，可在设置页面重置。" l:Uids.Uid="/Characters/CharPage_PickProcessHint" />
+                        Text="选择要启动的程序路径。保存后，点击启动按钮即可直接启动，可在设置页面重置。" l:Uids.Uid="/Characters/CharPage_PickProcessHint"/>
 
                     <controls1:FolderSelector
                         Title=""
@@ -202,7 +202,7 @@
                     Grid.Row="1"
                     HorizontalAlignment="Right"
                     Command="{x:Bind ViewModel.SimpleSelectProcessDialogVM.ShowAdvancedDialogCommand}"
-                    Content="创建高级启动命令" l:Uids.Uid="/Characters/CharPage_AdvancedCmd" />
+                    Content="创建高级启动命令" l:Uids.Uid="/Characters/CharPage_AdvancedCmd"/>
 
             </Grid>
         </ContentDialog>
@@ -230,7 +230,7 @@
                         <Flyout Placement="Bottom">
                             <ScrollViewer Margin="-4">
                                 <StackPanel MinWidth="300" Spacing="8">
-                                    <TextBlock Style="{ThemeResource OmniXCaptionStyle}" Text="应用预设" l:Uids.Uid="/Characters/CharPage_ApplyPresetCaption" />
+                                    <TextBlock Style="{ThemeResource OmniXCaptionStyle}" Text="应用预设" l:Uids.Uid="/Characters/CharPage_ApplyPresetCaption"/>
 
                                     <!--  二开：随机 Mod 置顶  -->
                                     <Button
@@ -241,7 +241,7 @@
                                         ToolTipService.ToolTip="随机启用 Mod" l:Uids.Uid="/Characters/CharPage_RandomizeTip">
                                         <StackPanel Orientation="Horizontal" Spacing="8">
                                             <FontIcon FontSize="12" Glyph="&#xE8B1;" />
-                                            <TextBlock Text="随机 Mod" l:Uids.Uid="/Characters/CharPage_RandomizeText" />
+                                            <TextBlock Text="随机 Mod" l:Uids.Uid="/Characters/CharPage_RandomizeText"/>
                                         </StackPanel>
                                     </Button>
 
@@ -285,7 +285,7 @@
                                                         <Button.Flyout>
                                                             <Flyout Placement="Right">
                                                                 <Button Command="{x:Bind ApplyPresetCommand}" CommandParameter="{x:Bind}">
-                                                                    <TextBlock Text="确认应用" l:Uids.Uid="/Characters/CharPage_PresetConfirmApply" />
+                                                                    <TextBlock Text="确认应用" l:Uids.Uid="/Characters/CharPage_PresetConfirmApply"/>
                                                                 </Button>
                                                             </Flyout>
                                                         </Button.Flyout>
@@ -343,7 +343,7 @@
                                         ToolTipService.ToolTip="把当前已启用的 Mod 组合存成一个预设" l:Uids.Uid="/Characters/CharPage_SavePresetTip">
                                         <StackPanel Orientation="Horizontal" Spacing="8">
                                             <FontIcon FontSize="12" Glyph="&#xE74E;" />
-                                            <TextBlock Text="保存当前为预设" l:Uids.Uid="/Characters/CharPage_SavePreset" />
+                                            <TextBlock Text="保存当前为预设" l:Uids.Uid="/Characters/CharPage_SavePreset"/>
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
@@ -370,7 +370,7 @@
                                 Fill="#FFE5484D"
                                 Visibility="{x:Bind ViewModel.HasModFixerUpdate, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}" />
                         </Grid>
-                        <TextBlock FontSize="12" Text="修复" l:Uids.Uid="/Characters/CharPage_RepairText" />
+                        <TextBlock FontSize="12" Text="修复" l:Uids.Uid="/Characters/CharPage_RepairText"/>
                     </StackPanel>
                 </Button>
 
@@ -383,7 +383,7 @@
                     </ToolTipService.ToolTip>
                     <StackPanel Orientation="Horizontal" Spacing="6">
                         <FontIcon FontSize="12" Glyph="&#xE7B8;" />
-                        <TextBlock FontSize="12" Text="启动器" l:Uids.Uid="/Characters/CharPage_LauncherText" />
+                        <TextBlock FontSize="12" Text="启动器" l:Uids.Uid="/Characters/CharPage_LauncherText"/>
                     </StackPanel>
                 </Button>
 
@@ -510,41 +510,41 @@
                     Margin="8,0,2,0"
                     VerticalAlignment="Center"
                     Style="{ThemeResource OmniXCaptionStyle}"
-                    Text="显示" l:Uids.Uid="/Characters/CharPage_ShowCaption" />
+                    Text="显示" l:Uids.Uid="/Characters/CharPage_ShowCaption"/>
 
                 <ToggleButton
-                    Command="{x:Bind ViewModel.ShowCharactersWithModsCommand}"
-                    Content="有内容" l:Uids.Uid="/Characters/CharPage_HasContent"
-                    IsChecked="{x:Bind ViewModel.ShowOnlyCharactersWithMods, Mode=OneWay}"
-                    Style="{ThemeResource OmniXChipToggleStyle}" />
+    Command="{x:Bind ViewModel.ShowCharactersWithModsCommand}"
+    Content="有内容" l:Uids.Uid="/Characters/CharPage_HasContent"
+    IsChecked="{x:Bind ViewModel.ShowOnlyCharactersWithMods, Mode=OneWay}"
+    Style="{ThemeResource OmniXChipToggleStyle}"/>
 
                 <ToggleButton
                     Command="{x:Bind ViewModel.ShowOnlyCharactersWithEnabledModsCommand}"
                     IsChecked="{x:Bind ViewModel.ShowOnlyWithEnabledMods, Mode=OneWay}"
                     Style="{ThemeResource OmniXChipToggleStyle}"
-                    Content="已启用" ToolTipService.ToolTip="仅显示至少启用了一个 Mod 的对象" l:Uids.Uid="/Characters/CharPage_EnabledFilter" />
+                    Content="已启用" ToolTipService.ToolTip="仅显示至少启用了一个 Mod 的对象" l:Uids.Uid="/Characters/CharPage_EnabledFilter"/>
 
                 <ToggleButton
-                    Command="{x:Bind ViewModel.ShowOnlyCharactersWithModNotificationsCommand}"
-                    Content="有通知" l:Uids.Uid="/Characters/CharPage_HasNotifications"
-                    IsChecked="{x:Bind ViewModel.ShowOnlyModsWithNotifications, Mode=OneWay}"
-                    Style="{ThemeResource OmniXChipToggleStyle}" />
+    Command="{x:Bind ViewModel.ShowOnlyCharactersWithModNotificationsCommand}"
+    Content="有通知" l:Uids.Uid="/Characters/CharPage_HasNotifications"
+    IsChecked="{x:Bind ViewModel.ShowOnlyModsWithNotifications, Mode=OneWay}"
+    Style="{ThemeResource OmniXChipToggleStyle}"/>
 
                 <TextBlock
                     Margin="12,0,2,0"
                     VerticalAlignment="Center"
                     Style="{ThemeResource OmniXCaptionStyle}"
-                    Text="排序" l:Uids.Uid="/Characters/CharPage_SortCaption" />
+                    Text="排序" l:Uids.Uid="/Characters/CharPage_SortCaption"/>
 
                 <ComboBox
-                    x:Name="SortingComboBox"
-                    VerticalAlignment="Center"
-                    ItemsSource="{x:Bind ViewModel.SortingMethods, Mode=OneWay}"
-                    PlaceholderText="排序方式" l:Uids.Uid="/Characters/CharPage_SortBy"
-                    SelectedItem="{x:Bind ViewModel.SelectedSortingMethod, Mode=TwoWay}"
-                    SelectionChanged="SortingComboBox_OnSelectionChanged"
-                    SelectionChangedTrigger="Committed"
-                    Style="{ThemeResource OmniXComboBoxStyle}" />
+    x:Name="SortingComboBox"
+    VerticalAlignment="Center"
+    ItemsSource="{x:Bind ViewModel.SortingMethods, Mode=OneWay}"
+    PlaceholderText="排序方式" l:Uids.Uid="/Characters/CharPage_SortBy"
+    SelectedItem="{x:Bind ViewModel.SelectedSortingMethod, Mode=TwoWay}"
+    SelectionChanged="SortingComboBox_OnSelectionChanged"
+    SelectionChangedTrigger="Committed"
+    Style="{ThemeResource OmniXComboBoxStyle}"/>
 
                 <ToggleButton
                     VerticalAlignment="Center"
@@ -656,7 +656,7 @@
                                     FontFamily="{StaticResource GenshinFont}"
                                     FontSize="13"
                                     Foreground="{ThemeResource AccentFillColorDefaultBrush}"
-                                    Text="新增角色" l:Uids.Uid="/Characters/CharPage_AddCard" />
+                                    Text="新增角色" l:Uids.Uid="/Characters/CharPage_AddCard"/>
                             </Grid>
                         </Border>
 
@@ -697,7 +697,7 @@
                                                 FontSize="11"
                                                 FontWeight="SemiBold"
                                                 Foreground="White"
-                                                Text="新" l:Uids.Uid="/Characters/CharPage_NewBadge" />
+                                                Text="新" l:Uids.Uid="/Characters/CharPage_NewBadge"/>
                                         </Border>
 
                                         <FontIcon

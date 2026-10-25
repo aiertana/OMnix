@@ -42,7 +42,7 @@
                                     Margin="0,0,4,0"
                                     HorizontalAlignment="Left"
                                     Text="已选择 Mod："
-                                    l:Uids.Uid="/CharacterDetails/CtxMenu_SelectedModsLabel" />
+                                    l:Uids.Uid="/CharacterDetails/CtxMenu_SelectedModsLabel"/>
                                 <TextBlock HorizontalAlignment="Left" Text="{x:Bind ViewModel.ContextMenuVM.SelectedModsCount, Mode=OneWay}" />
                             </StackPanel>
                             <Button
@@ -65,22 +65,22 @@
                                 Margin="0,8,16,0"
                                 Command="{x:Bind ViewModel.ContextMenuVM.MoveModsCommand}"
                                 Content="移动"
-                                l:Uids.Uid="/CharacterDetails/CtxMenu_MoveButton" />
+                                l:Uids.Uid="/CharacterDetails/CtxMenu_MoveButton"/>
                             <StackPanel>
                                 <TextBlock
                                     FontWeight="SemiBold"
                                     Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                     Text="移动到其他角色："
-                                    l:Uids.Uid="/CharacterDetails/CtxMenu_MoveToCharLabel" />
+                                    l:Uids.Uid="/CharacterDetails/CtxMenu_MoveToCharLabel"/>
                                 <AutoSuggestBox
-                                    x:Name="MoveModSearchBox"
-                                    IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}"
-                                    ItemsSource="{x:Bind ViewModel.ContextMenuVM.SuggestedModdableObjects, Mode=OneWay}"
-                                    PlaceholderText="搜索角色..."
-                                    l:Uids.Uid="/CharacterDetails/CtxMenu_SearchCharBox"
-                                    QuerySubmitted="MoveModSearch_OnQuerySubmitted"
-                                    TextChanged="MoveModSearch_OnTextChanged"
-                                    Text="{x:Bind ViewModel.ContextMenuVM.MoveModsSearchText, Mode=TwoWay}">
+    x:Name="MoveModSearchBox"
+    IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}"
+    ItemsSource="{x:Bind ViewModel.ContextMenuVM.SuggestedModdableObjects, Mode=OneWay}"
+    PlaceholderText="搜索角色..."
+    l:Uids.Uid="/CharacterDetails/CtxMenu_SearchCharBox"
+    QuerySubmitted="MoveModSearch_OnQuerySubmitted"
+    TextChanged="MoveModSearch_OnTextChanged"
+    Text="{x:Bind ViewModel.ContextMenuVM.MoveModsSearchText, Mode=TwoWay}">
                                     <AutoSuggestBox.ItemTemplate>
                                         <DataTemplate x:DataType="subViewModels:SuggestedModObject">
                                             <TextBlock FontFamily="{StaticResource GenshinFont}" Text="{x:Bind DisplayName}" />
@@ -96,28 +96,28 @@
                                 FontWeight="SemiBold"
                                 Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                 Text="移动到其他文件夹："
-                                l:Uids.Uid="/CharacterDetails/CtxMenu_MoveToFolderLabel" />
+                                l:Uids.Uid="/CharacterDetails/CtxMenu_MoveToFolderLabel"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <ComboBox
-                                    Grid.Column="0"
-                                    MinWidth="180"
-                                    HorizontalAlignment="Stretch"
-                                    DisplayMemberPath="Name"
-                                    IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}"
-                                    ItemsSource="{x:Bind ViewModel.ContextMenuVM.ModFolders, Mode=OneWay}"
-                                    PlaceholderText="Mods 下的文件夹…"
-                                    l:Uids.Uid="/CharacterDetails/CtxMenu_MoveFolderBox"
-                                    SelectedItem="{x:Bind ViewModel.ContextMenuVM.SelectedModFolder, Mode=TwoWay}" />
+    Grid.Column="0"
+    MinWidth="180"
+    HorizontalAlignment="Stretch"
+    DisplayMemberPath="Name"
+    IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}"
+    ItemsSource="{x:Bind ViewModel.ContextMenuVM.ModFolders, Mode=OneWay}"
+    PlaceholderText="Mods 下的文件夹…"
+    l:Uids.Uid="/CharacterDetails/CtxMenu_MoveFolderBox"
+    SelectedItem="{x:Bind ViewModel.ContextMenuVM.SelectedModFolder, Mode=TwoWay}"/>
                                 <Button
                                     Grid.Column="1"
                                     Margin="8,0,0,0"
                                     Command="{x:Bind ViewModel.ContextMenuVM.MoveModsToFolderCommand}"
                                     Content="移动"
-                                    l:Uids.Uid="/CharacterDetails/CtxMenu_MoveButton" />
+                                    l:Uids.Uid="/CharacterDetails/CtxMenu_MoveButton"/>
                             </Grid>
                         </StackPanel>
                     </StackPanel>
@@ -131,13 +131,13 @@
                         <Button Click="ExportSelectedMods_OnClick" Style="{StaticResource AccentButtonStyle}">
                             <StackPanel Orientation="Horizontal" Spacing="6">
                                 <FontIcon FontSize="14" Glyph="&#xEDE1;" />
-                                <TextBlock Text="导出为压缩包…" l:Uids.Uid="/CharacterDetails/CtxMenu_ExportZip" />
+                                <TextBlock Text="导出为压缩包…" l:Uids.Uid="/CharacterDetails/CtxMenu_ExportZip"/>
                             </StackPanel>
                         </Button>
                         <Button Click="OpenSelectedModFolder_OnClick">
                             <StackPanel Orientation="Horizontal" Spacing="6">
                                 <FontIcon FontSize="14" Glyph="&#xE8B7;" />
-                                <TextBlock Text="打开文件夹" l:Uids.Uid="/CharacterDetails/CtxMenu_OpenFolder" />
+                                <TextBlock Text="打开文件夹" l:Uids.Uid="/CharacterDetails/CtxMenu_OpenFolder"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -204,7 +204,7 @@
                                             Command="{x:Bind ViewModel.AddModFolderCommand}"
                                             ToolTipService.ToolTip="添加 Mod 文件夹"
                                             Text="添加 Mod…"
-                                            l:Uids.Uid="/CharacterDetails/Toolbar_AddModFolder" />
+                                            l:Uids.Uid="/CharacterDetails/Toolbar_AddModFolder"/>
 
                                         <MenuFlyoutItem
                                             Command="{x:Bind ViewModel.AddModArchiveCommand}"
@@ -228,16 +228,16 @@
 
                                 <MenuBarItem Title="文件夹" l:Uids.Uid="/CharacterDetails/Toolbar_FolderMenu">
                                     <MenuFlyoutItem Command="{x:Bind ViewModel.OpenGIMIRootFolderCommand}" Text="打开 3Dmigoto 根目录…"
-                                        l:Uids.Uid="/CharacterDetails/Toolbar_OpenRootFolder" />
+                                        l:Uids.Uid="/CharacterDetails/Toolbar_OpenRootFolder"/>
                                     <MenuFlyoutSeparator />
                                     <MenuFlyoutItem Command="{x:Bind ViewModel.OpenCharacterFolderCommand}" Text="打开角色的 Mod 文件夹…"
-                                        l:Uids.Uid="/CharacterDetails/Toolbar_OpenCharFolder" />
+                                        l:Uids.Uid="/CharacterDetails/Toolbar_OpenCharFolder"/>
                                     <MenuFlyoutSeparator />
                                     <MenuFlyoutItem
                                         Command="{x:Bind ViewModel.OpenModFolderCommand}"
                                         IsEnabled="{x:Bind ViewModel.ModGridVM.IsSingleModSelected, Mode=OneWay}"
                                         Text="打开选中 Mod 的文件夹…"
-                                        l:Uids.Uid="/CharacterDetails/Toolbar_OpenSelectedModFolder" />
+                                        l:Uids.Uid="/CharacterDetails/Toolbar_OpenSelectedModFolder"/>
                                 </MenuBarItem>
 
                                 <MenuBarItem Title="视图" l:Uids.Uid="/CharacterDetails/Toolbar_ViewMenu">
@@ -246,12 +246,12 @@
                                         IsChecked="{x:Bind ViewModel.IsSingleSelectEnabled, Mode=OneWay}"
                                         ToolTipService.ToolTip="开启后同一时间只允许启用一个 Mod"
                                         Text="单选"
-                                        l:Uids.Uid="/CharacterDetails/Toolbar_SingleSelect" />
+                                        l:Uids.Uid="/CharacterDetails/Toolbar_SingleSelect"/>
                                     <ToggleMenuFlyoutItem
                                         Command="{x:Bind ViewModel.ToggleHideModFolderColumnCommand}"
                                         IsChecked="{x:Bind ViewModel.IsModFolderNameColumnVisible, Mode=OneWay}"
                                         Text="显示“Mod 文件夹名”列"
-                                        l:Uids.Uid="/CharacterDetails/Toolbar_ShowModFolderColumn" />
+                                        l:Uids.Uid="/CharacterDetails/Toolbar_ShowModFolderColumn"/>
                                 </MenuBarItem>
 
                                 <MenuBarItem
@@ -261,11 +261,11 @@
                                     l:Uids.Uid="/CharacterDetails/Toolbar_ModPrefsMenu">
                                     <ToggleMenuFlyoutItem ToolTipService.ToolTip="读取选中 Mod 在 d3dx_user.ini 中的 3Dmigoto 偏好设置，并保存到该 Mod 的 .JASM_Config.json"
                                         Text="保存选中 Mod 的偏好设置"
-                                        l:Uids.Uid="/CharacterDetails/Toolbar_SaveModPrefs" />
+                                        l:Uids.Uid="/CharacterDetails/Toolbar_SaveModPrefs"/>
                                     <MenuFlyoutSeparator />
                                     <ToggleMenuFlyoutItem ToolTipService.ToolTip="从 .JASM_Config.json 读取选中 Mod 的偏好设置并写入 d3dx_user.ini 供 3Dmigoto 使用"
                                         Text="读取选中 Mod 的偏好设置"
-                                        l:Uids.Uid="/CharacterDetails/Toolbar_LoadModPrefs" />
+                                        l:Uids.Uid="/CharacterDetails/Toolbar_LoadModPrefs"/>
                                 </MenuBarItem>
                             </MenuBar>
 
@@ -273,16 +273,16 @@
 
 
                         <InfoBar
-                            Grid.Column="1"
-                            Height="50"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            IsClosable="False"
-                            IsOpen="{x:Bind ViewModel.ModGridVM.ShowMultipleModsActiveWarning, Mode=OneWay}"
-                            Message="有多个 Mod 同时启用"
-                            l:Uids.Uid="/CharacterDetails/Toolbar_MultiModWarn"
-                            Severity="Warning"
-                            Visibility="Visible" />
+    Grid.Column="1"
+    Height="50"
+    HorizontalAlignment="Right"
+    VerticalAlignment="Center"
+    IsClosable="False"
+    IsOpen="{x:Bind ViewModel.ModGridVM.ShowMultipleModsActiveWarning, Mode=OneWay}"
+    Message="有多个 Mod 同时启用"
+    l:Uids.Uid="/CharacterDetails/Toolbar_MultiModWarn"
+    Severity="Warning"
+    Visibility="Visible"/>
 
                     </Grid>
 
@@ -303,14 +303,14 @@
 
                         <StackPanel VerticalAlignment="Center">
                             <TextBox
-                                x:Name="SearchModsTextBox"
-                                MinWidth="200"
-                                MaxWidth="500"
-                                IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}"
-                                PlaceholderText="搜索 Mod…"
-                                l:Uids.Uid="/CharacterDetails/Toolbar_SearchBox"
-                                TextChanged="SearchModsTextBox_OnTextChanged"
-                                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+    x:Name="SearchModsTextBox"
+    MinWidth="200"
+    MaxWidth="500"
+    IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}"
+    PlaceholderText="搜索 Mod…"
+    l:Uids.Uid="/CharacterDetails/Toolbar_SearchBox"
+    TextChanged="SearchModsTextBox_OnTextChanged"
+    Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                                 <TextBox.KeyboardAccelerators>
                                     <KeyboardAccelerator
@@ -348,7 +348,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     CornerRadius="6">
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBlock VerticalAlignment="Center" Text="外观分区：" l:Uids.Uid="/CharacterDetails/Section_Label" />
+                        <TextBlock VerticalAlignment="Center" Text="外观分区：" l:Uids.Uid="/CharacterDetails/Section_Label"/>
 
                         <ComboBox
                             x:Name="SectionComboBox"
@@ -359,35 +359,35 @@
                             SelectionChanged="SectionComboBox_OnSelectionChanged" />
 
                         <Button Command="{x:Bind ViewModel.StartAddSectionCommand}" Content="新建分区"
-                            l:Uids.Uid="/CharacterDetails/Section_NewButton" />
+                            l:Uids.Uid="/CharacterDetails/Section_NewButton"/>
 
                         <TextBox
-                            MinWidth="140"
-                            VerticalAlignment="Center"
-                            PlaceholderText="分区名称"
-                            l:Uids.Uid="/CharacterDetails/Section_NameBox"
-                            Text="{x:Bind ViewModel.NewSectionName, Mode=TwoWay}"
-                            Visibility="{x:Bind ViewModel.IsAddingSection, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+    MinWidth="140"
+    VerticalAlignment="Center"
+    PlaceholderText="分区名称"
+    l:Uids.Uid="/CharacterDetails/Section_NameBox"
+    Text="{x:Bind ViewModel.NewSectionName, Mode=TwoWay}"
+    Visibility="{x:Bind ViewModel.IsAddingSection, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <Button
-                            Command="{x:Bind ViewModel.ConfirmAddSectionCommand}"
-                            Content="确定"
-                            l:Uids.Uid="/CharacterDetails/Section_ConfirmButton"
-                            Visibility="{x:Bind ViewModel.IsAddingSection, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+    Command="{x:Bind ViewModel.ConfirmAddSectionCommand}"
+    Content="确定"
+    l:Uids.Uid="/CharacterDetails/Section_ConfirmButton"
+    Visibility="{x:Bind ViewModel.IsAddingSection, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <Button
-                            Command="{x:Bind ViewModel.DeleteSectionCommand}"
-                            Content="删除分区"
-                            l:Uids.Uid="/CharacterDetails/Section_DeleteButton"
-                            IsEnabled="{x:Bind ViewModel.HasSections, Mode=OneWay}" />
+    Command="{x:Bind ViewModel.DeleteSectionCommand}"
+    Content="删除分区"
+    l:Uids.Uid="/CharacterDetails/Section_DeleteButton"
+    IsEnabled="{x:Bind ViewModel.HasSections, Mode=OneWay}"/>
 
                         <Button
                             Command="{x:Bind ViewModel.AssignSelectedModsToSectionCommand}"
                             Content="选中的 Mod 归入此分区"
-                            l:Uids.Uid="/CharacterDetails/Section_AssignButton" />
+                            l:Uids.Uid="/CharacterDetails/Section_AssignButton"/>
 
                         <Button Command="{x:Bind ViewModel.EnableSectionCommand}" Content="只启用此分区"
-                            l:Uids.Uid="/CharacterDetails/Section_EnableButton" />
+                            l:Uids.Uid="/CharacterDetails/Section_EnableButton"/>
                     </StackPanel>
                 </Border>
 
