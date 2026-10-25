@@ -5,6 +5,9 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Serilog;
 using OMniX.Core.Contracts.Services;
+using OMniX.Core.Helpers;
+using OMniX.WinUI.Contracts.Services;
+using OMniX.WinUI.Services;
 
 namespace OMniX.WinUI.Services.Plugins;
 
@@ -21,8 +24,14 @@ public sealed class DependencySnapshot
     public bool XxmiReady =>
         !string.IsNullOrWhiteSpace(XxmiLauncherPath) && File.Exists(XxmiLauncherPath);
 
+    /// <summary>
+    ///     WWMI 的两个标志文件：注入用的 d3d11.dll，或 3Dmigoto 的 d3dx.ini
+    ///     （有的整合包只带后者，只认 dll 会误报「没装」）
+    /// </summary>
     public bool WwmiReady =>
-        Directory.Exists(WwmiRoot) && File.Exists(Path.Combine(WwmiRoot, "d3d11.dll"));
+        Directory.Exists(WwmiRoot) &&
+        (File.Exists(Path.Combine(WwmiRoot, "d3d11.dll")) ||
+         File.Exists(Path.Combine(WwmiRoot, "d3dx.ini")));
 
     public bool KitReady =>
         !string.IsNullOrWhiteSpace(KitDir) && File.Exists(Path.Combine(KitDir, "install.ps1"));
@@ -102,35 +111,47 @@ public sealed class PluginDependencyService
     /// </summary>
     public static void SetPluginsRoot(string? path) => PluginsRoot = path ?? string.Empty;
 
-    private static readonly string[] XxmiRootCandidates =
-    {
-        @"D:\mod\XXMI Launcher",
-        @"D:\XXMI Launcher",
-        @"C:\XXMI Launcher",
-        @"E:\XXMI Launcher",
-        @"D:\Games\XXMI Launcher",
-        @"C:\Games\XXMI Launcher"
-    };
+    /// <summary>
+    ///     二开：XXMI 根目录的标志文件。便携版解压出来一定有这个文件，
+    ///     认它就等于认 XXMI —— 装在哪个盘、文件夹叫什么名字都不影响。
+    /// </summary>
+    private const string XxmiConfigFileName = "XXMI Launcher Config.json";
+
+    /// <summary>上次成功定位到的 XXMI 根目录。下次直接用它，省掉整盘扫描</summary>
+    private const string XxmiRootSettingKey = "PluginDependency.XxmiRoot";
 
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly Dlss5PluginService _dlss5;
+    private readonly ILocalSettingsService _localSettings;
     private readonly ILogger _logger = Log.ForContext<PluginDependencyService>();
     private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
-    public PluginDependencyService(IHttpClientFactory httpClientFactory, Dlss5PluginService dlss5)
+    private string _rememberedXxmiRoot = string.Empty;
+
+    private static readonly TimeSpan DetectCacheLifetime = TimeSpan.FromSeconds(15);
+
+    private (DateTimeOffset At, string Root, string Launcher) _xxmiCache =
+        (DateTimeOffset.MinValue, string.Empty, string.Empty);
+
+    public PluginDependencyService(IHttpClientFactory httpClientFactory, Dlss5PluginService dlss5,
+        ILocalSettingsService localSettings)
     {
         _httpClientFactory = httpClientFactory;
         _dlss5 = dlss5;
+        _localSettings = localSettings;
+
+        _ = LoadRememberedXxmiRootAsync();
     }
 
     public DependencySnapshot Detect()
     {
-        var xxmiLauncher = FindXxmiLauncher();
-        var xxmiRoot = string.IsNullOrWhiteSpace(xxmiLauncher)
-            ? string.Empty
-            : Directory.GetParent(Path.GetDirectoryName(xxmiLauncher)!)?.Parent?.FullName ?? string.Empty;
+        var xxmiRoot = ResolveXxmiInstallation(out var xxmiLauncher);
+        var wwmiRoot = string.IsNullOrWhiteSpace(xxmiRoot) ? string.Empty : ResolveWwmiFolder(xxmiRoot);
 
-        var wwmiRoot = string.IsNullOrWhiteSpace(xxmiRoot) ? string.Empty : Path.Combine(xxmiRoot, "WWMI");
+        _logger.Information("插件依赖检测：XXMI={XxmiRoot} 启动器={Launcher} WWMI={WwmiRoot}",
+            string.IsNullOrWhiteSpace(xxmiRoot) ? "(未找到)" : xxmiRoot,
+            string.IsNullOrWhiteSpace(xxmiLauncher) ? "(未找到)" : xxmiLauncher,
+            string.IsNullOrWhiteSpace(wwmiRoot) ? "(未找到)" : wwmiRoot);
 
         return new DependencySnapshot
         {
@@ -142,49 +163,425 @@ public sealed class PluginDependencyService
     }
 
     /// <summary>
-    ///     先看管理器里配过的 WWMI 启动器路径，再扫常见安装位置。
+    ///     二开：找 XXMI。以前是拿 6 条写死的绝对路径去撞，
+    ///     装在别的盘、或者文件夹叫 XXMI-Launcher、少个空格，就一律「未检测到」。
+    ///     现在按安装特征判定（XXMI Launcher Config.json + Resources\Bin 里的 exe），
+    ///     路径只是线索：配过的插件目录 → 上次找到的位置 → 正在运行的进程 →
+    ///     常见安装位置 → 最后才是有界的整盘扫描。
     /// </summary>
-    private string FindXxmiLauncher()
+    private string ResolveXxmiInstallation(out string launcherPath)
     {
-        // 二开：先看用户配置的插件目录 —— 我们自己下载的 XXMI 就在那儿，
-        // 它不在下面那份「常见安装位置」列表里（因为那个列表是编译期固定的，
-        // 而插件目录现在运行时可改）。
-        var configuredExe = Path.Combine(PluginsRoot, "XXMI Launcher", "Resources", "Bin", "XXMI Launcher.exe");
+        var now = DateTimeOffset.UtcNow;
 
-        if (File.Exists(configuredExe))
-            return configuredExe;
-
-        foreach (var root in XxmiRootCandidates)
+        // 找不到时要扫盘，别让每次刷新都扫一遍
+        if (now - _xxmiCache.At < DetectCacheLifetime)
         {
-            var exe = Path.Combine(root, "Resources", "Bin", "XXMI Launcher.exe");
+            launcherPath = _xxmiCache.Launcher;
 
-            if (File.Exists(exe))
-                return exe;
+            return _xxmiCache.Root;
         }
+
+        launcherPath = string.Empty;
+
+        foreach (var candidate in EnumerateXxmiCandidates())
+        {
+            if (!TryResolveXxmiRoot(candidate, out var root, out var exe))
+                continue;
+
+            launcherPath = exe;
+            _xxmiCache = (now, root, exe);
+            RememberXxmiRoot(root);
+
+            return root;
+        }
+
+        _xxmiCache = (now, string.Empty, string.Empty);
+
+        return string.Empty;
+    }
+
+    private IEnumerable<string> EnumerateXxmiCandidates()
+    {
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var candidate in GetConfiguredXxmiPaths())
+        {
+            if (seen.Add(candidate))
+                yield return candidate;
+        }
+
+        if (!string.IsNullOrWhiteSpace(_rememberedXxmiRoot) && seen.Add(_rememberedXxmiRoot))
+            yield return _rememberedXxmiRoot;
+
+        foreach (var candidate in GetRunningXxmiPaths())
+        {
+            if (seen.Add(candidate))
+                yield return candidate;
+        }
+
+        foreach (var candidate in GetWellKnownXxmiPaths())
+        {
+            if (seen.Add(candidate))
+                yield return candidate;
+        }
+
+        foreach (var candidate in ScanDrivesForXxmi())
+        {
+            if (seen.Add(candidate))
+                yield return candidate;
+        }
+    }
+
+    /// <summary>我们自己下载/用户指定的插件目录</summary>
+    private static IEnumerable<string> GetConfiguredXxmiPaths()
+    {
+        foreach (var name in new[] { "XXMI Launcher", "XXMI-Launcher", "XXMI", "XXMI_Launcher" })
+            yield return Path.Combine(PluginsRoot, name);
+
+        // 用户把 XXMI 直接解到插件根目录里（没有多套一层文件夹）
+        yield return PluginsRoot;
+    }
+
+    /// <summary>正在运行的 XXMI —— 用户刚开过的话，进程路径最可靠</summary>
+    private static List<string> GetRunningXxmiPaths()
+    {
+        var paths = new List<string>();
 
         try
         {
-            foreach (var drive in DriveInfo.GetDrives())
+            foreach (var process in Process.GetProcesses())
+            {
+                try
+                {
+                    if (!process.ProcessName.Contains("xxmi", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    var path = process.MainModule?.FileName;
+
+                    if (!string.IsNullOrWhiteSpace(path))
+                        paths.Add(path);
+                }
+                catch (Exception)
+                {
+                    // 拿不到路径的进程（权限不够）跳过
+                }
+                finally
+                {
+                    process.Dispose();
+                }
+            }
+        }
+        catch (Exception)
+        {
+            // 枚举进程失败就当没有
+        }
+
+        return paths;
+    }
+
+    private static IEnumerable<string> GetWellKnownXxmiPaths()
+    {
+        var names = new[] { "XXMI Launcher", "XXMI-Launcher", "XXMI" };
+
+        var roots = new List<string?>
+        {
+            @"D:\mod",
+            @"C:\",
+            @"D:\",
+            @"E:\",
+            @"F:\",
+            @"D:\Games",
+            @"E:\Games",
+            @"D:\Tools",
+            @"E:\Tools",
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads")
+        };
+
+        foreach (var root in roots)
+        {
+            if (string.IsNullOrWhiteSpace(root))
+                continue;
+
+            foreach (var name in names)
+                yield return Path.Combine(root, name);
+
+            // 根目录本身就是 XXMI（解压时少套了一层）
+            yield return root;
+        }
+    }
+
+    /// <summary>兜底：各固定盘按名字扫两层，只在前面都没找到时才跑</summary>
+    private static List<string> ScanDrivesForXxmi()
+    {
+        var matches = new List<string>();
+
+        DriveInfo[] drives;
+
+        try
+        {
+            drives = DriveInfo.GetDrives();
+        }
+        catch (Exception)
+        {
+            return matches;
+        }
+
+        foreach (var drive in drives)
+        {
+            try
             {
                 if (drive.DriveType != DriveType.Fixed || !drive.IsReady)
                     continue;
 
-                foreach (var folder in new[] { Path.Combine("mod", "XXMI Launcher"), "XXMI Launcher" })
+                foreach (var directory in EnumerateDirectoriesSafe(drive.RootDirectory.FullName))
                 {
-                    var exe = Path.Combine(drive.RootDirectory.FullName, folder, "Resources", "Bin",
-                        "XXMI Launcher.exe");
+                    var name = Path.GetFileName(directory);
 
-                    if (File.Exists(exe))
-                        return exe;
+                    if (LooksLikeXxmiFolder(name))
+                    {
+                        matches.Add(directory);
+                        continue;
+                    }
+
+                    if (ScanSkipFolderNames.Contains(name.ToLowerInvariant()))
+                        continue;
+
+                    foreach (var child in EnumerateDirectoriesSafe(directory))
+                    {
+                        if (!LooksLikeXxmiFolder(Path.GetFileName(child)))
+                            continue;
+
+                        matches.Add(child);
+                        break;
+                    }
                 }
             }
+            catch (Exception)
+            {
+                // 单个盘扫不动不影响其它盘
+            }
+        }
+
+        return matches;
+    }
+
+    private static readonly HashSet<string> ScanSkipFolderNames = new(StringComparer.Ordinal)
+    {
+        "windows",
+        "$recycle.bin",
+        "system volume information",
+        "recovery",
+        "node_modules",
+        ".git",
+        ".vs",
+        "appdata"
+    };
+
+    private static bool LooksLikeXxmiFolder(string name) =>
+        ModFolderHelpers.NormalizeName(name).Contains("xxmi", StringComparison.Ordinal);
+
+    /// <summary>
+    ///     判断一个候选路径是不是 XXMI：给 exe 也行，给目录也行。
+    ///     目录的判据是「里面有 Resources\Bin 的启动器 exe」或「根目录有标志文件」。
+    /// </summary>
+    private bool TryResolveXxmiRoot(string candidate, out string root, out string launcherPath)
+    {
+        root = string.Empty;
+        launcherPath = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(candidate))
+            return false;
+
+        try
+        {
+            if (candidate.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!File.Exists(candidate))
+                    return false;
+
+                launcherPath = candidate;
+                root = FindXxmiRootAbove(candidate);
+
+                return !string.IsNullOrWhiteSpace(root);
+            }
+
+            if (!Directory.Exists(candidate))
+                return false;
+
+            var exe = FindXxmiLauncherExe(candidate);
+
+            if (string.IsNullOrWhiteSpace(exe))
+                return false;
+
+            launcherPath = exe;
+            root = FindXxmiRootAbove(exe);
+
+            if (string.IsNullOrWhiteSpace(root))
+                root = candidate;
+
+            return true;
         }
         catch (Exception ex)
         {
-            _logger.Debug(ex, "扫描 XXMI 安装位置失败");
+            _logger.Debug(ex, "检查 XXMI 位置 {Candidate} 失败", candidate);
+
+            return false;
+        }
+    }
+
+    private static string FindXxmiLauncherExe(string folder)
+    {
+        // 便携版固定布局：Resources\Bin\XXMI Launcher.exe
+        var binFolder = Path.Combine(folder, "Resources", "Bin");
+
+        foreach (var keyword in new[] { "xxmi", "launcher" })
+        {
+            var exe = FindExeByKeyword(binFolder, keyword);
+
+            if (!string.IsNullOrWhiteSpace(exe))
+                return exe;
+        }
+
+        // 直接放在根目录的版本
+        foreach (var keyword in new[] { "xxmi", "launcher" })
+        {
+            var exe = FindExeByKeyword(folder, keyword);
+
+            if (!string.IsNullOrWhiteSpace(exe))
+                return exe;
+        }
+
+        // 目录结构改过的版本：有标志文件才往下再找一层，避免翻到无关目录
+        if (!File.Exists(Path.Combine(folder, XxmiConfigFileName)))
+            return string.Empty;
+
+        foreach (var child in EnumerateDirectoriesSafe(folder))
+        {
+            var exe = FindExeByKeyword(child, "xxmi");
+
+            if (!string.IsNullOrWhiteSpace(exe))
+                return exe;
         }
 
         return string.Empty;
+    }
+
+    private static string FindExeByKeyword(string folder, string keyword)
+    {
+        try
+        {
+            if (!Directory.Exists(folder))
+                return string.Empty;
+
+            return Directory.EnumerateFiles(folder, "*.exe", SearchOption.TopDirectoryOnly)
+                       .FirstOrDefault(file => Path.GetFileNameWithoutExtension(file)
+                           .Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                   ?? string.Empty;
+        }
+        catch (Exception)
+        {
+            return string.Empty;
+        }
+    }
+
+    /// <summary>从 exe 往上找根目录：优先认标志文件，没有再按 Resources\Bin 的层级退两级</summary>
+    private static string FindXxmiRootAbove(string exePath)
+    {
+        var folder = Path.GetDirectoryName(exePath);
+
+        if (string.IsNullOrWhiteSpace(folder))
+            return string.Empty;
+
+        var current = new DirectoryInfo(folder);
+
+        for (var i = 0; i < 4 && current is not null; i++)
+        {
+            if (File.Exists(Path.Combine(current.FullName, XxmiConfigFileName)))
+                return current.FullName;
+
+            current = current.Parent;
+        }
+
+        return Directory.GetParent(folder)?.Parent?.FullName ?? string.Empty;
+    }
+
+    /// <summary>WWMI 目录名大小写/写法可能不同，按归一化名找，最后才退回默认拼法</summary>
+    private static string ResolveWwmiFolder(string xxmiRoot)
+    {
+        try
+        {
+            foreach (var directory in Directory.EnumerateDirectories(xxmiRoot))
+            {
+                if (string.Equals(Path.GetFileName(directory), "WWMI", StringComparison.OrdinalIgnoreCase))
+                    return directory;
+            }
+
+            foreach (var directory in Directory.EnumerateDirectories(xxmiRoot))
+            {
+                if (ModFolderHelpers.NormalizeName(Path.GetFileName(directory)) == "wwmi")
+                    return directory;
+            }
+        }
+        catch (Exception)
+        {
+            // 读不到就退回默认拼法
+        }
+
+        return Path.Combine(xxmiRoot, "WWMI");
+    }
+
+    private static List<string> EnumerateDirectoriesSafe(string path)
+    {
+        try
+        {
+            return Directory.Exists(path)
+                ? Directory.EnumerateDirectories(path).ToList()
+                : new List<string>();
+        }
+        catch (Exception)
+        {
+            return new List<string>();
+        }
+    }
+
+    private async Task LoadRememberedXxmiRootAsync()
+    {
+        try
+        {
+            _rememberedXxmiRoot =
+                await _localSettings.ReadSettingAsync<string>(XxmiRootSettingKey, SettingScope.App) ??
+                string.Empty;
+        }
+        catch (Exception ex)
+        {
+            _logger.Debug(ex, "读取上次的 XXMI 位置失败");
+        }
+    }
+
+    private void RememberXxmiRoot(string root)
+    {
+        if (string.IsNullOrWhiteSpace(root) ||
+            string.Equals(root, _rememberedXxmiRoot, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        _rememberedXxmiRoot = root;
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await _localSettings.SaveSettingAsync(XxmiRootSettingKey, root, SettingScope.App);
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "记录 XXMI 位置失败");
+            }
+        });
     }
 
     /// <summary>
