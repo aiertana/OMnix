@@ -12,7 +12,14 @@
       "Outlander"
     ],
     "ModFilesName": "rover",
-    "InGameSkins": [],
+    "InGameSkins": [
+      {
+        "ModFilesName": "Academy",
+        "Image": "Rover_Academy.png",
+        "InternalName": "Academy",
+        "DisplayName": "Academy"
+      }
+    ],
     "InternalName": "Rover",
     "DisplayName": "漂泊者"
   },
@@ -817,147 +824,147 @@
     "InternalName": "Lucilla",
     "DisplayName": "洛瑟菈"
   },
-    {
-      "Keys": [
-        "aemeath"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Aemeath",
-      "InGameSkins": [],
-      "InternalName": "Aemeath",
-      "DisplayName": "爱弥斯"
-    },
-    {
-      "Keys": [
-        "denia"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Denia",
-      "InGameSkins": [],
-      "InternalName": "Denia",
-      "DisplayName": "达妮娅"
-    },
-    {
-      "Keys": [
-        "hiyuki"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Hiyuki",
-      "InGameSkins": [],
-      "InternalName": "Hiyuki",
-      "DisplayName": "绯雪"
-    },
-    {
-      "Keys": [
-        "lucy"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Lucy",
-      "InGameSkins": [],
-      "InternalName": "Lucy",
-      "DisplayName": "露西"
-    },
-    {
-      "Keys": [
-        "rebecca"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Rebecca",
-      "InGameSkins": [],
-      "InternalName": "Rebecca",
-      "DisplayName": "丽贝卡"
-    },
-    {
-      "Keys": [
-        "suisui"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Suisui",
-      "InGameSkins": [],
-      "InternalName": "Suisui",
-      "DisplayName": "穗穗"
-    },
-    {
-      "Keys": [
-        "qingxiao"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Qingxiao",
-      "InGameSkins": [],
-      "InternalName": "Qingxiao",
-      "DisplayName": "清宵"
-    },
-    {
-      "Keys": [
-        "jingran"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Jingran",
-      "InGameSkins": [],
-      "InternalName": "Jingran",
-      "DisplayName": "景燃"
-    },
-    {
-      "Keys": [
-        "suoming"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Suoming",
-      "InGameSkins": [],
-      "InternalName": "Suoming",
-      "DisplayName": "锁暝"
-    },
-    {
-      "Keys": [
-        "hsin"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Hsin",
-      "InGameSkins": [],
-      "InternalName": "Hsin",
-      "DisplayName": "心"
-    },
-    {
-      "Keys": [
-        "lily"
-      ],
-      "Rarity": 5,
-      "Element": "",
-      "Class": "",
-      "Region": [],
-      "ModFilesName": "Lily",
-      "InGameSkins": [],
-      "InternalName": "Lily",
-      "DisplayName": "莉莉"
-    }
-  ]
+  {
+    "Keys": [
+      "aemeath"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Aemeath",
+    "InGameSkins": [],
+    "InternalName": "Aemeath",
+    "DisplayName": "爱弥斯"
+  },
+  {
+    "Keys": [
+      "denia"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Denia",
+    "InGameSkins": [],
+    "InternalName": "Denia",
+    "DisplayName": "达妮娅"
+  },
+  {
+    "Keys": [
+      "hiyuki"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Hiyuki",
+    "InGameSkins": [],
+    "InternalName": "Hiyuki",
+    "DisplayName": "绯雪"
+  },
+  {
+    "Keys": [
+      "lucy"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Lucy",
+    "InGameSkins": [],
+    "InternalName": "Lucy",
+    "DisplayName": "露西"
+  },
+  {
+    "Keys": [
+      "rebecca"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Rebecca",
+    "InGameSkins": [],
+    "InternalName": "Rebecca",
+    "DisplayName": "丽贝卡"
+  },
+  {
+    "Keys": [
+      "suisui"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Suisui",
+    "InGameSkins": [],
+    "InternalName": "Suisui",
+    "DisplayName": "穗穗"
+  },
+  {
+    "Keys": [
+      "qingxiao"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Qingxiao",
+    "InGameSkins": [],
+    "InternalName": "Qingxiao",
+    "DisplayName": "清宵"
+  },
+  {
+    "Keys": [
+      "jingran"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Jingran",
+    "InGameSkins": [],
+    "InternalName": "Jingran",
+    "DisplayName": "景燃"
+  },
+  {
+    "Keys": [
+      "suoming"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Suoming",
+    "InGameSkins": [],
+    "InternalName": "Suoming",
+    "DisplayName": "锁暝"
+  },
+  {
+    "Keys": [
+      "hsin"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Hsin",
+    "InGameSkins": [],
+    "InternalName": "Hsin",
+    "DisplayName": "心"
+  },
+  {
+    "Keys": [
+      "lily"
+    ],
+    "Rarity": 5,
+    "Element": "",
+    "Class": "",
+    "Region": [],
+    "ModFilesName": "Lily",
+    "InGameSkins": [],
+    "InternalName": "Lily",
+    "DisplayName": "莉莉"
+  }
+]

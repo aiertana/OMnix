@@ -1245,14 +1245,28 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             if (file is null)
                 return;
 
-            await _gameService.EditCustomCharacterAsync(characterModel.Character.InternalName,
-                new EditCustomCharacterRequest { Image = NewValue<Uri?>.Set(new Uri(file.Path)) });
+            var pickedImage = new Uri(file.Path);
+
+            if (characterModel.Character.IsCustomModObject)
+            {
+                await _gameService.EditCustomCharacterAsync(characterModel.Character.InternalName,
+                    new EditCustomCharacterRequest { Image = NewValue<Uri?>.Set(pickedImage) });
+            }
+            else if (characterModel.Character is ICharacter overridableCharacter)
+            {
+                // 二开：内置角色以前不让改头像（只会弹「只有自定义角色可以修改头像」），
+                // 但底层本来就有覆盖机制，放开就是了。图片由程序复制一份进 CustomImages，
+                // 之后原图被删、被移走都不影响显示。
+                await _gameService.SetCharacterOverrideAsync(overridableCharacter,
+                    new OverrideCharacterRequest { Image = NewValue<Uri?>.Set(pickedImage) });
+            }
 
             // 二开：先置空再赋值。
             // 绑定改成 OneWay 之后只有「值发生变化」才会重新加载图片，
             // 如果导入的是同一个文件（Uri 一模一样），直接赋值界面不会有任何反应，
             // 看起来就像自动刷新没了。
-            var newImageUri = new Uri(file.Path);
+            // 用程序里那份副本的路径，而不是用户选的原图路径 —— 原图随时可能被删。
+            var newImageUri = characterModel.Character.ImageUri ?? pickedImage;
 
             if (characterModel.ImageUri is not null && characterModel.ImageUri == newImageUri)
             {
@@ -1270,7 +1284,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             _logger.Error(e, "Could not set character image for {Character}", characterModel.Character.DisplayName);
 
             NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PortraitFailedTitle", "设置头像失败"),
-                characterModel.Character.IsCustomModObject ? e.Message : _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_PortraitCustomOnly", "只有自定义角色可以修改头像"),
+                e.Message,
                 TimeSpan.FromSeconds(8));
         }
     }

@@ -1,7 +1,13 @@
 [
   {
     "InternalName": "Rover",
-    "DisplayName": "漂泊者"
+    "DisplayName": "漂泊者",
+    "InGameSkins": [
+      {
+        "InternalName": "Academy",
+        "DisplayName": "学院"
+      }
+    ]
   },
   {
     "InternalName": "Jianxin",
@@ -29,7 +35,13 @@
   },
   {
     "InternalName": "Sanhua",
-    "DisplayName": "散华"
+    "DisplayName": "散华",
+    "InGameSkins": [
+      {
+        "InternalName": "ExorcisticAdjuration",
+        "DisplayName": "叱妖诰"
+      }
+    ]
   },
   {
     "InternalName": "Taoqi",
@@ -69,11 +81,23 @@
   },
   {
     "InternalName": "Changli",
-    "DisplayName": "长离"
+    "DisplayName": "长离",
+    "InGameSkins": [
+      {
+        "InternalName": "LaurelNymph",
+        "DisplayName": "桂枝宁芙"
+      }
+    ]
   },
   {
     "InternalName": "Jinhsi",
-    "DisplayName": "今汐"
+    "DisplayName": "今汐",
+    "InGameSkins": [
+      {
+        "InternalName": "PeachBlossom",
+        "DisplayName": "桃夭灼灼"
+      }
+    ]
   },
   {
     "InternalName": "Zhezhi",
@@ -104,6 +128,12 @@
     "DisplayName": "柯莱塔",
     "Keys": [
       "珂莱塔"
+    ],
+    "InGameSkins": [
+      {
+        "InternalName": "SplashingSummer",
+        "DisplayName": "夏日旖旎"
+      }
     ]
   },
   {
@@ -120,7 +150,13 @@
   },
   {
     "InternalName": "Zani",
-    "DisplayName": "赞妮"
+    "DisplayName": "赞妮",
+    "InGameSkins": [
+      {
+        "InternalName": "DowntownRepose",
+        "DisplayName": "城市午茶"
+      }
+    ]
   },
   {
     "InternalName": "Cantarella",

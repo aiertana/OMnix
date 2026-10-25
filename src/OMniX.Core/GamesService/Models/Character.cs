@@ -145,7 +145,10 @@ public class Character : ICharacter, IEquatable<Character>
 
         character.ModFilesName = characterSkin.ModFilesName;
         character.DisplayName = DisplayName + " " + characterSkin.DisplayName;
-        character.Keys = new List<string>() { DisplayName, InternalName };
+        // 二开：皮肤条目只认自己的名字。原来这里存的是「角色名 + 角色内部名」，
+        // 于是「今汐」这个文件夹既匹配角色本身、又匹配它的皮肤条目，
+        // 皮肤 mod 到底归谁全看遍历顺序。
+        character.Keys = new List<string> { characterSkin.DisplayName, characterSkin.InternalName.Id };
         character.Rarity = characterSkin.Rarity is > 0 and <= 5 ? characterSkin.Rarity : character.Rarity;
         character.ReleaseDate = characterSkin.ReleaseDate == DateTime.MaxValue ? ReleaseDate : character.ReleaseDate;
         character.ImageUri = characterSkin.ImageUri;

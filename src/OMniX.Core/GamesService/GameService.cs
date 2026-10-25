@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using FuzzySharp;
@@ -86,6 +86,7 @@ public class GameService : IGameService
     {
         ArgumentNullException.ThrowIfNull(options, nameof(options));
         _options = options;
+
 
         if (_initialized)
             throw new InvalidOperationException("GameService is already initialized");
@@ -916,6 +917,10 @@ public class GameService : IGameService
                 enableableCharacter.IsEnabled = false;
             }
         }
+
+        _logger.Information("角色初始化：共 {Count} 个条目，皮肤作为独立角色={SkinsAsCharacters}，带皮肤的角色 {WithSkins} 个",
+            _characters.Count, _options.CharacterSkinsAsCharacters,
+            jsonCharacters.Count(c => c.InGameSkins is { Length: > 0 }));
 
         _categories.Add(Category.CreateForCharacter());
     }

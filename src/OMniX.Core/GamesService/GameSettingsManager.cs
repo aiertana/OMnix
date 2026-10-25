@@ -32,8 +32,11 @@ internal class GameSettingsManager
         CustomCharacterImageFolder = new DirectoryInfo(Path.Combine(_customImageFolder.FullName, "CustomModdableObjects"));
         CustomCharacterImageFolder.Create();
 
-        CharacterOverrideImageFlder = new DirectoryInfo(Path.Combine(_customImageFolder.FullName, "CharacterOverrides"));
-        CharacterOverrideImageFlder.Create();
+        // 二开：内置角色的头像也放进同一个文件夹（CustomImages\CustomModdableObjects）。
+        // 以前分成 CustomModdableObjects / CharacterOverrides 两处，用户想手动备份或换机器时
+        // 常常只拷走一个，另一半头像就"丢了"。文件名分别是中文名（自定义）和内部名（内置），
+        // 不会撞车，合在一起反而好管。
+        CharacterOverrideImageFlder = CustomCharacterImageFolder;
     }
 
     internal async Task CleanupUnusedImagesAsync()
@@ -76,7 +79,11 @@ internal class GameSettingsManager
         }
 
 
-        var foundImageFiles = CustomCharacterImageFolder.GetFiles().Concat(CharacterOverrideImageFlder.GetFiles()).Select(p => new Uri(p.FullName));
+        // 两个目录现在是同一个，去重后再算「没被引用」的图片，否则每张图都会被数两遍
+        var foundImageFiles = CustomCharacterImageFolder.GetFiles()
+            .Concat(CharacterOverrideImageFlder.GetFiles())
+            .Select(p => new Uri(p.FullName))
+            .Distinct();
 
         var unusedImages = foundImageFiles.Except(parsedImageUris).ToList();
 

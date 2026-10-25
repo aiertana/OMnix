@@ -89,6 +89,12 @@ public class InitializationOptions
     public required string LocalSettingsDirectory { get; set; }
     public ICollection<string>? DisabledCharacters { get; set; }
 
+    /// <summary>
+    ///     皮肤是否拆成独立角色条目。默认关闭 —— 保持角色详情页里那套皮肤切换器的设计：
+    ///     皮肤挂在角色身上（Character.Skins），点切换器换皮肤、右侧 Mod 列表跟着换。
+    ///     打开的话皮肤会被 ClearAndReturnSkins 摘走变成独立角色，Skins 只剩默认皮肤，
+    ///     切换器就废了（按钮变灰、列表永远不按皮肤过滤）。
+    /// </summary>
     public bool CharacterSkinsAsCharacters { get; set; }
 }
 

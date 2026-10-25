@@ -85,11 +85,41 @@ public class CharacterSkinService
                 continue;
             }
 
+            // 二开：文件夹名里带了皮肤名，也算这个皮肤的 mod。
+            // 皮肤 mod 不必和本体放同一个文件夹、也不必依赖 .buf 文件名前缀 ——
+            // 建一个「今汐·桃夭灼灼」「PeachBlossom」这类文件夹放进去就能认出来。
+            if (modSkin is null && !skin.IsDefault && ModFolderNameMatchesSkin(mod, skin))
+            {
+                yield return mod;
+                continue;
+            }
+
             // If we can't detect the skin, and the mod has no override skin.
             // We add it if the caller wants to see undetectable mods.
             if (detectedSkin is null && modSkin is null && !ignoreUndetectableMods)
                 yield return mod;
         }
+    }
+
+    /// <summary>
+    ///     二开：Mod 文件夹名里是否带了这个皮肤的名字（显示名 / 内部名 / ModFilesName）。
+    /// </summary>
+    private static bool ModFolderNameMatchesSkin(ISkinMod mod, ICharacterSkin skin)
+    {
+        var folderName = Path.GetFileName(mod.FullPath);
+        if (string.IsNullOrWhiteSpace(folderName))
+            return false;
+
+        foreach (var candidate in new[] { skin.DisplayName, skin.InternalName.Id, skin.ModFilesName })
+        {
+            if (string.IsNullOrWhiteSpace(candidate) || candidate.Length < 2)
+                continue;
+
+            if (folderName.Contains(candidate, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+
+        return false;
     }
 
 

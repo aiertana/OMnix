@@ -261,10 +261,18 @@ public partial class ModGridVM(
 
     private async Task LoadModsAsync()
     {
-        if (_context.IsCharacter && _context.Skins.Count > 1)
+        // 二开：皮肤切换要真的换列表。
+        //   Default = 这个角色文件夹下的全部 Mod（皮肤 Mod 也在里面，方便统一管理）
+        //   某个皮肤 = 只留明确属于它的：
+        //       ① Mod 设置里手工指定过这个皮肤（CharacterSkinOverride）
+        //       ② 文件名前缀能认出这个皮肤（ModFilesName）
+        // 认不出皮肤的 Mod 不再往每个皮肤下面都塞一份 —— 以前就是这么干的，
+        // 于是切皮肤等于没切，列表一动不动。
+        if (_context.IsCharacter && _context.Skins.Count > 1 && _context.SelectedSkin is { IsDefault: false })
         {
             _modsBackend = await _characterSkinService
                 .GetCharacterSkinEntriesForSkinAsync(_context.SelectedSkin, useSettingsCache: true,
+                    ignoreUndetectableMods: true,
                     cancellationToken: _navigationCt)
                 .ToListAsync().ConfigureAwait(false);
         }

@@ -16,5 +16,9 @@ public class ModManagerOptions
     /// </summary>
     public string? PluginsFolderPath { get; set; }
 
+    /// <summary>
+    ///     二开：皮肤是否拆成独立角色条目。默认关闭 —— 皮肤留在角色详情页的切换器里，
+    ///     切换时右侧 Mod 列表跟着换。
+    /// </summary>
     public bool CharacterSkinsAsCharacters { get; set; }
 }
