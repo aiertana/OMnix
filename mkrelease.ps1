@@ -105,25 +105,43 @@ Write-Output "=== 2.5 打包自动更新器 ==="
 $auProj = Join-Path $repo 'src\OMniX.AutoUpdater\OMniX.AutoUpdater.csproj'
 $auOut  = Join-Path $outApp 'OMniX - Auto Updater'
 
-# 二开：这个路径必须是目录。踩过一次——它变成了一个无扩展名的文件，
-# 于是 dotnet publish 报 MSB3191「无法创建目录…同名文件或目录已存在」，
-# 而且它不中断脚本：后面照常补齐运行时、照常压缩，
-# 结果打出来的包里更新器只有 1 个文件、整包小了 60 多 MB，光看「已打包」根本看不出来。
-# 打包前先确认它是目录，不是就删掉重建。
+# 二开：这个路径必须是目录，而且要**提前建好**。
+# 踩过两次，现象一模一样：
+#   1) 路径变成一个无扩展名的文件（696 KB），dotnet publish 报 MSB3191
+#      「无法创建目录…同名文件或目录已存在」；
+#   2) 这个错误不会中断脚本 —— 后面照常补运行时、照常压缩，
+#      结果包里更新器只剩 1 个文件、整包小 56 MB，日志里仅有一行
+#      "补了 N 个运行时文件，更新器共 1 个文件"，稍不留神就发出去了。
+#
+# 最坑的是「本地好、CI 坏」：本地第二轮打包时上一轮的目录还在，publish 能用；
+# CI 是全新目录，必挂。所以这里不指望 publish 自己创建目录 ——
+# 先删掉可能的同名文件，再显式建目录，把两条路径的行为统一掉。
 if ((Test-Path $auOut) -and -not (Get-Item $auOut -Force).PSIsContainer) {
     Write-Output "更新器目标路径是个文件而不是目录，先删掉重建"
     [System.IO.File]::Delete($auOut)
 }
 
+New-Item -ItemType Directory -Force -Path $auOut | Out-Null
+
 & dotnet publish $auProj -c Release -r win-x64 --self-contained true -p:Platform=x64 -o $auOut --nologo -v:m 2>&1 |
     Select-String -Pattern 'error' | Select-Object -First 5
 
-if (Test-Path (Join-Path $auOut 'OMniX - Auto Updater.exe')) {
-    Write-Output "自动更新器已就位"
-}
-else {
+$auCount = (Get-ChildItem $auOut -Recurse -File -ErrorAction SilentlyContinue).Count
+
+if (-not (Test-Path (Join-Path $auOut 'OMniX - Auto Updater.exe'))) {
     Write-Output "自动更新器没打出来 —— 包里的更新按钮会失效，先看上面的编译错误"
+    exit 1
 }
+
+# 二开：有 exe 也不等于打全了。publish 失败时目录里可能只剩 1 个文件，
+# 脚本会一路跑到底、打出一个「能启动但更新器是空壳」的包。
+# 自包含发布正常在 200 个文件以上，少于此数直接中止，别发出去。
+if ($auCount -lt 200) {
+    Write-Output ("更新器只有 " + $auCount + " 个文件，明显没打全，中止出包")
+    exit 1
+}
+
+Write-Output ("自动更新器已就位（" + $auCount + " 个文件）")
 
 # ---- 2.6 补齐更新器缺的 WinUI 运行时 ----
 # 二开：dotnet publish 对 UseWinUI 的项目并不会把 WinUI 运行时复制全 ——
