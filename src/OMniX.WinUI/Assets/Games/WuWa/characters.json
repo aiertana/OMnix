@@ -706,7 +706,9 @@
   },
   {
     "Keys": [
-      "Chisa"
+      "Chisa",
+      "朽叶千咲",
+      "朽叶千咲・蜜桃冰"
     ],
     "ReleaseDate": "2025-11-20T00:00:00",
     "Image": "Chisa.webp",
@@ -717,7 +719,14 @@
       "Ashinohara"
     ],
     "ModFilesName": "Chisa",
-    "InGameSkins": [],
+    "InGameSkins": [
+      {
+        "ModFilesName": "PeachParfait",
+        "Image": "Chisa_PeachParfait.webp",
+        "InternalName": "PeachParfait",
+        "DisplayName": "Peach Parfait"
+      }
+    ],
     "InternalName": "Chisa",
     "DisplayName": "千咲"
   },
@@ -751,7 +760,14 @@
       "Lahai"
     ],
     "ModFilesName": "Mornye",
-    "InGameSkins": [],
+    "InGameSkins": [
+      {
+        "ModFilesName": "PlushDream",
+        "Image": "Mornye_PlushDream.webp",
+        "InternalName": "PlushDream",
+        "DisplayName": "Plush Dream"
+      }
+    ],
     "InternalName": "Mornye",
     "DisplayName": "莫宁"
   },
@@ -768,7 +784,14 @@
       "Lahai"
     ],
     "ModFilesName": "Lynae",
-    "InGameSkins": [],
+    "InGameSkins": [
+      {
+        "ModFilesName": "Peppermint",
+        "Image": "Lynae_Peppermint.webp",
+        "InternalName": "Peppermint",
+        "DisplayName": "Peppermint"
+      }
+    ],
     "InternalName": "Lynae",
     "DisplayName": "琳奈"
   },
