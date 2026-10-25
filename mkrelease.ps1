@@ -123,21 +123,37 @@ if ((Test-Path $auOut) -and -not (Get-Item $auOut -Force).PSIsContainer) {
 
 New-Item -ItemType Directory -Force -Path $auOut | Out-Null
 
-& dotnet publish $auProj -c Release -r win-x64 --self-contained true -p:Platform=x64 -o $auOut --nologo -v:m 2>&1 |
-    Select-String -Pattern 'error' | Select-Object -First 5
+# 二开：这里千万别接 Select-Object -First N。
+# 它拿到 N 条输出就关闭管道，PowerShell 随之终止上游的 dotnet 进程，
+# publish 被打断、目录里只剩一两个文件。这个坑在 CI（pwsh 7）上必踩，
+# 本地（PS 5.1）偶尔才踩 —— 于是出现「本地能打出 229 个文件、CI 只剩 1 个」。
+# 改成把输出完整写进日志文件，只在失败时把尾部打出来。
+$tempDir = Join-Path $repo 'temp'
+New-Item -ItemType Directory -Force -Path $tempDir | Out-Null
+$publishLog = Join-Path $tempDir 'publish-updater.log'
+
+function Invoke-UpdaterPublish {
+    & dotnet publish $auProj -c Release -r win-x64 --self-contained true -p:Platform=x64 -o $auOut --nologo -v:m *>&1 |
+        Tee-Object -FilePath $publishLog | Out-Null
+}
+
+Invoke-UpdaterPublish
 
 $auCount = (Get-ChildItem $auOut -Recurse -File -ErrorAction SilentlyContinue).Count
 
-if (-not (Test-Path (Join-Path $auOut 'OMniX - Auto Updater.exe'))) {
-    Write-Output "自动更新器没打出来 —— 包里的更新按钮会失效，先看上面的编译错误"
-    exit 1
+# 二开：打不全就再试一次（CI 上偶发还原或写入失败，重试基本能过）
+if ($auCount -lt 200) {
+    Write-Output ("更新器只有 " + $auCount + " 个文件，重试一次")
+    Invoke-UpdaterPublish
+    $auCount = (Get-ChildItem $auOut -Recurse -File -ErrorAction SilentlyContinue).Count
 }
 
 # 二开：有 exe 也不等于打全了。publish 失败时目录里可能只剩 1 个文件，
 # 脚本会一路跑到底、打出一个「能启动但更新器是空壳」的包。
 # 自包含发布正常在 200 个文件以上，少于此数直接中止，别发出去。
-if ($auCount -lt 200) {
-    Write-Output ("更新器只有 " + $auCount + " 个文件，明显没打全，中止出包")
+if (-not (Test-Path (Join-Path $auOut 'OMniX - Auto Updater.exe')) -or $auCount -lt 200) {
+    Write-Output ("自动更新器没打全（" + $auCount + " 个文件），中止出包。publish 输出尾部：")
+    Get-Content $publishLog -Tail 25 -ErrorAction SilentlyContinue | ForEach-Object { Write-Output ("  " + $_) }
     exit 1
 }
 
