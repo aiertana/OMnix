@@ -324,6 +324,29 @@ public static class LegacyCharacterOrganizer
             if (Directory.Exists(folderPath))
                 continue;
 
+            // 二开：磁盘上可能已经有同一个角色的目录，只是写法不同
+            // （多空格、全角半角、·/・、大小写）。以前会当成「这个角色没有目录」
+            // 再建一个空的，于是同一个角色在磁盘上出现两个目录，Mod 还留在旧的那个里。
+            // 这里认出这种目录就直接改成规范名。
+            if (string.Equals(categoryName, "character", StringComparison.OrdinalIgnoreCase))
+            {
+                var sameNameFolder = FindSameNameFolder(modsPath, character, categoryFolderNames);
+
+                if (sameNameFolder is not null)
+                {
+                    try
+                    {
+                        Directory.Move(sameNameFolder, folderPath);
+                        created++;
+                        continue;
+                    }
+                    catch
+                    {
+                        // 改不动就继续按老逻辑处理（搬旧位置或建空目录）
+                    }
+                }
+            }
+
             // 老位置里有真实 Mod 就搬过来，别建一个空的把内容挡住
             var handled = false;
 
@@ -391,6 +414,44 @@ public static class LegacyCharacterOrganizer
         }
 
         return created;
+    }
+
+    /// <summary>
+    ///     二开：在 Mods 根目录下找「其实就是这个角色」的目录，
+    ///     只是名字写法不同（空格、标点、全角半角、大小写）。
+    /// </summary>
+    private static string? FindSameNameFolder(string modsPath, IModdableObject moddableObject,
+        ISet<string> categoryFolderNames)
+    {
+        var targets = new[]
+        {
+            ModFolderHelpers.NormalizeName(moddableObject.DisplayName),
+            ModFolderHelpers.NormalizeName(moddableObject.InternalName.ToString())
+        }.Where(target => !string.IsNullOrEmpty(target)).Distinct().ToArray();
+
+        if (targets.Length == 0)
+            return null;
+
+        try
+        {
+            foreach (var directory in Directory.EnumerateDirectories(modsPath))
+            {
+                var name = Path.GetFileName(directory);
+
+                // 分类目录（角色 / 武器 / 大世界…）不能当成角色目录
+                if (categoryFolderNames.Contains(name))
+                    continue;
+
+                if (targets.Contains(ModFolderHelpers.NormalizeName(name)))
+                    return directory;
+            }
+        }
+        catch
+        {
+            // 目录读不到就当没找到
+        }
+
+        return null;
     }
 
     /// <summary>

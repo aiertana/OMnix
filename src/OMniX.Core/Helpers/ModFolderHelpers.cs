@@ -51,6 +51,28 @@ public static class ModFolderHelpers
     }
 
     /// <summary>
+    ///     二开：把角色名归一化成可比较的形式，用来判断「这两个名字是不是同一个角色」。
+    ///     「陆·赫斯」「陆・赫斯」「陆 赫斯」「LU HESI」这类写法差异不该算成两个角色。
+    ///     做法：全角转半角（NFKC）+ 只保留字母数字 + 转小写。
+    /// </summary>
+    public static string NormalizeName(string? name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return string.Empty;
+
+        var normalized = name.Normalize(NormalizationForm.FormKC);
+        var builder = new StringBuilder(normalized.Length);
+
+        foreach (var c in normalized)
+        {
+            if (char.IsLetterOrDigit(c))
+                builder.Append(char.ToLowerInvariant(c));
+        }
+
+        return builder.ToString();
+    }
+
+    /// <summary>
     ///     二开：取分类对应的目录名（中文）。没配映射的还用原来的内部名。
     /// </summary>
     public static string GetCategoryFolderName(string categoryInternalName)

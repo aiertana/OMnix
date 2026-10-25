@@ -436,11 +436,21 @@ public class GameService : IGameService
         if (folderName.IsNullOrEmpty())
             return null;
 
+        // 二开：以前只比 InternalName 和 DisplayName 的精确写法，于是「爱弥斯」这类
+        // 手写目录名会再建一个同名角色 —— 内置条目（英文内部名 + 中文显示名）和它
+        // 在角色墙上并排出现两份。现在按归一化名字比：大小写、空格、标点、全角半角
+        // 都不算差别，认识的名字直接复用，不再新建。
+        var normalizedFolderName = ModFolderHelpers.NormalizeName(folderName);
+
         var existing = GetAllModdableObjects(GetOnly.Both)
             .OfType<ICharacter>()
             .FirstOrDefault(x =>
                 x.InternalName.Id.Equals(folderName, StringComparison.OrdinalIgnoreCase) ||
-                x.DisplayName.Equals(folderName, StringComparison.Ordinal));
+                x.DisplayName.Equals(folderName, StringComparison.Ordinal) ||
+                (!normalizedFolderName.IsNullOrEmpty() &&
+                 (ModFolderHelpers.NormalizeName(x.DisplayName) == normalizedFolderName ||
+                  ModFolderHelpers.NormalizeName(x.InternalName.Id) == normalizedFolderName ||
+                  x.Keys.Any(key => ModFolderHelpers.NormalizeName(key) == normalizedFolderName))));
 
         if (existing is not null)
             return existing;
@@ -1064,7 +1074,16 @@ public class GameService : IGameService
                 }
             }
 
-            var existingCharacter = allCharacters.FirstOrDefault(x => x.InternalNameEquals(internalName));
+            // 二开：自定义角色优先于内置条目。以前只按 InternalName 判重，
+            // 而内置条目是英文内部名、显示名才是中文，用户手加的「爱弥斯」
+            // 内部名就是中文，两边对不上 → 角色墙上出现两份同名角色。
+            // 这里再按归一化显示名比一次。
+            var normalizedCustomDisplayName = ModFolderHelpers.NormalizeName(jsonCustomCharacter.DisplayName);
+
+            var existingCharacter = allCharacters.FirstOrDefault(x => x.InternalNameEquals(internalName))
+                                    ?? allCharacters.FirstOrDefault(x =>
+                                        !normalizedCustomDisplayName.IsNullOrEmpty() &&
+                                        ModFolderHelpers.NormalizeName(x.DisplayName) == normalizedCustomDisplayName);
 
             // For characters category, custom characters override existing characters
             if (existingCharacter is not null)

@@ -1100,6 +1100,67 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     /// <summary>
     ///     二开：弹窗里的文件夹链接。点一下用资源管理器打开；路径不存在就置灰。
     /// </summary>
+    /// <summary>
+    ///     二开：同名角色去重。判断依据是归一化后的显示名（大小写、空格、标点、全角半角都不算差别）。
+    ///     撞名时保留分数最高的那条：用户置顶的 &gt; 有自定义头像的 &gt; 自定义角色的 &gt; 内置条目。
+    /// </summary>
+    private static List<IModdableObject> DeduplicateCharactersByName(IEnumerable<IModdableObject> characters,
+        IReadOnlyCollection<string> pinnedCharacters)
+    {
+        var order = new List<string>();
+        var byName = new Dictionary<string, IModdableObject>(StringComparer.Ordinal);
+        var anonymous = 0;
+
+        foreach (var character in characters)
+        {
+            var key = ModFolderHelpers.NormalizeName(character.DisplayName);
+
+            if (string.IsNullOrEmpty(key))
+                key = ModFolderHelpers.NormalizeName(character.InternalName.Id);
+
+            if (string.IsNullOrEmpty(key))
+            {
+                // 名字里全是被过滤掉的符号，没法和别人比，原样留着
+                order.Add("__anon_" + anonymous++);
+                byName[order[^1]] = character;
+                continue;
+            }
+
+            if (!byName.TryGetValue(key, out var kept))
+            {
+                byName[key] = character;
+                order.Add(key);
+                continue;
+            }
+
+            if (Rank(character) > Rank(kept))
+                byName[key] = character;
+        }
+
+        return order.Select(key => byName[key]).ToList();
+
+        int Rank(IModdableObject candidate)
+        {
+            var score = candidate.IsCustomModObject ? 2 : 0;
+            var image = candidate.ImageUri?.OriginalString;
+
+            if (!string.IsNullOrEmpty(image))
+            {
+                // 用户自己设的头像存在 CustomImages 下；识别不到时建的占位角色用的是 OMniX 吉祥物
+                if (image.Contains("CustomImages", StringComparison.OrdinalIgnoreCase))
+                    score += 8;
+                else if (!image.Contains("OMniX.png", StringComparison.OrdinalIgnoreCase))
+                    score += 4;
+            }
+
+            if (pinnedCharacters.Any(id => string.Equals(id, candidate.InternalName.Id,
+                    StringComparison.OrdinalIgnoreCase)))
+                score += 16;
+
+            return score;
+        }
+    }
+
     private static HyperlinkButton CreateFolderLink(string text, string path, string? disabledHint = null)
     {
         var exists = Directory.Exists(path);
@@ -1414,6 +1475,15 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         characters = new List<IModdableObject>(_characters);
 
         var pinnedCharactersOptions = await ReadCharacterSettings();
+
+        // 二开：同名角色只留一张卡片。内置条目是「英文内部名 + 中文显示名」，
+        // 用户手加的角色和识别不到时建的占位角色内部名直接是中文，
+        // 以前只按 InternalName 去重根本对不上，于是「爱弥斯」这类角色
+        // 会同时出现内置条目和自定义条目两份。
+        characters = DeduplicateCharactersByName(characters, pinnedCharactersOptions.PinedCharacters);
+
+        // 搜索/筛选也读 _characters，去重结果要写回去，否则搜出来还是两份
+        _characters = characters;
 
         var backendCharacters = new List<CharacterGridItemModel>();
         foreach (var pinedCharacterId in pinnedCharactersOptions.PinedCharacters)
