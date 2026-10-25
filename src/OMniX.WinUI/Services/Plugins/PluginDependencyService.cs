@@ -79,14 +79,30 @@ public sealed class PluginDependencyService
 
     private const string XxmiLatestApi = "https://api.github.com/repos/SpectrumQT/XXMI-Launcher/releases/latest";
 
-    /// <summary>插件都放这儿：删掉整个目录也不影响管理器和游戏</summary>
-    public static string PluginsRoot { get; } =
+    /// <summary>
+    ///     插件的默认位置。用户没自定义时用这里 ——
+    ///     二开：原来 PluginsRoot 是写死的，插件全在 C 盘，C 盘紧张的人挪不走。
+    /// </summary>
+    public static string DefaultPluginsRoot { get; } =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OMniX", "Plugins");
+
+    private static string _pluginsRoot = DefaultPluginsRoot;
+
+    /// <summary>插件都放这儿：删掉整个目录也不影响管理器和游戏</summary>
+    public static string PluginsRoot
+    {
+        get => _pluginsRoot;
+        private set => _pluginsRoot = string.IsNullOrWhiteSpace(value) ? DefaultPluginsRoot : value;
+    }
+
+    /// <summary>
+    ///     二开：设置页保存、启动时读取都走这里。传空 = 恢复默认位置。
+    ///     必须在任何下载/扫描动作之前调用，否则这一轮还是用旧目录。
+    /// </summary>
+    public static void SetPluginsRoot(string? path) => PluginsRoot = path ?? string.Empty;
 
     private static readonly string[] XxmiRootCandidates =
     {
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OMniX", "Plugins",
-            "XXMI Launcher"),
         @"D:\mod\XXMI Launcher",
         @"D:\XXMI Launcher",
         @"C:\XXMI Launcher",
@@ -128,6 +144,14 @@ public sealed class PluginDependencyService
     /// </summary>
     private string FindXxmiLauncher()
     {
+        // 二开：先看用户配置的插件目录 —— 我们自己下载的 XXMI 就在那儿，
+        // 它不在下面那份「常见安装位置」列表里（因为那个列表是编译期固定的，
+        // 而插件目录现在运行时可改）。
+        var configuredExe = Path.Combine(PluginsRoot, "XXMI Launcher", "Resources", "Bin", "XXMI Launcher.exe");
+
+        if (File.Exists(configuredExe))
+            return configuredExe;
+
         foreach (var root in XxmiRootCandidates)
         {
             var exe = Path.Combine(root, "Resources", "Bin", "XXMI Launcher.exe");

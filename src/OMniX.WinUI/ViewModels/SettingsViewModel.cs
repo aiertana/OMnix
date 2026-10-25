@@ -25,6 +25,7 @@ using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Services.AppManagement.Updating;
 using OMniX.WinUI.Services.ModHandling;
 using OMniX.WinUI.Services.Notifications;
+using OMniX.WinUI.Services.Plugins;
 using OMniX.WinUI.Validators.PreConfigured;
 using OMniX.WinUI.ViewModels.SettingsViewModels;
 using OMniX.WinUI.ViewModels.SubVms;
@@ -52,6 +53,9 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     private readonly LifeCycleService _lifeCycleService;
     private readonly INavigationService _navigationService;
     private readonly ModArchiveRepository _modArchiveRepository;
+
+    /// <summary>二开：搬插件目录时要顺手更新它记住的部署包路径</summary>
+    private readonly Dlss5PluginService _dlss5;
 
 
     private readonly NotificationManager _notificationManager;
@@ -122,6 +126,9 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     public PathPicker PathToGIMIFolderPicker { get; }
     public PathPicker PathToModsFolderPicker { get; }
 
+    /// <summary>二开：插件（XXMI、DLSS5 部署包、Mod 修复器）放哪个文件夹</summary>
+    public PathPicker PathToPluginsFolderPicker { get; }
+
     [ObservableProperty] private bool _legacyCharacterDetails;
 
     private readonly ThemeStyleService _themeStyleService;
@@ -175,7 +182,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         SelectedGameService selectedGameService, ModUpdateAvailableChecker modUpdateAvailableChecker,
         LifeCycleService lifeCycleService, INavigationService navigationService,
         ModArchiveRepository modArchiveRepository, ThemeStyleService themeStyleService,
-        UiSoundService uiSoundService, PaletteService paletteService)
+        UiSoundService uiSoundService, PaletteService paletteService, Dlss5PluginService dlss5)
     {
         _uiSoundService = uiSoundService;
         _themeStyleService = themeStyleService;
@@ -199,6 +206,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         _lifeCycleService = lifeCycleService;
         _navigationService = navigationService;
         _modArchiveRepository = modArchiveRepository;
+        _dlss5 = dlss5;
         GenshinProcessManager = genshinProcessManager;
         ThreeDMigtoProcessManager = threeDMigtoProcessManager;
         _logger = logger.ForContext<SettingsViewModel>();
@@ -221,11 +229,22 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         _modManagerOptions = localSettingsService.ReadSetting<ModManagerOptions>(ModManagerOptions.Section);
         PathToGIMIFolderPicker = new PathPicker();
         PathToModsFolderPicker = new PathPicker(ModsFolderValidator.Validators);
+        PathToPluginsFolderPicker = new PathPicker();
 
         CharacterAsSkinsCheckbox = _modManagerOptions?.CharacterSkinsAsCharacters ?? false;
 
         PathToGIMIFolderPicker.Path = _modManagerOptions?.GimiRootFolderPath;
         PathToModsFolderPicker.Path = _modManagerOptions?.ModsFolderPath;
+
+        // 二开：插件目录。没配置过就把默认位置显示出来（%LOCALAPPDATA%\OMniX\Plugins），
+        // 让用户看得见现在到底在用哪儿，想挪到别的盘直接改这里。
+        PathToPluginsFolderPicker.Path = string.IsNullOrWhiteSpace(_modManagerOptions?.PluginsFolderPath)
+            ? PluginDependencyService.DefaultPluginsRoot
+            : _modManagerOptions!.PluginsFolderPath;
+
+        // 顺手同步给运行时 —— 这一页看完用户可能马上去插件页下载，
+        // 那会儿再读就晚了。
+        PluginDependencyService.SetPluginsRoot(_modManagerOptions?.PluginsFolderPath);
 
 
         PathToGIMIFolderPicker.IsValidChanged += (sender, args) => SaveSettingsCommand.NotifyCanExecuteChanged();
@@ -240,6 +259,13 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         };
 
         PathToModsFolderPicker.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(PathPicker.Path))
+                SaveSettingsCommand.NotifyCanExecuteChanged();
+        };
+
+        // 二开：改插件目录同样要重算「能不能保存」，不然按钮不会从灰变亮。
+        PathToPluginsFolderPicker.PropertyChanged += (sender, args) =>
         {
             if (args.PropertyName == nameof(PathPicker.Path))
                 SaveSettingsCommand.NotifyCanExecuteChanged();
@@ -412,11 +438,27 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     }
 
 
+    /// <summary>当前生效的插件目录：配置过就用配置的，没有就是默认位置。</summary>
+    private string EffectivePluginsRoot =>
+        string.IsNullOrWhiteSpace(_modManagerOptions?.PluginsFolderPath)
+            ? PluginDependencyService.DefaultPluginsRoot
+            : _modManagerOptions!.PluginsFolderPath!;
+
     private bool ValidFolderSettings()
     {
+        // 二开：插件目录也算「有改动」。原来这里只看 GIMI / Mods 两个，
+        // 只改插件目录时后面那组判断全是 false，按钮就一直灰着 ——
+        // 界面上看得出来路径已经改了，却怎么点都点不动。
+        var pluginsPath = string.IsNullOrWhiteSpace(PathToPluginsFolderPicker.Path)
+            ? PluginDependencyService.DefaultPluginsRoot
+            : PathToPluginsFolderPicker.Path!;
+
+        var pluginsChanged = !string.Equals(pluginsPath, EffectivePluginsRoot, StringComparison.OrdinalIgnoreCase);
+
         return PathToGIMIFolderPicker.IsValid && PathToModsFolderPicker.IsValid &&
                PathToGIMIFolderPicker.Path != PathToModsFolderPicker.Path &&
-               (PathToGIMIFolderPicker.Path != _modManagerOptions?.GimiRootFolderPath ||
+               (pluginsChanged ||
+                PathToGIMIFolderPicker.Path != _modManagerOptions?.GimiRootFolderPath ||
                 PathToModsFolderPicker.Path != _modManagerOptions?.ModsFolderPath);
     }
 
@@ -440,8 +482,31 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             var modManagerOptions = await _localSettingsService.ReadSettingAsync<ModManagerOptions>(
                 ModManagerOptions.Section) ?? new ModManagerOptions();
 
+            // 二开：插件目录。存成默认位置的话就记 null ——
+            // 这样以后默认位置万一变了（比如换到别的盘），用户没主动选过就跟着走。
+            var newPluginsPath =
+                string.Equals(PathToPluginsFolderPicker.Path, PluginDependencyService.DefaultPluginsRoot,
+                    StringComparison.OrdinalIgnoreCase)
+                    ? null
+                    : PathToPluginsFolderPicker.Path;
+
+            var targetPluginsRoot = string.IsNullOrWhiteSpace(newPluginsPath)
+                ? PluginDependencyService.DefaultPluginsRoot
+                : newPluginsPath!;
+
+            // 二开：换目录时先把旧的搬过去，再存配置。
+            // 先搬后存 —— 复制失败（比如目标盘满了、没权限）就当没改过，
+            // 不会出现「配置指到空目录、插件还留在旧地方」那种半截状态。
+            if (!await MigratePluginsAsync(EffectivePluginsRoot, targetPluginsRoot))
+            {
+                _notificationManager.ShowNotification("插件没搬成功，路径没改",
+                    "可以先把旧目录手动复制过去，或者换个目标文件夹再试", TimeSpan.FromSeconds(6));
+                return;
+            }
+
             modManagerOptions.GimiRootFolderPath = PathToGIMIFolderPicker.Path;
             modManagerOptions.ModsFolderPath = PathToModsFolderPicker.Path;
+            modManagerOptions.PluginsFolderPath = newPluginsPath;
 
             await _localSettingsService.SaveSettingAsync(ModManagerOptions.Section,
                 modManagerOptions);
@@ -451,6 +516,96 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             await RestartAppAsync();
         }
+    }
+
+    /// <summary>
+    ///     二开：插件目录从旧位置搬到新位置。
+    ///     返回 false 表示这次保存不该继续（复制失败）。
+    ///     返回 true 的其他情况都继续保存：目录没变、旧目录本来就是空的、用户说不用搬。
+    /// </summary>
+    private async Task<bool> MigratePluginsAsync(string oldRoot, string newRoot)
+    {
+        if (string.IsNullOrWhiteSpace(oldRoot) || string.IsNullOrWhiteSpace(newRoot))
+            return true;
+
+        if (string.Equals(oldRoot, newRoot, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (!Directory.Exists(oldRoot) || Directory.GetFileSystemEntries(oldRoot).Length == 0)
+            return true;
+
+        // 新目录如果就在旧目录里面，递归复制等于自己拷自己，跳过
+        var oldFull = Path.GetFullPath(oldRoot).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+        var newFull = Path.GetFullPath(newRoot).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+
+        if (newFull.StartsWith(oldFull, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        double sizeMb = 0;
+
+        try
+        {
+            sizeMb = new DirectoryInfo(oldRoot)
+                .EnumerateFiles("*", SearchOption.AllDirectories)
+                .Sum(f => f.Length) / 1024d / 1024d;
+        }
+        catch (Exception)
+        {
+            // 统计不出来就按未知大小提示，不影响搬运
+        }
+
+        var dialog = new ContentDialog
+        {
+            XamlRoot = App.MainWindow.Content.XamlRoot,
+            Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+            Title = "把已有插件搬过去？",
+            Content = $"插件目录要从\n{oldRoot}\n换成\n{newRoot}\n\n" +
+                      $"里面现在大约 {sizeMb:0.#} MB（XXMI、DLSS5 部署包、Mod 修复器）。\n" +
+                      "要复制一份过去吗？旧目录里的东西我不删 —— 新位置用着没问题你自己删掉就行。",
+            PrimaryButtonText = "搬过去",
+            CloseButtonText = "不用，留旧的",
+            DefaultButton = ContentDialogButton.Primary
+        };
+
+        if (await dialog.ShowAsync() != ContentDialogResult.Primary)
+            return true;
+
+        _notificationManager.ShowNotification("正在搬插件…", "文件多的话要等一会儿", TimeSpan.FromSeconds(3));
+
+        try
+        {
+            await Task.Run(() => CopyDirectory(oldRoot, newRoot));
+
+            // DLSS5 部署包路径单独记了一份配置，搬完得跟着改 ——
+            // 不然它还指着旧位置，旧目录一删就失效。
+            var kit = _dlss5.ResolveKitDirectory();
+
+            if (!string.IsNullOrWhiteSpace(kit) && kit.StartsWith(oldRoot, StringComparison.OrdinalIgnoreCase))
+            {
+                var newKit = Path.Combine(newRoot, Path.GetRelativePath(oldRoot, kit));
+
+                if (Directory.Exists(newKit))
+                    await _dlss5.SavePathsAsync(_dlss5.ResolveGameExePath(), newKit);
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "搬插件目录失败");
+            return false;
+        }
+    }
+
+    private static void CopyDirectory(string source, string destination)
+    {
+        Directory.CreateDirectory(destination);
+
+        foreach (var dir in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
+            Directory.CreateDirectory(Path.Combine(destination, Path.GetRelativePath(source, dir)));
+
+        foreach (var file in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
+            File.Copy(file, Path.Combine(destination, Path.GetRelativePath(source, file)), true);
     }
 
     [RelayCommand]
@@ -467,6 +622,13 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     private async Task BrowseModsFolderAsync()
     {
         await PathToModsFolderPicker.BrowseFolderPathAsync(App.MainWindow);
+    }
+
+    /// <summary>二开：选插件文件夹（选完还要点「保存路径」才生效，和上面两个一样要重启）</summary>
+    [RelayCommand]
+    private async Task BrowsePluginsFolderAsync()
+    {
+        await PathToPluginsFolderPicker.BrowseFolderPathAsync(App.MainWindow);
     }
 
     [RelayCommand]

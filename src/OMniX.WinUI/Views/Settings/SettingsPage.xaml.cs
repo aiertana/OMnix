@@ -23,6 +23,10 @@ public sealed partial class SettingsPage : Page
     private void ModsFolder_OnPathChangedEvent(object? sender, FolderSelector.StringEventArgs e)
         => ViewModel.PathToModsFolderPicker.Validate(e.Value);
 
+    // 二开：插件目录没有校验规则，直接赋值即可 —— 填错也不该拦住保存按钮
+    private void PluginsFolder_OnPathChangedEvent(object? sender, FolderSelector.StringEventArgs e)
+        => ViewModel.PathToPluginsFolderPicker.Path = e.Value;
+
     private async void LanguageSelectorComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (e.AddedItems.Count == 0) return;

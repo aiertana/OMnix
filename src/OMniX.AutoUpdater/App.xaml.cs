@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -75,8 +76,21 @@ public partial class App : Application
             // 更新器就跳过 GitHub 检查和下载，直接拿这个包装。
             var launchArgs = arguments.Skip(1).ToArray();
 
+            // 二开：外置更新入口。以前当前版本号只能由主程序传进来，
+            // 主程序一旦打不开（崩了、缺运行时、配置坏了），就没人告诉更新器
+            // 现在装的是哪一版 —— 版本号是空的，更新器只能退到下整包，
+            // 而且用户根本找不到地方点更新，只能自己去 GitHub 翻。
+            // 现在补上：没传版本就自己找上一级目录里的 OMniX.exe 读，
+            // 于是直接双击更新器（或者包顶层的「手动更新」）也能走增量补丁。
+            var currentVersion = launchArgs.FirstOrDefault();
+
+            if (string.IsNullOrWhiteSpace(currentVersion))
+            {
+                currentVersion = DetectInstalledVersion();
+            }
+
             MainWindow.Content = new MainPage(
-                launchArgs.FirstOrDefault() ?? string.Empty,
+                currentVersion ?? string.Empty,
                 launchArgs.Skip(1).FirstOrDefault() ?? string.Empty);
             MainWindow.BringToFront();
         }
@@ -86,6 +100,44 @@ public partial class App : Application
             Log.Error(ex, "创建更新器界面时出错");
             Log.CloseAndFlush();
             throw;
+        }
+    }
+
+    /// <summary>
+    ///     二开：没拿到版本号时自己找一个。更新器在
+    ///     &lt;安装目录&gt;\OMniX\OMniX - Auto Updater\ 里，主程序就在上一级，
+    ///     读它的文件版本即可。这样不再依赖主程序传参 ——
+    ///     主程序打不开也照样能更新。
+    /// </summary>
+    private static string DetectInstalledVersion()
+    {
+        try
+        {
+            var baseDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            if (string.IsNullOrEmpty(baseDir))
+            {
+                return string.Empty;
+            }
+
+            var exe = Path.GetFullPath(Path.Combine(baseDir, "..", "OMniX.exe"));
+
+            if (!File.Exists(exe))
+            {
+                Log.Warning("探测版本失败：没找到 {Path}", exe);
+                return string.Empty;
+            }
+
+            var version = FileVersionInfo.GetVersionInfo(exe).FileVersion;
+
+            Log.Information("自动探测到当前版本 {Version}（读自 {Path}）", version, exe);
+
+            return version ?? string.Empty;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "探测当前版本时出错");
+            return string.Empty;
         }
     }
 

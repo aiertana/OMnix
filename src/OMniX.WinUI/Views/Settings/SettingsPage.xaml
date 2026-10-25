@@ -368,6 +368,28 @@
                     </StackPanel>
                 </Border>
 
+                <!--  二开：插件保存位置。原来写死在 C 盘，C 盘紧张的用户挪不走  -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <StackPanel Spacing="8">
+                        <controls:FolderSelector
+                            BrowseCommand="{x:Bind ViewModel.BrowsePluginsFolderCommand}"
+                            PathChangedEvent="PluginsFolder_OnPathChangedEvent"
+                            SelectedFolderValue="{x:Bind ViewModel.PathToPluginsFolderPicker.Path, Mode=TwoWay}"
+                            Title="插件文件夹"
+                            ValidationErrorText="{x:Bind ViewModel.PathToPluginsFolderPicker.ValidationMessages, Mode=OneWay}" />
+
+                        <TextBlock
+                            Style="{StaticResource CardDescStyle}"
+                            Text="XXMI、DLSS5 部署包、Mod 修复器下载后存放的位置。默认在 C 盘，空间紧张可以改到别的盘，改完点下面的「保存路径」。"
+                            TextWrapping="WrapWholeWords" />
+
+                        <Button
+                            Command="{x:Bind ViewModel.SaveSettingsCommand}"
+                            Content="保存路径"
+                            ToolTipService.ToolTip="保存后会重新启动应用" />
+                    </StackPanel>
+                </Border>
+
                 <Border Style="{StaticResource SettingCardStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>

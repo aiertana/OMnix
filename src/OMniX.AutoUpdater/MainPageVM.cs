@@ -32,7 +32,9 @@ public partial class MainPageVM : ObservableRecipient
 
     [ObservableProperty] private bool _inStartupView = true;
 
-    [ObservableProperty] private bool _updateProcessStarted = false;
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(PickLocalPackageCommand))]
+    private bool _updateProcessStarted = false;
     [ObservableProperty] private string _latestVersion = "-----";
     [ObservableProperty] private Uri _defaultBrowserUri = new("https://github.com/aiertana/OMnix/releases");
 
@@ -48,17 +50,72 @@ public partial class MainPageVM : ObservableRecipient
     [ObservableProperty] private bool _stopped;
     [ObservableProperty] private string? _stopReason;
 
-    /// <summary>二开：本地导入的更新包路径。空着 = 走 GitHub 在线更新。</summary>
-    private readonly string _localZipPath;
+    /// <summary>
+    ///     二开：本地导入的更新包路径。空着 = 走 GitHub 在线更新。
+    ///     原来是 readonly，只能由主程序通过命令行传进来 —— 可下载慢恰恰是最常见的情况，
+    ///     那会儿用户想装的正是这个更新器本身，根本进不了主程序设置页。改成可在更新器里选。
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsLocalUpdate))]
+    [NotifyPropertyChangedFor(nameof(LocalPackageName))]
+    [NotifyPropertyChangedFor(nameof(LocalPackageHint))]
+    private string _localZipPath = string.Empty;
 
     /// <summary>二开：这次是拿本地 zip 装，不用联网。</summary>
     public bool IsLocalUpdate => !string.IsNullOrWhiteSpace(_localZipPath) && File.Exists(_localZipPath);
+
+    /// <summary>二开：界面上显示选中的包名，没选就是空</summary>
+    public string LocalPackageName => IsLocalUpdate ? Path.GetFileName(_localZipPath) : string.Empty;
+
+    /// <summary>
+    ///     二开：本地模式的提示语。
+    ///     原来想在 XAML 里用 &lt;Run Text="{x:Bind …}" /&gt; 拼，但 Run.Text 不支持 x:Bind，
+    ///     编译能过、运行时 LoadComponent 直接抛 XamlParseException，整个更新器白屏闪退。
+    ///     拼好整句再绑一个 TextBlock 就不会碰到这个限制。
+    /// </summary>
+    public string LocalPackageHint =>
+        IsLocalUpdate ? $"本地安装模式，不联网下载：{Path.GetFileName(_localZipPath)}" : string.Empty;
 
     public MainPageVM(string installedOmniXVersion, string localZipPath = "")
     {
         InstalledVersion = Version.TryParse(installedOmniXVersion, out var version) ? version : new Version(0, 0, 0, 0);
         _localZipPath = localZipPath;
     }
+
+    /// <summary>
+    ///     二开：让用户自己挑一个已经下载好的更新包（zip）。
+    ///     下载慢、或者根本连不上 GitHub 时，这是唯一的离线安装办法。
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanPickLocalPackage))]
+    private async Task PickLocalPackageAsync()
+    {
+        try
+        {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+
+            // WinUI 3 的 FileOpenPicker 必须先绑窗口句柄，否则一调用就抛
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Downloads;
+            picker.FileTypeFilter.Add(".zip");
+
+            var file = await picker.PickSingleFileAsync();
+
+            if (file is null)
+                return;
+
+            LocalZipPath = file.Path;
+            Log($"已选择本地更新包：{file.Path}");
+        }
+        catch (Exception ex)
+        {
+            Log($"选择本地更新包失败：{ex.Message}");
+        }
+    }
+
+    /// <summary>二开：已经开始装了就别让人换包，不然装的是哪个都说不清</summary>
+    private bool CanPickLocalPackage() => !UpdateProcessStarted;
 
     /// <summary>
     ///     从文件名认版本：`OMniX1.0.3.zip` 和 `OMniX1.0.3-patch-1.0.2.zip` 都认得出来。

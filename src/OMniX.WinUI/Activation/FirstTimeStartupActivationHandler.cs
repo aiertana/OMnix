@@ -8,6 +8,7 @@ using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.Models.Options;
 using OMniX.WinUI.Models.Settings;
 using OMniX.WinUI.Services.AppManagement;
+using OMniX.WinUI.Services.Plugins;
 using OMniX.WinUI.ViewModels;
 using Microsoft.UI.Xaml;
 
@@ -59,6 +60,10 @@ public class FirstTimeStartupActivationHandler : ActivationHandler<LaunchActivat
     {
         var modManagerOptions =
             await _localSettingsService.ReadSettingAsync<ModManagerOptions>(ModManagerOptions.Section);
+
+        // 二开：插件目录要在启动时就应用，不能等用户进设置页才生效 ——
+        // 否则用户把插件挪到 D 盘、重启后直接去插件页下载，又装回 C 盘了。
+        PluginDependencyService.SetPluginsRoot(modManagerOptions?.PluginsFolderPath);
 
         var gameServiceOptions = new InitializationOptions
         {

@@ -46,6 +46,14 @@
                 Text="更新期间 OMniX 会退出，装完自己重新打开。这期间别关机。"
                 TextWrapping="WrapWholeWords" />
 
+            <!--  二开：GitHub 拉不动的时候，自己去 Release 页面把 zip 下好，在这儿选上就能装  -->
+            <Button
+                Margin="0,16,0,0"
+                HorizontalAlignment="Center"
+                Command="{x:Bind ViewModel.PickLocalPackageCommand}"
+                Content="选择本地更新包…"
+                ToolTipService.ToolTip="下载太慢或连不上 GitHub 时用：自己去 Release 页面下好 zip，选上它直接装" />
+
             <!--  二开：本地导入模式 —— 不走网络，直接用用户选好的 zip  -->
             <Border
                 Margin="0,12,0,0"
@@ -53,9 +61,11 @@
                 Background="{ThemeResource ControlAltFillColorSecondaryBrush}"
                 CornerRadius="6"
                 Visibility="{x:Bind ViewModel.IsLocalUpdate, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                <!--  注意：这里不能拆成 <Run Text="{x:Bind …}"/> —— Run.Text 不支持 x:Bind，
+                      编译能过，运行时 LoadComponent 直接抛 XamlParseException，更新器白屏闪退  -->
                 <TextBlock
                     IsTextSelectionEnabled="True"
-                    Text="本地安装模式：使用你选择的更新包，不联网下载。"
+                    Text="{x:Bind ViewModel.LocalPackageHint, Mode=OneWay}"
                     TextWrapping="WrapWholeWords" />
             </Border>
 

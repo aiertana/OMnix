@@ -65,7 +65,11 @@ New-Item -ItemType Directory -Path $outApp -Force | Out-Null
 # 结果就是静默漏掉「启动OMniX.exe」和「使用说明.txt」，包双击不起来。
 # 包顶层：启动器 + 文档。明确列出来，别用 Get-ChildItem 整目录复制 ——
 # 根目录还有 version.json、几个 ps1 脚本，那些是开发用的，不该进包。
-foreach ($name in @('启动OMniX.exe', 'README.md', '使用说明.txt', '使用说明书.md', 'DISCLAIMER.md', 'LICENSE')) {
+# 二开：外置更新入口。主程序万一打不开（崩了、缺运行时、配置坏了），
+# 软件里的「检查更新」就点不到了，用户只能自己去 GitHub 翻整包 ——
+# 其实更新器是独立进程，完全可以直接跑。这个 bat 放在包顶层，
+# 双击就能更新，不经过主程序。
+foreach ($name in @('启动OMniX.exe', '手动更新.bat', 'README.md', '使用说明.txt', '使用说明书.md', 'DISCLAIMER.md', 'LICENSE')) {
     $src = Join-Path $ref $name
     if (Test-Path $src) {
         Copy-Item $src -Destination $outRoot -Force
@@ -100,6 +104,16 @@ Write-Output ""
 Write-Output "=== 2.5 打包自动更新器 ==="
 $auProj = Join-Path $repo 'src\OMniX.AutoUpdater\OMniX.AutoUpdater.csproj'
 $auOut  = Join-Path $outApp 'OMniX - Auto Updater'
+
+# 二开：这个路径必须是目录。踩过一次——它变成了一个无扩展名的文件，
+# 于是 dotnet publish 报 MSB3191「无法创建目录…同名文件或目录已存在」，
+# 而且它不中断脚本：后面照常补齐运行时、照常压缩，
+# 结果打出来的包里更新器只有 1 个文件、整包小了 60 多 MB，光看「已打包」根本看不出来。
+# 打包前先确认它是目录，不是就删掉重建。
+if ((Test-Path $auOut) -and -not (Get-Item $auOut -Force).PSIsContainer) {
+    Write-Output "更新器目标路径是个文件而不是目录，先删掉重建"
+    [System.IO.File]::Delete($auOut)
+}
 
 & dotnet publish $auProj -c Release -r win-x64 --self-contained true -p:Platform=x64 -o $auOut --nologo -v:m 2>&1 |
     Select-String -Pattern 'error' | Select-Object -First 5
