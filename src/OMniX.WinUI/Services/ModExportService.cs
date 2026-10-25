@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.IO.Compression;
+using OMniX.Core.Contracts.Services;
 
 namespace OMniX.WinUI.Services;
 
@@ -47,9 +48,9 @@ public sealed class ModExportResult
         : $"{TotalBytes / 1024.0 / 1024:F1} MB";
 
     public string SummaryText => Cancelled
-        ? $"已取消，已处理 {FileCount} 个文件。"
-        : $"{ModCount} 个 Mod、{FileCount} 个文件（{SizeText}）" +
-          (SkippedFiles > 0 ? $"，{SkippedFiles} 个文件被跳过" : string.Empty);
+        ? string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ExportSvc_CancelledSummary", "已取消，已处理 {0} 个文件。"), FileCount)
+        : string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ExportSvc_Summary", "{0} 个 Mod、{1} 个文件（{2}）"), ModCount, FileCount, SizeText)
+          + (SkippedFiles > 0 ? string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ExportSvc_SkippedSuffix", "，{0} 个文件被跳过"), SkippedFiles) : string.Empty);
 }
 
 /// <summary>
@@ -109,7 +110,7 @@ public sealed class ModExportJob
         var token = _cts.Token;
 
         if (mods.Count == 0)
-            throw new ArgumentException("没有选中任何 Mod", nameof(mods));
+            throw new ArgumentException(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ExportSvc_NoModsSelected", "没有选中任何 Mod"), nameof(mods));
 
         targetDirectory = string.IsNullOrWhiteSpace(targetDirectory) ? DefaultExportDirectory : targetDirectory;
         Directory.CreateDirectory(targetDirectory);
@@ -117,7 +118,7 @@ public sealed class ModExportJob
         var safeName = Sanitize(string.IsNullOrWhiteSpace(outputName) ? DefaultName() : outputName);
 
         // ① 先扫一遍，统计文件总量（进度条才有分母）
-        progress?.Report(new ModExportProgressInfo { CurrentText = "正在统计文件…" });
+        progress?.Report(new ModExportProgressInfo { CurrentText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ExportSvc_Counting", "正在统计文件…") });
 
         var plan = new List<PlannedFile>();
         var usedEntries = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -180,8 +181,9 @@ public sealed class ModExportJob
         {
             FilesTotal = plan.Count,
             TotalBytes = plannedBytes,
-            CurrentText = $"共 {plan.Count} 个文件，约 " +
-                          (plannedBytes >= 1024L * 1024 * 1024
+            CurrentText = string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ExportSvc_FilesPlanned", "共 {0} 个文件，约 {1}"),
+                          plan.Count,
+                          plannedBytes >= 1024L * 1024 * 1024
                               ? $"{plannedBytes / 1024.0 / 1024 / 1024:F1} GB"
                               : $"{plannedBytes / 1024.0 / 1024:F0} MB")
         });
@@ -295,7 +297,7 @@ public sealed class ModExportJob
             {
                 FilesDone = filesDone,
                 FilesTotal = plan.Count,
-                CurrentText = "完成"
+                CurrentText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ExportSvc_Done", "完成")
             });
 
             return new ModExportResult
@@ -371,10 +373,10 @@ public sealed class ModExportJob
     private static string Sanitize(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            return "未命名";
+            return App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ExportSvc_Unnamed", "未命名");
 
         var cleaned = new string(name.Select(c => InvalidChars.Contains(c) ? '_' : c).ToArray()).Trim();
-        return cleaned.Length == 0 ? "未命名" : cleaned;
+        return cleaned.Length == 0 ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ExportSvc_Unnamed", "未命名") : cleaned;
     }
 
     private sealed record PlannedFile(string EntryPath, string SourcePath);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.GamesService.Interfaces;
 using OMniX.WinUI.Services.Notifications;
 
@@ -107,7 +108,9 @@ public partial class CharacterGridItemModel : ObservableObject, IEquatable<Chara
 
     public override string ToString()
     {
-        return IsAddCard ? "新增角色" : Character.DisplayName;
+        return IsAddCard
+            ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/AddCardToString", "新增角色")
+            : Character.DisplayName;
     }
 }
 

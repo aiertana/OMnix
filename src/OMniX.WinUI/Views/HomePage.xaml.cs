@@ -1,4 +1,5 @@
-﻿using OMniX.WinUI.Services;
+﻿using OMniX.Core.Contracts.Services;
+using OMniX.WinUI.Services;
 using OMniX.WinUI.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -39,7 +40,7 @@ public sealed partial class HomePage : Page
         {
             ViewMode = PickerViewMode.Thumbnail,
             SuggestedStartLocation = PickerLocationId.PicturesLibrary,
-            CommitButtonText = "用作背景"
+            CommitButtonText = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/HomePreset/Home_PickerCommit", "用作背景")
         };
 
         foreach (var extension in new[] { ".png", ".jpg", ".jpeg", ".webp", ".bmp" })

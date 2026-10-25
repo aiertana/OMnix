@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:l="using:WinUI3Localizer"
     xmlns:local="using:OMniX.WinUI.Views.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:settingsViewModels="using:OMniX.WinUI.ViewModels.SettingsViewModels"
@@ -20,21 +21,23 @@
             Margin="8,0,8,0"
             HorizontalAlignment="Stretch"
             Spacing="4">
-            <TextBlock Style="{StaticResource PageTitleStyle}" Text="命令设置" />
+            <TextBlock Style="{StaticResource PageTitleStyle}" Text="命令设置" l:Uids.Uid="/SettingsUi/CommandsTitle" />
 
 
             <controls:SettingsCard
                 Description="在这里可以定义 OMniX 帮你跑的指令。带 {{TargetPath}} 的指令，目前只能从「Mod 总览」页运行"
                 Header="新建命令"
-                HeaderIcon="{winUi:FontIcon Glyph=&#xE70F;}">
-                <Button Command="{x:Bind ViewModel.OpenCreateCommandCommand}" Content="新建命令" />
+                HeaderIcon="{winUi:FontIcon Glyph=&#xE70F;}"
+                l:Uids.Uid="/SettingsUi/CommandsNewCard">
+                <Button Command="{x:Bind ViewModel.OpenCreateCommandCommand}" Content="新建命令" l:Uids.Uid="/SettingsUi/CommandsNewButton" />
             </controls:SettingsCard>
 
             <controls:SettingsExpander
                 Description="这里能看到已经建好的命令，也可以删掉"
                 Header="已建命令"
                 HeaderIcon="{winUi:FontIcon Glyph=&#xE74E;}"
-                IsExpanded="True">
+                IsExpanded="True"
+                l:Uids.Uid="/SettingsUi/CommandsExistingExpander">
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard HorizontalContentAlignment="Left" ContentAlignment="Left">
 
@@ -65,23 +68,35 @@
 
                                             <StackPanel>
 
-                                                <TextBlock
-                                                    FontSize="16"
-                                                    IsTextSelectionEnabled="True"
-                                                    TextTrimming="CharacterEllipsis"
-                                                    ToolTipService.ToolTip="{x:Bind CommandDisplayName}">
-                                                    <Run Text="显示名称：" />
-                                                    <Run Text="{x:Bind CommandDisplayName}" />
-                                                </TextBlock>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        FontSize="16"
+                                                        IsTextSelectionEnabled="True"
+                                                        TextTrimming="CharacterEllipsis"
+                                                        ToolTipService.ToolTip="{x:Bind CommandDisplayName}"
+                                                        Text="显示名称："
+                                                        l:Uids.Uid="/SettingsUi/CmdDefDisplayName" />
+                                                    <TextBlock
+                                                        FontSize="16"
+                                                        IsTextSelectionEnabled="True"
+                                                        TextTrimming="CharacterEllipsis"
+                                                        Text="{x:Bind CommandDisplayName}" />
+                                                </StackPanel>
 
-                                                <TextBlock
-                                                    FontSize="10"
-                                                    IsTextSelectionEnabled="True"
-                                                    TextTrimming="CharacterEllipsis"
-                                                    ToolTipService.ToolTip="{x:Bind Id}">
-                                                    <Run Text="命令 ID：" />
-                                                    <Run Text="{x:Bind Id}" />
-                                                </TextBlock>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        FontSize="10"
+                                                        IsTextSelectionEnabled="True"
+                                                        TextTrimming="CharacterEllipsis"
+                                                        ToolTipService.ToolTip="{x:Bind Id}"
+                                                        Text="命令 ID："
+                                                        l:Uids.Uid="/SettingsUi/CmdDefId" />
+                                                    <TextBlock
+                                                        FontSize="10"
+                                                        IsTextSelectionEnabled="True"
+                                                        TextTrimming="CharacterEllipsis"
+                                                        Text="{x:Bind Id}" />
+                                                </StackPanel>
                                             </StackPanel>
 
 
@@ -92,17 +107,19 @@
                                                 <Button
                                                     VerticalAlignment="Center"
                                                     Content="运行"
-                                                    IsEnabled="{x:Bind HasNoTargetPathVariable, Mode=OneWay}">
+                                                    IsEnabled="{x:Bind HasNoTargetPathVariable, Mode=OneWay}"
+                                                    l:Uids.Uid="/SettingsUi/CmdDefRunButton">
                                                     <Button.Flyout>
                                                         <Flyout>
                                                             <StackPanel>
-                                                                <TextBlock Text="确定要运行这条命令吗？" />
+                                                                <TextBlock Text="确定要运行这条命令吗？" l:Uids.Uid="/SettingsUi/CmdDefRunConfirm" />
                                                                 <Button
                                                                     HorizontalAlignment="Center"
                                                                     Command="{x:Bind RunCommand}"
                                                                     CommandParameter="{x:Bind}"
                                                                     Content="运行"
-                                                                    Style="{ThemeResource AccentButtonStyle}" />
+                                                                    Style="{ThemeResource AccentButtonStyle}"
+                                                                    l:Uids.Uid="/SettingsUi/CmdDefRunConfirmButton" />
                                                             </StackPanel>
                                                         </Flyout>
                                                     </Button.Flyout>
@@ -112,21 +129,24 @@
                                                     VerticalAlignment="Center"
                                                     Command="{x:Bind EditCommand}"
                                                     CommandParameter="{x:Bind}"
-                                                    Content="编辑" />
+                                                    Content="编辑"
+                                                    l:Uids.Uid="/SettingsUi/CmdDefEditButton" />
 
                                                 <Button
                                                     VerticalAlignment="Center"
                                                     Content="删除"
-                                                    IsEnabled="{x:Bind CanDelete, Mode=OneWay}">
+                                                    IsEnabled="{x:Bind CanDelete, Mode=OneWay}"
+                                                    l:Uids.Uid="/SettingsUi/CmdDefDeleteButton">
                                                     <Button.Flyout>
                                                         <Flyout x:Name="DeleteFlyout">
                                                             <StackPanel>
-                                                                <TextBlock Text="确定要删除这条命令吗？" />
+                                                                <TextBlock Text="确定要删除这条命令吗？" l:Uids.Uid="/SettingsUi/CmdDefDeleteConfirm" />
                                                                 <Button
                                                                     HorizontalAlignment="Center"
                                                                     Command="{x:Bind DeleteCommand}"
                                                                     CommandParameter="{x:Bind}"
-                                                                    Content="删除" />
+                                                                    Content="删除"
+                                                                    l:Uids.Uid="/SettingsUi/CmdDefDeleteConfirmButton" />
                                                             </StackPanel>
                                                         </Flyout>
                                                     </Button.Flyout>
@@ -135,27 +155,42 @@
                                         </Grid>
 
                                         <StackPanel Grid.Row="1" Spacing="8">
-                                            <TextBlock
-                                                IsTextSelectionEnabled="True"
-                                                TextTrimming="CharacterEllipsis"
-                                                ToolTipService.ToolTip="{x:Bind Executable}">
-                                                <Run Text="程序： " />
-                                                <Run Text="{x:Bind Executable}" />
-                                            </TextBlock>
-                                            <TextBlock
-                                                IsTextSelectionEnabled="True"
-                                                TextTrimming="CharacterEllipsis"
-                                                ToolTipService.ToolTip="{x:Bind WorkingDirectory}">
-                                                <Run Text="工作目录： " />
-                                                <Run Text="{x:Bind WorkingDirectory}" />
-                                            </TextBlock>
-                                            <TextBlock
-                                                IsTextSelectionEnabled="True"
-                                                TextTrimming="CharacterEllipsis"
-                                                ToolTipService.ToolTip="{x:Bind Arguments}">
-                                                <Run Text="参数： " />
-                                                <Run Text="{x:Bind Arguments}" />
-                                            </TextBlock>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    ToolTipService.ToolTip="{x:Bind Executable}"
+                                                    Text="程序： "
+                                                    l:Uids.Uid="/SettingsUi/CmdDefExecutable" />
+                                                <TextBlock
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    Text="{x:Bind Executable}" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    ToolTipService.ToolTip="{x:Bind WorkingDirectory}"
+                                                    Text="工作目录： "
+                                                    l:Uids.Uid="/SettingsUi/CmdDefWorkingDir" />
+                                                <TextBlock
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    Text="{x:Bind WorkingDirectory}" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    ToolTipService.ToolTip="{x:Bind Arguments}"
+                                                    Text="参数： "
+                                                    l:Uids.Uid="/SettingsUi/CmdDefArguments" />
+                                                <TextBlock
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    Text="{x:Bind Arguments}" />
+                                            </StackPanel>
 
                                             <StackPanel Orientation="Horizontal">
                                                 <ItemsRepeater ItemsSource="{x:Bind Attributes}">
@@ -182,7 +217,8 @@
                 Description="这次运行 OMniX 期间，由 OMniX 启动的进程"
                 Header="正在运行的命令"
                 HeaderIcon="{winUi:FontIcon Glyph=&#xE768;}"
-                IsExpanded="True">
+                IsExpanded="True"
+                l:Uids.Uid="/SettingsUi/CommandsRunningExpander">
 
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard HorizontalContentAlignment="Left" ContentAlignment="Left">
@@ -204,31 +240,48 @@
                                         </Grid.ColumnDefinitions>
 
                                         <StackPanel>
-                                            <TextBlock
-                                                FontSize="16"
-                                                IsTextSelectionEnabled="True"
-                                                TextTrimming="CharacterEllipsis"
-                                                ToolTipService.ToolTip="{x:Bind CommandDisplayName}">
-                                                <Run Text="显示名称： " />
-                                                <Run Text="{x:Bind CommandDisplayName}" />
-                                            </TextBlock>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                    FontSize="16"
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    ToolTipService.ToolTip="{x:Bind CommandDisplayName}"
+                                                    Text="显示名称： "
+                                                    l:Uids.Uid="/SettingsUi/CmdRunningDisplayName" />
+                                                <TextBlock
+                                                    FontSize="16"
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    Text="{x:Bind CommandDisplayName}" />
+                                            </StackPanel>
 
-                                            <TextBlock
-                                                IsTextSelectionEnabled="True"
-                                                TextTrimming="CharacterEllipsis"
-                                                ToolTipService.ToolTip="{x:Bind FullCommand}">
-                                                <Run Text="完整命令： " />
-                                                <Run Text="{x:Bind FullCommand}" />
-                                            </TextBlock>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    ToolTipService.ToolTip="{x:Bind FullCommand}"
+                                                    Text="完整命令： "
+                                                    l:Uids.Uid="/SettingsUi/CmdRunningFull" />
+                                                <TextBlock
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    Text="{x:Bind FullCommand}" />
+                                            </StackPanel>
 
-                                            <TextBlock
-                                                FontSize="10"
-                                                IsTextSelectionEnabled="True"
-                                                TextTrimming="CharacterEllipsis"
-                                                ToolTipService.ToolTip="{x:Bind Id}">
-                                                <Run Text="命令 ID： " />
-                                                <Run Text="{x:Bind Id}" />
-                                            </TextBlock>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    ToolTipService.ToolTip="{x:Bind Id}"
+                                                    Text="命令 ID： "
+                                                    l:Uids.Uid="/SettingsUi/CmdRunningId" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    IsTextSelectionEnabled="True"
+                                                    TextTrimming="CharacterEllipsis"
+                                                    Text="{x:Bind Id}" />
+                                            </StackPanel>
                                         </StackPanel>
 
                                         <Button
@@ -237,7 +290,8 @@
                                             VerticalAlignment="Center"
                                             Command="{x:Bind KillCommand}"
                                             CommandParameter="{x:Bind}"
-                                            Content="结束进程" />
+                                            Content="结束进程"
+                                            l:Uids.Uid="/SettingsUi/CmdRunningKill" />
 
                                     </Grid>
                                 </DataTemplate>

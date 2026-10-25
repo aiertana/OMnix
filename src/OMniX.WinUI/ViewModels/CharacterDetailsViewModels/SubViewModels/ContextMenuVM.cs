@@ -24,7 +24,8 @@ public partial class ContextMenuVM(
     IGameService gameService,
     NotificationManager notificationManager,
     ILogger logger,
-    ModSettingsService modSettingsService)
+    ModSettingsService modSettingsService,
+    ILanguageLocalizer localizer)
     : ObservableRecipient
 {
     private readonly ISkinManagerService _skinManagerService = skinManagerService;
@@ -32,6 +33,7 @@ public partial class ContextMenuVM(
     private readonly NotificationManager _notificationManager = notificationManager;
     private readonly ILogger _logger = logger.ForContext<ContextMenuVM>();
     private readonly ModSettingsService _modSettingsService = modSettingsService;
+    private readonly ILanguageLocalizer _localizer = localizer;
 
     private DispatcherQueue _dispatcherQueue = null!;
     private CancellationToken _navigationCt = default;
@@ -193,7 +195,8 @@ public partial class ContextMenuVM(
         if (destinationModList is null)
         {
             _logger.Warning("Destination mod list not found");
-            _notificationManager.ShowNotification("找不到目标 Mod 列表",
+            _notificationManager.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/CtxMenu_NoTargetListTitle", "找不到目标 Mod 列表"),
                 "Destination mod list not found", TimeSpan.FromSeconds(5));
             return;
         }
@@ -209,7 +212,8 @@ public partial class ContextMenuVM(
         {
             _logger.Error(e, "Error moving mods");
             _notificationManager
-                .ShowNotification("这个操作不合法",
+                .ShowNotification(
+                    _localizer.GetLocalizedStringOrDefault("/CharacterDetails/CtxMenu_InvalidOpTitle", "这个操作不合法"),
                     $"Cannot move mods\n{e.Message}, see logs for details.", TimeSpan.FromSeconds(10));
             return;
         }
@@ -249,12 +253,18 @@ public partial class ContextMenuVM(
         catch (Exception e)
         {
             _logger.Error(e, "Error moving mods to folder {Folder}", target.FullPath);
-            _notificationManager.ShowNotification("移动失败", e.Message, TimeSpan.FromSeconds(10));
+            _notificationManager.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/CtxMenu_MoveFailedTitle", "移动失败"),
+                e.Message, TimeSpan.FromSeconds(10));
             return;
         }
 
-        _notificationManager.ShowNotification("已移动",
-            $"{selectedMods.Count} 个 Mod 已移动到「{target.Name}」：{names}", TimeSpan.FromSeconds(6));
+        _notificationManager.ShowNotification(
+            _localizer.GetLocalizedStringOrDefault("/CharacterDetails/CtxMenu_MovedTitle", "已移动"),
+            string.Format(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/CtxMenu_MovedBody", "{0} 个 Mod 已移动到「{1}」：{2}"),
+                selectedMods.Count, target.Name, names),
+            TimeSpan.FromSeconds(6));
 
         ModsMoved?.Invoke(this, EventArgs.Empty);
     }
@@ -322,7 +332,8 @@ public partial class ContextMenuVM(
 
         if (result.IsT0)
         {
-            _notificationManager.ShowNotification("已改掉这个 Mod 的皮肤归属",
+            _notificationManager.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/CtxMenu_SkinOverrideDoneTitle", "已改掉这个 Mod 的皮肤归属"),
                 $"Set skin override for mod '{modEntry.Mod.GetDisplayName()}' to {characterSkinToSet.DisplayName}", null);
         }
         else

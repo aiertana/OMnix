@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ArchivePwd_Dialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ArchivePwd_Dialog.PrimaryButtonText" xml:space="preserve">
+    <value>Extract</value>
+  </data>
+  <data name="ArchivePwd_Dialog.Title" xml:space="preserve">
+    <value>This archive is password-protected</value>
+  </data>
+  <data name="ArchivePwd_Hint.Text" xml:space="preserve">
+    <value>This archive is encrypted. Enter the extraction password to continue importing.</value>
+  </data>
+  <data name="ArchivePwd_PasswordBox.Header" xml:space="preserve">
+    <value>Extraction password</value>
+  </data>
+  <data name="ArchivePwd_PasswordBox.PlaceholderText" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="ArchivePwd_ShowCheck.Content" xml:space="preserve">
+    <value>Show password</value>
+  </data>
+  <data name="ArchivePwd_WrongBar.Message" xml:space="preserve">
+    <value>Incorrect password. Please try again.</value>
+  </data>
+  <data name="CharSkins_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CharSkins_DisableContent" xml:space="preserve">
+    <value>When off, skins fold back under their base character and are no longer listed on their own.
+This is OMniX's current default behavior.
+OMniX will not move or delete any of your Mods.
+
+Proceed? OMniX will restart after.</value>
+  </data>
+  <data name="CharSkins_DisablePrimary" xml:space="preserve">
+    <value>Turn off</value>
+  </data>
+  <data name="CharSkins_DisableTitle" xml:space="preserve">
+    <value>Stop treating skins as separate characters?</value>
+  </data>
+  <data name="CharSkins_EnableContent" xml:space="preserve">
+    <value>When on, in-game skins are listed separately in the character grid as if they were their own character.
+This is likely to become OMniX's default going forward.
+OMniX will not move or delete any of your Mods.
+
+Proceed? OMniX will restart after.</value>
+  </data>
+  <data name="CharSkins_EnablePrimary" xml:space="preserve">
+    <value>Turn on</value>
+  </data>
+  <data name="CharSkins_EnableTitle" xml:space="preserve">
+    <value>Treat skins as separate characters?</value>
+  </data>
+  <data name="ClearFolders_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ClearFolders_Content" xml:space="preserve">
+    <value>Removes empty folders from your character mod list (truly empty, or containing only .OMniX_ prefixed files/folders).
+Character folders that end up empty are removed too.
+Empty folders under the Mods root are removed as well.</value>
+  </data>
+  <data name="ClearFolders_DeletedHeader" xml:space="preserve">
+    <value>Deleted folders:</value>
+  </data>
+  <data name="ClearFolders_DoneTitle" xml:space="preserve">
+    <value>Empty folders cleaned</value>
+  </data>
+  <data name="ClearFolders_Primary" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ClearFolders_Title" xml:space="preserve">
+    <value>Clean up empty folders</value>
+  </data>
+  <data name="DisableAll_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DisableAll_DoneMsgFmt" xml:space="preserve">
+    <value>OMniX-managed Mods in the selected categories are all off: {0}</value>
+  </data>
+  <data name="DisableAll_DoneTitle" xml:space="preserve">
+    <value>Mods disabled</value>
+  </data>
+  <data name="DisableAll_ErrTitle" xml:space="preserve">
+    <value>Error while disabling mods</value>
+  </data>
+  <data name="DisableAll_ErrorsHeader" xml:space="preserve">
+    <value>These mods failed:</value>
+  </data>
+  <data name="DisableAll_Hint" xml:space="preserve">
+    <value>If you have a lot of Mods on, save a preset (or make a backup) first.
+
+Only Mods OMniX tracks are disabled in the selected categories.</value>
+  </data>
+  <data name="DisableAll_NoneMsg" xml:space="preserve">
+    <value>No categories selected, so nothing was changed.</value>
+  </data>
+  <data name="DisableAll_NoneTitle" xml:space="preserve">
+    <value>No category selected</value>
+  </data>
+  <data name="DisableAll_PickPrompt" xml:space="preserve">
+    <value>Pick which categories to turn Mods off for:</value>
+  </data>
+  <data name="DisableAll_Primary" xml:space="preserve">
+    <value>Disable mods in selected categories</value>
+  </data>
+  <data name="DisableAll_Title" xml:space="preserve">
+    <value>Disable Mods</value>
+  </data>
+  <data name="Dlss5_BrowseExeBtn.Content" xml:space="preserve">
+    <value>Browse…</value>
+  </data>
+  <data name="Dlss5_BrowseKitBtn.Content" xml:space="preserve">
+    <value>Browse…</value>
+  </data>
+  <data name="Dlss5_Dialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Dlss5_Dialog.PrimaryButtonText" xml:space="preserve">
+    <value>Save and enable</value>
+  </data>
+  <data name="Dlss5_Dialog.Title" xml:space="preserve">
+    <value>Enable DLSS5 render chain</value>
+  </data>
+  <data name="Dlss5_ErrExeMsg" xml:space="preserve">
+    <value>Point this at Client-Win64-Shipping.exe itself.</value>
+  </data>
+  <data name="Dlss5_ErrExeTitle" xml:space="preserve">
+    <value>Executable not found</value>
+  </data>
+  <data name="Dlss5_ErrKitMsg" xml:space="preserve">
+    <value>This folder should contain install.ps1 and the files folder.</value>
+  </data>
+  <data name="Dlss5_ErrKitTitle" xml:space="preserve">
+    <value>Deploy kit folder is wrong</value>
+  </data>
+  <data name="Dlss5_ErrPickFile" xml:space="preserve">
+    <value>Failed to pick file</value>
+  </data>
+  <data name="Dlss5_ErrPickFolder" xml:space="preserve">
+    <value>Failed to pick folder</value>
+  </data>
+  <data name="Dlss5_GameExeHeader.Text" xml:space="preserve">
+    <value>Game executable</value>
+  </data>
+  <data name="Dlss5_GameExeHint.Text" xml:space="preserve">
+    <value>Point at Client-Win64-Shipping.exe itself; its parent folder is the Win64 deploy target.</value>
+  </data>
+  <data name="Dlss5_GotIt" xml:space="preserve">
+    <value>Got it</value>
+  </data>
+  <data name="Dlss5_Info1.Message" xml:space="preserve">
+    <value>This plugin lays down the loader, ReShade and DLSS5 inside the game directory, so it needs to know where the game is and where the deploy kit lives.</value>
+  </data>
+  <data name="Dlss5_Info1.Title" xml:space="preserve">
+    <value>Not configured yet</value>
+  </data>
+  <data name="Dlss5_Info2.Message" xml:space="preserve">
+    <value>Clicking "Save and enable" will prompt for admin rights, then wipe and rebuild scripts under the game directory and hard-link the loader and runtime in. Your existing Mods live in the XXMI folder and are not touched.</value>
+  </data>
+  <data name="Dlss5_Info2.Title" xml:space="preserve">
+    <value>What this will do</value>
+  </data>
+  <data name="Dlss5_KitDirBox.PlaceholderText" xml:space="preserve">
+    <value>…\WWMI-DLSS5-Deploy (contains install.ps1)</value>
+  </data>
+  <data name="Dlss5_KitDirHeader.Text" xml:space="preserve">
+    <value>DLSS5 deploy kit folder</value>
+  </data>
+  <data name="Dlss5_KitDirHint.Text" xml:space="preserve">
+    <value>This is the kit that ships install.ps1 / files. The plugin only calls its script; it does not copy anything out.</value>
+  </data>
+  <data name="Dlss5_PickerChoose" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Dlss5_PickerChooseFolder" xml:space="preserve">
+    <value>Select folder</value>
+  </data>
+  <data name="ModExport_BrowseBtn.Content" xml:space="preserve">
+    <value>Browse…</value>
+  </data>
+  <data name="ModExport_BtnCancelClose" xml:space="preserve">
+    <value>Cancel &amp; close</value>
+  </data>
+  <data name="ModExport_BtnPause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="ModExport_BtnResume" xml:space="preserve">
+    <value>Resume</value>
+  </data>
+  <data name="ModExport_BtnRunning" xml:space="preserve">
+    <value>Exporting…</value>
+  </data>
+  <data name="ModExport_CharCount" xml:space="preserve">
+    <value>Selected {0} / {1} characters</value>
+  </data>
+  <data name="ModExport_CharRowLabel" xml:space="preserve">
+    <value>{0} ({1} mods)</value>
+  </data>
+  <data name="ModExport_CloseBtn" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="ModExport_Description.Text" xml:space="preserve">
+    <value>Export is copy-only — your original Mods are not touched. The zip is a plain archive with no recompression, so speed is close to a direct copy. You can pause or cancel mid-run; on cancel, the half-written output is deleted.</value>
+  </data>
+  <data name="ModExport_Dialog.CloseButtonText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="ModExport_Dialog.PrimaryButtonText" xml:space="preserve">
+    <value>Start export</value>
+  </data>
+  <data name="ModExport_Dialog.Title" xml:space="preserve">
+    <value>Export / back up mods</value>
+  </data>
+  <data name="ModExport_FailedPrefix" xml:space="preserve">
+    <value>Export failed: </value>
+  </data>
+  <data name="ModExport_FormatFolder" xml:space="preserve">
+    <value>Copy as folders (Character / Mod layout)</value>
+  </data>
+  <data name="ModExport_FormatHeader.Text" xml:space="preserve">
+    <value>Export format</value>
+  </data>
+  <data name="ModExport_FormatZip" xml:space="preserve">
+    <value>Bundle into a single zip</value>
+  </data>
+  <data name="ModExport_NoRequests" xml:space="preserve">
+    <value>Nothing to export — try a different scope, or tick some characters first.</value>
+  </data>
+  <data name="ModExport_Paused" xml:space="preserve">
+    <value>Paused. Click "Resume" to keep going.</value>
+  </data>
+  <data name="ModExport_PresetScope" xml:space="preserve">
+    <value>Selected {0} mods</value>
+  </data>
+  <data name="ModExport_PrimaryBtn" xml:space="preserve">
+    <value>Start export</value>
+  </data>
+  <data name="ModExport_ProgressFmt" xml:space="preserve">
+    <value>{0:F0}% · {1} / {2} files · {3}</value>
+  </data>
+  <data name="ModExport_ResumeInProgress" xml:space="preserve">
+    <value>Resuming export…</value>
+  </data>
+  <data name="ModExport_RemoveSettingsCheck.Content" xml:space="preserve">
+    <value>Strip OMniX config files (the .OMniX_ prefixed ones; not useful elsewhere)</value>
+  </data>
+  <data name="ModExport_SaveToHeader.Text" xml:space="preserve">
+    <value>Save to</value>
+  </data>
+  <data name="ModExport_ScopeAll" xml:space="preserve">
+    <value>All mods</value>
+  </data>
+  <data name="ModExport_ScopeByChar" xml:space="preserve">
+    <value>By character</value>
+  </data>
+  <data name="ModExport_ScopeEnabled" xml:space="preserve">
+    <value>Only enabled mods</value>
+  </data>
+  <data name="ModExport_ScopeHeader.Text" xml:space="preserve">
+    <value>Export scope</value>
+  </data>
+  <data name="ModExport_SelectAllBtn.Content" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="ModExport_SelectNoneBtn.Content" xml:space="preserve">
+    <value>Select none</value>
+  </data>
+  <data name="ModExport_Stats" xml:space="preserve">
+    <value>Counting files…</value>
+  </data>
+  <data name="PluginDep_BtnAutoDownload" xml:space="preserve">
+    <value>Auto-download</value>
+  </data>
+  <data name="PluginDep_BtnGoDownload" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="PluginDep_BtnRedownload" xml:space="preserve">
+    <value>Re-download</value>
+  </data>
+  <data name="PluginDep_BtnShowInfo" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="PluginDep_Dialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="PluginDep_Dialog.PrimaryButtonText" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="PluginDep_Dialog.Title" xml:space="preserve">
+    <value>Plugin dependency check</value>
+  </data>
+  <data name="PluginDep_DonePath" xml:space="preserve">
+    <value>Saved to {0}</value>
+  </data>
+  <data name="PluginDep_Intro.Text" xml:space="preserve">
+    <value>The two toggles on the left rely on the items below. Anything missing can be fixed here before you flip the switches back on.</value>
+  </data>
+  <data name="PluginDep_KitBtn.Content" xml:space="preserve">
+    <value>Auto-download</value>
+  </data>
+  <data name="PluginDep_KitTitle.Text" xml:space="preserve">
+    <value>DLSS5 deploy kit</value>
+  </data>
+  <data name="PluginDep_TipDownloadingMsg" xml:space="preserve">
+    <value>Pulling the latest kit from GitHub…</value>
+  </data>
+  <data name="PluginDep_TipDownloadingTitle" xml:space="preserve">
+    <value>Downloading</value>
+  </data>
+  <data name="PluginDep_TipFailTitle" xml:space="preserve">
+    <value>Download failed</value>
+  </data>
+  <data name="PluginDep_TipMissingMsg" xml:space="preserve">
+    <value>Both XXMI and WWMI need to be ready before the two toggles actually control the loader chain.</value>
+  </data>
+  <data name="PluginDep_TipMissingTitle" xml:space="preserve">
+    <value>Missing pieces</value>
+  </data>
+  <data name="PluginDep_WwmiBtn.Content" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="PluginDep_WwmiHintNeedXxmi" xml:space="preserve">
+    <value>Install XXMI Launcher first</value>
+  </data>
+  <data name="PluginDep_WwmiHintSetPath" xml:space="preserve">
+    <value>Set the game path in XXMI Launcher and it will download WWMI for you</value>
+  </data>
+  <data name="PluginDep_XxmiBtn.Content" xml:space="preserve">
+    <value>Download</value>
+  </data>
+</root>

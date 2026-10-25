@@ -207,7 +207,8 @@ public partial class CharacterDetailsViewModel
             catch (Exception e)
             {
                 _logger.Error(e, "Error while adding archive.");
-                _notificationService.ShowNotification("添加文件时出错",
+                _notificationService.ShowNotification(
+                    _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Toolbar_AddFileErrorTitle", "添加文件时出错"),
                     $"An error occurred while adding the storage items.\n{e.Message}",
                     TimeSpan.FromSeconds(5));
             }

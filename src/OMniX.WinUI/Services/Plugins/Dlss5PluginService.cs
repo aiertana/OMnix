@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.Contracts.Services;
 using Serilog;
 
@@ -38,19 +39,21 @@ public sealed class Dlss5PluginState
 
     public string StatusText => Deployed
         ? Dlss5AddonActive
-            ? $"已开启 · {AddonCount} 个插件"
-            : "已开启（DLSS5 插件被停用）"
+            ? string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_OnWithAddons", "已开启 · {0} 个插件"), AddonCount)
+            : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_OnAddonsDisabled", "已开启（DLSS5 插件被停用）")
         : Ready
-            ? "未开启"
-            : "未配置";
+            ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_Off", "未开启")
+            : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_NotConfigured", "未配置");
 
     public string DetailText => Deployed
         ? $"{GameDir}"
         : Ready
-            ? "开关打开后会把加载器、ReShade、DLSS5 部署进游戏目录（需要管理员权限）"
-            : "还缺游戏路径或部署包路径，点开关可以现在就配";
+            ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_ReadyHint", "开关打开后会把加载器、ReShade、DLSS5 部署进游戏目录（需要管理员权限）")
+            : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_MissingHint", "还缺游戏路径或部署包路径，点开关可以现在就配");
 
-    public string ModStatusText => ModLoaderActive ? "Mod 已启用" : "Mod 已停用";
+    public string ModStatusText => ModLoaderActive
+        ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_ModOn", "Mod 已启用")
+        : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_ModOff", "Mod 已停用");
 }
 
 public sealed class Dlss5RunResult
@@ -64,7 +67,7 @@ public sealed class Dlss5RunResult
 
     public static Dlss5RunResult Fail(string message) => new() { Message = message };
 
-    public static Dlss5RunResult NeedSetup() => new() { NeedsSetup = true, Message = "还没有配置路径" };
+    public static Dlss5RunResult NeedSetup() => new() { NeedsSetup = true, Message = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_NeedSetup", "还没有配置路径") };
 }
 
 /// <summary>
@@ -98,6 +101,7 @@ public sealed class Dlss5PluginService
 
     private readonly ILogger _logger = Log.ForContext<Dlss5PluginService>();
     private readonly ILocalSettingsService _settings;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     public Dlss5PluginService(ILocalSettingsService settings)
     {
@@ -356,7 +360,7 @@ public sealed class Dlss5PluginService
         var script = Path.Combine(state.KitDir, enable ? "install.ps1" : "uninstall.ps1");
 
         if (!File.Exists(script))
-            return Dlss5RunResult.Fail($"部署包里找不到 {Path.GetFileName(script)}");
+            return Dlss5RunResult.Fail(string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_ScriptNotFound", "部署包里找不到 {0}"), Path.GetFileName(script)));
 
         try
         {
@@ -373,27 +377,27 @@ public sealed class Dlss5PluginService
             using var process = Process.Start(psi);
 
             if (process is null)
-                return Dlss5RunResult.Fail("没能启动部署进程");
+                return Dlss5RunResult.Fail(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_StartFailed", "没能启动部署进程"));
 
             await process.WaitForExitAsync();
 
             if (process.ExitCode != 0)
                 return Dlss5RunResult.Fail(
                     enable
-                        ? $"部署脚本退出码 {process.ExitCode}，看看那个控制台窗口里的报错"
-                        : $"卸载脚本退出码 {process.ExitCode}，看看那个控制台窗口里的报错");
+                        ? string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_DeployExitCode", "部署脚本退出码 {0}，看看那个控制台窗口里的报错"), process.ExitCode)
+                        : string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_UninstallExitCode", "卸载脚本退出码 {0}，看看那个控制台窗口里的报错"), process.ExitCode));
 
             var after = Detect();
 
             return enable
                 ? Dlss5RunResult.Ok(after.Deployed
-                    ? "部署完成。用库洛官方启动器进游戏，图形设置选 DirectX 11"
-                    : "脚本跑完了，但没检测到加载链，检查一下游戏目录")
-                : Dlss5RunResult.Ok("已卸载，游戏目录恢复成干净状态");
+                    ? _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_DeployDone", "部署完成。用库洛官方启动器进游戏，图形设置选 DirectX 11")
+                    : _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_NoLoaderChain", "脚本跑完了，但没检测到加载链，检查一下游戏目录"))
+                : Dlss5RunResult.Ok(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_Uninstalled", "已卸载，游戏目录恢复成干净状态"));
         }
         catch (Win32Exception ex) when (ex.NativeErrorCode == 1223)
         {
-            return new Dlss5RunResult { UserCancelled = true, Message = "取消了管理员授权" };
+            return new Dlss5RunResult { UserCancelled = true, Message = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Dlss5Svc_AdminCancelled", "取消了管理员授权") };
         }
         catch (Exception ex)
         {

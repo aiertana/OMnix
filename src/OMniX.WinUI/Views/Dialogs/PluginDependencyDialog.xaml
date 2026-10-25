@@ -4,11 +4,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:l="using:WinUI3Localizer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="插件依赖检查"
     CloseButtonText="取消"
     DefaultButton="Primary"
     PrimaryButtonText="继续"
+    l:Uids.Uid="/Dialogs/PluginDep_Dialog"
     mc:Ignorable="d">
 
     <ContentDialog.Resources>
@@ -23,7 +25,8 @@
             FontSize="12"
             Opacity="0.75"
             Text="左边那两个开关要靠下面这几样东西。缺的可以在这里补，补完再打开开关。"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap"
+            l:Uids.Uid="/Dialogs/PluginDep_Intro" />
 
         <!--  XXMI Launcher  -->
         <Grid ColumnSpacing="12">
@@ -55,7 +58,8 @@
                 x:Name="XxmiButton"
                 Grid.Column="2"
                 Click="OpenXxmi_OnClick"
-                Content="去下载" />
+                Content="去下载"
+                l:Uids.Uid="/Dialogs/PluginDep_XxmiBtn" />
         </Grid>
 
         <!--  WWMI  -->
@@ -88,7 +92,8 @@
                 x:Name="WwmiButton"
                 Grid.Column="2"
                 Click="OpenWwmi_OnClick"
-                Content="说明" />
+                Content="说明"
+                l:Uids.Uid="/Dialogs/PluginDep_WwmiBtn" />
         </Grid>
 
         <!--  DLSS5 部署包  -->
@@ -109,7 +114,7 @@
                 Grid.Column="1"
                 VerticalAlignment="Center"
                 Spacing="2">
-                <TextBlock FontWeight="SemiBold" Text="DLSS5 部署包" />
+                <TextBlock FontWeight="SemiBold" Text="DLSS5 部署包" l:Uids.Uid="/Dialogs/PluginDep_KitTitle" />
                 <TextBlock
                     x:Name="KitText"
                     FontSize="11"
@@ -121,7 +126,8 @@
                 x:Name="KitButton"
                 Grid.Column="2"
                 Click="DownloadKit_OnClick"
-                Content="自动下载" />
+                Content="自动下载"
+                l:Uids.Uid="/Dialogs/PluginDep_KitBtn" />
         </Grid>
 
         <InfoBar

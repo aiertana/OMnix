@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="Shell_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Shell_DeployConfirmContent" xml:space="preserve">
+    <value>会把加载器、ReShade、DLSS5 铺进：
+{0}
+
+那边的 scripts 会被清空重建，游戏自带的 NVIDIA DLSS 库也会被替换成部署包里的版本。</value>
+  </data>
+  <data name="Shell_DeployConfirmPrimary" xml:space="preserve">
+    <value>开始部署</value>
+  </data>
+  <data name="Shell_DeployConfirmTitle" xml:space="preserve">
+    <value>部署渲染链？</value>
+  </data>
+  <data name="Shell_Dlss5StatusDeploying" xml:space="preserve">
+    <value>正在部署…</value>
+  </data>
+  <data name="Shell_Dlss5StatusDisabled" xml:space="preserve">
+    <value>DLSS5 已停用（addon 已改名）· {0}</value>
+  </data>
+  <data name="Shell_Dlss5StatusEnabled" xml:space="preserve">
+    <value>DLSS5 已启用 · {0}</value>
+  </data>
+  <data name="Shell_Dlss5StatusNotConfigured" xml:space="preserve">
+    <value>未配置</value>
+  </data>
+  <data name="Shell_Dlss5TipNoPath" xml:space="preserve">
+    <value>还缺游戏路径或部署包路径，点开关即可配置</value>
+  </data>
+  <data name="Shell_Dlss5TipReady" xml:space="preserve">
+    <value>点右侧开关部署加载链（需要管理员权限）</value>
+  </data>
+  <data name="Shell_LaunchGameText" xml:space="preserve">
+    <value>启动游戏</value>
+  </data>
+  <data name="Shell_ModTipDisabled" xml:space="preserve">
+    <value>Mod 已停用（d3d11.asi 改名成 .disabled），启动游戏不加载 Mod</value>
+  </data>
+  <data name="Shell_ModTipEnabled" xml:space="preserve">
+    <value>Mod 已启用，启动游戏会加载 Mod</value>
+  </data>
+  <data name="Shell_ModTipNotDeployed" xml:space="preserve">
+    <value>加载链还没部署，现在启动游戏不会加载 Mod；打开这个开关会顺手把加载链装上</value>
+  </data>
+  <data name="Shell_NavAbout.Content" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Shell_NavCharacters.Content" xml:space="preserve">
+    <value>角色管理</value>
+  </data>
+  <data name="Shell_NavDebug.Content" xml:space="preserve">
+    <value>调试</value>
+  </data>
+  <data name="Shell_NavHome.Content" xml:space="preserve">
+    <value>首页</value>
+  </data>
+  <data name="Shell_NavModInstaller.Content" xml:space="preserve">
+    <value>Mod 安装</value>
+  </data>
+  <data name="Shell_NavModsOverview.Content" xml:space="preserve">
+    <value>Mod 总览</value>
+  </data>
+  <data name="Shell_NavNotifications.Content" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="Shell_NavPluginArea.Content" xml:space="preserve">
+    <value>插件专区</value>
+  </data>
+  <data name="Shell_NavPresets.Content" xml:space="preserve">
+    <value>预设配置</value>
+  </data>
+  <data name="Shell_NotificationCancelledBody" xml:space="preserve">
+    <value>没有拿到管理员权限，部署没有进行。</value>
+  </data>
+  <data name="Shell_NotificationCancelledTitle" xml:space="preserve">
+    <value>已取消</value>
+  </data>
+  <data name="Shell_NotificationChainEnabled" xml:space="preserve">
+    <value>渲染链已开启</value>
+  </data>
+  <data name="Shell_NotificationDlss5Disabled" xml:space="preserve">
+    <value>DLSS5 已停用</value>
+  </data>
+  <data name="Shell_NotificationDlss5Enabled" xml:space="preserve">
+    <value>DLSS5 已启用</value>
+  </data>
+  <data name="Shell_NotificationElevatorNotRunning" xml:space="preserve">
+    <value>Elevator 没在运行</value>
+  </data>
+  <data name="Shell_NotificationModDisabled" xml:space="preserve">
+    <value>Mod 已停用</value>
+  </data>
+  <data name="Shell_NotificationModEnabled" xml:space="preserve">
+    <value>Mod 已启用</value>
+  </data>
+  <data name="Shell_NotificationNoKitBody" xml:space="preserve">
+    <value>点开关重新打开依赖检查，可以在那里直接下载最新版。</value>
+  </data>
+  <data name="Shell_NotificationNoKitTitle" xml:space="preserve">
+    <value>还没有 DLSS5 部署包</value>
+  </data>
+  <data name="Shell_NotificationNotConfiguredBody" xml:space="preserve">
+    <value>游戏可执行文件或部署包目录不对，再点一次开关重新填。</value>
+  </data>
+  <data name="Shell_NotificationNotConfiguredTitle" xml:space="preserve">
+    <value>插件还没配好</value>
+  </data>
+  <data name="Shell_NotificationRenameFailed" xml:space="preserve">
+    <value>改文件名失败，检查一下游戏目录的写入权限</value>
+  </data>
+  <data name="Shell_NotificationTakeEffect" xml:space="preserve">
+    <value>下次启动游戏生效</value>
+  </data>
+  <data name="Shell_TutorialText.Text" xml:space="preserve">
+    <value>查看使用教程</value>
+  </data>
+  <data name="Shell_TutorialTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>打开 GitHub 上的使用说明</value>
+  </data>
+</root>

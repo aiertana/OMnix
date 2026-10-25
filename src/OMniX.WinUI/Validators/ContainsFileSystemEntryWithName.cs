@@ -1,14 +1,17 @@
 ﻿using FluentValidation;
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.ViewModels.SubVms;
 
 namespace OMniX.WinUI.Validators;
 
 public class ContainsFileSystemEntryWithName : AbstractValidator<PathPicker>
 {
+    private static readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
+
     public ContainsFileSystemEntryWithName(string filename, string? customMessage = null, bool warning = false)
     {
         filename = filename.ToLower();
-        customMessage ??= $"文件夹里找不到：{filename}";
+        customMessage ??= string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_FileMissing", "文件夹里找不到：{0}"), filename);
         RuleFor(x => x.Path)
             .Must(path =>
                 path is not null &&

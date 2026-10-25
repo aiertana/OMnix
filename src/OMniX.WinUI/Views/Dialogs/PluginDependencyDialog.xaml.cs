@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.Services.Plugins;
 
 namespace OMniX.WinUI.Views.Dialogs;
@@ -10,6 +11,7 @@ namespace OMniX.WinUI.Views.Dialogs;
 public sealed partial class PluginDependencyDialog : ContentDialog
 {
     private readonly PluginDependencyService _dependencies;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
     private CancellationTokenSource? _cts;
 
     public PluginDependencyDialog(PluginDependencyService dependencies)
@@ -31,23 +33,31 @@ public sealed partial class PluginDependencyDialog : ContentDialog
         WwmiText.Text = snapshot.WwmiReady
             ? snapshot.WwmiRoot
             : snapshot.XxmiReady
-                ? "在 XXMI Launcher 里设好游戏路径，它会自动把 WWMI 下载下来"
-                : "需要先装 XXMI Launcher";
+                ? _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_WwmiHintSetPath", "在 XXMI Launcher 里设好游戏路径，它会自动把 WWMI 下载下来")
+                : _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_WwmiHintNeedXxmi", "需要先装 XXMI Launcher");
         KitText.Text = snapshot.KitText;
 
         XxmiIcon.Glyph = snapshot.XxmiReady ? "\uE73E" : "\uE783";
         WwmiIcon.Glyph = snapshot.WwmiReady ? "\uE73E" : "\uE783";
         KitIcon.Glyph = snapshot.KitReady ? "\uE73E" : "\uE783";
 
-        XxmiButton.Content = snapshot.XxmiReady ? "GitHub" : "去下载";
-        WwmiButton.Content = snapshot.WwmiReady ? "GitHub" : "说明";
-        KitButton.Content = snapshot.KitReady ? "重新下载" : "自动下载";
+        XxmiButton.Content = snapshot.XxmiReady
+            ? "GitHub"
+            : _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_BtnGoDownload", "去下载");
+        WwmiButton.Content = snapshot.WwmiReady
+            ? "GitHub"
+            : _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_BtnShowInfo", "说明");
+        KitButton.Content = snapshot.KitReady
+            ? _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_BtnRedownload", "重新下载")
+            : _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_BtnAutoDownload", "自动下载");
 
         // 至少要让 Mod 开关能用，才允许继续
         IsPrimaryButtonEnabled = snapshot.ModReady;
 
         if (!snapshot.ModReady)
-            ShowTip(InfoBarSeverity.Warning, "还差东西", "XXMI 和 WWMI 都就绪之后，两个开关才能真正控制加载链。");
+            ShowTip(InfoBarSeverity.Warning,
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_TipMissingTitle", "还差东西"),
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_TipMissingMsg", "XXMI 和 WWMI 都就绪之后，两个开关才能真正控制加载链。"));
     }
 
     private void OpenXxmi_OnClick(object sender, RoutedEventArgs e) =>
@@ -64,13 +74,17 @@ public sealed partial class PluginDependencyDialog : ContentDialog
         _cts = new CancellationTokenSource();
         KitButton.IsEnabled = false;
         DownloadBar.Visibility = Visibility.Visible;
-        ShowTip(InfoBarSeverity.Informational, "正在下载", "从 GitHub 拉最新版部署包…");
+        ShowTip(InfoBarSeverity.Informational,
+            _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_TipDownloadingTitle", "正在下载"),
+            _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_TipDownloadingMsg", "从 GitHub 拉最新版部署包…"));
 
         var progress = new Progress<DownloadProgress>(p =>
         {
             DownloadBar.IsIndeterminate = p.Percent < 0;
             DownloadBar.Value = p.Percent < 0 ? 0 : p.Percent;
-            ShowTip(InfoBarSeverity.Informational, "正在下载", p.Text);
+            ShowTip(InfoBarSeverity.Informational,
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_TipDownloadingTitle", "正在下载"),
+                p.Text);
         });
 
         try
@@ -82,11 +96,16 @@ public sealed partial class PluginDependencyDialog : ContentDialog
             if (result.Success)
             {
                 DownloadedKitDir = result.KitDir;
-                ShowTip(InfoBarSeverity.Success, result.Message, $"已经放到 {result.KitDir}");
+                ShowTip(InfoBarSeverity.Success, result.Message,
+                    string.Format(
+                        _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_DonePath", "已经放到 {0}"),
+                        result.KitDir));
             }
             else
             {
-                ShowTip(InfoBarSeverity.Error, "下载失败", result.Message);
+                ShowTip(InfoBarSeverity.Error,
+                    _localizer.GetLocalizedStringOrDefault("/Dialogs/PluginDep_TipFailTitle", "下载失败"),
+                    result.Message);
             }
         }
         finally

@@ -3,6 +3,7 @@ using Windows.Storage;
 using Windows.Win32;
 using Windows.Win32.Media.Audio;
 using OMniX.Core.Contracts.Entities;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.Services;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Views;
@@ -20,6 +21,7 @@ public class ModDragAndDropService
 
 
     private readonly Notifications.NotificationManager _notificationManager;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     public event EventHandler<DragAndDropFinishedArgs>? DragAndDropFinished;
 
@@ -78,8 +80,8 @@ public class ModDragAndDropService
         {
             var queue = storageItems.ToList();
 
-            _notificationManager.ShowNotification("批量导入",
-                $"共 {queue.Count} 个 Mod，将逐个打开安装窗口：{string.Join("、" , queue.Take(3).Select(x => x.Name))}" +
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/DragDrop_BatchTitle", "批量导入"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/DragDrop_BatchBody", "共 {0} 个 Mod，将逐个打开安装窗口：{1}"), queue.Count, string.Join("、" , queue.Take(3).Select(x => x.Name))) +
                 (queue.Count > 3 ? " …" : ""), TimeSpan.FromSeconds(8));
 
             var firstMonitor = await InstallSingleAsync(modList, queue[0]);
@@ -132,7 +134,7 @@ public class ModDragAndDropService
         {
             try
             {
-                window.Title = $"安装 Mod - {name}（{index}/{total}）";
+                window.Title = string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/DragDrop_WindowTitle", "安装 Mod - {0}（{1}/{2}）"), name, index, total);
             }
             catch
             {
@@ -329,7 +331,7 @@ public class ModDragAndDropService
             password = await _archivePasswordPromptService.PromptForPasswordAsync(archivePath, isRetry);
             if (string.IsNullOrEmpty(password))
             {
-                _notificationManager.ShowNotification("已取消导入", "未输入压缩包密码，本次导入已取消",
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/DragDrop_CancelledTitle", "已取消导入"), _localizer.GetLocalizedStringOrDefault("/ServicesMsg/DragDrop_CancelledBody", "未输入压缩包密码，本次导入已取消"),
                     TimeSpan.FromSeconds(5));
                 return null;
             }

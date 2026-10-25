@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="Shell_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Shell_DeployConfirmContent" xml:space="preserve">
+    <value>This will add the loader, ReShade and DLSS5 to:
+{0}
+
+The scripts folder there is cleared and rebuilt, and the NVIDIA DLSS library shipped with the game is replaced with the one from the deployment kit.</value>
+  </data>
+  <data name="Shell_DeployConfirmPrimary" xml:space="preserve">
+    <value>Start deployment</value>
+  </data>
+  <data name="Shell_DeployConfirmTitle" xml:space="preserve">
+    <value>Deploy rendering chain?</value>
+  </data>
+  <data name="Shell_Dlss5StatusDeploying" xml:space="preserve">
+    <value>Deploying…</value>
+  </data>
+  <data name="Shell_Dlss5StatusDisabled" xml:space="preserve">
+    <value>DLSS5 disabled (addon renamed) · {0}</value>
+  </data>
+  <data name="Shell_Dlss5StatusEnabled" xml:space="preserve">
+    <value>DLSS5 enabled · {0}</value>
+  </data>
+  <data name="Shell_Dlss5StatusNotConfigured" xml:space="preserve">
+    <value>Not configured</value>
+  </data>
+  <data name="Shell_Dlss5TipNoPath" xml:space="preserve">
+    <value>Game path or kit path is still missing — use the switch to set them up</value>
+  </data>
+  <data name="Shell_Dlss5TipReady" xml:space="preserve">
+    <value>Use the switch on the right to deploy the loader chain (requires administrator)</value>
+  </data>
+  <data name="Shell_LaunchGameText" xml:space="preserve">
+    <value>Launch game</value>
+  </data>
+  <data name="Shell_ModTipDisabled" xml:space="preserve">
+    <value>Mods disabled (d3d11.asi renamed to .disabled), nothing loads when the game starts</value>
+  </data>
+  <data name="Shell_ModTipEnabled" xml:space="preserve">
+    <value>Mods enabled, they load when the game starts</value>
+  </data>
+  <data name="Shell_ModTipNotDeployed" xml:space="preserve">
+    <value>Loader chain is not deployed yet, so mods stay inert if you launch now — turning this switch on deploys it first</value>
+  </data>
+  <data name="Shell_NavAbout.Content" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Shell_NavCharacters.Content" xml:space="preserve">
+    <value>Characters</value>
+  </data>
+  <data name="Shell_NavDebug.Content" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="Shell_NavHome.Content" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Shell_NavModInstaller.Content" xml:space="preserve">
+    <value>Mod installer</value>
+  </data>
+  <data name="Shell_NavModsOverview.Content" xml:space="preserve">
+    <value>Mods overview</value>
+  </data>
+  <data name="Shell_NavNotifications.Content" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Shell_NavPluginArea.Content" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="Shell_NavPresets.Content" xml:space="preserve">
+    <value>Presets</value>
+  </data>
+  <data name="Shell_NotificationCancelledBody" xml:space="preserve">
+    <value>Administrator rights were not granted, nothing was deployed.</value>
+  </data>
+  <data name="Shell_NotificationCancelledTitle" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Shell_NotificationChainEnabled" xml:space="preserve">
+    <value>Rendering chain enabled</value>
+  </data>
+  <data name="Shell_NotificationDlss5Disabled" xml:space="preserve">
+    <value>DLSS5 disabled</value>
+  </data>
+  <data name="Shell_NotificationDlss5Enabled" xml:space="preserve">
+    <value>DLSS5 enabled</value>
+  </data>
+  <data name="Shell_NotificationElevatorNotRunning" xml:space="preserve">
+    <value>Elevator is not running</value>
+  </data>
+  <data name="Shell_NotificationModDisabled" xml:space="preserve">
+    <value>Mods disabled</value>
+  </data>
+  <data name="Shell_NotificationModEnabled" xml:space="preserve">
+    <value>Mods enabled</value>
+  </data>
+  <data name="Shell_NotificationNoKitBody" xml:space="preserve">
+    <value>Use the switch to reopen the dependency check — you can download the latest version right there.</value>
+  </data>
+  <data name="Shell_NotificationNoKitTitle" xml:space="preserve">
+    <value>No DLSS5 deployment kit yet</value>
+  </data>
+  <data name="Shell_NotificationNotConfiguredBody" xml:space="preserve">
+    <value>The game executable or the kit folder is wrong. Tap the switch again to fill them in.</value>
+  </data>
+  <data name="Shell_NotificationNotConfiguredTitle" xml:space="preserve">
+    <value>Plugin not set up yet</value>
+  </data>
+  <data name="Shell_NotificationRenameFailed" xml:space="preserve">
+    <value>Renaming the file failed — check write permission on the game folder</value>
+  </data>
+  <data name="Shell_NotificationTakeEffect" xml:space="preserve">
+    <value>Takes effect on the next game launch</value>
+  </data>
+  <data name="Shell_TutorialText.Text" xml:space="preserve">
+    <value>View the tutorial</value>
+  </data>
+  <data name="Shell_TutorialTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open the guide on GitHub</value>
+  </data>
+</root>

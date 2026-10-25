@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:OMniX.WinUI.Views"
+    xmlns:l="using:WinUI3Localizer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:OMniX.WinUI.Models"
     mc:Ignorable="d">
@@ -20,10 +21,11 @@
         <TextBlock
             Margin="0,4,0,8"
             Style="{ThemeResource TitleTextBlockStyle}"
-            Text="这次运行期间出现过的所有通知" />
+            Text="这次运行期间出现过的所有通知"
+            l:Uids.Uid="/Notifications/PageTitle" />
 
         <StackPanel Grid.Row="1" Margin="0,4,0,16">
-            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="通知和日志写在：" />
+            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="通知和日志写在：" l:Uids.Uid="/Notifications/LogLocation" />
             <Grid VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

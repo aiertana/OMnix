@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.Services.CommandService;
 using OMniX.Core.Services.CommandService.Models;
 using OMniX.WinUI.Contracts.Services;
@@ -19,7 +20,8 @@ public sealed partial class CommandsSettingsViewModel(
     IWindowManagerService windowManagerService,
     NotificationManager notificationManager,
     ILocalSettingsService localSettingsService,
-    CommandHandlerService commandHandlerService)
+    CommandHandlerService commandHandlerService,
+    ILanguageLocalizer localizer)
     : ObservableRecipient, INavigationAware
 {
     private readonly CommandService _commandService = commandService;
@@ -27,6 +29,7 @@ public sealed partial class CommandsSettingsViewModel(
     private readonly NotificationManager _notificationManager = notificationManager;
     private readonly ILocalSettingsService _localSettingsService = localSettingsService;
     private readonly CommandHandlerService _commandHandlerService = commandHandlerService;
+    private readonly ILanguageLocalizer _localizer = localizer;
 
     public ObservableCollection<CommandDefinitionVM> CommandDefinitions { get; } = new();
 
@@ -44,19 +47,20 @@ public sealed partial class CommandsSettingsViewModel(
         {
             var commandWarningDialog = new ContentDialog
             {
-                Title = "提个醒",
+                Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdWarnTitle", "提个醒"),
 
                 Content = new TextBlock()
                 {
-                    Text = "建命令的时候留个心。命令能拿来跑你电脑上的任何程序，" +
-                           "只加你信得过的来源。\n" +
-                           "OMniX 本身也不完美，挡不住恶意脚本，也挡不住自己的 bug。\n\n" +
-                           "点「我知道了」就表示你清楚这些风险。",
+                    Text = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdWarnContent",
+                        "建命令的时候留个心。命令能拿来跑你电脑上的任何程序，" +
+                        "只加你信得过的来源。\n" +
+                        "OMniX 本身也不完美，挡不住恶意脚本，也挡不住自己的 bug。\n\n" +
+                        "点「我知道了」就表示你清楚这些风险。"),
                     IsTextSelectionEnabled = true,
                     TextWrapping = TextWrapping.WrapWholeWords
                 },
-                PrimaryButtonText = "我知道了",
-                CloseButtonText = "取消"
+                PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdWarnPrimary", "我知道了"),
+                CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/Cancel", "取消")
             };
 
             var result = await _windowManagerService.ShowDialogAsync(commandWarningDialog);
@@ -96,18 +100,18 @@ public sealed partial class CommandsSettingsViewModel(
             }
             catch (Exception e)
             {
-                _notificationManager.ShowNotification("结束进程失败", e.Message, TimeSpan.FromSeconds(5));
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdKillFailedTitle", "结束进程失败"), e.Message, TimeSpan.FromSeconds(5));
                 return;
             }
         }
         else
         {
-            _notificationManager.ShowNotification("这个进程已经不在跑了", string.Empty, TimeSpan.FromSeconds(2));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdAlreadyGone", "这个进程已经不在跑了"), string.Empty, TimeSpan.FromSeconds(2));
             await RefreshRunningCommandsAsync();
             return;
         }
 
-        _notificationManager.ShowNotification("进程已结束", string.Empty, TimeSpan.FromSeconds(2));
+        _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdKilled", "进程已结束"), string.Empty, TimeSpan.FromSeconds(2));
     }
 
     private bool CanEditCommand(CommandDefinitionVM? commandVM)
@@ -128,7 +132,8 @@ public sealed partial class CommandsSettingsViewModel(
 
         if (existingCommand is null)
         {
-            _notificationManager.ShowNotification("读取命令失败", "找不到这条命令",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdReadFailedTitle", "读取命令失败"),
+                _localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdReadFailedBody", "找不到这条命令"),
                 TimeSpan.FromSeconds(5));
             return;
         }
@@ -153,7 +158,7 @@ public sealed partial class CommandsSettingsViewModel(
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("删除命令失败", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdDeleteFailedTitle", "删除命令失败"), e.Message, TimeSpan.FromSeconds(5));
             return;
         }
         finally
@@ -161,7 +166,9 @@ public sealed partial class CommandsSettingsViewModel(
             await RefreshCommandDefinitionsAsync();
         }
 
-        _notificationManager.ShowNotification($"命令「{commandDefinition.CommandDisplayName}」已删除",
+        _notificationManager.ShowNotification(
+            string.Format(_localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdDeleted", "命令「{0}」已删除"),
+                commandDefinition.CommandDisplayName),
             string.Empty, TimeSpan.FromSeconds(2));
     }
 
@@ -204,7 +211,7 @@ public sealed partial class CommandsSettingsViewModel(
 
         foreach (var commandDefinition in commandDefinitions.Reverse())
         {
-            var commandDefinitionVM = new CommandDefinitionVM(commandDefinition)
+            var commandDefinitionVM = new CommandDefinitionVM(commandDefinition, _localizer)
             {
                 DeleteCommand = DeleteCommandCommand,
                 RunCommand = RunCommand,
@@ -287,7 +294,7 @@ public partial class CommandVM : ObservableObject
 
 public partial class CommandDefinitionVM : ObservableObject
 {
-    public CommandDefinitionVM(CommandDefinition commandDefinition)
+    public CommandDefinitionVM(CommandDefinition commandDefinition, ILanguageLocalizer localizer)
     {
         Id = commandDefinition.Id;
         CommandDisplayName = commandDefinition.CommandDisplayName;
@@ -305,17 +312,17 @@ public partial class CommandDefinitionVM : ObservableObject
         // 这几个标签会直接印在「已建命令」的卡片上，所以写中文，
         // 原来拿 nameof 拼，界面上会露出 RunAsAdmin、UseShellExecute 这种枚举名
         if (commandDefinition.KillOnMainAppExit)
-            attributes.Add("退出时结束进程" + separator);
+            attributes.Add(localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdAttrKillOnExit", "退出时结束进程") + separator);
 
         if (commandDefinition.ExecutionOptions.RunAsAdmin)
-            attributes.Add("管理员运行" + separator);
+            attributes.Add(localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdAttrRunAsAdmin", "管理员运行") + separator);
 
         if (commandDefinition.ExecutionOptions.UseShellExecute)
-            attributes.Add("交给系统启动" + separator);
+            attributes.Add(localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdAttrUseShell", "交给系统启动") + separator);
 
         if (attributes.Count != 0)
         {
-            attributes.Insert(0, "选项： ");
+            attributes.Insert(0, localizer.GetLocalizedStringOrDefault("/SettingsUi/CmdAttrPrefix", "选项： "));
             var lastItem = attributes.Last().TrimEnd('|', ' ');
             attributes[^1] = lastItem;
         }

@@ -1,0 +1,655 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AuthorLabel.Text" xml:space="preserve">
+    <value>Author:</value>
+  </data>
+  <data name="AutoUpdateFailTitle" xml:space="preserve">
+    <value>Failed to start updater</value>
+  </data>
+  <data name="AutoUpdateFlyoutText.Text" xml:space="preserve">
+    <value>OMniX will exit, then the built-in updater will download the new version, replace files, and relaunch itself. Do not shut down during this process.</value>
+  </data>
+  <data name="AutoUpdateUnavailableTitle" xml:space="preserve">
+    <value>Unable to start update</value>
+  </data>
+  <data name="AutoUpdateYes.Content" xml:space="preserve">
+    <value>Yes, auto-update and restart</value>
+  </data>
+  <data name="BatchClean.Content" xml:space="preserve">
+    <value>Clean empty folders</value>
+  </data>
+  <data name="BatchDisableAll.Content" xml:space="preserve">
+    <value>Disable all mods</value>
+  </data>
+  <data name="BatchOpsDesc.Text" xml:space="preserve">
+    <value>Reorganize, clean, or batch-disable — all applied to the current Mods folder.</value>
+  </data>
+  <data name="BatchOpsTitle.Text" xml:space="preserve">
+    <value>Batch operations</value>
+  </data>
+  <data name="BatchReorganize.Content" xml:space="preserve">
+    <value>Reorganize mods</value>
+  </data>
+  <data name="CacheClear.Content" xml:space="preserve">
+    <value>Clear cache</value>
+  </data>
+  <data name="CacheCurrentUsage.Text" xml:space="preserve">
+    <value>Current usage </value>
+  </data>
+  <data name="CacheDesc.Text" xml:space="preserve">
+    <value>OMniX keeps a copy of downloaded mods as archives. Limit how much space this may use; excess is cleaned on startup.</value>
+  </data>
+  <data name="CacheOpenFolder.Text" xml:space="preserve">
+    <value>Open cache folder</value>
+  </data>
+  <data name="CacheTitle.Text" xml:space="preserve">
+    <value>Download cache</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CheckUpdateButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="CheckUpdateLabel.Text" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="CmdAlreadyGone" xml:space="preserve">
+    <value>This process is no longer running.</value>
+  </data>
+  <data name="CmdAttrKillOnExit" xml:space="preserve">
+    <value>Kill on exit</value>
+  </data>
+  <data name="CmdAttrPrefix" xml:space="preserve">
+    <value>Options: </value>
+  </data>
+  <data name="CmdAttrRunAsAdmin" xml:space="preserve">
+    <value>Run as admin</value>
+  </data>
+  <data name="CmdAttrUseShell" xml:space="preserve">
+    <value>Hand off to system</value>
+  </data>
+  <data name="CmdDeleted" xml:space="preserve">
+    <value>Command "{0}" deleted.</value>
+  </data>
+  <data name="CmdDeleteFailedTitle" xml:space="preserve">
+    <value>Failed to delete command</value>
+  </data>
+  <data name="CmdDefArguments.Text" xml:space="preserve">
+    <value>Arguments: </value>
+  </data>
+  <data name="CmdDefDeleteButton.Content" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CmdDefDeleteConfirm.Text" xml:space="preserve">
+    <value>Delete this command?</value>
+  </data>
+  <data name="CmdDefDeleteConfirmButton.Content" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CmdDefDisplayName.Text" xml:space="preserve">
+    <value>Display name:</value>
+  </data>
+  <data name="CmdDefEditButton.Content" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="CmdDefExecutable.Text" xml:space="preserve">
+    <value>Program: </value>
+  </data>
+  <data name="CmdDefId.Text" xml:space="preserve">
+    <value>Command ID:</value>
+  </data>
+  <data name="CmdDefRunButton.Content" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="CmdDefRunConfirm.Text" xml:space="preserve">
+    <value>Run this command?</value>
+  </data>
+  <data name="CmdDefRunConfirmButton.Content" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="CmdDefWorkingDir.Text" xml:space="preserve">
+    <value>Working directory: </value>
+  </data>
+  <data name="CmdKilled" xml:space="preserve">
+    <value>Process ended.</value>
+  </data>
+  <data name="CmdKillFailedTitle" xml:space="preserve">
+    <value>Failed to end process</value>
+  </data>
+  <data name="CmdReadFailedBody" xml:space="preserve">
+    <value>This command could not be found.</value>
+  </data>
+  <data name="CmdReadFailedTitle" xml:space="preserve">
+    <value>Failed to load command</value>
+  </data>
+  <data name="CmdRunningDisplayName.Text" xml:space="preserve">
+    <value>Display name: </value>
+  </data>
+  <data name="CmdRunningFull.Text" xml:space="preserve">
+    <value>Full command: </value>
+  </data>
+  <data name="CmdRunningId.Text" xml:space="preserve">
+    <value>Command ID: </value>
+  </data>
+  <data name="CmdRunningKill.Content" xml:space="preserve">
+    <value>End process</value>
+  </data>
+  <data name="CmdWarnContent" xml:space="preserve">
+    <value>Be careful when creating commands. Commands can run any program on your computer — only add sources you trust. OMniX itself is not perfect and cannot block malicious scripts or its own bugs. Click "I understand" to confirm you are aware of these risks.</value>
+  </data>
+  <data name="CmdWarnPrimary" xml:space="preserve">
+    <value>I understand</value>
+  </data>
+  <data name="CmdWarnTitle" xml:space="preserve">
+    <value>Heads up</value>
+  </data>
+  <data name="CommandsExistingExpander.Description" xml:space="preserve">
+    <value>View and remove existing commands.</value>
+  </data>
+  <data name="CommandsExistingExpander.Header" xml:space="preserve">
+    <value>Existing commands</value>
+  </data>
+  <data name="CommandsNewButton.Content" xml:space="preserve">
+    <value>New command</value>
+  </data>
+  <data name="CommandsNewCard.Description" xml:space="preserve">
+    <value>Define commands OMniX can run. Commands containing {{TargetPath}} can currently only be run from the Mod overview page.</value>
+  </data>
+  <data name="CommandsNewCard.Header" xml:space="preserve">
+    <value>New command</value>
+  </data>
+  <data name="CommandsRunningExpander.Description" xml:space="preserve">
+    <value>Processes launched by OMniX during the current session.</value>
+  </data>
+  <data name="CommandsRunningExpander.Header" xml:space="preserve">
+    <value>Running commands</value>
+  </data>
+  <data name="CommandsTitle.Text" xml:space="preserve">
+    <value>Commands settings</value>
+  </data>
+  <data name="CreateCmdArguments.Header" xml:space="preserve">
+    <value>Launch arguments</value>
+  </data>
+  <data name="CreateCmdArguments.PlaceholderText" xml:space="preserve">
+    <value>Arguments passed to the program.</value>
+  </data>
+  <data name="CreateCmdChain.Content" xml:space="preserve">
+    <value>Command chain</value>
+  </data>
+  <data name="CreateCmdChain.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Not implemented yet.</value>
+  </data>
+  <data name="CreateCmdExecutable.PlaceHolderText" xml:space="preserve">
+    <value>You can enter a program name (must be on PATH) or a full path (required).</value>
+  </data>
+  <data name="CreateCmdExecutable.Title" xml:space="preserve">
+    <value>* Program</value>
+  </data>
+  <data name="CreateCmdKillOnExit.Content" xml:space="preserve">
+    <value>Kill process when OMniX exits</value>
+  </data>
+  <data name="CreateCmdKillOnExit.ToolTipService.ToolTip" xml:space="preserve">
+    <value>When on, this process is terminated when OMniX closes.</value>
+  </data>
+  <data name="CreateCmdNameBox.Header" xml:space="preserve">
+    <value>* Command name:</value>
+  </data>
+  <data name="CreateCmdNameBox.PlaceholderText" xml:space="preserve">
+    <value>A name shown to you (required).</value>
+  </data>
+  <data name="CreateCmdNewWindow.Content" xml:space="preserve">
+    <value>Open in new window</value>
+  </data>
+  <data name="CreateCmdNewWindow.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Run in a separate window (not available yet).</value>
+  </data>
+  <data name="CreateCmdPickFolder" xml:space="preserve">
+    <value>Pick folder</value>
+  </data>
+  <data name="CreateCmdPreview.Header" xml:space="preserve">
+    <value>Command that will run:</value>
+  </data>
+  <data name="CreateCmdRunAsAdmin.Content" xml:space="preserve">
+    <value>Run as administrator</value>
+  </data>
+  <data name="CreateCmdRunAsAdmin.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Launch the program with admin privileges.</value>
+  </data>
+  <data name="CreateCmdSave.Content" xml:space="preserve">
+    <value>Save command</value>
+  </data>
+  <data name="CreateCmdSingle.Content" xml:space="preserve">
+    <value>Single command</value>
+  </data>
+  <data name="CreateCmdTargetPathHint.Text" xml:space="preserve">
+    <value>When the command targets a file or folder (e.g. a mod directory), {{TargetPath}} is replaced with the actual path.</value>
+  </data>
+  <data name="CreateCmdTitle.Text" xml:space="preserve">
+    <value>New command</value>
+  </data>
+  <data name="CreateCmdUseShell.Content" xml:space="preserve">
+    <value>Hand off to system</value>
+  </data>
+  <data name="CreateCmdUseShell.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Let the OS launch the program (ShellExecute).</value>
+  </data>
+  <data name="CreateCmdWorkingDir.PlaceHolderText" xml:space="preserve">
+    <value>If entering a path manually, the folder must already exist.</value>
+  </data>
+  <data name="CreateCmdWorkingDir.Title" xml:space="preserve">
+    <value>Working directory</value>
+  </data>
+  <data name="CustomCommandsCard.Description" xml:space="preserve">
+    <value>Define commands (scripts) to run against specific mods.</value>
+  </data>
+  <data name="CustomCommandsCard.Header" xml:space="preserve">
+    <value>Custom commands</value>
+  </data>
+  <data name="ElevatorDesc.Text" xml:space="preserve">
+    <value>An elevated (admin) helper process is required to refresh mods in-game.</value>
+  </data>
+  <data name="ElevatorFailedTitle" xml:space="preserve">
+    <value>Failed to start Elevator</value>
+  </data>
+  <data name="ExportBackupDesc.Text" xml:space="preserve">
+    <value>Package mods into a zip or copy them as a folder, per character or all at once. You can pause or cancel at any time; existing mods are never modified.</value>
+  </data>
+  <data name="ExportBackupTitle.Text" xml:space="preserve">
+    <value>Export / backup mods</value>
+  </data>
+  <data name="ExportDefaultPath.Text" xml:space="preserve">
+    <value>Defaults to OMniX Exports under the app folder.</value>
+  </data>
+  <data name="ExportDialog_ChangeStatusTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Add or remove the DISABLED_ prefix on exported mods.</value>
+  </data>
+  <data name="ExportDialog_KeepStructureTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Preserve the OMniX folder structure, e.g. Character/a-skin-mod.</value>
+  </data>
+  <data name="ExportDialog_RemoveOmniXTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Recursively delete all files and folders starting with .JASM_.</value>
+  </data>
+  <data name="ExportDoneBody" xml:space="preserve">
+    <value>Mods exported to {0}</value>
+  </data>
+  <data name="ExportDoneTitle" xml:space="preserve">
+    <value>Mods exported</value>
+  </data>
+  <data name="ExportFailedTitle" xml:space="preserve">
+    <value>Failed to export mods</value>
+  </data>
+  <data name="ExportPrimary" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ExportTitle" xml:space="preserve">
+    <value>Export mods</value>
+  </data>
+  <data name="GenshinPathResetHad" xml:space="preserve">
+    <value>The remembered game executable was cleared; it will be redetected on next game launch and you will be asked to specify it if not found.</value>
+  </data>
+  <data name="GenshinPathResetNone" xml:space="preserve">
+    <value>No remembered game executable; it will be redetected on next game launch.</value>
+  </data>
+  <data name="GenshinPathResetTitle" xml:space="preserve">
+    <value>Game executable path reset</value>
+  </data>
+  <data name="GithubLabel.Text" xml:space="preserve">
+    <value>GitHub:</value>
+  </data>
+  <data name="IgnoreUpdateButton.Content" xml:space="preserve">
+    <value>Skip this update</value>
+  </data>
+  <data name="ImportCanceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
+  <data name="ImportCommit" xml:space="preserve">
+    <value>Update with this package</value>
+  </data>
+  <data name="ImportFailPrefix" xml:space="preserve">
+    <value>Import failed: </value>
+  </data>
+  <data name="ImportFiles" xml:space="preserve">
+    <value>Contains {0} files; they will overwrite the current app folder. No other files in the OMniX folder will be deleted. OMniX will reopen itself after installation.</value>
+  </data>
+  <data name="ImportFull" xml:space="preserve">
+    <value>Full package</value>
+  </data>
+  <data name="ImportIdentified" xml:space="preserve">
+    <value>Detected: OMniX {0} · {1}</value>
+  </data>
+  <data name="ImportIdentifying" xml:space="preserve">
+    <value>Identifying…</value>
+  </data>
+  <data name="ImportInstallPrimary" xml:space="preserve">
+    <value>Install and restart</value>
+  </data>
+  <data name="ImportInstallTitle" xml:space="preserve">
+    <value>Install local update package</value>
+  </data>
+  <data name="ImportLocalUpdateButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Import local update package</value>
+  </data>
+  <data name="ImportLocalUpdateLabel.Text" xml:space="preserve">
+    <value>Import local update package</value>
+  </data>
+  <data name="ImportNotPackage" xml:space="preserve">
+    <value>This doesn't look like an OMniX update package (the archive must contain an OMniX folder).</value>
+  </data>
+  <data name="ImportPatch" xml:space="preserve">
+    <value>Incremental patch</value>
+  </data>
+  <data name="ImportStartFailed" xml:space="preserve">
+    <value>Failed to start updater</value>
+  </data>
+  <data name="ImportStartingUpdater" xml:space="preserve">
+    <value>Starting updater…</value>
+  </data>
+  <data name="ImportUnknownVersion" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="LangSwitchPrimary" xml:space="preserve">
+    <value>Switch language and restart</value>
+  </data>
+  <data name="LoaderPathResetHad" xml:space="preserve">
+    <value>The remembered launcher was cleared; it will be reidentified from the "XXMI folder" next time.</value>
+  </data>
+  <data name="LoaderPathResetNone" xml:space="preserve">
+    <value>No remembered launcher; it will be reidentified from the "XXMI folder" next time.</value>
+  </data>
+  <data name="LoaderPathResetTitle" xml:space="preserve">
+    <value>Launcher path reset</value>
+  </data>
+  <data name="MigrateClose" xml:space="preserve">
+    <value>No, keep the old one</value>
+  </data>
+  <data name="MigrateContent" xml:space="preserve">
+    <value>The plugins folder is moving from
+{0}
+to
+{1}
+
+It currently holds about {2:0.#} MB (XXMI, DLSS5 pack, mod fixer).
+Copy it over? I will not delete anything in the old folder — remove it yourself once the new location works.</value>
+  </data>
+  <data name="MigrateFailedBody" xml:space="preserve">
+    <value>You can copy the old folder over manually, or pick a different target and try again.</value>
+  </data>
+  <data name="MigrateFailedTitle" xml:space="preserve">
+    <value>Plugins were not moved; path unchanged</value>
+  </data>
+  <data name="MigratePrimary" xml:space="preserve">
+    <value>Move them</value>
+  </data>
+  <data name="MigrateTitle" xml:space="preserve">
+    <value>Move existing plugins?</value>
+  </data>
+  <data name="MigratingBody" xml:space="preserve">
+    <value>This may take a while if there are many files.</value>
+  </data>
+  <data name="MigratingTitle" xml:space="preserve">
+    <value>Moving plugins…</value>
+  </data>
+  <data name="ModCheckerStatusLabel.Text" xml:space="preserve">
+    <value>Current status</value>
+  </data>
+  <data name="NewVersionLabel.Text" xml:space="preserve">
+    <value>New version:</value>
+  </data>
+  <data name="OpenAppFolderButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open the folder where OMniX is installed.</value>
+  </data>
+  <data name="OpenAppFolderLabel.Text" xml:space="preserve">
+    <value>App folder</value>
+  </data>
+  <data name="OpenExportPanelButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Open export panel</value>
+  </data>
+  <data name="OpenExportPanelLabel.Text" xml:space="preserve">
+    <value>Open export panel</value>
+  </data>
+  <data name="OpenModsFolderButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open the Mods folder in Explorer.</value>
+  </data>
+  <data name="OpenModsFolderLabel.Text" xml:space="preserve">
+    <value>Open Mods folder</value>
+  </data>
+  <data name="PaletteBlue.Content" xml:space="preserve">
+    <value>Cool blue</value>
+  </data>
+  <data name="PaletteCardDesc.Text" xml:space="preserve">
+    <value>Two color schemes, independent of light/dark mode: Warm Coral is the 1.0 palette; Cool Blue pairs a cool-white background with a blue accent.</value>
+  </data>
+  <data name="PaletteCardTitle.Text" xml:space="preserve">
+    <value>Color scheme</value>
+  </data>
+  <data name="PaletteSwitchedBlue" xml:space="preserve">
+    <value>Cool blue: cool-white background + blue accent</value>
+  </data>
+  <data name="PaletteSwitchedTitle" xml:space="preserve">
+    <value>Color scheme switched</value>
+  </data>
+  <data name="PaletteSwitchedWarm" xml:space="preserve">
+    <value>Warm coral: the 1.0 palette</value>
+  </data>
+  <data name="PaletteWarm.Content" xml:space="preserve">
+    <value>Warm coral</value>
+  </data>
+  <data name="PluginsFolderDesc.Text" xml:space="preserve">
+    <value>Where XXMI, the DLSS5 pack, and the mod fixer are downloaded to. Defaults to the C drive; move it elsewhere if space is tight, then click "Save paths" below.</value>
+  </data>
+  <data name="PluginsFolderSelector.Title" xml:space="preserve">
+    <value>Plugins folder</value>
+  </data>
+  <data name="ReorganizeContent" xml:space="preserve">
+    <value>Reorganize the Mods folder?
+Mods sitting directly in Mods and Others will be sorted into per-character folders.
+
+Mods that do not match any character go into "Others"; mods already in "Others" are left untouched.</value>
+  </data>
+  <data name="ReorganizePrimary" xml:space="preserve">
+    <value>Start reorganizing</value>
+  </data>
+  <data name="ReorganizeTitle" xml:space="preserve">
+    <value>Reorganize mods?</value>
+  </data>
+  <data name="ReorgDoneBody" xml:space="preserve">
+    <value>Moved {0} mods into character folders</value>
+  </data>
+  <data name="ReorgDoneTitle" xml:space="preserve">
+    <value>Reorganization complete</value>
+  </data>
+  <data name="ReorgFailedBody" xml:space="preserve">
+    <value>See the log for details.</value>
+  </data>
+  <data name="ReorgFailedTitle" xml:space="preserve">
+    <value>Failed to reorganize mods</value>
+  </data>
+  <data name="Reset3DMigotoButton.Content" xml:space="preserve">
+    <value>Reset launcher path</value>
+  </data>
+  <data name="ResetGenshinButton.Content" xml:space="preserve">
+    <value>Reset game executable path</value>
+  </data>
+  <data name="ResetPathsDesc.Text" xml:space="preserve">
+    <value>If the launcher or game executable moved, clear the remembered paths so they are redetected next time.</value>
+  </data>
+  <data name="ResetPathsTitle.Text" xml:space="preserve">
+    <value>Reset paths</value>
+  </data>
+  <data name="RestartingBody" xml:space="preserve">
+    <value>The app will restart now.</value>
+  </data>
+  <data name="RestartingTitle" xml:space="preserve">
+    <value>Restarting…</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SavedRestartingTitle" xml:space="preserve">
+    <value>Settings saved; restarting…</value>
+  </data>
+  <data name="SavePathsButton.Content" xml:space="preserve">
+    <value>Save paths</value>
+  </data>
+  <data name="SavePathsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Update the folder paths.</value>
+  </data>
+  <data name="SavePathsContent" xml:space="preserve">
+    <value>Save the new folder paths? The app will restart.</value>
+  </data>
+  <data name="SavePathsRestartButton.Content" xml:space="preserve">
+    <value>Save paths</value>
+  </data>
+  <data name="SavePathsRestartButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>The app will restart after saving.</value>
+  </data>
+  <data name="SavePathsTitle" xml:space="preserve">
+    <value>Save folder paths?</value>
+  </data>
+  <data name="SecAppearance.Text" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="SecAutomation.Text" xml:space="preserve">
+    <value>Automation</value>
+  </data>
+  <data name="SecBackup.Text" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="SecExtensions.Text" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
+  <data name="SecGamePaths.Text" xml:space="preserve">
+    <value>Game &amp; paths</value>
+  </data>
+  <data name="SecModMgmt.Text" xml:space="preserve">
+    <value>Mod management</value>
+  </data>
+  <data name="SkinsAsCharDesc.Text" xml:space="preserve">
+    <value>When on, each skin of a character appears as its own entry in the character wall instead of being grouped under the character details.</value>
+  </data>
+  <data name="SkinsAsCharEnable.Content" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="SkinsAsCharTitle.Text" xml:space="preserve">
+    <value>Treat skins as separate characters</value>
+  </data>
+  <data name="SoundCardDesc.Text" xml:space="preserve">
+    <value>Play a subtle click when buttons and cards are tapped. Auto-muted in Simple style.</value>
+  </data>
+  <data name="SoundCardTitle.Text" xml:space="preserve">
+    <value>Interaction sounds</value>
+  </data>
+  <data name="StyleCardDesc.Text" xml:space="preserve">
+    <value>Both styles share the same colors; the difference is animation. Standard has flowing highlights, hover lift, and press feedback. Simple is static glass.</value>
+  </data>
+  <data name="StyleCardTitle.Text" xml:space="preserve">
+    <value>UI style</value>
+  </data>
+  <data name="StyleSimple.Content" xml:space="preserve">
+    <value>Simple</value>
+  </data>
+  <data name="StyleStandard.Content" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="StyleSwitchedSimple" xml:space="preserve">
+    <value>Simple style: static glass, no animation</value>
+  </data>
+  <data name="StyleSwitchedStandard" xml:space="preserve">
+    <value>Standard: flowing highlights, hover lift, press feedback</value>
+  </data>
+  <data name="StyleSwitchedTitle" xml:space="preserve">
+    <value>UI style switched</value>
+  </data>
+  <data name="SwitchGameContent" xml:space="preserve">
+    <value>Switching games restarts the app so it can be reconfigured for the new game.
+
+Switch now?</value>
+  </data>
+  <data name="SwitchGamePrimary" xml:space="preserve">
+    <value>Switch to {0}</value>
+  </data>
+  <data name="SwitchGameTitle" xml:space="preserve">
+    <value>Switch game</value>
+  </data>
+  <data name="ThemeRestartPrimary" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="ThemeRestartText" xml:space="preserve">
+    <value>The theme change requires an app restart to take effect; otherwise the UI may look broken. This is a theme handling limitation — dark mode is recommended.
+
+Sorry for the inconvenience.</value>
+  </data>
+  <data name="ThemeRestartTitle" xml:space="preserve">
+    <value>Restart required</value>
+  </data>
+  <data name="UpdateAlreadyLatest" xml:space="preserve">
+    <value>Already up to date</value>
+  </data>
+  <data name="UpdateChecking" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="UpdateFailGitHub" xml:space="preserve">
+    <value>Check failed: cannot reach GitHub</value>
+  </data>
+  <data name="UpdateFailPrefix" xml:space="preserve">
+    <value>Check failed: </value>
+  </data>
+  <data name="UpdateFoundPrefix" xml:space="preserve">
+    <value>Found </value>
+  </data>
+  <data name="UpdateKindMajor" xml:space="preserve">
+    <value>New version</value>
+  </data>
+  <data name="UpdateKindPatch" xml:space="preserve">
+    <value>Patch</value>
+  </data>
+  <data name="UpdateToButton.Content" xml:space="preserve">
+    <value>Update to</value>
+  </data>
+  <data name="UpdateToLabel.Text" xml:space="preserve">
+    <value>Update to</value>
+  </data>
+  <data name="WhatsNewLink.Text" xml:space="preserve">
+    <value>See what's new</value>
+  </data>
+  <data name="WindowCardDesc.Text" xml:space="preserve">
+    <value>Remember the window state on exit and restore it on next launch.</value>
+  </data>
+  <data name="WindowCardTitle.Text" xml:space="preserve">
+    <value>Window</value>
+  </data>
+  <data name="WindowPosition.Content" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="WindowPosition.ToolTipService.ToolTip" xml:space="preserve">
+    <value>When on, OMniX remembers the window position on exit.</value>
+  </data>
+  <data name="WindowSize.Content" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="WindowSize.ToolTipService.ToolTip" xml:space="preserve">
+    <value>When on, OMniX remembers the window size on exit.</value>
+  </data>
+  <data name="OpenExportPanelButton.AutomationProperties.Name" xml:space="preserve">
+    <value>Open export panel</value>
+  </data>
+  <data name="CheckUpdateButton.AutomationProperties.Name" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="ImportLocalUpdateButton.AutomationProperties.Name" xml:space="preserve">
+    <value>Import local update package</value>
+  </data>
+</root>

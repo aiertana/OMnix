@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
@@ -45,6 +45,7 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
     private readonly ModArchiveRepository _modArchiveRepository;
     private readonly CommandService _commandService;
     private readonly ThreeDMigtoProcessManager _modelImporterProcessManager;
+    private readonly ILanguageLocalizer _localizer;
 
     /// <summary>
     ///     上次自动推导的 Mods 文件夹，用于判断是否可以继续自动填写
@@ -106,7 +107,8 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
         IWindowManagerService windowManagerService, ISkinManagerService skinManagerService,
         SelectedGameService selectedGameService, IGameService gameService, ModPresetService modPresetService,
         UserPreferencesService userPreferencesService, ModArchiveRepository modArchiveRepository,
-        CommandService commandService, ThreeDMigtoProcessManager modelImporterProcessManager)
+        CommandService commandService, ThreeDMigtoProcessManager modelImporterProcessManager,
+        ILanguageLocalizer localizer)
     {
         _navigationService = navigationService;
         _localSettingsService = localSettingsService;
@@ -119,6 +121,7 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
         _modArchiveRepository = modArchiveRepository;
         _commandService = commandService;
         _modelImporterProcessManager = modelImporterProcessManager;
+        _localizer = localizer;
 
         PathToGIMIFolderPicker = new PathPicker([]);
 
@@ -188,7 +191,7 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
 
         // 二开：配置完成后同样不改动窗口大小
         _navigationService.NavigateTo(typeof(CharactersViewModel).FullName!, null, true);
-        App.GetService<NotificationManager>().ShowNotification("启动设置已保存",
+        App.GetService<NotificationManager>().ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_NotificationSettingsSaved", "启动设置已保存"),
             $"启动设置已保存 successfully to '{_localSettingsService.GameScopedSettingsLocation}'",
             TimeSpan.FromSeconds(7));
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -196,7 +199,7 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         {
             await Task.Delay(TimeSpan.FromSeconds(7));
-            App.GetService<NotificationManager>().ShowNotification("OMniX 还在 alpha 阶段",
+            App.GetService<NotificationManager>().ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_NotificationAlpha", "OMniX 还在 alpha 阶段"),
                 "There will be bugs and things will most likely break. Anyway, hope you enjoy using OMniX!",
                 TimeSpan.FromSeconds(20));
         });
@@ -360,26 +363,24 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
         var canRename = !detected.IsWellNamed && !Directory.Exists(detected.WellNamedPath);
 
         var message = canRename
-            ? $"在下面这个位置识别到 {detected.ModCount} 个 Mod：\n\n" +
-              $"{detected.FolderPath}\n\n" +
-              $"已自动设为 Mods 文件夹。要不要顺便把文件夹名统一成「{LauncherLocator.ModsFolderName}」？\n" +
-              $"改名后的位置：{detected.WellNamedPath}\n" +
-              $"（只在原地改名，不会挪到别的地方，Mod 内容会一起搬过去）"
-            : $"在下面这个位置识别到 {detected.ModCount} 个 Mod：\n\n" +
-              $"{detected.FolderPath}\n\n" +
-              "已自动设为 Mods 文件夹。";
+            ? string.Format(
+                _localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_DetectedMessageRename", "在下面这个位置识别到 {0} 个 Mod：\n\n{1}\n\n已自动设为 Mods 文件夹。要不要顺便把文件夹名统一成「{2}」？\n改名后的位置：{3}\n（只在原地改名，不会挪到别的地方，Mod 内容会一起搬过去）"),
+                detected.ModCount, detected.FolderPath, LauncherLocator.ModsFolderName, detected.WellNamedPath)
+            : string.Format(
+                _localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_DetectedMessagePlain", "在下面这个位置识别到 {0} 个 Mod：\n\n{1}\n\n已自动设为 Mods 文件夹。"),
+                detected.ModCount, detected.FolderPath);
 
         var dialog = new ContentDialog
         {
-            Title = "识别到 Mod 文件夹",
+            Title = _localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_DetectedDialogTitle", "识别到 Mod 文件夹"),
             Content = new TextBlock
             {
                 Text = message,
                 TextWrapping = TextWrapping.WrapWholeWords
             },
-            PrimaryButtonText = canRename ? "改名并迁移 Mod" : null,
-            SecondaryButtonText = "只用这个文件夹，不改名",
-            CloseButtonText = "不用它",
+            PrimaryButtonText = canRename ? _localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_DetectedDialogPrimaryRename", "改名并迁移 Mod") : null,
+            SecondaryButtonText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_DetectedDialogSecondary", "只用这个文件夹，不改名"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_DetectedDialogClose", "不用它"),
             DefaultButton = ContentDialogButton.Primary
         };
 
@@ -393,8 +394,8 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
                 SetModsFolder(detected.WellNamedPath);
                 _logger.Information("Mods folder renamed from {Old} to {New}", detected.FolderPath,
                     detected.WellNamedPath);
-                App.GetService<NotificationManager>().ShowNotification("Mods 文件夹已改名",
-                    $"已迁移到：{detected.WellNamedPath}", TimeSpan.FromSeconds(8));
+                App.GetService<NotificationManager>().ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_NotificationFolderRenamed", "Mods 文件夹已改名"),
+                    string.Format(_localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_NotificationFolderRenamedBody", "已迁移到：{0}"), detected.WellNamedPath), TimeSpan.FromSeconds(8));
             }
             catch (Exception e)
             {
@@ -403,8 +404,8 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
 
                 // 改名失败时退回：仍然使用原文件夹
                 SetModsFolder(detected.FolderPath);
-                App.GetService<NotificationManager>().ShowNotification("Mods 文件夹改名失败",
-                    $"已改用原文件夹：{detected.FolderPath}", TimeSpan.FromSeconds(8));
+                App.GetService<NotificationManager>().ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_NotificationFolderRenameFailed", "Mods 文件夹改名失败"),
+                    string.Format(_localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_NotificationFolderRenameFailedBody", "已改用原文件夹：{0}"), detected.FolderPath), TimeSpan.FromSeconds(8));
             }
         }
         else if (result == ContentDialogResult.Secondary)
@@ -440,7 +441,7 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
         }
 
         var suggestedModsFolder = LauncherLocator.GetModsFolder(launcherRootFolder, ModelImporterShortName);
-        ModsFolderHint = $"默认：{suggestedModsFolder}";
+        ModsFolderHint = string.Format(_localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_DefaultModsFolderHint", "默认：{0}"), suggestedModsFolder);
 
         // 仅在 Mods 文件夹为空或仍是上次自动推导的路径时才自动填写，避免覆盖用户手动输入
         if (PathToModsFolderPicker.PathHasValue &&

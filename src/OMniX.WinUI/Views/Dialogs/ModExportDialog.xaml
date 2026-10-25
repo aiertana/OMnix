@@ -5,11 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogs="using:OMniX.WinUI.Views.Dialogs"
+    xmlns:l="using:WinUI3Localizer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="导出 / 备份模组"
     CloseButtonText="关闭"
     DefaultButton="Primary"
     PrimaryButtonText="开始导出"
+    l:Uids.Uid="/Dialogs/ModExport_Dialog"
     mc:Ignorable="d">
 
     <ContentDialog.Resources>
@@ -37,7 +39,8 @@
                 FontSize="12"
                 FontWeight="SemiBold"
                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
-                Text="导出范围" />
+                Text="导出范围"
+                l:Uids.Uid="/Dialogs/ModExport_ScopeHeader" />
 
             <RadioButtons
                 x:Name="ScopeRadio"
@@ -70,11 +73,13 @@
                 <Button
                     Padding="8,2"
                     Click="SelectAllCharacters_OnClick"
-                    Content="全选" />
+                    Content="全选"
+                    l:Uids.Uid="/Dialogs/ModExport_SelectAllBtn" />
                 <Button
                     Padding="8,2"
                     Click="SelectNoneCharacters_OnClick"
-                    Content="全不选" />
+                    Content="全不选"
+                    l:Uids.Uid="/Dialogs/ModExport_SelectNoneBtn" />
             </StackPanel>
 
             <Border
@@ -111,11 +116,9 @@
                 FontSize="12"
                 FontWeight="SemiBold"
                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
-                Text="导出格式" />
-            <RadioButtons x:Name="FormatRadio" MaxColumns="2" SelectedIndex="0">
-                <x:String>打包成一个 zip</x:String>
-                <x:String>复制成文件夹（角色 / Mod 结构）</x:String>
-            </RadioButtons>
+                Text="导出格式"
+                l:Uids.Uid="/Dialogs/ModExport_FormatHeader" />
+            <RadioButtons x:Name="FormatRadio" MaxColumns="2" SelectedIndex="0" />
         </StackPanel>
 
         <!--  保存位置  -->
@@ -124,7 +127,8 @@
                 FontSize="12"
                 FontWeight="SemiBold"
                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
-                Text="保存到" />
+                Text="保存到"
+                l:Uids.Uid="/Dialogs/ModExport_SaveToHeader" />
 
             <Grid ColumnSpacing="8">
                 <Grid.ColumnDefinitions>
@@ -140,7 +144,8 @@
                     Grid.Column="1"
                     Padding="14,6"
                     Click="Browse_OnClick"
-                    Content="浏览…" />
+                    Content="浏览…"
+                    l:Uids.Uid="/Dialogs/ModExport_BrowseBtn" />
             </Grid>
         </StackPanel>
 
@@ -149,7 +154,8 @@
             x:Name="RemoveSettingsCheckBox"
             Grid.Row="4"
             Content="移除 OMniX 配置文件（.OMniX_ 前缀，别人用不上）"
-            IsChecked="True" />
+            IsChecked="True"
+            l:Uids.Uid="/Dialogs/ModExport_RemoveSettingsCheck" />
 
         <!--  进度  -->
         <StackPanel
@@ -172,6 +178,7 @@
             Foreground="{ThemeResource OmniXTextSecondaryBrush}"
             Text="导出只是复制，不会改动原有 Mod。zip 只打包不二次压缩，速度跟直接复制差不多。中途可以暂停或取消，取消时会把没写完的半成品删掉。"
             TextWrapping="Wrap"
-            VerticalAlignment="Bottom" />
+            VerticalAlignment="Bottom"
+            l:Uids.Uid="/Dialogs/ModExport_Description" />
     </Grid>
 </ContentDialog>

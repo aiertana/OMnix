@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using CommunityToolkitWrapper;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.Helpers;
 using OMniX.Core.Services.CommandService;
 using OMniX.WinUI.Contracts.Services;
@@ -33,6 +34,7 @@ public class LifeCycleService(
     private readonly UpdateChecker _updateChecker = updateChecker;
     private readonly ModUpdateAvailableChecker _modUpdateAvailableChecker = modUpdateAvailableChecker;
     private readonly CommandService _commandService = commandService;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     /// <summary>
     /// This method will try to restart the app using the suggested method from Microsoft.
@@ -54,7 +56,7 @@ public class LifeCycleService(
 
         if (notifyOnError)
         {
-            _notificationManager.ShowNotification("重启应用失败",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/LifeCycle_RestartFailed", "重启应用失败"),
                 useLegacyRestartOnError
                     ? $"Trying legacy restart method. Reason: {error}"
                     : $"Please restart manually. Reason: {error}",
@@ -110,7 +112,7 @@ public class LifeCycleService(
         catch (Exception e)
         {
             _logger.Error(e, "重启应用失败");
-            _notificationManager.ShowNotification("重启应用失败", "Please restart manually",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/LifeCycle_RestartFailed", "重启应用失败"), "Please restart manually",
                 TimeSpan.FromSeconds(4));
             await Task.Delay(TimeSpan.FromSeconds(3));
             await StartShutdownAsync();

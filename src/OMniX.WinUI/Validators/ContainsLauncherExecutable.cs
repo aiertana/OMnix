@@ -1,4 +1,5 @@
 using FluentValidation;
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.ViewModels.SubVms;
 
@@ -10,13 +11,15 @@ namespace OMniX.WinUI.Validators;
 /// </summary>
 public class ContainsLauncherExecutable : AbstractValidator<PathPicker>
 {
+    private static readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
+
     public ContainsLauncherExecutable()
     {
         RuleFor(x => x.Path)
             .Must(path => !string.IsNullOrWhiteSpace(path) &&
                           Directory.Exists(path) &&
                           LauncherLocator.FindLauncherExecutable(path) is not null)
-            .WithMessage("未在该文件夹中识别到启动器程序（例如 Resources\\Bin\\XXMI Launcher.exe）")
+            .WithMessage(_localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_NoLauncherExe", "未在该文件夹中识别到启动器程序（例如 Resources\\Bin\\XXMI Launcher.exe）")!)
             .WithSeverity(Severity.Warning);
     }
 }

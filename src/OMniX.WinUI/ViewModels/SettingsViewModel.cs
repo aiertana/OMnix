@@ -334,17 +334,18 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         {
             var result = await _windowManagerService.ShowDialogAsync(new ContentDialog()
             {
-                Title = "需要重启",
+                Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ThemeRestartTitle", "需要重启"),
                 Content = new TextBlock()
                 {
                     Text =
-                        "换主题后要重启应用才会生效，不然界面可能会错乱。" +
-                        "这是主题处理没做到位，推荐用深色模式。\n\n" +
-                        "给你添麻烦了。",
+                        _localizer.GetLocalizedStringOrDefault("/SettingsUi/ThemeRestartText",
+                            "换主题后要重启应用才会生效，不然界面可能会错乱。" +
+                            "这是主题处理没做到位，推荐用深色模式。\n\n" +
+                            "给你添麻烦了。"),
                     TextWrapping = TextWrapping.Wrap
                 },
-                PrimaryButtonText = "重启",
-                CloseButtonText = "取消",
+                PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ThemeRestartPrimary", "重启"),
+                CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/Cancel", "取消"),
                 DefaultButton = ContentDialogButton.Primary
             });
 
@@ -352,7 +353,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             ElementTheme = param;
             await _themeSelectorService.SetThemeAsync(param);
-            _notificationManager.ShowNotification("正在重启…", "应用马上重启。",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/RestartingTitle", "正在重启…"),
+                _localizer.GetLocalizedStringOrDefault("/SettingsUi/RestartingBody", "应用马上重启。"),
                 null);
             await RestartAppAsync();
         }
@@ -373,8 +375,10 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         OnPropertyChanged(nameof(IsStandardStyle));
         OnPropertyChanged(nameof(IsSimpleStyle));
 
-        _notificationManager.ShowNotification("界面风格已切换",
-            style == OmniXThemeStyle.Standard ? "标准版：流动光斑、悬停抬起、按压反馈" : "简易版：静态玻璃，不带动画",
+        _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/StyleSwitchedTitle", "界面风格已切换"),
+            style == OmniXThemeStyle.Standard
+                ? _localizer.GetLocalizedStringOrDefault("/SettingsUi/StyleSwitchedStandard", "标准版：流动光斑、悬停抬起、按压反馈")
+                : _localizer.GetLocalizedStringOrDefault("/SettingsUi/StyleSwitchedSimple", "简易版：静态玻璃，不带动画"),
             TimeSpan.FromSeconds(5));
     }
 
@@ -398,11 +402,11 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         // 换配色也响一声，和点按钮的手感保持一致
         _uiSoundService.PlayTap();
 
-        _notificationManager.ShowNotification("配色已切换",
+        _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/PaletteSwitchedTitle", "配色已切换"),
             palette switch
             {
-                OmniXPalette.Blue => "冷调蓝：冷白底 + 蓝色主色",
-                _ => "暖白珊瑚：1.0 版那套"
+                OmniXPalette.Blue => _localizer.GetLocalizedStringOrDefault("/SettingsUi/PaletteSwitchedBlue", "冷调蓝：冷白底 + 蓝色主色"),
+                _ => _localizer.GetLocalizedStringOrDefault("/SettingsUi/PaletteSwitchedWarm", "暖白珊瑚：1.0 版那套")
             },
             TimeSpan.FromSeconds(5));
     }
@@ -469,11 +473,11 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         var dialog = new ContentDialog();
         dialog.XamlRoot = App.MainWindow.Content.XamlRoot;
         dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-        dialog.Title = "保存文件夹路径？";
-        dialog.CloseButtonText = "取消";
-        dialog.PrimaryButtonText = "保存";
+        dialog.Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/SavePathsTitle", "保存文件夹路径？");
+        dialog.CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/Cancel", "取消");
+        dialog.PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/Save", "保存");
         dialog.DefaultButton = ContentDialogButton.Primary;
-        dialog.Content = "要保存新的文件夹路径吗？保存后应用会重启。";
+        dialog.Content = _localizer.GetLocalizedStringOrDefault("/SettingsUi/SavePathsContent", "要保存新的文件夹路径吗？保存后应用会重启。");
 
         var result = await dialog.ShowAsync();
 
@@ -499,8 +503,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             // 不会出现「配置指到空目录、插件还留在旧地方」那种半截状态。
             if (!await MigratePluginsAsync(EffectivePluginsRoot, targetPluginsRoot))
             {
-                _notificationManager.ShowNotification("插件没搬成功，路径没改",
-                    "可以先把旧目录手动复制过去，或者换个目标文件夹再试", TimeSpan.FromSeconds(6));
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateFailedTitle", "插件没搬成功，路径没改"),
+                    _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateFailedBody", "可以先把旧目录手动复制过去，或者换个目标文件夹再试"), TimeSpan.FromSeconds(6));
                 return;
             }
 
@@ -511,7 +515,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             await _localSettingsService.SaveSettingAsync(ModManagerOptions.Section,
                 modManagerOptions);
             _logger.Information("Saved startup settings: {@ModManagerOptions}", modManagerOptions);
-            _notificationManager.ShowNotification("设置已保存，正在重启…", "", TimeSpan.FromSeconds(2));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/SavedRestartingTitle", "设置已保存，正在重启…"), "", TimeSpan.FromSeconds(2));
 
 
             await RestartAppAsync();
@@ -558,19 +562,22 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         {
             XamlRoot = App.MainWindow.Content.XamlRoot,
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
-            Title = "把已有插件搬过去？",
-            Content = $"插件目录要从\n{oldRoot}\n换成\n{newRoot}\n\n" +
-                      $"里面现在大约 {sizeMb:0.#} MB（XXMI、DLSS5 部署包、Mod 修复器）。\n" +
-                      "要复制一份过去吗？旧目录里的东西我不删 —— 新位置用着没问题你自己删掉就行。",
-            PrimaryButtonText = "搬过去",
-            CloseButtonText = "不用，留旧的",
+            Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateTitle", "把已有插件搬过去？"),
+            Content = string.Format(_localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateContent",
+                    "插件目录要从\n{0}\n换成\n{1}\n\n" +
+                    "里面现在大约 {2:0.#} MB（XXMI、DLSS5 部署包、Mod 修复器）。\n" +
+                    "要复制一份过去吗？旧目录里的东西我不删 —— 新位置用着没问题你自己删掉就行。"),
+                oldRoot, newRoot, sizeMb),
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigratePrimary", "搬过去"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateClose", "不用，留旧的"),
             DefaultButton = ContentDialogButton.Primary
         };
 
         if (await dialog.ShowAsync() != ContentDialogResult.Primary)
             return true;
 
-        _notificationManager.ShowNotification("正在搬插件…", "文件多的话要等一会儿", TimeSpan.FromSeconds(3));
+        _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/MigratingTitle", "正在搬插件…"),
+            _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigratingBody", "文件多的话要等一会儿"), TimeSpan.FromSeconds(3));
 
         try
         {
@@ -636,19 +643,20 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         var result = await _windowManagerService.ShowDialogAsync(new ContentDialog()
         {
-            Title = "重新整理 Mod？",
+            Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ReorganizeTitle", "重新整理 Mod？"),
             Content = new TextBlock()
             {
                 Text =
-                    "要把 Mods 文件夹重新整理一遍吗？\n" +
-                    "程序会把直接躺在 Mods 文件夹和 Others 文件夹里的 Mod，按角色分到各自的文件夹里。\n\n" +
-                    "实在对不上角色的 Mod 会被放进「Others」文件夹；本来就在「Others」里的不会动。",
+                    _localizer.GetLocalizedStringOrDefault("/SettingsUi/ReorganizeContent",
+                        "要把 Mods 文件夹重新整理一遍吗？\n" +
+                        "程序会把直接躺在 Mods 文件夹和 Others 文件夹里的 Mod，按角色分到各自的文件夹里。\n\n" +
+                        "实在对不上角色的 Mod 会被放进「Others」文件夹；本来就在「Others」里的不会动。"),
                 TextWrapping = TextWrapping.WrapWholeWords,
                 IsTextSelectionEnabled = true
             },
-            PrimaryButtonText = "开始整理",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ReorganizePrimary", "开始整理"),
             DefaultButton = ContentDialogButton.Primary,
-            CloseButtonText = "取消",
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/Cancel", "取消"),
             Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style
         });
 
@@ -669,12 +677,13 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                 await _skinManagerService.RefreshModsAsync();
 
                 if (movedModsCount == -1)
-                    _notificationManager.ShowNotification("整理 Mod 失败",
-                        "详细原因见日志。", TimeSpan.FromSeconds(5));
+                    _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/ReorgFailedTitle", "整理 Mod 失败"),
+                        _localizer.GetLocalizedStringOrDefault("/SettingsUi/ReorgFailedBody", "详细原因见日志。"), TimeSpan.FromSeconds(5));
 
                 else
-                    _notificationManager.ShowNotification("整理完成",
-                        $"已把 {movedModsCount} 个 Mod 移进角色文件夹", TimeSpan.FromSeconds(5));
+                    _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/ReorgDoneTitle", "整理完成"),
+                        string.Format(_localizer.GetLocalizedStringOrDefault("/SettingsUi/ReorgDoneBody", "已把 {0} 个 Mod 移进角色文件夹"), movedModsCount),
+                        TimeSpan.FromSeconds(5));
             }
             finally
             {
@@ -762,7 +771,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             }
             catch (Win32Exception e)
             {
-                _notificationManager.ShowNotification("无法启动 Elevator", e.Message, TimeSpan.FromSeconds(10));
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/ElevatorFailedTitle", "无法启动 Elevator"), e.Message, TimeSpan.FromSeconds(10));
                 _showElevatorStartDialog = true;
             }
     }
@@ -794,10 +803,10 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
         // 清完必须给一句话。原来这个命令静默跑完，界面上一点变化都没有，
         // 用户点了不知道发生了什么，反馈过来就是"这个功能无效"。
-        _notificationManager.ShowNotification("已重置游戏程序路径",
+        _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/GenshinPathResetTitle", "已重置游戏程序路径"),
             hadPath
-                ? "记下的游戏程序已清掉，下次启动游戏时会重新定位，找不到会让你重新指定"
-                : "当前没有记下的游戏程序路径，下次启动游戏时会重新定位",
+                ? _localizer.GetLocalizedStringOrDefault("/SettingsUi/GenshinPathResetHad", "记下的游戏程序已清掉，下次启动游戏时会重新定位，找不到会让你重新指定")
+                : _localizer.GetLocalizedStringOrDefault("/SettingsUi/GenshinPathResetNone", "当前没有记下的游戏程序路径，下次启动游戏时会重新定位"),
             TimeSpan.FromSeconds(7));
     }
 
@@ -815,10 +824,10 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
         // 启动器 exe 本来就是从「XXMI 文件夹」里推导出来的，
         // 记录清掉之后，下次会按那个文件夹重新识别一遍。
-        _notificationManager.ShowNotification("已重置启动器路径",
+        _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/LoaderPathResetTitle", "已重置启动器路径"),
             hadPath
-                ? "记下的启动程序已清掉，下次会按「XXMI 文件夹」重新识别"
-                : "当前没有记下的启动程序，下次会按「XXMI 文件夹」重新识别",
+                ? _localizer.GetLocalizedStringOrDefault("/SettingsUi/LoaderPathResetHad", "记下的启动程序已清掉，下次会按「XXMI 文件夹」重新识别")
+                : _localizer.GetLocalizedStringOrDefault("/SettingsUi/LoaderPathResetNone", "当前没有记下的启动程序，下次会按「XXMI 文件夹」重新识别"),
             TimeSpan.FromSeconds(7));
     }
 
@@ -866,13 +875,13 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         var dialog = new ContentDialog()
         {
-            PrimaryButtonText = "导出",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ExportPrimary", "导出"),
             IsPrimaryButtonEnabled = true,
-            CloseButtonText = "取消",
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary
         };
 
-        dialog.Title = "导出 Mod";
+        dialog.Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ExportTitle", "导出 Mod");
 
         dialog.ContentTemplate = contentDialog.ContentTemplate;
 
@@ -909,13 +918,14 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                     removeLocalOmniXSettings: model.RemoveOmniXSettings, zip: false,
                     keepCharacterFolderStructure: model.KeepFolderStructure, setModStatus: model.SetModStatus);
             });
-            _notificationManager.ShowNotification("Mod 已导出", $"Mod 已导出 to {folder.Path}",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/ExportDoneTitle", "Mod 已导出"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/SettingsUi/ExportDoneBody", "Mod 已导出 to {0}"), folder.Path),
                 TimeSpan.FromSeconds(5));
         }
         catch (Exception e)
         {
             _logger.Error(e, "导出 Mod 失败");
-            _notificationManager.ShowNotification("导出 Mod 失败", e.Message, TimeSpan.FromSeconds(10));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/ExportFailedTitle", "导出 Mod 失败"), e.Message, TimeSpan.FromSeconds(10));
         }
         finally
         {
@@ -946,7 +956,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             var restartDialog = new ContentDialog()
             {
-                Title = "需要重启",
+                Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ThemeRestartTitle", "需要重启"),
                 Content = new TextBlock()
                 {
                     Text = _localizer.GetLocalizedStringOrDefault("/Settings/ChangeLanguageDialogText",
@@ -956,8 +966,8 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                     TextWrapping = TextWrapping.WrapWholeWords,
                     IsTextSelectionEnabled = true
                 },
-                PrimaryButtonText = "切换语言并重启",
-                CloseButtonText = "取消",
+                PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/LangSwitchPrimary", "切换语言并重启"),
+                CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/Cancel", "取消"),
                 DefaultButton = ContentDialogButton.Primary
             };
 
@@ -993,7 +1003,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             return;
 
         IsCheckingUpdate = true;
-        UpdateCheckMessage = "正在检查…";
+        UpdateCheckMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/UpdateChecking", "正在检查…");
 
         try
         {
@@ -1001,7 +1011,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             if (latest is null)
             {
-                UpdateCheckMessage = "检查失败：连不上 GitHub";
+                UpdateCheckMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/UpdateFailGitHub", "检查失败：连不上 GitHub");
                 return;
             }
 
@@ -1010,24 +1020,24 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             if (!hasUpdate)
             {
                 ShowNewVersionAvailable = false;
-                UpdateCheckMessage = "已经是最新版本";
+                UpdateCheckMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/UpdateAlreadyLatest", "已经是最新版本");
                 return;
             }
 
             var current = _updateChecker.CurrentVersion;
 
             UpdateKindText = latest.Major != current.Major || latest.Minor != current.Minor
-                ? "新版本"
-                : "补丁";
+                ? _localizer.GetLocalizedStringOrDefault("/SettingsUi/UpdateKindMajor", "新版本")
+                : _localizer.GetLocalizedStringOrDefault("/SettingsUi/UpdateKindPatch", "补丁");
 
             ShowNewVersionAvailable = true;
             CanIgnoreUpdate = latest != _updateChecker.IgnoredVersion;
-            UpdateCheckMessage = "发现" + UpdateKindText + " " + VersionFormatter(latest);
+            UpdateCheckMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/UpdateFoundPrefix", "发现") + UpdateKindText + " " + VersionFormatter(latest);
         }
         catch (Exception e)
         {
             _logger.Error(e, "检查更新失败");
-            UpdateCheckMessage = "检查失败：" + e.Message;
+            UpdateCheckMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/UpdateFailPrefix", "检查失败：") + e.Message;
         }
         finally
         {
@@ -1049,7 +1059,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         var picker = new FileOpenPicker
         {
             SuggestedStartLocation = PickerLocationId.Downloads,
-            CommitButtonText = "用这个包更新"
+            CommitButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportCommit", "用这个包更新")
         };
         picker.FileTypeFilter.Add(".zip");
 
@@ -1061,7 +1071,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             return;
 
         IsImportingUpdate = true;
-        ImportMessage = "正在识别…";
+        ImportMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportIdentifying", "正在识别…");
 
         try
         {
@@ -1069,15 +1079,15 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             if (info is null)
             {
-                ImportMessage = "这不像 OMniX 更新包（包里得有 OMniX 文件夹）";
+                ImportMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportNotPackage", "这不像 OMniX 更新包（包里得有 OMniX 文件夹）");
                 return;
             }
 
             var dialog = new ContentDialog
             {
-                Title = "安装本地更新包",
-                PrimaryButtonText = "安装并重启",
-                CloseButtonText = "取消",
+                Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportInstallTitle", "安装本地更新包"),
+                PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportInstallPrimary", "安装并重启"),
+                CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/Cancel", "取消"),
                 DefaultButton = ContentDialogButton.Primary,
                 XamlRoot = App.MainWindow.Content.XamlRoot
             };
@@ -1087,7 +1097,12 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             panel.Children.Add(new TextBlock
             {
                 Text =
-                    $"识别结果：OMniX {info.Value.Version} · {(info.Value.IsPatch ? "增量补丁" : "完整包")}",
+                    string.Format(_localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportIdentified",
+                        "识别结果：OMniX {0} · {1}"),
+                        info.Value.Version,
+                        info.Value.IsPatch
+                            ? _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportPatch", "增量补丁")
+                            : _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportFull", "完整包")),
                 TextWrapping = TextWrapping.WrapWholeWords,
                 Margin = new Thickness(0, 0, 0, 8)
             });
@@ -1095,8 +1110,10 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             panel.Children.Add(new TextBlock
             {
                 Text =
-                    $"包含 {info.Value.FileCount} 个文件，会覆盖到当前程序目录。\n" +
-                    "OMniX 目录里其它文件一个都不会删。装完 OMniX 会自己重新打开。",
+                    string.Format(_localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportFiles",
+                        "包含 {0} 个文件，会覆盖到当前程序目录。\n" +
+                        "OMniX 目录里其它文件一个都不会删。装完 OMniX 会自己重新打开。"),
+                        info.Value.FileCount),
                 TextWrapping = TextWrapping.WrapWholeWords
             });
 
@@ -1104,7 +1121,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             if (await dialog.ShowAsync() != ContentDialogResult.Primary)
             {
-                ImportMessage = "已取消";
+                ImportMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportCanceled", "已取消");
                 return;
             }
 
@@ -1117,17 +1134,17 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             Directory.CreateDirectory(Path.GetDirectoryName(staged)!);
             File.Copy(file.Path, staged, true);
 
-            ImportMessage = "正在启动更新器…";
+            ImportMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportStartingUpdater", "正在启动更新器…");
 
             var errors = _autoUpdaterService.StartSelfUpdateProcess(staged);
 
             if (errors is not null)
-                ImportMessage = "启动更新器失败";
+                ImportMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportStartFailed", "启动更新器失败");
         }
         catch (Exception e)
         {
             _logger.Error(e, "导入本地更新包失败");
-            ImportMessage = "导入失败：" + e.Message;
+            ImportMessage = _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportFailPrefix", "导入失败：") + e.Message;
         }
         finally
         {
@@ -1140,7 +1157,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     ///     判断依据：包里得有 OMniX\ 目录；文件名带 -patch- 的就是补丁，
     ///     否则按文件数量分 —— 完整包上千个文件，补丁只有十几个。
     /// </summary>
-    private static (string Version, bool IsPatch, int FileCount)? InspectLocalZip(string zipPath)
+    private (string Version, bool IsPatch, int FileCount)? InspectLocalZip(string zipPath)
     {
         try
         {
@@ -1170,7 +1187,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
             var isPatch = fileName.Contains("-patch-", StringComparison.OrdinalIgnoreCase) || inner < 300;
 
-            return (version.Success ? version.Groups[1].Value : "未知", isPatch, inner);
+            return (version.Success ? version.Groups[1].Value : _localizer.GetLocalizedStringOrDefault("/SettingsUi/ImportUnknownVersion", "未知"), isPatch, inner);
         }
         catch
         {
@@ -1190,13 +1207,13 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         catch (Exception e)
         {
             _logger.Error(e, "Error starting update process");
-            _notificationManager.ShowNotification("启动更新失败", e.Message, TimeSpan.FromSeconds(10));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/AutoUpdateFailTitle", "启动更新失败"), e.Message, TimeSpan.FromSeconds(10));
         }
 
         if (errors is not null && errors.Any())
         {
             var errorMessages = errors.Select(e => e.Description).ToArray();
-            _notificationManager.ShowNotification("无法启动更新", string.Join('\n', errorMessages),
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/AutoUpdateUnavailableTitle", "无法启动更新"), string.Join('\n', errorMessages),
                 TimeSpan.FromSeconds(10));
         }
     }
@@ -1212,17 +1229,18 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
         var switchGameDialog = new ContentDialog()
         {
-            Title = "切换游戏",
+            Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/SwitchGameTitle", "切换游戏"),
             Content = new TextBlock()
             {
                 Text =
-                    "切换游戏会重启应用，这样才能按新游戏重新配置。\n\n" +
-                    "要切换吗？",
+                    _localizer.GetLocalizedStringOrDefault("/SettingsUi/SwitchGameContent",
+                        "切换游戏会重启应用，这样才能按新游戏重新配置。\n\n" +
+                        "要切换吗？"),
                 TextWrapping = TextWrapping.WrapWholeWords
             },
 
-            PrimaryButtonText = $"切换到 {game}",
-            CloseButtonText = "取消",
+            PrimaryButtonText = string.Format(_localizer.GetLocalizedStringOrDefault("/SettingsUi/SwitchGamePrimary", "切换到 {0}"), game),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary
         };
 

@@ -11,6 +11,7 @@
     xmlns:local="using:OMniX.WinUI.Views.CharacterManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:OMniX.WinUI.ViewModels"
+    xmlns:l="using:WinUI3Localizer"
     x:Name="EditCharacterPageRoot"
     mc:Ignorable="d">
 
@@ -37,15 +38,17 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="Mod 文件夹路径：" />
+                <TextBlock VerticalAlignment="Center" Text="Mod 文件夹路径："
+                    l:Uids.Uid="/CharacterManager/EditChar_ModFolderLabel" />
                 <controls:LinkButton
                     Link="{x:Bind ViewModel.ModFolderUri, Mode=TwoWay}"
                     ToolTipService.ToolTip="打开这个角色的 Mod 文件夹"
-                    Text="{x:Bind ViewModel.ModFolderString, Mode=TwoWay}" />
+                    Text="{x:Bind ViewModel.ModFolderString, Mode=TwoWay}"
+                    l:Uids.Uid="/CharacterManager/EditChar_ModFolderLink" />
 
-                <Button Margin="8,0,0,0" Command="{x:Bind ViewModel.GoToCharacterCommand}">查看角色</Button>
+                <Button Margin="8,0,0,0" Command="{x:Bind ViewModel.GoToCharacterCommand}"
+                    l:Uids.Uid="/CharacterManager/EditChar_ViewCharButton">查看角色</Button>
             </StackPanel>
-
 
             <Button
                 Grid.Column="1"
@@ -54,7 +57,8 @@
                 Content="禁用角色"
                 IsEnabled="{x:Bind ViewModel.CharacterStatus.IsEnabledAndNotCustomCharacter, Mode=OneWay}"
                 ToolTipService.ToolTip="会先弹窗确认"
-                Visibility="{x:Bind ViewModel.CharacterStatus.IsEnabledAndNotCustomCharacter, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                Visibility="{x:Bind ViewModel.CharacterStatus.IsEnabledAndNotCustomCharacter, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                l:Uids.Uid="/CharacterManager/EditChar_DisableButton" />
 
             <Button
                 Grid.Column="1"
@@ -63,7 +67,8 @@
                 Content="启用角色"
                 IsEnabled="{x:Bind ViewModel.CharacterStatus.IsDisabledAndNotCustomCharacter, Mode=OneWay}"
                 ToolTipService.ToolTip="会先弹窗确认"
-                Visibility="{x:Bind ViewModel.CharacterStatus.IsDisabledAndNotCustomCharacter, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                Visibility="{x:Bind ViewModel.CharacterStatus.IsDisabledAndNotCustomCharacter, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                l:Uids.Uid="/CharacterManager/EditChar_EnableButton" />
 
             <Button
                 Grid.Column="1"
@@ -72,7 +77,8 @@
                 Content="删除自定义角色"
                 IsEnabled="{x:Bind ViewModel.CharacterStatus.IsCustomCharacter, Mode=OneWay}"
                 ToolTipService.ToolTip="会先弹窗确认"
-                Visibility="{x:Bind ViewModel.CharacterStatus.IsCustomCharacter, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                Visibility="{x:Bind ViewModel.CharacterStatus.IsCustomCharacter, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                l:Uids.Uid="/CharacterManager/EditChar_DeleteCustomButton" />
 
 
 
@@ -116,7 +122,8 @@
                         VerticalAlignment="Center"
                         Orientation="Horizontal"
                         Spacing="8">
-                        <TextBlock Text="内部名（ID）：" />
+                        <TextBlock Text="内部名（ID）："
+                            l:Uids.Uid="/CharacterManager/EditChar_InternalNameLabel" />
                         <TextBlock
                             IsTextSelectionEnabled="True"
                             Style="{ThemeResource BodyStrongTextBlockStyle}"
@@ -129,7 +136,8 @@
                                 <TextBlock
                                     MaxWidth="300"
                                     IsTextSelectionEnabled="True"
-                                    TextWrapping="WrapWholeWords">
+                                    TextWrapping="WrapWholeWords"
+                                    l:Uids.Uid="/CharacterManager/EditChar_InternalNameHelp">
                                     内部名是 OMniX 用来识别角色 / 对象用的，同时也会被当作 Mod 文件夹的名字，不能重复。
                                     角色创建之后再改这个值，OMniX 会把它当成一个新角色。
                                 </TextBlock>
@@ -144,17 +152,20 @@
                             MinWidth="200"
                             Header="显示名称"
                             PlaceholderText="{x:Bind ViewModel.Form.DisplayName.PlaceHolderText, Mode=OneWay}"
-                            Text="{x:Bind ViewModel.Form.DisplayName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{x:Bind ViewModel.Form.DisplayName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            l:Uids.Uid="/CharacterManager/EditChar_DisplayNameBox" />
                     </local:InputWrapper.Input>
                 </local:InputWrapper>
 
                 <local:InputWrapper InputField="{x:Bind ViewModel.Form.IsMultiMod}">
                     <local:InputWrapper.Input>
-                        <CheckBox Content="允许多个 Mod 同时启用" IsChecked="{x:Bind ViewModel.Form.IsMultiMod.Value, Mode=TwoWay}" />
+                        <CheckBox Content="允许多个 Mod 同时启用" IsChecked="{x:Bind ViewModel.Form.IsMultiMod.Value, Mode=TwoWay}"
+                            l:Uids.Uid="/CharacterManager/EditChar_MultiModCheck" />
                     </local:InputWrapper.Input>
 
                     <local:InputWrapper.HelpInfo>
-                        <TextBlock IsTextSelectionEnabled="True" TextWrapping="WrapWholeWords">
+                        <TextBlock IsTextSelectionEnabled="True" TextWrapping="WrapWholeWords"
+                            l:Uids.Uid="/CharacterManager/EditChar_MultiModHelp">
                             勾上之后，这个角色同时启用多个 Mod 时 OMniX 不再弹警告。
                         </TextBlock>
                     </local:InputWrapper.HelpInfo>
@@ -191,7 +202,8 @@
                             <TextBlock
                                 VerticalAlignment="Center"
                                 FontWeight="SemiBold"
-                                Text="Mod 总数：" />
+                                Text="Mod 总数："
+                                l:Uids.Uid="/CharacterManager/EditChar_ModsCountLabel" />
                             <TextBlock
                                 VerticalAlignment="Center"
                                 FontSize="18"
@@ -264,7 +276,8 @@
                                             AutomationProperties.Name="修复"
                                             Command="{x:Bind RepairCommand}"
                                             CommandParameter="{x:Bind}"
-                                            ToolTipService.ToolTip="用修复器打开这个 Mod（MOD 目录自动填入）">
+                                            ToolTipService.ToolTip="用修复器打开这个 Mod（MOD 目录自动填入）"
+                                            l:Uids.Uid="/CharacterManager/EditChar_RepairButton">
                                             <FontIcon FontSize="12" Glyph="&#xE90F;" />
                                         </Button>
 
@@ -272,7 +285,8 @@
                                             Grid.Column="2"
                                             AutomationProperties.Name="重命名"
                                             Click="ModRename_Click"
-                                            ToolTipService.ToolTip="重命名（点一下就能在上面直接改）">
+                                            ToolTipService.ToolTip="重命名（点一下就能在上面直接改）"
+                                            l:Uids.Uid="/CharacterManager/EditChar_RenameButton">
                                             <FontIcon FontSize="12" Glyph="&#xE8AC;" />
                                         </Button>
 
@@ -281,7 +295,8 @@
                                             AutomationProperties.Name="打开文件夹"
                                             Command="{x:Bind OpenFolderCommand}"
                                             CommandParameter="{x:Bind}"
-                                            ToolTipService.ToolTip="打开这个 Mod 的文件夹">
+                                            ToolTipService.ToolTip="打开这个 Mod 的文件夹"
+                                            l:Uids.Uid="/CharacterManager/EditChar_OpenFolderButton">
                                             <FontIcon FontSize="12" Glyph="&#xE838;" />
                                         </Button>
 
@@ -290,7 +305,8 @@
                                             AutomationProperties.Name="删除"
                                             Command="{x:Bind DeleteCommand}"
                                             CommandParameter="{x:Bind}"
-                                            ToolTipService.ToolTip="从磁盘删除这个 Mod">
+                                            ToolTipService.ToolTip="从磁盘删除这个 Mod"
+                                            l:Uids.Uid="/CharacterManager/EditChar_DeleteModButton">
                                             <FontIcon FontSize="12" Glyph="&#xE74D;" />
                                         </Button>
 
@@ -301,7 +317,8 @@
                                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                             IsTextSelectionEnabled="True"
                                             ToolTipService.ToolTip="添加到 OMniX 的时间"
-                                            Text="{x:Bind DateAdded}" />
+                                            Text="{x:Bind DateAdded}"
+                                            l:Uids.Uid="/CharacterManager/EditChar_DateAddedText" />
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -332,18 +349,21 @@
                             <TextBlock
                                 VerticalAlignment="Center"
                                 FontWeight="SemiBold"
-                                Text="搜索关键字" />
+                                Text="搜索关键字"
+                                l:Uids.Uid="/CharacterManager/EditChar_KeysHeader" />
 
                             <TextBox
                                 Grid.Column="1"
                                 MinWidth="120"
                                 PlaceholderText="新关键字…"
-                                Text="{x:Bind ViewModel.KeyToAddInput, Mode=TwoWay}" />
+                                Text="{x:Bind ViewModel.KeyToAddInput, Mode=TwoWay}"
+                                l:Uids.Uid="/CharacterManager/EditChar_NewKeyBox" />
 
                             <Button
                                 Grid.Column="2"
                                 Command="{x:Bind ViewModel.AddKeyCommand}"
-                                Content="添加关键字" />
+                                Content="添加关键字"
+                                l:Uids.Uid="/CharacterManager/EditChar_AddKeyButton" />
 
                             <Button
                                 Grid.Column="3"
@@ -354,7 +374,8 @@
                                             <TextBlock
                                                 IsTextSelectionEnabled="True"
                                                 TextWrapping="WrapWholeWords"
-                                                Text="OMniX 用关键字来提升搜索命中率。有些角色有多个名字或俗称，都可以加成关键字。" />
+                                                Text="OMniX 用关键字来提升搜索命中率。有些角色有多个名字或俗称，都可以加成关键字。"
+                                                l:Uids.Uid="/CharacterManager/EditChar_KeysHelp" />
                                         </Grid>
                                     </Flyout>
                                 </Button.Flyout>
@@ -382,7 +403,8 @@
                                             HorizontalAlignment="Right"
                                             Command="{Binding ElementName=EditCharacterPageRoot, Path=ViewModel.RemoveKeyCommand, Mode=OneTime}"
                                             CommandParameter="{Binding Mode=OneTime}"
-                                            Content="移除" />
+                                            Content="移除"
+                                            l:Uids.Uid="/CharacterManager/EditChar_RemoveKeyButton" />
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -403,17 +425,20 @@
                     HorizontalAlignment="Stretch"
                     Command="{x:Bind ViewModel.RevertChangesCommand}"
                     Content="撤销修改"
-                    ToolTipService.ToolTip="放弃还没保存的修改" />
+                    ToolTipService.ToolTip="放弃还没保存的修改"
+                    l:Uids.Uid="/CharacterManager/EditChar_RevertButton" />
 
                 <Button
                     HorizontalAlignment="Stretch"
                     Background="{ThemeResource AccentFillColorDefaultBrush}"
                     Command="{x:Bind ViewModel.DummySaveCommand}"
                     Content="保存修改"
-                    ToolTipService.ToolTip="把修改写入磁盘">
+                    ToolTipService.ToolTip="把修改写入磁盘"
+                    l:Uids.Uid="/CharacterManager/EditChar_SaveButton">
                     <Button.Flyout>
                         <Flyout Placement="Bottom">
-                            <Button Command="{x:Bind ViewModel.SaveChangesCommand}" Content="保存" />
+                            <Button Command="{x:Bind ViewModel.SaveChangesCommand}" Content="保存"
+                                l:Uids.Uid="/CharacterManager/EditChar_SaveConfirmButton" />
                         </Flyout>
                     </Button.Flyout>
                 </Button>
@@ -422,7 +447,8 @@
                     HorizontalAlignment="Stretch"
                     Command="{x:Bind ViewModel.ShowCharacterModelCommand}">
                     <Button.Content>
-                        <TextBlock TextWrapping="WrapWholeWords" Text="查看角色数据…" />
+                        <TextBlock TextWrapping="WrapWholeWords" Text="查看角色数据…"
+                            l:Uids.Uid="/CharacterManager/EditChar_ViewDataButton" />
                     </Button.Content>
                 </Button>
             </StackPanel>
@@ -437,10 +463,12 @@
                 VerticalAlignment="Bottom"
                 Content="重置角色"
                 ToolTipService.ToolTip="把角色数据恢复成默认值"
-                Visibility="{x:Bind ViewModel.IsNotCustomCharacter, Converter={StaticResource BoolToVisibilityConverter}}">
+                Visibility="{x:Bind ViewModel.IsNotCustomCharacter, Converter={StaticResource BoolToVisibilityConverter}}"
+                l:Uids.Uid="/CharacterManager/EditChar_ResetButton">
                 <Button.Flyout>
                     <Flyout>
-                        <Button Command="{x:Bind ViewModel.ResetCharacterToDefaultCommand}" Content="重置为默认值" />
+                        <Button Command="{x:Bind ViewModel.ResetCharacterToDefaultCommand}" Content="重置为默认值"
+                            l:Uids.Uid="/CharacterManager/EditChar_ResetConfirmButton" />
                     </Flyout>
                 </Button.Flyout>
             </Button>

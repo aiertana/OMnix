@@ -1,4 +1,5 @@
 using CommunityToolkit.WinUI.UI.Controls;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.Helpers;
 using OMniX.WinUI.Services;
 using OMniX.WinUI.Services.AppManagement;
@@ -26,6 +27,16 @@ public sealed partial class ModGrid : UserControl
         InitializeComponent();
         Unloaded += OnUnloaded;
         DataGrid = ModListGrid;
+
+        // 二开：DataGrid 列不在可视树，l:Uids.Uid 不生效，按 ModListOverview 的做法在 code-behind 赋 Header
+        var loc = App.GetService<ILanguageLocalizer>();
+        EnabledColumn.Header = loc.GetLocalizedStringOrDefault("/CharacterDetails/ModGrid_EnabledHeader", "启用");
+        DisplayNameColumn.Header = loc.GetLocalizedStringOrDefault("/CharacterDetails/ModGrid_DisplayNameHeader", "Mod 名称");
+        FolderNameColumn.Header = loc.GetLocalizedStringOrDefault("/CharacterDetails/ModGrid_FolderNameHeader", "文件夹名");
+        AuthorColumn.Header = loc.GetLocalizedStringOrDefault("/CharacterDetails/ModGrid_AuthorHeader", "作者");
+        DateAddedColumn.Header = loc.GetLocalizedStringOrDefault("/CharacterDetails/ModGrid_DateAddedHeader", "添加时间");
+        PresetsColumn.Header = loc.GetLocalizedStringOrDefault("/CharacterDetails/ModGrid_PresetsHeader", "预设");
+        NotesColumn.Header = loc.GetLocalizedStringOrDefault("/CharacterDetails/ModGrid_NotesHeader", "备注");
     }
 
 

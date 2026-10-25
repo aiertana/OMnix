@@ -203,6 +203,28 @@
   <data name="Settings_Language.Text" xml:space="preserve">
     <value>语言</value>
   </data>
+  <data name="Main_Title.Text" xml:space="preserve">
+    <value>主页</value>
+    <comment>主页面页面标题</comment>
+  </data>
+  <data name="Overview" xml:space="preserve">
+    <value>概览</value>
+  </data>
+  <data name="SettingsPage_PrivacyTermsLink.Content" xml:space="preserve">
+    <value>隐私声明</value>
+  </data>
+  <data name="SettingsPage_PrivacyTermsLink.NavigateUri" xml:space="preserve">
+    <value>https://YourPrivacyUrlGoesHere/</value>
+  </data>
+  <data name="ShellMenuBarSettingsButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="ShellMenuItem_Views_Main.Text" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="ShellMenuItem_Views_Startup.Text" xml:space="preserve">
+    <value>首次启动</value>
+  </data>
   <data name="Stopped" xml:space="preserve">
     <value>停止</value>
   </data>

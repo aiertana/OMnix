@@ -1,6 +1,7 @@
 using System.IO;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.Services.Plugins;
 using Windows.Storage.Pickers;
 
@@ -12,6 +13,7 @@ namespace OMniX.WinUI.Views.Dialogs;
 public sealed partial class Dlss5SetupDialog : ContentDialog
 {
     private readonly Dlss5PluginService _service;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     public Dlss5SetupDialog(Dlss5PluginService service)
     {
@@ -33,7 +35,9 @@ public sealed partial class Dlss5SetupDialog : ContentDialog
         {
             args.Cancel = true;
             GameExeBox.Focus(FocusState.Programmatic);
-            await ShowTipAsync("没找到这个可执行文件", "路径要指到 Client-Win64-Shipping.exe 本体。");
+            await ShowTipAsync(
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/Dlss5_ErrExeTitle", "没找到这个可执行文件"),
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/Dlss5_ErrExeMsg", "路径要指到 Client-Win64-Shipping.exe 本体。"));
             return;
         }
 
@@ -41,7 +45,9 @@ public sealed partial class Dlss5SetupDialog : ContentDialog
         {
             args.Cancel = true;
             KitDirBox.Focus(FocusState.Programmatic);
-            await ShowTipAsync("部署包目录不对", "这个目录里应该有 install.ps1 和 files 文件夹。");
+            await ShowTipAsync(
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/Dlss5_ErrKitTitle", "部署包目录不对"),
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/Dlss5_ErrKitMsg", "这个目录里应该有 install.ps1 和 files 文件夹。"));
             return;
         }
 
@@ -55,7 +61,7 @@ public sealed partial class Dlss5SetupDialog : ContentDialog
             var picker = new FileOpenPicker
             {
                 SuggestedStartLocation = PickerLocationId.ComputerFolder,
-                CommitButtonText = "选择"
+                CommitButtonText = _localizer.GetLocalizedStringOrDefault("/Dialogs/Dlss5_PickerChoose", "选择")
             };
             picker.FileTypeFilter.Add(".exe");
 
@@ -69,7 +75,9 @@ public sealed partial class Dlss5SetupDialog : ContentDialog
         }
         catch (Exception ex)
         {
-            await ShowTipAsync("选文件失败", ex.Message);
+            await ShowTipAsync(
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/Dlss5_ErrPickFile", "选文件失败"),
+                ex.Message);
         }
     }
 
@@ -80,7 +88,7 @@ public sealed partial class Dlss5SetupDialog : ContentDialog
             var picker = new FolderPicker
             {
                 SuggestedStartLocation = PickerLocationId.ComputerFolder,
-                CommitButtonText = "选择文件夹"
+                CommitButtonText = _localizer.GetLocalizedStringOrDefault("/Dialogs/Dlss5_PickerChooseFolder", "选择文件夹")
             };
             picker.FileTypeFilter.Add("*");
 
@@ -94,7 +102,9 @@ public sealed partial class Dlss5SetupDialog : ContentDialog
         }
         catch (Exception ex)
         {
-            await ShowTipAsync("选文件夹失败", ex.Message);
+            await ShowTipAsync(
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/Dlss5_ErrPickFolder", "选文件夹失败"),
+                ex.Message);
         }
     }
 
@@ -104,7 +114,7 @@ public sealed partial class Dlss5SetupDialog : ContentDialog
         {
             Title = title,
             Content = message,
-            CloseButtonText = "知道了",
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/Dialogs/Dlss5_GotIt", "知道了"),
             XamlRoot = XamlRoot
         };
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.GamesService;
 using Serilog;
 
@@ -43,7 +44,7 @@ public partial class OverviewDockPanelVM : ObservableRecipient
         // 二开：游戏数据里没有「其他」这个属性，得自己补一个。
         // 非角色（Others、滑翔翼、武器…）和没指定属性的角色都归到这一类。
         if (File.Exists(OtherElementIconUri))
-            Elements.Add(new ElementIcon("其他", OtherElementIconUri, OtherElementInternalName));
+            Elements.Add(new ElementIcon(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/ElementOtherLabel", "其他"), OtherElementIconUri, OtherElementInternalName));
 
         IsInitialized = true;
     }

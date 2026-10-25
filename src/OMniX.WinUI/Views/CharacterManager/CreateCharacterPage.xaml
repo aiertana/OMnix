@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:OMniX.WinUI.Views.CharacterManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:l="using:WinUI3Localizer"
     x:Name="CreateCharacterPageName"
     mc:Ignorable="d">
 
@@ -26,14 +27,14 @@
             </Grid.ColumnDefinitions>
 
 
-            <TextBlock Margin="0,8,0,8" Text="新建角色" />
+            <TextBlock Margin="0,8,0,8" Text="新建角色" l:Uids.Uid="/CharacterManager/CreateChar_PageTitle" />
 
             <ScrollViewer Grid.Row="1" Grid.Column="0">
 
                 <StackPanel Spacing="8">
 
                     <StackPanel>
-                        <TextBlock Text="角色立绘" />
+                        <TextBlock Text="角色立绘" l:Uids.Uid="/CharacterManager/CreateChar_ImageSectionLabel" />
                         <local:InputWrapper InputField="{x:Bind ViewModel.Form.Image}">
                             <local:InputWrapper.Input>
                                 <controls:CustomImage
@@ -60,11 +61,13 @@
                                 MinWidth="200"
                                 Header="内部名（必填）"
                                 PlaceholderText="{x:Bind ViewModel.Form.InternalName.PlaceHolderText, Mode=OneWay}"
-                                Text="{x:Bind ViewModel.Form.InternalName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{x:Bind ViewModel.Form.InternalName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                l:Uids.Uid="/CharacterManager/CreateChar_InternalNameBox" />
                         </local:InputWrapper.Input>
 
                         <local:InputWrapper.HelpInfo>
-                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="WrapWholeWords">
+                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="WrapWholeWords"
+                                l:Uids.Uid="/CharacterManager/CreateChar_InternalNameHelp">
                                 内部名是 OMniX 用来识别角色 / 对象用的，同时也会被当作 Mod 文件夹的名字，不能重复。
                                 角色创建之后再改这个值，OMniX 会把它当成一个新角色。
                             </TextBlock>
@@ -78,7 +81,8 @@
                                 MinWidth="200"
                                 Header="显示名称"
                                 PlaceholderText="{x:Bind ViewModel.Form.DisplayName.PlaceHolderText, Mode=OneWay}"
-                                Text="{x:Bind ViewModel.Form.DisplayName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{x:Bind ViewModel.Form.DisplayName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                l:Uids.Uid="/CharacterManager/CreateChar_DisplayNameBox" />
                         </local:InputWrapper.Input>
                     </local:InputWrapper>
 
@@ -88,11 +92,13 @@
                                 MinWidth="200"
                                 Header="Mod 文件名"
                                 PlaceholderText="{x:Bind ViewModel.Form.ModFilesName.PlaceHolderText, Mode=OneWay}"
-                                Text="{x:Bind ViewModel.Form.ModFilesName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{x:Bind ViewModel.Form.ModFilesName.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                l:Uids.Uid="/CharacterManager/CreateChar_ModFilesNameBox" />
                         </local:InputWrapper.Input>
 
                         <local:InputWrapper.HelpInfo>
-                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="WrapWholeWords">
+                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="WrapWholeWords"
+                                l:Uids.Uid="/CharacterManager/CreateChar_ModFilesNameHelp">
                                 OMniX 有时候会尝试判断一个 Mod 属于哪个角色。判断时它会用这里填的名字去找同名的 Mod 文件。
                                 比如这里填 'paimon'，它就会去匹配 PaimonHeadLightMap.dds 这种文件。
                                 不想让 OMniX 自动匹配就留空。
@@ -103,7 +109,8 @@
 
                     <local:InputWrapper InputField="{x:Bind ViewModel.Form.ReleaseDate}">
                         <local:InputWrapper.Input>
-                            <CalendarDatePicker Date="{x:Bind ViewModel.Form.ReleaseDate.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="上线日期" />
+                            <CalendarDatePicker Date="{x:Bind ViewModel.Form.ReleaseDate.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="上线日期"
+                                l:Uids.Uid="/CharacterManager/CreateChar_ReleaseDatePicker" />
                         </local:InputWrapper.Input>
                     </local:InputWrapper>
 
@@ -119,7 +126,8 @@
                                     SnapsTo="Ticks"
                                     TickFrequency="1"
                                     TickPlacement="Outside"
-                                    Value="{x:Bind ViewModel.Form.Rarity.Value, Mode=TwoWay}" />
+                                    Value="{x:Bind ViewModel.Form.Rarity.Value, Mode=TwoWay}"
+                                    l:Uids.Uid="/CharacterManager/CreateChar_RaritySlider" />
                                 <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.Form.Rarity.Value, Mode=OneWay}" />
                             </StackPanel>
                         </local:InputWrapper.Input>
@@ -130,17 +138,20 @@
                             <ComboBox
                                 Header="属性"
                                 ItemsSource="{x:Bind ViewModel.Elements}"
-                                SelectedItem="{x:Bind ViewModel.SelectedElement, Mode=TwoWay}" />
+                                SelectedItem="{x:Bind ViewModel.SelectedElement, Mode=TwoWay}"
+                                l:Uids.Uid="/CharacterManager/CreateChar_ElementCombo" />
                         </local:InputWrapper.Input>
                     </local:InputWrapper>
 
                     <local:InputWrapper InputField="{x:Bind ViewModel.Form.IsMultiMod}">
                         <local:InputWrapper.Input>
-                            <CheckBox Content="允许多个 Mod 同时启用" IsChecked="{x:Bind ViewModel.Form.IsMultiMod.Value, Mode=TwoWay}" />
+                            <CheckBox Content="允许多个 Mod 同时启用" IsChecked="{x:Bind ViewModel.Form.IsMultiMod.Value, Mode=TwoWay}"
+                                l:Uids.Uid="/CharacterManager/CreateChar_MultiModCheck" />
                         </local:InputWrapper.Input>
 
                         <local:InputWrapper.HelpInfo>
-                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="WrapWholeWords">
+                            <TextBlock IsTextSelectionEnabled="True" TextWrapping="WrapWholeWords"
+                                l:Uids.Uid="/CharacterManager/CreateChar_MultiModHelp">
                                 勾上之后，这个角色同时启用多个 Mod 时 OMniX 不再弹警告。
                             </TextBlock>
                         </local:InputWrapper.HelpInfo>
@@ -177,18 +188,21 @@
                         Margin="0,0,12,0"
                         VerticalAlignment="Center"
                         FontSize="16"
-                        Text="搜索关键字" />
+                        Text="搜索关键字"
+                        l:Uids.Uid="/CharacterManager/CreateChar_KeysHeader" />
                     <TextBox
                         Grid.Column="1"
                         MinWidth="140"
                         PlaceholderText="新关键字…"
-                        Text="{x:Bind ViewModel.NewKeyNameInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{x:Bind ViewModel.NewKeyNameInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        l:Uids.Uid="/CharacterManager/CreateChar_NewKeyBox" />
                     <Button
                         Grid.Column="2"
                         Margin="8,0,10,0"
                         HorizontalAlignment="Right"
                         Command="{x:Bind ViewModel.AddNewKeyCommand}"
-                        Content="添加关键字" />
+                        Content="添加关键字"
+                        l:Uids.Uid="/CharacterManager/CreateChar_AddKeyButton" />
 
                     <Button
                         Grid.Column="3"
@@ -200,7 +214,8 @@
                                     <TextBlock
                                         IsTextSelectionEnabled="True"
                                         TextWrapping="WrapWholeWords"
-                                        Text="OMniX 用关键字来提升搜索命中率。有些角色有多个名字或俗称，都可以加成关键字。" />
+                                        Text="OMniX 用关键字来提升搜索命中率。有些角色有多个名字或俗称，都可以加成关键字。"
+                                        l:Uids.Uid="/CharacterManager/CreateChar_KeysHelp" />
                                 </Grid>
                             </Flyout>
                         </Button.Flyout>
@@ -231,7 +246,8 @@
                                         HorizontalAlignment="Right"
                                         Command="{Binding ElementName=CreateCharacterPageName, Path=ViewModel.RemoveKeyCommand, Mode=OneWay}"
                                         CommandParameter="{Binding Mode=OneTime}"
-                                        Content="移除" />
+                                        Content="移除"
+                                        l:Uids.Uid="/CharacterManager/CreateChar_RemoveKeyButton" />
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -251,9 +267,12 @@
                     HorizontalAlignment="Right"
                     Orientation="Horizontal"
                     Spacing="16">
-                    <Button Command="{x:Bind ViewModel.ExportCharacterCommand}">导出角色 json</Button>
-                    <Button Command="{x:Bind ViewModel.OpenCustomCharacterJsonFileCommand}">打开自定义角色 json</Button>
-                    <Button Background="{ThemeResource AccentFillColorDefaultBrush}" Command="{x:Bind ViewModel.SaveCharacterCommand}">创建角色</Button>
+                    <Button Command="{x:Bind ViewModel.ExportCharacterCommand}"
+                        l:Uids.Uid="/CharacterManager/CreateChar_ExportButton">导出角色 json</Button>
+                    <Button Command="{x:Bind ViewModel.OpenCustomCharacterJsonFileCommand}"
+                        l:Uids.Uid="/CharacterManager/CreateChar_OpenJsonButton">打开自定义角色 json</Button>
+                    <Button Background="{ThemeResource AccentFillColorDefaultBrush}" Command="{x:Bind ViewModel.SaveCharacterCommand}"
+                        l:Uids.Uid="/CharacterManager/CreateChar_SaveButton">创建角色</Button>
                 </StackPanel>
             </Grid>
 

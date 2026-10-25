@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
+using OMniX.Core.Contracts.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -30,6 +31,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     private readonly SelectedGameService _selectedGameService;
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly GameLaunchService _gameLaunchService;
+    private readonly ILanguageLocalizer _localizer;
 
     /// <summary>Hero 背景图存在这个键里；没有就用内置的默认图。</summary>
     public const string HeroBackgroundKey = "Home.Hero.BackgroundImage";
@@ -44,8 +46,8 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty] private bool _isConfigured;
     [ObservableProperty] private bool _isDarkTheme;
     [ObservableProperty] private bool _isGameReady;
-    [ObservableProperty] private string _launchGameText = "启动游戏";
-    [ObservableProperty] private string _modsSummary = "尚未配置";
+    [ObservableProperty] private string _launchGameText = string.Empty;
+    [ObservableProperty] private string _modsSummary = string.Empty;
     [ObservableProperty] private GameSwitchItem? _selectedGame = null;
     [ObservableProperty] private string _selectedGameName = "OMniX";
 
@@ -66,7 +68,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         ILocalSettingsService localSettingsService, SelectedGameService selectedGameService,
         GenshinProcessManager genshinProcessManager, IThemeSelectorService themeSelectorService,
         LifeCycleService lifeCycleService, NotificationManager notificationManager,
-        GameLaunchService gameLaunchService)
+        GameLaunchService gameLaunchService, ILanguageLocalizer localizer)
     {
         _navigationService = navigationService;
         _gameService = gameService;
@@ -77,7 +79,10 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         _lifeCycleService = lifeCycleService;
         _notificationManager = notificationManager;
         _gameLaunchService = gameLaunchService;
+        _localizer = localizer;
 
+        LaunchGameText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Home_LaunchGameText", "启动游戏");
+        ModsSummary = _localizer.GetLocalizedStringOrDefault("/HomePreset/Home_ModsSummaryNotConfigured", "尚未配置");
         IsDarkTheme = _themeSelectorService.Theme == ElementTheme.Dark;
         _gameService.Initialized += OnGameServiceInitialized;
     }
@@ -129,16 +134,16 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
             try
             {
                 var count = Directory.GetDirectories(options.ModsFolderPath!).Length;
-                ModsSummary = $"{count} 个 Mod 文件夹";
+                ModsSummary = string.Format(_localizer.GetLocalizedStringOrDefault("/HomePreset/Home_ModsSummaryCount", "{0} 个 Mod 文件夹"), count);
             }
             catch (Exception)
             {
-                ModsSummary = "已配置";
+                ModsSummary = _localizer.GetLocalizedStringOrDefault("/HomePreset/Home_ModsSummaryConfigured", "已配置");
             }
         }
         else
         {
-            ModsSummary = "尚未配置";
+            ModsSummary = _localizer.GetLocalizedStringOrDefault("/HomePreset/Home_ModsSummaryNotConfigured", "尚未配置");
         }
 
         // 当前游戏信息（GameService 未初始化时会抛异常，属于正常情况）
@@ -234,7 +239,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("换背景图失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Home_NotificationBgFailed", "换背景图失败"), e.Message, TimeSpan.FromSeconds(8));
             return false;
         }
     }
@@ -280,7 +285,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("打不开文件夹", e.Message, TimeSpan.FromSeconds(6));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Home_NotificationFolderOpenFailed", "打不开文件夹"), e.Message, TimeSpan.FromSeconds(6));
         }
     }
 
@@ -376,7 +381,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("切换游戏失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Home_NotificationSwitchGameFailed", "切换游戏失败"), e.Message, TimeSpan.FromSeconds(8));
             IsBusy = false;
         }
     }

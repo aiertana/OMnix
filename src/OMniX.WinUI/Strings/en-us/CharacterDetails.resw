@@ -1,0 +1,433 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Card_CurrentSkinLabel.Text" xml:space="preserve">
+    <value>Current in-game skin</value>
+  </data>
+  <data name="Card_DisableAllButton.Content" xml:space="preserve">
+    <value>Disable all mods</value>
+  </data>
+  <data name="Card_DisableAllErrorTitle" xml:space="preserve">
+    <value>Failed to disable mods</value>
+  </data>
+  <data name="Card_EditChar.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Edit character</value>
+  </data>
+  <data name="Card_LocateInOverview.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Locate in mod overview</value>
+  </data>
+  <data name="Card_NoMoreSkins.Text" xml:space="preserve">
+    <value>No other skins available</value>
+  </data>
+  <data name="Card_SelectSkinButton.Content" xml:space="preserve">
+    <value>Select skin</value>
+  </data>
+  <data name="Card_SwitchSkinError" xml:space="preserve">
+    <value>Failed to switch character skin</value>
+  </data>
+  <data name="Card_TrackedModsLabel.Text" xml:space="preserve">
+    <value>Tracked mods</value>
+  </data>
+  <data name="CtxMenu_ExportZip.Text" xml:space="preserve">
+    <value>Export as archive…</value>
+  </data>
+  <data name="CtxMenu_InvalidOpTitle" xml:space="preserve">
+    <value>This operation is not valid</value>
+  </data>
+  <data name="CtxMenu_MoveButton.Content" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="CtxMenu_MoveFailedTitle" xml:space="preserve">
+    <value>Move failed</value>
+  </data>
+  <data name="CtxMenu_MoveFolderBox.PlaceholderText" xml:space="preserve">
+    <value>Folders under Mods…</value>
+  </data>
+  <data name="CtxMenu_MoveToCharLabel.Text" xml:space="preserve">
+    <value>Move to another character:</value>
+  </data>
+  <data name="CtxMenu_MoveToFolderLabel.Text" xml:space="preserve">
+    <value>Move to another folder:</value>
+  </data>
+  <data name="CtxMenu_MovedBody" xml:space="preserve">
+    <value>Moved {0} mods to &quot;{1}&quot;: {2}</value>
+  </data>
+  <data name="CtxMenu_MovedTitle" xml:space="preserve">
+    <value>Moved</value>
+  </data>
+  <data name="CtxMenu_NoTargetListTitle" xml:space="preserve">
+    <value>Destination mod list not found</value>
+  </data>
+  <data name="CtxMenu_OpenFolder.Text" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="CtxMenu_SearchCharBox.PlaceholderText" xml:space="preserve">
+    <value>Search characters...</value>
+  </data>
+  <data name="CtxMenu_SelectedModsLabel.Text" xml:space="preserve">
+    <value>Selected mods:</value>
+  </data>
+  <data name="CtxMenu_SkinOverrideDoneTitle" xml:space="preserve">
+    <value>Skin override updated for this mod</value>
+  </data>
+  <data name="Dlg_DeleteErrorTitle" xml:space="preserve">
+    <value>Failed to delete mods</value>
+  </data>
+  <data name="Dlg_DeleteMoveToRecycle.Content" xml:space="preserve">
+    <value>Move to recycle bin (recoverable)</value>
+  </data>
+  <data name="Dlg_DeletePrimary" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Dlg_DeleteRemoveFromPresets.Content" xml:space="preserve">
+    <value>Also remove from presets</value>
+  </data>
+  <data name="Dlg_DeleteSecondary" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Dlg_DeleteTitle" xml:space="preserve">
+    <value>Delete these {0} mods?</value>
+  </data>
+  <data name="Dnd_DragFailedTitle" xml:space="preserve">
+    <value>Drag and drop failed</value>
+  </data>
+  <data name="Dnd_OpenModPageFailed" xml:space="preserve">
+    <value>Failed to open mod page</value>
+  </data>
+  <data name="Grid_DisableError" xml:space="preserve">
+    <value>Failed to disable mod</value>
+  </data>
+  <data name="Grid_DuplicateModsTitle" xml:space="preserve">
+    <value>Duplicate mods detected</value>
+  </data>
+  <data name="Grid_RefreshError" xml:space="preserve">
+    <value>Failed to refresh mods</value>
+  </data>
+  <data name="Grid_SaveSettingsError" xml:space="preserve">
+    <value>Failed to save mod settings</value>
+  </data>
+  <data name="Grid_SettingsSavedTitle" xml:space="preserve">
+    <value>Mod settings saved</value>
+  </data>
+  <data name="Grid_ToggleError" xml:space="preserve">
+    <value>Failed to toggle mod</value>
+  </data>
+  <data name="Loading_ContextMenu" xml:space="preserve">
+    <value>Context menu</value>
+  </data>
+  <data name="ModGrid_AuthorHeader" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="ModGrid_DateAddedHeader" xml:space="preserve">
+    <value>Date added</value>
+  </data>
+  <data name="ModGrid_DisplayNameHeader" xml:space="preserve">
+    <value>Mod name</value>
+  </data>
+  <data name="ModGrid_EnabledHeader" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="ModGrid_FolderNameHeader" xml:space="preserve">
+    <value>Folder name</value>
+  </data>
+  <data name="ModGrid_NotesHeader" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="ModGrid_PresetsHeader" xml:space="preserve">
+    <value>Presets</value>
+  </data>
+  <data name="ModPane_BackwardKey.Header" xml:space="preserve">
+    <value>Backward key</value>
+  </data>
+  <data name="ModPane_CharAvatar.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Character avatar</value>
+  </data>
+  <data name="ModPane_CharLabel.Text" xml:space="preserve">
+    <value>Character</value>
+  </data>
+  <data name="ModPane_ClearIni.Text" xml:space="preserve">
+    <value>Ignore this mod's .ini file</value>
+  </data>
+  <data name="ModPane_ClearIni.ToolTipService.ToolTip" xml:space="preserve">
+    <value>OMniX will no longer look for merged.ini / Script.ini and will ignore this mod's key swaps</value>
+  </data>
+  <data name="ModPane_DeleteButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Move the mod folder to the recycle bin; you can restore it later</value>
+  </data>
+  <data name="ModPane_DeleteButtonText.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ModPane_EditKeys.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Edit raw key values</value>
+  </data>
+  <data name="ModPane_EnabledToggle.OffContent" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="ModPane_EnabledToggle.OnContent" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="ModPane_ForwardKey.Header" xml:space="preserve">
+    <value>Forward key</value>
+  </data>
+  <data name="ModPane_KeySwapDisabled.Text" xml:space="preserve">
+    <value>Key swap management is disabled for this mod</value>
+  </data>
+  <data name="ModPane_KeySwapMenuBadge.Text" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="ModPane_ModName.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Change the mod's display name</value>
+  </data>
+  <data name="ModPane_NotesBox.Header" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="ModPane_NotesBox.PlaceholderText" xml:space="preserve">
+    <value>Click to add notes…</value>
+  </data>
+  <data name="ModPane_OpenFolder.Content" xml:space="preserve">
+    <value>Open mod folder…</value>
+  </data>
+  <data name="ModPane_SaveButtonText.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ModPane_SetIni.Text" xml:space="preserve">
+    <value>Set the mod's .ini file</value>
+  </data>
+  <data name="ModPane_SetIni.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Specify the .ini file OMniX reads for this mod</value>
+  </data>
+  <data name="ModPane_VariationsLabel.Text" xml:space="preserve">
+    <value>Variants:</value>
+  </data>
+  <data name="Pane_DeleteDialogClose" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Pane_DeleteDialogContent" xml:space="preserve">
+    <value>Delete &quot;{0}&quot;?\nThe files will be moved to the recycle bin and can be restored.</value>
+  </data>
+  <data name="Pane_DeleteDialogPrimary" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Pane_DeleteDialogTitle" xml:space="preserve">
+    <value>Delete mod</value>
+  </data>
+  <data name="Pane_DeletedBody" xml:space="preserve">
+    <value>{0} moved to the recycle bin</value>
+  </data>
+  <data name="Pane_DeletedTitle" xml:space="preserve">
+    <value>Mod deleted</value>
+  </data>
+  <data name="Pane_DeleteFailed" xml:space="preserve">
+    <value>Delete failed</value>
+  </data>
+  <data name="Pane_DisableFailed" xml:space="preserve">
+    <value>Failed to disable</value>
+  </data>
+  <data name="Pane_EnableFailed" xml:space="preserve">
+    <value>Failed to enable</value>
+  </data>
+  <data name="Pane_FolderExistsBody" xml:space="preserve">
+    <value>A folder with the same name already exists: {0}</value>
+  </data>
+  <data name="Pane_GetClipboardImageFailed" xml:space="preserve">
+    <value>Could not get an image from the clipboard</value>
+  </data>
+  <data name="Pane_LoadError" xml:space="preserve">
+    <value>Failed to load mod</value>
+  </data>
+  <data name="Pane_ModFolderNotFound" xml:space="preserve">
+    <value>Mod folder not found: {0}</value>
+  </data>
+  <data name="Pane_NoClipboardImage" xml:space="preserve">
+    <value>No usable image in the clipboard</value>
+  </data>
+  <data name="Pane_OperationFailed" xml:space="preserve">
+    <value>Operation failed</value>
+  </data>
+  <data name="Pane_PathCopied" xml:space="preserve">
+    <value>Mod folder path copied</value>
+  </data>
+  <data name="Pane_PickImageCommit" xml:space="preserve">
+    <value>Choose this image</value>
+  </data>
+  <data name="Pane_SaveKeyswapsFailed" xml:space="preserve">
+    <value>Failed to save key swaps</value>
+  </data>
+  <data name="Pane_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Page_CommandErrorTitle" xml:space="preserve">
+    <value>An unknown error occurred while running the command</value>
+  </data>
+  <data name="Page_LoadErrorTitle" xml:space="preserve">
+    <value>Failed to load character details</value>
+  </data>
+  <data name="Page_NoModsDropHere" xml:space="preserve">
+    <value>Drop here</value>
+  </data>
+  <data name="Page_NoModsSubtitle" xml:space="preserve">
+    <value>Drop a mod folder here, or import it from &quot;Install mod&quot;</value>
+  </data>
+  <data name="Page_NoModsTitle" xml:space="preserve">
+    <value>No mods for this character yet</value>
+  </data>
+  <data name="Page_NoMoreSkinsToolTip" xml:space="preserve">
+    <value>This character currently only has its default skin.\nInstall an in-game mod with multiple skins to make more skins selectable here.</value>
+  </data>
+  <data name="Page_SelectSkinButtonToolTip" xml:space="preserve">
+    <value>Switch the in-game skin (shortcut F1)</value>
+  </data>
+  <data name="Section_AssignButton.Content" xml:space="preserve">
+    <value>Assign selected mods to this section</value>
+  </data>
+  <data name="Section_ConfirmButton.Content" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Section_DefaultNewName" xml:space="preserve">
+    <value>New section</value>
+  </data>
+  <data name="Section_DeleteButton.Content" xml:space="preserve">
+    <value>Delete section</value>
+  </data>
+  <data name="Section_EnableButton.Content" xml:space="preserve">
+    <value>Enable only this section</value>
+  </data>
+  <data name="Section_Label.Text" xml:space="preserve">
+    <value>Appearance sections:</value>
+  </data>
+  <data name="Section_NameBox.PlaceholderText" xml:space="preserve">
+    <value>Section name</value>
+  </data>
+  <data name="Section_NewButton.Content" xml:space="preserve">
+    <value>New section</value>
+  </data>
+  <data name="Toolbar_AddArchive.Text" xml:space="preserve">
+    <value>Add archive…</value>
+  </data>
+  <data name="Toolbar_AddArchive.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Add a mod from an archive</value>
+  </data>
+  <data name="Toolbar_AddFileErrorTitle" xml:space="preserve">
+    <value>Failed to add file</value>
+  </data>
+  <data name="Toolbar_AddModFolder.Text" xml:space="preserve">
+    <value>Add mod…</value>
+  </data>
+  <data name="Toolbar_AddModFolder.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Add a mod folder</value>
+  </data>
+  <data name="Toolbar_FolderMenu.Title" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="Toolbar_LoadModPrefs.Text" xml:space="preserve">
+    <value>Load selected mod's preferences</value>
+  </data>
+  <data name="Toolbar_LoadModPrefs.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Read the selected mod's preferences from .JASM_Config.json and write them to d3dx_user.ini for 3Dmigoto</value>
+  </data>
+  <data name="Toolbar_ModPrefsMenu.Title" xml:space="preserve">
+    <value>Mod preferences</value>
+  </data>
+  <data name="Toolbar_MultiModWarn.Message" xml:space="preserve">
+    <value>Multiple mods are active at once</value>
+  </data>
+  <data name="Toolbar_OpenCharFolder.Text" xml:space="preserve">
+    <value>Open this character's mod folder…</value>
+  </data>
+  <data name="Toolbar_OpenRootFolder.Text" xml:space="preserve">
+    <value>Open 3Dmigoto root folder…</value>
+  </data>
+  <data name="Toolbar_OpenSelectedModFolder.Text" xml:space="preserve">
+    <value>Open selected mod's folder…</value>
+  </data>
+  <data name="Toolbar_RefreshMods.Text" xml:space="preserve">
+    <value>Refresh mods</value>
+  </data>
+  <data name="Toolbar_SaveModPrefs.Text" xml:space="preserve">
+    <value>Save selected mod's preferences</value>
+  </data>
+  <data name="Toolbar_SaveModPrefs.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Read the selected mod's 3Dmigoto preferences from d3dx_user.ini and save them to its .JASM_Config.json</value>
+  </data>
+  <data name="Toolbar_SearchBox.PlaceholderText" xml:space="preserve">
+    <value>Search mods…</value>
+  </data>
+  <data name="Toolbar_ShowModFolderColumn.Text" xml:space="preserve">
+    <value>Show "Mod folder name" column</value>
+  </data>
+  <data name="Toolbar_SingleSelect.Text" xml:space="preserve">
+    <value>Single select</value>
+  </data>
+  <data name="Toolbar_SingleSelect.ToolTipService.ToolTip" xml:space="preserve">
+    <value>When enabled, only one mod can be active at a time</value>
+  </data>
+  <data name="Toolbar_ViewMenu.Title" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Toolbar_ViewToggle.AutomationProperties.Name" xml:space="preserve">
+    <value>Toggle view mode</value>
+  </data>
+  <data name="Toolbar_ViewToggle.OffContent" xml:space="preserve">
+    <value>Detail view</value>
+  </data>
+  <data name="Toolbar_ViewToggle.OnContent" xml:space="preserve">
+    <value>Gallery view</value>
+  </data>
+</root>

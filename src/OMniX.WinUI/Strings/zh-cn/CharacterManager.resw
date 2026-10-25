@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CharMgr_BackButton.AutomationProperties.Name" xml:space="preserve"><value>返回角色列表</value></data>
+  <data name="CharMgr_BackButton.ToolTipService.ToolTip" xml:space="preserve"><value>返回角色头像列表</value></data>
+  <data name="CharMgr_NewCharButton.ToolTipService.ToolTip" xml:space="preserve"><value>新建角色</value></data>
+  <data name="CharMgr_NoMatchResult" xml:space="preserve"><value>没有找到匹配的角色</value></data>
+  <data name="CharMgr_PageTitle.Text" xml:space="preserve"><value>角色管理</value></data>
+  <data name="CharMgr_SearchBox.Header" xml:space="preserve"><value>搜索角色（也可以输入新名字，再点右边 + 新建）</value></data>
+  <data name="CharMgr_SearchBox.PlaceholderText" xml:space="preserve"><value>输入角色名开始搜索…</value></data>
+  <data name="CharMgr_Signature.Text" xml:space="preserve"><value>by 是湫</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>取消</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>关闭</value></data>
+  <data name="CreateChar_AddKeyButton.Content" xml:space="preserve"><value>添加关键字</value></data>
+  <data name="CreateChar_CreatedBody" xml:space="preserve"><value>「{0}」创建成功</value></data>
+  <data name="CreateChar_CreatedTitle" xml:space="preserve"><value>角色已创建</value></data>
+  <data name="CreateChar_CreateFailedTitle" xml:space="preserve"><value>创建角色失败</value></data>
+  <data name="CreateChar_DisplayNameBox.Header" xml:space="preserve"><value>显示名称</value></data>
+  <data name="CreateChar_ElementCombo.Header" xml:space="preserve"><value>属性</value></data>
+  <data name="CreateChar_EnableModsFailedTitle" xml:space="preserve"><value>角色已创建，但启用它的 Mod 列表时失败了</value></data>
+  <data name="CreateChar_ExportButton.Content" xml:space="preserve"><value>导出角色 json</value></data>
+  <data name="CreateChar_ExportCopiedBody" xml:space="preserve"><value>角色 json 已复制到剪贴板</value></data>
+  <data name="CreateChar_ExportCopyPrimary" xml:space="preserve"><value>复制到剪贴板并关闭</value></data>
+  <data name="CreateChar_ExportDialogTitle" xml:space="preserve"><value>导出角色数据 Json</value></data>
+  <data name="CreateChar_ExportFailedTitle" xml:space="preserve"><value>导出 json 失败</value></data>
+  <data name="CreateChar_ImageSectionLabel.Text" xml:space="preserve"><value>角色立绘</value></data>
+  <data name="CreateChar_InternalNameBox.Header" xml:space="preserve"><value>内部名（必填）</value></data>
+  <data name="CreateChar_InternalNameHelp.Text" xml:space="preserve"><value>内部名是 OMniX 用来识别角色 / 对象用的，同时也会被当作 Mod 文件夹的名字，不能重复。
+角色创建之后再改这个值，OMniX 会把它当成一个新角色。</value></data>
+  <data name="CreateChar_KeysHeader.Text" xml:space="preserve"><value>搜索关键字</value></data>
+  <data name="CreateChar_KeysHelp.Text" xml:space="preserve"><value>OMniX 用关键字来提升搜索命中率。有些角色有多个名字或俗称，都可以加成关键字。</value></data>
+  <data name="CreateChar_ModFilesNameBox.Header" xml:space="preserve"><value>Mod 文件名</value></data>
+  <data name="CreateChar_ModFilesNameHelp.Text" xml:space="preserve"><value>OMniX 有时候会尝试判断一个 Mod 属于哪个角色。判断时它会用这里填的名字去找同名的 Mod 文件。
+比如这里填 'paimon'，它就会去匹配 PaimonHeadLightMap.dds 这种文件。
+不想让 OMniX 自动匹配就留空。</value></data>
+  <data name="CreateChar_MultiModCheck.Content" xml:space="preserve"><value>允许多个 Mod 同时启用</value></data>
+  <data name="CreateChar_MultiModHelp.Text" xml:space="preserve"><value>勾上之后，这个角色同时启用多个 Mod 时 OMniX 不再弹警告。</value></data>
+  <data name="CreateChar_NewKeyBox.PlaceholderText" xml:space="preserve"><value>新关键字…</value></data>
+  <data name="CreateChar_OpenJsonButton.Content" xml:space="preserve"><value>打开自定义角色 json</value></data>
+  <data name="CreateChar_PageTitle.Text" xml:space="preserve"><value>新建角色</value></data>
+  <data name="CreateChar_PasteFailedTitle" xml:space="preserve"><value>粘贴图片失败</value></data>
+  <data name="CreateChar_ClipboardNoImage" xml:space="preserve"><value>剪贴板里没有图片</value></data>
+  <data name="CreateChar_RaritySlider.AutomationProperties.Name" xml:space="preserve"><value>稀有度</value></data>
+  <data name="CreateChar_RaritySlider.Header" xml:space="preserve"><value>稀有度</value></data>
+  <data name="CreateChar_ReleaseDatePicker.Header" xml:space="preserve"><value>上线日期</value></data>
+  <data name="CreateChar_RemoveKeyButton.Content" xml:space="preserve"><value>移除</value></data>
+  <data name="CreateChar_SaveButton.Content" xml:space="preserve"><value>创建角色</value></data>
+  <data name="EditChar_AddKeyButton.Content" xml:space="preserve"><value>添加关键字</value></data>
+  <data name="EditChar_CharacterDataTitle" xml:space="preserve"><value>角色数据</value></data>
+  <data name="EditChar_ClipboardNoImage" xml:space="preserve"><value>剪贴板里没有图片</value></data>
+  <data name="EditChar_CustomDeletedBody" xml:space="preserve"><value>「{0}」已删除</value></data>
+  <data name="EditChar_CustomDeletedTitle" xml:space="preserve"><value>自定义角色已删除</value></data>
+  <data name="EditChar_DateAddedText.ToolTipService.ToolTip" xml:space="preserve"><value>添加到 OMniX 的时间</value></data>
+  <data name="EditChar_DateUnknown" xml:space="preserve"><value>未知</value></data>
+  <data name="EditChar_DeleteCustomButton.Content" xml:space="preserve"><value>删除自定义角色</value></data>
+  <data name="EditChar_DeleteCustomButton.ToolTipService.ToolTip" xml:space="preserve"><value>会先弹窗确认</value></data>
+  <data name="EditChar_DeleteCustomDeleteFolderCheck" xml:space="preserve"><value>同时删除这个自定义角色的文件夹和里面的 Mod？
+文件会被永久删除，无法找回！</value></data>
+  <data name="EditChar_DeleteCustomDialogText" xml:space="preserve"><value>确定要删除这个自定义角色吗？角色会被移除，OMniX 将不再识别它。点「确定」会立即执行。</value></data>
+  <data name="EditChar_DeleteCustomPrimary" xml:space="preserve"><value>确定删除</value></data>
+  <data name="EditChar_DeleteCustomTitle" xml:space="preserve"><value>删除自定义角色</value></data>
+  <data name="EditChar_DeleteFailedTitle" xml:space="preserve"><value>删除失败</value></data>
+  <data name="EditChar_DeleteModButton.AutomationProperties.Name" xml:space="preserve"><value>删除</value></data>
+  <data name="EditChar_DeleteModButton.ToolTipService.ToolTip" xml:space="preserve"><value>从磁盘删除这个 Mod</value></data>
+  <data name="EditChar_DeleteModContent" xml:space="preserve"><value>确定要删除「{0}」吗？
+
+整个文件夹会从磁盘上删除：
+{1}
+
+这个操作无法撤销。</value></data>
+  <data name="EditChar_DeleteModPrimary" xml:space="preserve"><value>删除</value></data>
+  <data name="EditChar_DeleteModTitle" xml:space="preserve"><value>删除 Mod</value></data>
+  <data name="EditChar_DisableButton.Content" xml:space="preserve"><value>禁用角色</value></data>
+  <data name="EditChar_DisableButton.ToolTipService.ToolTip" xml:space="preserve"><value>会先弹窗确认</value></data>
+  <data name="EditChar_DisableDeleteFolderCheck" xml:space="preserve"><value>同时删除这个角色的文件夹和里面的 Mod？
+文件会被永久删除，无法找回！</value></data>
+  <data name="EditChar_DisableDialogText" xml:space="preserve"><value>确定要禁用这个角色吗？禁用不会删除角色，但 OMniX 将不再识别它。之后可以随时重新启用。点「确定」会立即执行。</value></data>
+  <data name="EditChar_DisablePrimary" xml:space="preserve"><value>确定禁用</value></data>
+  <data name="EditChar_DisableTitle" xml:space="preserve"><value>禁用角色</value></data>
+  <data name="EditChar_DisplayNameBox.Header" xml:space="preserve"><value>显示名称</value></data>
+  <data name="EditChar_DotDisabledToolTip" xml:space="preserve"><value>已禁用，点一下启用</value></data>
+  <data name="EditChar_DotEnabledToolTip" xml:space="preserve"><value>已启用，点一下禁用</value></data>
+  <data name="EditChar_EnableButton.Content" xml:space="preserve"><value>启用角色</value></data>
+  <data name="EditChar_EnableButton.ToolTipService.ToolTip" xml:space="preserve"><value>会先弹窗确认</value></data>
+  <data name="EditChar_EnableDialogText" xml:space="preserve"><value>确定要启用这个角色吗？点「确定」会立即执行。</value></data>
+  <data name="EditChar_EnablePrimary" xml:space="preserve"><value>确定启用</value></data>
+  <data name="EditChar_EnableTitle" xml:space="preserve"><value>启用角色</value></data>
+  <data name="EditChar_FixerDownloadingBody" xml:space="preserve"><value>{0}（{1}），第一次会慢一点</value></data>
+  <data name="EditChar_FixerDownloadingTitle" xml:space="preserve"><value>正在下载修复器</value></data>
+  <data name="EditChar_FixerOpenedBody" xml:space="preserve"><value>MOD 目录已填成「{0}」</value></data>
+  <data name="EditChar_FixerOpenedTitle" xml:space="preserve"><value>已打开修复器</value></data>
+  <data name="EditChar_FixerOpenFailedTitle" xml:space="preserve"><value>打开修复器失败</value></data>
+  <data name="EditChar_FixerUnreachableBody" xml:space="preserve"><value>访问 GitHub 失败，可以先到项目主页手动下载 Wuwa_Mod_Fixer</value></data>
+  <data name="EditChar_FixerUnreachableTitle" xml:space="preserve"><value>连不上修复器</value></data>
+  <data name="EditChar_FolderMissingTitle" xml:space="preserve"><value>文件夹不存在</value></data>
+  <data name="EditChar_InternalNameHelp.Text" xml:space="preserve"><value>内部名是 OMniX 用来识别角色 / 对象用的，同时也会被当作 Mod 文件夹的名字，不能重复。
+角色创建之后再改这个值，OMniX 会把它当成一个新角色。</value></data>
+  <data name="EditChar_InternalNameLabel.Text" xml:space="preserve"><value>内部名（ID）：</value></data>
+  <data name="EditChar_InvalidCharsBody" xml:space="preserve"><value>换一个名字试试</value></data>
+  <data name="EditChar_InvalidCharsTitle" xml:space="preserve"><value>名称里有不允许的字符</value></data>
+  <data name="EditChar_KeysHeader.Text" xml:space="preserve"><value>搜索关键字</value></data>
+  <data name="EditChar_KeysHelp.Text" xml:space="preserve"><value>OMniX 用关键字来提升搜索命中率。有些角色有多个名字或俗称，都可以加成关键字。</value></data>
+  <data name="EditChar_ModDeletedBody" xml:space="preserve"><value>「{0}」已从磁盘删除</value></data>
+  <data name="EditChar_ModDeletedTitle" xml:space="preserve"><value>Mod 已删除</value></data>
+  <data name="EditChar_ModFolderLabel.Text" xml:space="preserve"><value>Mod 文件夹路径：</value></data>
+  <data name="EditChar_ModFolderLink.ToolTipService.ToolTip" xml:space="preserve"><value>打开这个角色的 Mod 文件夹</value></data>
+  <data name="EditChar_ModsCountLabel.Text" xml:space="preserve"><value>Mod 总数：</value></data>
+  <data name="EditChar_MultiModCheck.Content" xml:space="preserve"><value>允许多个 Mod 同时启用</value></data>
+  <data name="EditChar_MultiModHelp.Text" xml:space="preserve"><value>勾上之后，这个角色同时启用多个 Mod 时 OMniX 不再弹警告。</value></data>
+  <data name="EditChar_NameDupBody" xml:space="preserve"><value>「{0}」已经存在了</value></data>
+  <data name="EditChar_NameDupTitle" xml:space="preserve"><value>名字重复</value></data>
+  <data name="EditChar_NewKeyBox.PlaceholderText" xml:space="preserve"><value>新关键字…</value></data>
+  <data name="EditChar_OpenFolderButton.AutomationProperties.Name" xml:space="preserve"><value>打开文件夹</value></data>
+  <data name="EditChar_OpenFolderButton.ToolTipService.ToolTip" xml:space="preserve"><value>打开这个 Mod 的文件夹</value></data>
+  <data name="EditChar_OpenFolderFailedTitle" xml:space="preserve"><value>打开文件夹失败</value></data>
+  <data name="EditChar_PasteFailedTitle" xml:space="preserve"><value>粘贴图片失败</value></data>
+  <data name="EditChar_RenameButton.AutomationProperties.Name" xml:space="preserve"><value>重命名</value></data>
+  <data name="EditChar_RenameButton.ToolTipService.ToolTip" xml:space="preserve"><value>重命名（点一下就能在上面直接改）</value></data>
+  <data name="EditChar_RenameFailedTitle" xml:space="preserve"><value>重命名失败</value></data>
+  <data name="EditChar_RenamedBody" xml:space="preserve"><value>「{0}」</value></data>
+  <data name="EditChar_RenamedTitle" xml:space="preserve"><value>已重命名</value></data>
+  <data name="EditChar_ResetButton.Content" xml:space="preserve"><value>重置角色</value></data>
+  <data name="EditChar_ResetButton.ToolTipService.ToolTip" xml:space="preserve"><value>把角色数据恢复成默认值</value></data>
+  <data name="EditChar_ResetConfirmButton.Content" xml:space="preserve"><value>重置为默认值</value></data>
+  <data name="EditChar_RevertButton.Content" xml:space="preserve"><value>撤销修改</value></data>
+  <data name="EditChar_RevertButton.ToolTipService.ToolTip" xml:space="preserve"><value>放弃还没保存的修改</value></data>
+  <data name="EditChar_RepairButton.AutomationProperties.Name" xml:space="preserve"><value>修复</value></data>
+  <data name="EditChar_RepairButton.ToolTipService.ToolTip" xml:space="preserve"><value>用修复器打开这个 Mod（MOD 目录自动填入）</value></data>
+  <data name="EditChar_RemoveKeyButton.Content" xml:space="preserve"><value>移除</value></data>
+  <data name="EditChar_SaveButton.Content" xml:space="preserve"><value>保存修改</value></data>
+  <data name="EditChar_SaveButton.ToolTipService.ToolTip" xml:space="preserve"><value>把修改写入磁盘</value></data>
+  <data name="EditChar_SaveConfirmButton.Content" xml:space="preserve"><value>保存</value></data>
+  <data name="EditChar_SaveFailedTitle" xml:space="preserve"><value>保存角色失败</value></data>
+  <data name="EditChar_ToggleFailedTitle" xml:space="preserve"><value>切换启用状态失败</value></data>
+  <data name="EditChar_ViewCharButton.Content" xml:space="preserve"><value>查看角色</value></data>
+  <data name="EditChar_ViewDataButton.Text" xml:space="preserve"><value>查看角色数据…</value></data>
+  <data name="Valid_DisplayNameConflict" xml:space="preserve"><value>另一个对象（{0}）已经用了这个显示名，搜索时可能会有冲突</value></data>
+  <data name="Valid_DisplayNameRequired" xml:space="preserve"><value>显示名称不能为空</value></data>
+  <data name="Valid_ElementInvalid" xml:space="preserve"><value>属性「{0}」不存在。可用值：{1}</value></data>
+  <data name="Valid_FileExistsDefault" xml:space="preserve"><value>文件不存在</value></data>
+  <data name="Valid_FileMissing" xml:space="preserve"><value>文件夹里找不到：{0}</value></data>
+  <data name="Valid_FilesMissing" xml:space="preserve"><value>文件夹里找不到以下名称的文件或文件夹：{0}</value></data>
+  <data name="Valid_FolderExistsDefault" xml:space="preserve"><value>文件夹不存在</value></data>
+  <data name="Valid_ImageFileInvalid" xml:space="preserve"><value>图片必须是一个存在的有效文件</value></data>
+  <data name="Valid_ImageFormatUnsupported" xml:space="preserve"><value>图片只支持这几种格式：{0}。当前扩展名 {1} 不支持。</value></data>
+  <data name="Valid_ImageRequired" xml:space="preserve"><value>图片不能为空</value></data>
+  <data name="Valid_InternalNameInvalidChar" xml:space="preserve"><value>内部名里有文件名不允许的字符「{0}」</value></data>
+  <data name="Valid_InternalNameRequired" xml:space="preserve"><value>内部名不能为空</value></data>
+  <data name="Valid_InternalNameTaken" xml:space="preserve"><value>内部名「{0}」已被 {1} 占用</value></data>
+  <data name="Valid_KeyTaken" xml:space="preserve"><value>关键字「{0}」已被 {1} 使用</value></data>
+  <data name="Valid_ModFilesNameTaken" xml:space="preserve"><value>Mod 文件名已被 {0} 使用</value></data>
+  <data name="Valid_NoLauncherExe" xml:space="preserve"><value>未在该文件夹中识别到启动器程序（例如 Resources\Bin\XXMI Launcher.exe）</value></data>
+  <data name="Valid_NotEmptyPath" xml:space="preserve"><value>文件夹路径不能为空</value></data>
+  <data name="Valid_NotLauncherRoot" xml:space="preserve"><value>这个文件夹看起来不是启动器根目录：找不到「{0}」子文件夹，也没有 XXMI 标志文件</value></data>
+  <data name="Valid_NotLauncherRootNoImporter" xml:space="preserve"><value>这个文件夹看起来不是启动器根目录：找不到 XXMI 标志文件，也没有导入器目录</value></data>
+  <data name="Valid_PathFormat" xml:space="preserve"><value>路径格式不正确</value></data>
+  <data name="Valid_RarityMax" xml:space="preserve"><value>稀有度不能大于 10</value></data>
+  <data name="Valid_RarityMin" xml:space="preserve"><value>稀有度不能小于 0</value></data>
+</root>

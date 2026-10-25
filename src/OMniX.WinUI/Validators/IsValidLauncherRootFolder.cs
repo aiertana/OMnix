@@ -1,4 +1,5 @@
 using FluentValidation;
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.ViewModels.SubVms;
 
@@ -12,6 +13,8 @@ namespace OMniX.WinUI.Validators;
 /// </summary>
 public class IsValidLauncherRootFolder : AbstractValidator<PathPicker>
 {
+    private static readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
+
     public IsValidLauncherRootFolder(Func<string?> modelImporterShortNameProvider)
     {
         RuleFor(x => x.Path)
@@ -24,8 +27,8 @@ public class IsValidLauncherRootFolder : AbstractValidator<PathPicker>
                 var importerShortName = modelImporterShortNameProvider();
 
                 return string.IsNullOrWhiteSpace(importerShortName)
-                    ? "这个文件夹看起来不是启动器根目录：找不到 XXMI 标志文件，也没有导入器目录"
-                    : $"这个文件夹看起来不是启动器根目录：找不到「{importerShortName}」子文件夹，也没有 XXMI 标志文件";
+                    ? _localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_NotLauncherRootNoImporter", "这个文件夹看起来不是启动器根目录：找不到 XXMI 标志文件，也没有导入器目录")!
+                    : string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_NotLauncherRoot", "这个文件夹看起来不是启动器根目录：找不到「{0}」子文件夹，也没有 XXMI 标志文件")!, importerShortName);
             })
             .WithSeverity(Severity.Warning);
     }

@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Windows.ApplicationModel.DataTransfer;
 using CommunityToolkit.WinUI.UI.Animations;
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.Helpers.Xaml;
 using OMniX.WinUI.Models.Settings;
@@ -20,6 +21,8 @@ namespace OMniX.WinUI.Views.CharacterDetailsPages;
 public sealed partial class CharacterDetailsPage : Page
 {
     public CharacterDetailsViewModel ViewModel { get; } = App.GetService<CharacterDetailsViewModel>();
+
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     public CharacterDetailsPage()
     {
@@ -66,8 +69,8 @@ public sealed partial class CharacterDetailsPage : Page
             skinButton.Visibility = Visibility.Visible;
             CharacterCard.NoMoreSkinsText.Visibility = Visibility.Collapsed;
 
-            skinButton.Content = "选择皮肤";
-            ToolTipService.SetToolTip(skinButton, "切换游戏内显示的皮肤（快捷键 F1）");
+            skinButton.Content = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Card_SelectSkinButton.Content", "选择皮肤");
+            ToolTipService.SetToolTip(skinButton, _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Page_SelectSkinButtonToolTip", "切换游戏内显示的皮肤（快捷键 F1）"));
             return;
         }
 
@@ -75,7 +78,8 @@ public sealed partial class CharacterDetailsPage : Page
         skinButton.Visibility = Visibility.Collapsed;
         CharacterCard.NoMoreSkinsText.Visibility = Visibility.Visible;
         ToolTipService.SetToolTip(CharacterCard.NoMoreSkinsText,
-            "这个角色目前只有默认皮肤。\n安装带有多套皮肤的游戏内 Mod 后，这里会出现可选皮肤。");
+            _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Page_NoMoreSkinsToolTip",
+                "这个角色目前只有默认皮肤。\n安装带有多套皮肤的游戏内 Mod 后，这里会出现可选皮肤。"));
     }
 
 
@@ -188,7 +192,7 @@ public sealed partial class CharacterDetailsPage : Page
 
         var title = new TextBlock
         {
-            Text = "这个角色还没有 Mod",
+            Text = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Page_NoModsTitle", "这个角色还没有 Mod"),
             FontSize = 22,
             FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
             Foreground = Res("OmniXTextPrimaryBrush", Colors.Black),
@@ -199,7 +203,7 @@ public sealed partial class CharacterDetailsPage : Page
 
         var subtitle = new TextBlock
         {
-            Text = "把 Mod 文件夹拖进来，或从「Mod 安装」导入",
+            Text = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Page_NoModsSubtitle", "把 Mod 文件夹拖进来，或从「Mod 安装」导入"),
             FontSize = 13,
             Foreground = Res("OmniXTextSecondaryBrush", Colors.Gray),
             HorizontalAlignment = HorizontalAlignment.Center,
@@ -249,7 +253,7 @@ public sealed partial class CharacterDetailsPage : Page
 
         dropContent.Children.Add(new TextBlock
         {
-            Text = "拖放到这里",
+            Text = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Page_NoModsDropHere", "拖放到这里"),
             FontSize = 15,
             Foreground = Res("OmniXTextSecondaryBrush", Colors.Gray),
             HorizontalAlignment = HorizontalAlignment.Center,

@@ -45,10 +45,10 @@ internal static class Program
         if (exe is null)
         {
             MessageBoxW(0,
-                "没有找到 OMniX.exe。\n\n先检查下面几个位置是不是空的：\n  " +
+                "Could not find OMniX.exe.\n\nCheck whether the following locations are empty:\n  " +
                 string.Join("\n  ", CandidateExePaths.Select(p => Path.Combine(BaseDir, p))) +
-                "\n\n也可以带 build 参数运行本程序，让它先编译一次。",
-                "OMniX 启动器", 0x10);
+                "\n\nYou can also run this program with the build argument to compile it first.",
+                "OMniX Launcher", 0x10);
             return 2;
         }
 
@@ -65,7 +65,7 @@ internal static class Program
         }
         catch (Exception ex)
         {
-            MessageBoxW(0, "启动失败：" + ex.Message, "OMniX 启动器", 0x10);
+            MessageBoxW(0, "Failed to launch: " + ex.Message, "OMniX Launcher", 0x10);
             return 3;
         }
 

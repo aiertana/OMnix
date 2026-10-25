@@ -28,6 +28,7 @@ public partial class CreateCharacterViewModel : ObservableObject
     private readonly ImageHandlerService _imageHandlerService;
     private readonly INavigationService _navigationService;
     private readonly ILogger _logger;
+    private readonly ILanguageLocalizer _localizer;
 
     private readonly List<IModdableObject> _allModObjects;
 
@@ -40,7 +41,7 @@ public partial class CreateCharacterViewModel : ObservableObject
     public ObservableCollection<ElementItemVM> Elements { get; } = new();
 
     public CreateCharacterViewModel(ISkinManagerService skinManagerService, IGameService gameService, NotificationManager notificationManager,
-        ImageHandlerService imageHandlerService, ILogger logger, INavigationService navigationService)
+        ImageHandlerService imageHandlerService, ILogger logger, INavigationService navigationService, ILanguageLocalizer localizer)
     {
         _skinManagerService = skinManagerService;
         _gameService = gameService;
@@ -48,6 +49,7 @@ public partial class CreateCharacterViewModel : ObservableObject
         _imageHandlerService = imageHandlerService;
         _navigationService = navigationService;
         _logger = logger.ForContext<CreateCharacterViewModel>();
+        _localizer = localizer;
 
         _allModObjects = _gameService.GetAllModdableObjects(GetOnly.Both);
         var elements = _gameService.GetElements();
@@ -113,7 +115,7 @@ public partial class CreateCharacterViewModel : ObservableObject
         catch (Exception e)
         {
             _logger.Error(e, "Failed to create character");
-            _notificationManager.ShowNotification("创建角色失败", e.Message, null);
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_CreateFailedTitle", "创建角色失败"), e.Message, null);
             return;
         }
 
@@ -124,13 +126,14 @@ public partial class CreateCharacterViewModel : ObservableObject
         catch (Exception e)
         {
             _logger.Error(e, "Failed to enable mod list for character");
-            _notificationManager.ShowNotification("角色已创建，但启用它的 Mod 列表时失败了", e.Message, null);
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_EnableModsFailedTitle", "角色已创建，但启用它的 Mod 列表时失败了"), e.Message, null);
             return;
         }
 
         IsFinished = true;
         _navigationService.NavigateTo(typeof(CharacterManagerViewModel).FullName!, character.InternalName);
-        _notificationManager.ShowNotification("角色已创建", $"「{character.DisplayName}」创建成功", null);
+        _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_CreatedTitle", "角色已创建"),
+            string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_CreatedBody", "「{0}」创建成功"), character.DisplayName), null);
     }
 
     #region ImageCommands
@@ -144,12 +147,13 @@ public partial class CreateCharacterViewModel : ObservableObject
             if (image is not null)
                 Form.Image.Value = image;
             else
-                _notificationManager.ShowNotification("粘贴图片失败", "剪贴板里没有图片", null);
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_PasteFailedTitle", "粘贴图片失败"),
+                    _localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_ClipboardNoImage", "剪贴板里没有图片"), null);
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "Failed to paste image");
-            _notificationManager.ShowNotification("粘贴图片失败", ex.Message, null);
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_PasteFailedTitle", "粘贴图片失败"), ex.Message, null);
         }
     }
 
@@ -212,7 +216,7 @@ public partial class CreateCharacterViewModel : ObservableObject
         catch (Exception e)
         {
             _logger.Error(e, "Failed to create json export");
-            _notificationManager.ShowNotification("导出 json 失败", e.Message, null);
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_ExportFailedTitle", "导出 json 失败"), e.Message, null);
             return;
         }
 
@@ -243,10 +247,10 @@ public partial class CreateCharacterViewModel : ObservableObject
 
         var characterModelDialog = new ContentDialog
         {
-            Title = "导出角色数据 Json",
+            Title = _localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_ExportDialogTitle", "导出角色数据 Json"),
             Content = contentWrapper,
-            PrimaryButtonText = "复制到剪贴板并关闭",
-            CloseButtonText = "关闭",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_ExportCopyPrimary", "复制到剪贴板并关闭"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Common_Close", "关闭"),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = App.MainWindow.Content.XamlRoot,
             Resources =
@@ -265,7 +269,7 @@ public partial class CreateCharacterViewModel : ObservableObject
         package.SetText(json);
         Clipboard.SetContent(package);
 
-        _notificationManager.ShowNotification("角色 json 已复制到剪贴板", "", null);
+        _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/CreateChar_ExportCopiedBody", "角色 json 已复制到剪贴板"), "", null);
 
         if (createCharacterRequest.Image is null || !File.Exists(createCharacterRequest.Image.LocalPath))
             return;

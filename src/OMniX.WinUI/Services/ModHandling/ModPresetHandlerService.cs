@@ -1,3 +1,4 @@
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.Helpers;
 using OMniX.Core.Services;
 using OMniX.Core.Services.ModPresetService;
@@ -23,6 +24,7 @@ public sealed class ModPresetHandlerService(
     private readonly NotificationManager _notificationManager = notificationManager;
     private readonly ElevatorService _elevatorService = elevatorService;
     private readonly ILocalSettingsService _localSettingsService = localSettingsService;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
 
     public Task<IEnumerable<ModPreset>> GetModPresetsAsync()
@@ -52,7 +54,7 @@ public sealed class ModPresetHandlerService(
 #endif
 
             _logger.Error(e, "Failed to save current mods as preset '{PresetName}'", name);
-            _notificationManager.ShowNotification("保存预设失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_SaveFailed", "保存预设失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -96,8 +98,8 @@ public sealed class ModPresetHandlerService(
             // 二开：原来只说「See logs for details」，用户根本不知道该干嘛。
             // 九成情况是 d3dx_user.ini 还没生成 —— 游戏没跑过一次就没有这个文件。
             _notificationManager.ShowNotification(
-                "Mod 的按键等设置这次没写进游戏",
-                "多半是 3DMigoto 的 d3dx_user.ini 还没生成（游戏运行过一次才会有）。Mod 的开关状态已经改好了，不影响使用。",
+                _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_PrefsNotWrittenTitle", "Mod 的按键等设置这次没写进游戏"),
+                _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_PrefsNotWrittenBody", "多半是 3DMigoto 的 d3dx_user.ini 还没生成（游戏运行过一次才会有）。Mod 的开关状态已经改好了，不影响使用。"),
                 TimeSpan.FromSeconds(8));
         }
 
@@ -107,8 +109,8 @@ public sealed class ModPresetHandlerService(
 
         var simpleNotification = new SimpleNotification
         (
-            "Mod 预设已应用",
-            $"「{modPreset.Name}」已经生效",
+            _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_AppliedTitle", "Mod 预设已应用"),
+            string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_AppliedBody", "「{0}」已经生效"), modPreset.Name),
             TimeSpan.FromSeconds(5)
         );
 
@@ -204,8 +206,8 @@ public sealed class ModPresetHandlerService(
         await _userPreferencesService.SetModPreferencesAsync(cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
-        return Result.Success(new SimpleNotification("已应用保存的偏好",
-            $"偏好已写入 3DMigoto 的 {Constants.UserIniFileName}",
+        return Result.Success(new SimpleNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_PrefsAppliedTitle", "已应用保存的偏好"),
+            string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_PrefsAppliedBody", "偏好已写入 3DMigoto 的 {0}"), Constants.UserIniFileName),
             TimeSpan.FromSeconds(5)));
     }
 
@@ -258,7 +260,7 @@ public sealed class ModPresetHandlerService(
         catch (Exception e)
         {
             _logger.Error(e, "Failed to unpin preset '{PresetName}'", presetName);
-            _notificationManager.ShowNotification("取消置顶失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_UnpinFailed", "取消置顶失败"), e.Message, TimeSpan.FromSeconds(8));
             return false;
         }
     }
@@ -277,7 +279,7 @@ public sealed class ModPresetHandlerService(
         catch (Exception e)
         {
             _logger.Error(e, "Failed to delete preset '{PresetName}'", presetName);
-            _notificationManager.ShowNotification("删除预设失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_DeleteFailed", "删除预设失败"), e.Message, TimeSpan.FromSeconds(8));
             return false;
         }
     }
@@ -296,7 +298,7 @@ public sealed class ModPresetHandlerService(
         catch (Exception e)
         {
             _logger.Error(e, "Failed to rename preset '{OldName}'", oldName);
-            _notificationManager.ShowNotification("重命名失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_RenameFailed", "重命名失败"), e.Message, TimeSpan.FromSeconds(8));
             return false;
         }
     }
@@ -317,7 +319,7 @@ public sealed class ModPresetHandlerService(
         catch (Exception e)
         {
             _logger.Error(e, "Failed to overwrite preset '{PresetName}'", presetName);
-            _notificationManager.ShowNotification("保存到预设失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PresetHandler_OverwriteFailed", "保存到预设失败"), e.Message, TimeSpan.FromSeconds(8));
             return false;
         }
     }

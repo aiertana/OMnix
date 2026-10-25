@@ -9,6 +9,7 @@
     xmlns:controls1="using:OMniX.WinUI.Views.Controls"
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:l="using:WinUI3Localizer"
     xmlns:local="using:OMniX.WinUI.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:OMniX.WinUI.Models"
@@ -106,7 +107,7 @@
                         TextTrimming="CharacterEllipsis" />
 
                     <Button
-                        Content="选择皮肤"
+                        Content="选择皮肤" l:Uids.Uid="/Characters/Gallery_SelectSkin"
                         Flyout="{StaticResource SelectInGameSkin}"
                         IsEnabled="{x:Bind ViewModel.MultipleCharacterSkins, Mode=OneWay}">
                         <Button.KeyboardAccelerators>
@@ -124,19 +125,19 @@
                 <TextBlock
                     Margin="0,0,8,0"
                     VerticalAlignment="Center"
-                    Text="排序："
+                    Text="排序：" l:Uids.Uid="/Characters/Gallery_SortLabel"
                     TextWrapping="WrapWholeWords" />
 
                 <ComboBox
                     x:Name="SortingComboBox"
                     Margin="0,0,8,0"
                     VerticalAlignment="Center"
-                    PlaceholderText="排序 Mod…"
+                    PlaceholderText="排序 Mod…" l:Uids.Uid="/Characters/Gallery_SortBy"
                     SelectionChanged="SortingComboBox_OnSelectionChanged"
                     SelectionChangedTrigger="Committed">
-                    <ComboBoxItem Content="添加时间" Tag="DateAdded" />
-                    <ComboBoxItem Content="文件夹名" Tag="FolderName" />
-                    <ComboBoxItem Content="名称" Tag="Name" />
+                    <ComboBoxItem Content="添加时间" Tag="DateAdded" l:Uids.Uid="/Characters/Gallery_SortDate" />
+                    <ComboBoxItem Content="文件夹名" Tag="FolderName" l:Uids.Uid="/Characters/Gallery_SortFolder" />
+                    <ComboBoxItem Content="名称" Tag="Name" l:Uids.Uid="/Characters/Gallery_SortName" />
                 </ComboBox>
 
                 <ToggleButton
@@ -158,11 +159,11 @@
 
 
                 <Button>
-                    <TextBlock Text="视图" />
+                    <TextBlock Text="视图" l:Uids.Uid="/Characters/Gallery_ViewButton" />
                     <Button.Flyout>
                         <Flyout>
                             <StackPanel MinWidth="200" Spacing="8">
-                                <TextBlock Text="调整高度：" />
+                                <TextBlock Text="调整高度：" l:Uids.Uid="/Characters/Gallery_AdjustHeight" />
                                 <Slider
                                     x:Name="GridItemHeightSlider"
                                     Maximum="500"
@@ -170,7 +171,7 @@
                                     SnapsTo="Ticks"
                                     TickFrequency="50"
                                     Value="{x:Bind ViewModel.GridItemHeight, Mode=TwoWay}" />
-                                <TextBlock Text="调整宽度：" />
+                                <TextBlock Text="调整宽度：" l:Uids.Uid="/Characters/Gallery_AdjustWidth" />
                                 <Slider
                                     x:Name="GridItemWithSlider"
                                     Maximum="800"
@@ -184,8 +185,8 @@
                                         HorizontalAlignment="Left"
                                         Command="{x:Bind ViewModel.ToggleSingleSelectionCommand}"
                                         IsChecked="{x:Bind ViewModel.IsSingleSelection, Mode=OneWay}"
-                                        ToolTipService.ToolTip="勾选后同一时间只允许启用一个 Mod。">
-                                        单选
+                                        ToolTipService.ToolTip="勾选后同一时间只允许启用一个 Mod。" l:Uids.Uid="/Characters/Gallery_SingleSelectTip">
+                                        <TextBlock Text="单选" l:Uids.Uid="/Characters/Gallery_SingleSelect" />
                                     </CheckBox>
                                 </StackPanel>
                             </StackPanel>
@@ -198,17 +199,15 @@
                     Height="32"
                     MinWidth="200"
                     MaxWidth="320"
-                    PlaceholderText="搜索 Mod…"
+                    PlaceholderText="搜索 Mod…" l:Uids.Uid="/Characters/Gallery_Search"
                     TextChanged="ModSearchBox_OnTextChanged" />
 
 
                 <ToggleSwitch
                     x:Name="ViewToggleSwitch"
-                    AutomationProperties.Name="切换视图模式"
                     IsOn="True"
-                    OffContent="详细视图"
-                    OnContent="画廊视图"
-                    Toggled="ViewToggleSwitch_OnToggled" />
+                    Toggled="ViewToggleSwitch_OnToggled"
+                    OnContent="画廊视图" OffContent="详细视图" AutomationProperties.Name="切换视图模式" l:Uids.Uid="/Characters/Gallery_ViewToggle" />
 
                 <Grid MinWidth="32">
                     <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
@@ -317,7 +316,7 @@
                                                         <MenuFlyoutItem
                                                             Command="{x:Bind SaveImageCommand}"
                                                             CommandParameter="{x:Bind Mode=OneWay}"
-                                                            Text="保存图片"
+                                                            Text="保存图片" l:Uids.Uid="/Characters/Gallery_SaveImage"
                                                             IsEnabled="{x:Bind CanSaveImage, Mode=OneWay}">
                                                             <MenuFlyoutItem.Icon>
                                                                 <FontIcon Glyph="&#xE74E;" />
@@ -326,7 +325,7 @@
                                                         <MenuFlyoutItem
                                                             Command="{x:Bind OpenModFolderCommand}"
                                                             CommandParameter="{x:Bind Mode=OneWay}"
-                                                            Text="打开 Mod 文件夹…">
+                                                            Text="打开 Mod 文件夹…" l:Uids.Uid="/Characters/Gallery_OpenModFolder">
                                                             <MenuFlyoutItem.Icon>
                                                                 <FontIcon Glyph="&#xE838;" />
                                                             </MenuFlyoutItem.Icon>
@@ -334,7 +333,7 @@
                                                         <MenuFlyoutItem
                                                             Command="{x:Bind OpenModUrlCommand}"
                                                             CommandParameter="{x:Bind Mode=OneWay}"
-                                                            Text="打开 Mod 主页…">
+                                                            Text="打开 Mod 主页…" l:Uids.Uid="/Characters/Gallery_OpenModUrl">
                                                             <MenuFlyoutItem.Icon>
                                                                 <FontIcon Glyph="&#xE8A7;" />
                                                             </MenuFlyoutItem.Icon>
@@ -342,7 +341,7 @@
                                                         <MenuFlyoutItem
                                                             Command="{x:Bind DeleteModCommand}"
                                                             CommandParameter="{x:Bind Mode=OneWay}"
-                                                            Text="删除 Mod">
+                                                            Text="删除 Mod" l:Uids.Uid="/Characters/Gallery_DeleteMod">
                                                             <MenuFlyoutItem.Icon>
                                                                 <FontIcon Glyph="&#xE74D;" />
                                                             </MenuFlyoutItem.Icon>
@@ -383,7 +382,7 @@
                                                 VerticalAlignment="Center"
                                                 Orientation="Horizontal"
                                                 Spacing="8">
-                                                <TextBlock Text="作者：" />
+                                                <TextBlock Text="作者：" l:Uids.Uid="/Characters/Gallery_AuthorLabel" />
                                                 <TextBlock
                                                     IsTextSelectionEnabled="True"
                                                     Text="{x:Bind Author, Mode=OneWay}"
@@ -399,7 +398,7 @@
                                                 VerticalAlignment="Center"
                                                 Orientation="Horizontal"
                                                 Spacing="4">
-                                                <TextBlock Text="添加于：" />
+                                                <TextBlock Text="添加于：" l:Uids.Uid="/Characters/Gallery_AddedLabel" />
                                                 <TextBlock Text="{x:Bind TimeSinceFormated, Mode=OneWay}" ToolTipService.ToolTip="{x:Bind DateAddedView, Mode=OneWay}" />
                                             </StackPanel>
 
@@ -430,13 +429,13 @@
                                 HorizontalAlignment="Center"
                                 FontSize="22"
                                 FontWeight="SemiBold"
-                                Text="这个角色还没有 Mod" />
+                                Text="这个角色还没有 Mod" l:Uids.Uid="/Characters/Gallery_NoModsTitle" />
                             <TextBlock
                                 Margin="0,6,0,18"
                                 HorizontalAlignment="Center"
                                 FontSize="13"
                                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="把 Mod 文件夹拖进来，或从「Mod 安装」导入" />
+                                Text="把 Mod 文件夹拖进来，或从「Mod 安装」导入" l:Uids.Uid="/Characters/Gallery_NoModsHint" />
 
                             <Border
                                 Width="320"
@@ -460,7 +459,7 @@
                                         HorizontalAlignment="Center"
                                         FontSize="15"
                                         Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                        Text="拖放到这里" />
+                                        Text="拖放到这里" l:Uids.Uid="/Characters/Gallery_DropHere" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -473,7 +472,7 @@
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                         <StackPanel Spacing="16">
                             <ProgressRing IsActive="True" />
-                            <TextBlock Text="正在加载 Mod…" />
+                            <TextBlock Text="正在加载 Mod…" l:Uids.Uid="/Characters/Gallery_Loading" />
                         </StackPanel>
                     </Grid>
 

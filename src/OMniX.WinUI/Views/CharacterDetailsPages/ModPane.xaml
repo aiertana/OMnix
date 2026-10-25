@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:subViewModels="using:OMniX.WinUI.ViewModels.CharacterDetailsViewModels.SubViewModels"
     xmlns:xaml="using:OMniX.WinUI.Helpers.Xaml"
+    xmlns:l="using:WinUI3Localizer"
     IsEnabled="{x:Bind ViewModel.IsNotReadOnly, Mode=OneWay}"
     mc:Ignorable="d">
 
@@ -89,6 +90,7 @@
                 Style="{ThemeResource SubtitleTextBlockStyle}"
                 TextAlignment="Center"
                 ToolTipService.ToolTip="修改 Mod 显示名称"
+                l:Uids.Uid="/CharacterDetails/ModPane_ModName"
                 Text="{x:Bind ViewModel.ModModel.ModDisplayName, Mode=TwoWay}" />
 
 
@@ -103,12 +105,14 @@
                         <MenuFlyoutItem
                             Command="{x:Bind ViewModel.SetModIniFileCommand}"
                             ToolTipService.ToolTip="指定 OMniX 读取该 Mod 的 .ini 文件"
-                            Text="指定 Mod 的 .ini 文件" />
+                            Text="指定 Mod 的 .ini 文件"
+                            l:Uids.Uid="/CharacterDetails/ModPane_SetIni" />
                         <MenuFlyoutItem
                             Command="{x:Bind ViewModel.ClearSetModIniFileCommand}"
                             Icon="Clear"
                             ToolTipService.ToolTip="OMniX 将不再查找 merged.ini / Script.ini，并忽略该 Mod 的按键切换"
-                            Text="忽略该 Mod 的 .ini 文件" />
+                            Text="忽略该 Mod 的 .ini 文件"
+                            l:Uids.Uid="/CharacterDetails/ModPane_ClearIni" />
                     </MenuFlyout>
                 </SplitButton.Flyout>
 
@@ -133,7 +137,8 @@
                             Width="48"
                             Height="48"
                             CornerRadius="24"
-                            ToolTipService.ToolTip="角色头像">
+                            ToolTipService.ToolTip="角色头像"
+                            l:Uids.Uid="/CharacterDetails/ModPane_CharAvatar">
                             <Image Stretch="UniformToFill">
                                 <Image.Source>
                                     <BitmapImage
@@ -143,7 +148,8 @@
                             </Image>
                         </Grid>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="所属角色" />
+                            <TextBlock FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="所属角色"
+                                l:Uids.Uid="/CharacterDetails/ModPane_CharLabel" />
                             <TextBlock FontWeight="SemiBold" Text="{x:Bind ViewModel.ModModel.CharacterDisplayName, Mode=OneWay}" />
                         </StackPanel>
                     </StackPanel>
@@ -156,6 +162,7 @@
                     Header="备注"
                     IsEnabled="{x:Bind ViewModel.IsNotReadOnly, Mode=OneWay}"
                     PlaceholderText="点击添加备注…"
+                    l:Uids.Uid="/CharacterDetails/ModPane_NotesBox"
                     Text="{x:Bind ViewModel.ModModel.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     TextWrapping="Wrap" />
 
@@ -198,7 +205,8 @@
                                                     <TextBlock
                                                         FontSize="11"
                                                         Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                                                        Text="菜单" />
+                                                        Text="菜单"
+                                                        l:Uids.Uid="/CharacterDetails/ModPane_KeySwapMenuBadge" />
                                                 </Border>
                                             </StackPanel>
 
@@ -210,7 +218,8 @@
                                                 <TextBlock
                                                     FontSize="11"
                                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                                    Text="变体：" />
+                                                    Text="变体："
+                                                    l:Uids.Uid="/CharacterDetails/ModPane_VariationsLabel" />
                                                 <TextBlock
                                                     FontSize="11"
                                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -275,7 +284,8 @@
                                             Background="Transparent"
                                             BorderThickness="0"
                                             Click="EditKeys_OnClick"
-                                            ToolTipService.ToolTip="编辑按键原始值">
+                                            ToolTipService.ToolTip="编辑按键原始值"
+                                            l:Uids.Uid="/CharacterDetails/ModPane_EditKeys">
                                             <FontIcon FontSize="12" Glyph="&#xE70F;" />
                                         </Button>
 
@@ -289,10 +299,12 @@
                                             <TextBox
                                                 MinWidth="180"
                                                 Header="前进键"
+                                                l:Uids.Uid="/CharacterDetails/ModPane_ForwardKey"
                                                 Text="{x:Bind ForwardHotkey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBox
                                                 MinWidth="180"
                                                 Header="后退键"
+                                                l:Uids.Uid="/CharacterDetails/ModPane_BackwardKey"
                                                 Text="{x:Bind BackwardHotkey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </StackPanel>
                                     </Grid>
@@ -308,7 +320,8 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         TextWrapping="WrapWholeWords"
-                        Text="该 Mod 的按键切换管理已关闭" />
+                        Text="该 Mod 的按键切换管理已关闭"
+                        l:Uids.Uid="/CharacterDetails/ModPane_KeySwapDisabled" />
 
                 </controls1:Case>
             </controls1:SwitchPresenter>
@@ -331,7 +344,7 @@
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <FontIcon Margin="0,0,4,0" Glyph="&#xE74E;" />
-                        <TextBlock Text="保存" />
+                        <TextBlock Text="保存" l:Uids.Uid="/CharacterDetails/ModPane_SaveButtonText" />
                     </StackPanel>
                 </Button.Content>
                 <Button.KeyboardAccelerators>
@@ -355,6 +368,7 @@
                     IsOn="{x:Bind ViewModel.ModModel.IsEnabled, Mode=OneWay}"
                     OffContent="未启用"
                     OnContent="已启用"
+                    l:Uids.Uid="/CharacterDetails/ModPane_EnabledToggle"
                     Toggled="ModEnabledToggle_OnToggled" />
 
             </Grid>
@@ -365,6 +379,7 @@
                 HorizontalAlignment="Right"
                 Command="{x:Bind ViewModel.OpenModFolderCommand}"
                 Content="打开 Mod 文件夹…"
+                l:Uids.Uid="/CharacterDetails/ModPane_OpenFolder"
                 IsEnabled="{x:Bind ViewModel.IsNotReadOnly, Mode=OneWay}" />
 
             <!--  二开：删除（移到回收站，二次确认）  -->
@@ -374,10 +389,11 @@
                 HorizontalAlignment="Right"
                 Click="DeleteMod_OnClick"
                 IsEnabled="{x:Bind ViewModel.IsNotReadOnly, Mode=OneWay}"
-                ToolTipService.ToolTip="把 Mod 文件夹移到回收站，可随时还原">
+                ToolTipService.ToolTip="把 Mod 文件夹移到回收站，可随时还原"
+                l:Uids.Uid="/CharacterDetails/ModPane_DeleteButton">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon Margin="0,0,4,0" FontSize="14" Glyph="&#xE74D;" />
-                    <TextBlock Text="删除" />
+                    <TextBlock Text="删除" l:Uids.Uid="/CharacterDetails/ModPane_DeleteButtonText" />
                 </StackPanel>
             </Button>
         </Grid>

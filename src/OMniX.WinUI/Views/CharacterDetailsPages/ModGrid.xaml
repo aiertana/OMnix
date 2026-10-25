@@ -46,11 +46,12 @@
 
             <controls:DataGrid.Columns>
                 <controls:DataGridTemplateColumn
+                    x:Name="EnabledColumn"
                     Width="SizeToHeader"
                     CanUserResize="False"
                     CanUserSort="True"
                     ClipboardContentBinding="{Binding IsEnabled, Mode=OneWay}"
-                    Header="启用"
+                    Header=""
                     Tag="IsEnabled">
 
                     <controls:DataGridTemplateColumn.CellTemplate>
@@ -114,34 +115,38 @@
                 </controls:DataGridTemplateColumn>
 
                 <controls:DataGridTextColumn
+                    x:Name="DisplayNameColumn"
                     Width="SizeToCells"
                     Binding="{Binding DisplayName, Mode=OneWay}"
                     CanUserSort="True"
-                    Header="Mod 名称"
+                    Header=""
                     IsReadOnly="True"
                     Tag="DisplayName" />
 
                 <controls:DataGridTextColumn
+                    x:Name="FolderNameColumn"
                     Width="SizeToCells"
                     Binding="{Binding FolderName, Mode=OneWay}"
                     CanUserSort="True"
-                    Header="文件夹名"
+                    Header=""
                     IsReadOnly="True"
                     Tag="FolderName"
                     Visibility="{x:Bind ViewModel.IsModFolderNameColumnVisible, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 <controls:DataGridTextColumn
+                    x:Name="AuthorColumn"
                     Width="SizeToCells"
                     Binding="{Binding Author, Mode=OneWay}"
                     CanUserSort="True"
-                    Header="作者"
+                    Header=""
                     Tag="Author" />
 
                 <controls:DataGridTemplateColumn
+                    x:Name="DateAddedColumn"
                     Width="SizeToCells"
                     CanUserSort="True"
                     ClipboardContentBinding="{Binding DateAddedFormated, Mode=OneTime}"
-                    Header="添加时间"
+                    Header=""
                     IsReadOnly="True"
                     Tag="DateAdded">
                     <controls:DataGridTemplateColumn.CellTemplate>
@@ -160,10 +165,11 @@
                 </controls:DataGridTemplateColumn>
 
                 <controls:DataGridTextColumn
+                    x:Name="PresetsColumn"
                     Width="SizeToCells"
                     Binding="{Binding InPresets, Mode=OneWay}"
                     CanUserSort="True"
-                    Header="预设"
+                    Header=""
                     IsReadOnly="True"
                     Tag="Presets" />
 
@@ -172,7 +178,7 @@
                     Width="SizeToCells"
                     Binding="{Binding Description, Mode=OneWay}"
                     CanUserSort="False"
-                    Header="备注"
+                    Header=""
                     IsReadOnly="False"
                     Tag="Description" />
 

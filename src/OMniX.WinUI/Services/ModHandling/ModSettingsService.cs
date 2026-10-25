@@ -19,6 +19,7 @@ public class ModSettingsService
     private readonly ISkinManagerService _skinManagerService;
     private readonly ILogger _logger;
     private readonly Notifications.NotificationManager _notificationManager;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     public ModSettingsService(ISkinManagerService skinManagerService,
         Notifications.NotificationManager notificationManager,
@@ -129,7 +130,7 @@ public class ModSettingsService
                )
             {
                 change.ImagePath = null;
-                _notificationManager.ShowNotification("找不到图片路径",
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/ModSet_ImageNotFound", "找不到图片路径"),
                     "When saving mod settings the currently set image could not be found",
                     TimeSpan.FromSeconds(5));
             }

@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Ctl_Browse.Content" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="Ctl_ClearImage.Text" xml:space="preserve">
+    <value>Clear image</value>
+  </data>
+  <data name="Ctl_CopyImage.Text" xml:space="preserve">
+    <value>Copy image</value>
+  </data>
+  <data name="Ctl_CopyLink.Text" xml:space="preserve">
+    <value>Copy link</value>
+  </data>
+  <data name="Ctl_DropImageHint.Text" xml:space="preserve">
+    <value>Drop an image here to set the preview</value>
+  </data>
+  <data name="Ctl_ModListAdd.Text" xml:space="preserve">
+    <value>Add mod…</value>
+  </data>
+  <data name="Ctl_PasteImage.Text" xml:space="preserve">
+    <value>Paste image</value>
+  </data>
+  <data name="Ctl_PasteImageHint.Text" xml:space="preserve">
+    <value>or press Ctrl+V to paste an image</value>
+  </data>
+  <data name="Ctl_PickImageTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Choose an image</value>
+  </data>
+  <data name="ModInst_AddAllDefaults.Content" xml:space="preserve">
+    <value>Add all with defaults</value>
+  </data>
+  <data name="ModInst_AddMod.Content" xml:space="preserve">
+    <value>Add mod</value>
+  </data>
+  <data name="ModInst_AlwaysOnTopTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Keep window on top</value>
+  </data>
+  <data name="ModInst_Author.Header" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="ModInst_AutoDetect.Text" xml:space="preserve">
+    <value>Mod root folder and merged.ini detected automatically. To set it manually, right-click a folder in the tree above.</value>
+  </data>
+  <data name="ModInst_AutoDetectTip.Content" xml:space="preserve">
+    <value>The root folder is usually the one containing merged.ini / Script.ini. The preview image is also picked up automatically; usually just click "Add mod".</value>
+  </data>
+  <data name="ModInst_BatchQueue.Text" xml:space="preserve">
+    <value>Batch import queue (not yet installed)</value>
+  </data>
+  <data name="ModInst_CustomName.Header" xml:space="preserve">
+    <value>Display name</value>
+  </data>
+  <data name="ModInst_DisplayName.Header" xml:space="preserve">
+    <value>Display name</value>
+  </data>
+  <data name="ModInst_DisplayName2.Header" xml:space="preserve">
+    <value>Display name</value>
+  </data>
+  <data name="ModInst_DuplicateDialog.Title" xml:space="preserve">
+    <value>A folder with the same name already exists</value>
+  </data>
+  <data name="ModInst_DuplicateDialog.CloseButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ModInst_EnableOnly.Content" xml:space="preserve">
+    <value>Enable this mod and disable others for this character</value>
+  </data>
+  <data name="ModInst_ExistingMod.Text" xml:space="preserve">
+    <value>Existing mod</value>
+  </data>
+  <data name="ModInst_FolderName.Header" xml:space="preserve">
+    <value>Folder name</value>
+  </data>
+  <data name="ModInst_FolderName2.Header" xml:space="preserve">
+    <value>Folder name</value>
+  </data>
+  <data name="ModInst_ImageSourceLabel.Text" xml:space="preserve">
+    <value>Preview image source:</value>
+  </data>
+  <data name="ModInst_ManualPick.Content" xml:space="preserve">
+    <value>Pick manually</value>
+  </data>
+  <data name="ModInst_MergedIniLabel.Text" xml:space="preserve">
+    <value>MergedIniFile folder:</value>
+  </data>
+  <data name="ModInst_ModFile.Content" xml:space="preserve">
+    <value>Mod file</value>
+  </data>
+  <data name="ModInst_ModFolderLabel.Text" xml:space="preserve">
+    <value>Mod folder:</value>
+  </data>
+  <data name="ModInst_ModUrl.Header" xml:space="preserve">
+    <value>Mod page link</value>
+  </data>
+  <data name="ModInst_NewMod.Text" xml:space="preserve">
+    <value>New mod</value>
+  </data>
+  <data name="ModInst_Notes.Header" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="ModInst_OpenExistingFolder.Text" xml:space="preserve">
+    <value>Open the existing mod folder...</value>
+  </data>
+  <data name="ModInst_Overwrite.Content" xml:space="preserve">
+    <value>Overwrite the existing mod</value>
+  </data>
+  <data name="ModInst_RefreshInfoTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Re-fetch info from the mod page</value>
+  </data>
+  <data name="ModInst_ReplaceDupInPreset.Text" xml:space="preserve">
+    <value>In presets, replace the duplicate mod with the new one</value>
+  </data>
+  <data name="ModInst_ReplaceUpdate.Content" xml:space="preserve">
+    <value>In presets, replace the old version with this new mod</value>
+  </data>
+  <data name="ModInst_SetPreview.Text" xml:space="preserve">
+    <value>Set as mod preview image</value>
+  </data>
+  <data name="ModInst_SetRootFolder.Text" xml:space="preserve">
+    <value>Set as mod root folder</value>
+  </data>
+  <data name="ModInst_SetShaderFixes.Text" xml:space="preserve">
+    <value>Set as ShaderFixes folder</value>
+  </data>
+  <data name="ModInst_ShaderFixesLabel.Text" xml:space="preserve">
+    <value>ShaderFixes folder:</value>
+  </data>
+  <data name="ModRow_AddedLabel.Text" xml:space="preserve">
+    <value>Added:</value>
+  </data>
+  <data name="ModRow_Disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="ModRow_Enabled.Text" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="ModRow_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open mod folder</value>
+  </data>
+  <data name="ModRow_RenameTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rename this mod</value>
+  </data>
+  <data name="ModRow_ToggleTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Check to enable, uncheck to disable</value>
+  </data>
+  <data name="ModSel_AddedLabel.Text" xml:space="preserve">
+    <value>Date added:</value>
+  </data>
+  <data name="ModSel_Search.PlaceholderText" xml:space="preserve">
+    <value>Search mods…</value>
+  </data>
+  <data name="ModSel_Select.Content" xml:space="preserve">
+    <value>Select this mod</value>
+  </data>
+  <data name="ModSel_Title.Text" xml:space="preserve">
+    <value>Select mod</value>
+  </data>
+  <data name="ModsOv_BatchManage.Text" xml:space="preserve">
+    <value>Batch management</value>
+  </data>
+  <data name="ModsOv_Breadcrumb.Text" xml:space="preserve">
+    <value>OMNIX  /  Mod Overview</value>
+  </data>
+  <data name="ModsOv_CheckConflictsDesc.Text" xml:space="preserve">
+    <value>Scan for multiple instances on the same character</value>
+  </data>
+  <data name="ModsOv_CheckConflictsTitle.Text" xml:space="preserve">
+    <value>Check conflicts</value>
+  </data>
+  <data name="ModsOv_ConflictDetect.Text" xml:space="preserve">
+    <value>Conflict detection</value>
+  </data>
+  <data name="ModsOv_DisableAllDesc.Text" xml:space="preserve">
+    <value>Turn off all mods at once</value>
+  </data>
+  <data name="ModsOv_DisableAllTitle.Text" xml:space="preserve">
+    <value>Disable all</value>
+  </data>
+  <data name="ModsOv_EnablePresetDesc.Text" xml:space="preserve">
+    <value>Pick a preset to enable its mods</value>
+  </data>
+  <data name="ModsOv_EnablePresetTitle.Text" xml:space="preserve">
+    <value>Enable preset</value>
+  </data>
+  <data name="ModsOv_FullCmdLabel.Text" xml:space="preserve">
+    <value>Full command:</value>
+  </data>
+  <data name="ModsOv_GoToCharacter.Content" xml:space="preserve">
+    <value>Go to character</value>
+  </data>
+  <data name="ModsOv_HeroSuffix.Text" xml:space="preserve">
+    <value> Overview</value>
+  </data>
+  <data name="ModsOv_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="ModsOv_RefreshDesc.Text" xml:space="preserve">
+    <value>Re-read the mod directory</value>
+  </data>
+  <data name="ModsOv_RefreshTitle.Text" xml:space="preserve">
+    <value>Refresh list</value>
+  </data>
+  <data name="ModsOv_Run.Content" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="ModsOv_RunCmdLabel.Text" xml:space="preserve">
+    <value>Run a command on this folder:</value>
+  </data>
+  <data name="ModsOv_Search.PlaceholderText" xml:space="preserve">
+    <value>Press Enter after typing to search mods…</value>
+  </data>
+  <data name="ModsOv_StatusMonitor.Text" xml:space="preserve">
+    <value>Status monitoring</value>
+  </data>
+  <data name="ModsOv_WorkDirLabel.Text" xml:space="preserve">
+    <value>Working directory:</value>
+  </data>
+  <data name="Ctl_ModListNameHeader" xml:space="preserve">
+    <value>Mod name</value>
+  </data>
+  <data name="ModInst_DisplayName.PlaceholderText" xml:space="preserve">
+    <value>The name shown in OMniX</value>
+  </data>
+  <data name="ModInst_FolderName.PlaceholderText" xml:space="preserve">
+    <value>The folder name used on disk</value>
+  </data>
+  <data name="ModInst_DisplayName2.PlaceholderText" xml:space="preserve">
+    <value>The name shown in OMniX</value>
+  </data>
+  <data name="ModInst_FolderName2.PlaceholderText" xml:space="preserve">
+    <value>The folder name used on disk</value>
+  </data>
+  <data name="ModInst_ModUrl.PlaceholderText" xml:space="preserve">
+    <value>Paste a GameBanana link; name, author and preview will be filled in automatically</value>
+  </data>
+  <data name="ModInst_CustomName.PlaceholderText" xml:space="preserve">
+    <value>The name shown in OMniX; leave empty to use the folder name</value>
+  </data>
+  <data name="ModInst_Author.PlaceholderText" xml:space="preserve">
+    <value>The mod author</value>
+  </data>
+  <data name="ModInst_Notes.PlaceholderText" xml:space="preserve">
+    <value>Free-form notes; shown on the mod card in the character details page</value>
+  </data>
+  <data name="ModInst_EnableOnly.ToolTipService.ToolTip" xml:space="preserve">
+    <value>When checked, only this one is enabled; other mods for this character are disabled</value>
+  </data>
+  <data name="ModInst_ReplaceUpdate.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Replace the old mod referenced in all presets with this newly installed version</value>
+  </data>
+  <data name="ModInst_AddAllDefaults.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Add directly without changing any field. During batch import, the rest of the queue is also installed with defaults.</value>
+  </data>
+  <data name="ModInst_ReplaceDupInPreset.ToolTipService.ToolTip" xml:space="preserve">
+    <value>In presets, this duplicate mod is replaced by the newly installed version. Mutually exclusive with "replace the old version with the new mod" above.</value>
+  </data>
+  <data name="ModInst_ReplaceDupInPresetText.Text" xml:space="preserve">
+    <value>In presets, replace the duplicate mod with the new one</value>
+  </data>
+</root>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="OMniX.WinUI.Views.StartupPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -41,7 +41,8 @@
                     Foreground="{ThemeResource OmniXTextPrimaryBrush}"
                     HorizontalAlignment="Left"
                     Style="{StaticResource TitleTextBlockStyle}"
-                    Text="首次启动配置" />
+                    Text="首次启动配置"
+            l:Uids.Uid="/HomePreset/Startup_PageTitle" />
 
                 <!--  二开：署名  -->
                 <TextBlock
@@ -49,7 +50,8 @@
                     VerticalAlignment="Bottom"
                     FontSize="12"
                     Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                    Text="by 是湫" />
+                    Text="by 是湫"
+            l:Uids.Uid="/HomePreset/Startup_ByAuthor" />
             </StackPanel>
 
             <TextBlock
@@ -67,6 +69,7 @@
                 VerticalAlignment="Bottom"
                 Command="{x:Bind ViewModel.SkipStartupWizardCommand}"
                 Content="返回首页"
+            l:Uids.Uid="/HomePreset/Startup_SkipButton"
                 Style="{ThemeResource OmniXSoftButtonStyle}"
                 ToolTipService.ToolTip="返回首页，之后可从首页的引导卡重新进入配置" />
 
@@ -87,6 +90,7 @@
                         IsTextSelectionEnabled="True"
                         Style="{ThemeResource BodyTextBlockStyle}"
                         Text="选择需要管理的游戏，点击图标进入该游戏的文件夹配置。以后可在“设置”页面中切换游戏。"
+                        l:Uids.Uid="/HomePreset/Startup_GameSelectHint"
                         TextWrapping="WrapWholeWords" />
 
                     <GridView
@@ -142,6 +146,7 @@
                     <Button
                         Command="{x:Bind ViewModel.BackToGameSelectionCommand}"
                         Content="← 重新选择游戏"
+            l:Uids.Uid="/HomePreset/Startup_BackButton"
                         Style="{ThemeResource OmniXGhostButtonStyle}" />
 
                     <!--  Description  -->
@@ -152,6 +157,7 @@
                                 IsTextSelectionEnabled="True"
                                 Style="{ThemeResource BodyTextBlockStyle}"
                                 Text="选择启动器所在的文件夹即可，例如 D:\mod\XXMI Launcher。OMniX 会自动识别其中的启动程序（如 Resources\Bin\XXMI Launcher.exe）并推导 Mods 文件夹（如 WWMI\Mods）。"
+            l:Uids.Uid="/HomePreset/Startup_LauncherFolderHint"
                                 TextWrapping="WrapWholeWords" />
                             <TextBlock
                                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
@@ -190,6 +196,7 @@
                     <!--  启动器文件夹（原 3Dmigoto 文件夹）  -->
                     <controls:FolderSelector
                         Title="启动器文件夹"
+            l:Uids.Uid="/HomePreset/Startup_LauncherFolderSelector"
                         Margin="4,8,4,8"
                         BrowseCommand="{x:Bind ViewModel.BrowseLauncherFolderCommand}"
                         Footer="例如：D:\mod\XXMI Launcher"
@@ -205,11 +212,13 @@
                         Message="{x:Bind ViewModel.LauncherExecutablePath, Mode=OneWay}"
                         Severity="Success"
                         Title="已识别到启动程序"
+            l:Uids.Uid="/HomePreset/Startup_LauncherDetectedInfoBar"
                         Visibility="{x:Bind ViewModel.HasLauncherExecutable, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}" />
 
                     <!--  Mods 文件夹  -->
                     <controls:FolderSelector
                         Title="Mods 文件夹"
+            l:Uids.Uid="/HomePreset/Startup_ModsFolderSelector"
                         Margin="4,8,4,8"
                         BrowseCommand="{x:Bind ViewModel.BrowseModsFolderCommand}"
                         Footer="{x:Bind ViewModel.ModsFolderHint, Mode=OneWay}"
@@ -222,10 +231,12 @@
                             Margin="0,8,0,0"
                             Style="{ThemeResource BodyTextBlockStyle}"
                             TextWrapping="WrapWholeWords"
-                            Text="卸载 Mod 的功能还没做。等以后做了，可以把选中的 Mod 挪到单独的卸载区文件夹里。" />
+                            Text="卸载 Mod 的功能还没做。等以后做了，可以把选中的 Mod 挪到单独的卸载区文件夹里。"
+            l:Uids.Uid="/HomePreset/Startup_UninstallHint" />
                     </Grid>
                     <controls:FolderSelector
                         Title="卸载区文件夹（可选）"
+            l:Uids.Uid="/HomePreset/Startup_UnloadedFolderSelector"
                         Margin="4,8,4,8"
                         IsEnabled="False"
                         Visibility="Collapsed" />
@@ -235,6 +246,7 @@
                         <CheckBox
                             Margin="12,0,12,0"
                             Content="重新整理 Mods"
+            l:Uids.Uid="/HomePreset/Startup_ReorganizeCheckBox"
                             IsChecked="{x:Bind ViewModel.ReorganizeModsOnStartup, Mode=TwoWay}" />
 
                         <Button Background="Transparent" CornerRadius="8">
@@ -281,6 +293,7 @@
                         <CheckBox
                             Margin="40,0,12,0"
                             Content="同时禁用全部 Mods"
+            l:Uids.Uid="/HomePreset/Startup_DisableAllCheckBox"
                             IsChecked="{x:Bind ViewModel.DisableMods, Mode=TwoWay}"
                             IsEnabled="{x:Bind ViewModel.ReorganizeModsOnStartup, Mode=OneWay}" />
 
@@ -321,6 +334,7 @@
                         HorizontalAlignment="Center"
                         Command="{x:Bind ViewModel.SaveStartupSettingsCommand}"
                         Content="保存"
+            l:Uids.Uid="/HomePreset/Startup_SaveButton"
                         Style="{ThemeResource OmniXAccentButtonStyle}" />
 
                 </StackPanel>

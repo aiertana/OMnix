@@ -6,6 +6,7 @@
     xmlns:controls="using:OMniX.WinUI.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:OMniX.WinUI.Views.CharacterDetailsPages"
+    xmlns:l="using:WinUI3Localizer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     IsEnabled="{x:Bind ViewModel.IsModObjectLoaded, Mode=OneWay}"
     mc:Ignorable="d">
@@ -49,7 +50,8 @@
                     <Button
                         HorizontalAlignment="Center"
                         Command="{x:Bind ViewModel.GoToModsOverviewCommand}"
-                        ToolTipService.ToolTip="在 Mod 总览中定位">
+                        ToolTipService.ToolTip="在 Mod 总览中定位"
+                        l:Uids.Uid="/CharacterDetails/Card_LocateInOverview">
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA37;" />
                     </Button>
 
@@ -57,7 +59,8 @@
                     <Button
                         HorizontalAlignment="Right"
                         Command="{x:Bind ViewModel.GoToCharacterEditScreenCommand}"
-                        ToolTipService.ToolTip="编辑角色">
+                        ToolTipService.ToolTip="编辑角色"
+                        l:Uids.Uid="/CharacterDetails/Card_EditChar">
                         <FontIcon Glyph="&#xE70F;" />
                     </Button>
                 </StackPanel>
@@ -103,7 +106,8 @@
                     VerticalAlignment="Center"
                     Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                     Style="{ThemeResource BodyTextStyle}"
-                    Text="已收录 Mod" />
+                    Text="已收录 Mod"
+                    l:Uids.Uid="/CharacterDetails/Card_TrackedModsLabel" />
                 <TextBlock
                     Style="{ThemeResource BodyTextStyle}"
                     FontWeight="SemiBold"
@@ -122,7 +126,8 @@
                     Padding="0,0,0,10"
                     HorizontalAlignment="Center"
                     Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                    Text="当前游戏内皮肤" />
+                    Text="当前游戏内皮肤"
+                    l:Uids.Uid="/CharacterDetails/Card_CurrentSkinLabel" />
                 <TextBlock
                     HorizontalAlignment="Center"
                     FontFamily="{StaticResource GenshinFont}"
@@ -134,6 +139,7 @@
                     Margin="0,14,0,0"
                     HorizontalAlignment="Center"
                     Content="选择皮肤"
+                    l:Uids.Uid="/CharacterDetails/Card_SelectSkinButton"
                     Flyout="{StaticResource SelectInGameSkin}"
                     IsEnabled="{x:Bind ViewModel.CanChangeInGameSkins, Mode=OneWay}"
                     Style="{StaticResource OmniXSoftButtonStyle}">
@@ -151,6 +157,7 @@
                     FontSize="12"
                     Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                     Text="暂无其他皮肤"
+                    l:Uids.Uid="/CharacterDetails/Card_NoMoreSkins"
                     TextAlignment="Center"
                     Visibility="Collapsed" />
             </StackPanel>
@@ -164,6 +171,7 @@
                 HorizontalAlignment="Center"
                 Command="{x:Bind ViewModel.DisableAllModsCommand}"
                 Content="禁用全部 Mod"
+                l:Uids.Uid="/CharacterDetails/Card_DisableAllButton"
                 Style="{StaticResource OmniXGhostButtonStyle}" />
         </StackPanel>
     </Grid>

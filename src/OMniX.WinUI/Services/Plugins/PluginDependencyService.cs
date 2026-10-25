@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Serilog;
+using OMniX.Core.Contracts.Services;
 
 namespace OMniX.WinUI.Services.Plugins;
 
@@ -31,9 +32,9 @@ public sealed class DependencySnapshot
 
     public bool AllReady => ModReady && KitReady;
 
-    public string XxmiText => XxmiReady ? XxmiRoot : "未检测到 XXMI Launcher";
-    public string WwmiText => WwmiReady ? WwmiRoot : "未检测到 WWMI";
-    public string KitText => KitReady ? KitDir : "未下载 DLSS5 部署包";
+    public string XxmiText => XxmiReady ? XxmiRoot : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_XxmiMissing", "未检测到 XXMI Launcher");
+    public string WwmiText => WwmiReady ? WwmiRoot : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_WwmiMissing", "未检测到 WWMI");
+    public string KitText => KitReady ? KitDir : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_KitMissing", "未下载 DLSS5 部署包");
 }
 
 public sealed class KitDownloadResult
@@ -114,6 +115,7 @@ public sealed class PluginDependencyService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly Dlss5PluginService _dlss5;
     private readonly ILogger _logger = Log.ForContext<PluginDependencyService>();
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     public PluginDependencyService(IHttpClientFactory httpClientFactory, Dlss5PluginService dlss5)
     {
@@ -195,21 +197,21 @@ public sealed class PluginDependencyService
         {
             using var client = CreateClient();
 
-            progress?.Report(new DownloadProgress { Percent = -1, Text = "正在查询最新版本…" });
+            progress?.Report(new DownloadProgress { Percent = -1, Text = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_CheckingVersion", "正在查询最新版本…") });
 
             var (tag, downloadUrl) = await FindLatestAssetAsync(client, KitLatestApi,
                 name => name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase),
                 KitZipballUrl, cancellationToken);
 
-            progress?.Report(new DownloadProgress { Percent = -1, Text = $"开始下载 {tag}" });
+            progress?.Report(new DownloadProgress { Percent = -1, Text = string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_DownloadingTag", "开始下载 {0}"), tag) });
 
             var tempZip = Path.Combine(Path.GetTempPath(), $"omni-dlss5-{Guid.NewGuid():N}.zip");
 
             try
             {
-                await DownloadFileAsync(client, downloadUrl, tempZip, "下载部署包", progress, cancellationToken);
+                await DownloadFileAsync(client, downloadUrl, tempZip, _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_TitleKit", "下载部署包"), progress, cancellationToken);
 
-                progress?.Report(new DownloadProgress { Percent = -1, Text = "正在解压…" });
+                progress?.Report(new DownloadProgress { Percent = -1, Text = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_Extracting", "正在解压…") });
 
                 var extractRoot = Path.Combine(Path.GetTempPath(), $"omni-dlss5-{Guid.NewGuid():N}");
                 Directory.CreateDirectory(extractRoot);
@@ -233,7 +235,7 @@ public sealed class PluginDependencyService
                     {
                         Success = true,
                         KitDir = finalDir,
-                        Message = $"已下载 {tag}"
+                        Message = string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_DoneTag", "已下载 {0}"), tag)
                     };
                 }
                 finally
@@ -278,7 +280,7 @@ public sealed class PluginDependencyService
         {
             using var client = CreateClient();
 
-            progress?.Report(new DownloadProgress { Percent = -1, Text = "正在查询 XXMI 最新版…" });
+            progress?.Report(new DownloadProgress { Percent = -1, Text = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_CheckingXxmi", "正在查询 XXMI 最新版…") });
 
             var (tag, url) = await FindLatestAssetAsync(client, XxmiLatestApi,
                 name => name.Contains("Portable", StringComparison.OrdinalIgnoreCase) &&
@@ -286,17 +288,17 @@ public sealed class PluginDependencyService
                 XxmiRepoUrl, cancellationToken);
 
             if (url == XxmiRepoUrl)
-                return XxmiDownloadResult.Fail("没找到便携版压缩包，已改为打开下载页");
+                return XxmiDownloadResult.Fail(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_NoPortableZip", "没找到便携版压缩包，已改为打开下载页"));
 
-            progress?.Report(new DownloadProgress { Percent = -1, Text = $"开始下载 {tag}" });
+            progress?.Report(new DownloadProgress { Percent = -1, Text = string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_DownloadingTag", "开始下载 {0}"), tag) });
 
             var tempZip = Path.Combine(Path.GetTempPath(), $"omni-xxmi-{Guid.NewGuid():N}.zip");
 
             try
             {
-                await DownloadFileAsync(client, url, tempZip, "下载 XXMI", progress, cancellationToken);
+                await DownloadFileAsync(client, url, tempZip, _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_TitleXxmi", "下载 XXMI"), progress, cancellationToken);
 
-                progress?.Report(new DownloadProgress { Percent = -1, Text = "正在解压…" });
+                progress?.Report(new DownloadProgress { Percent = -1, Text = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_Extracting", "正在解压…") });
 
                 var extractRoot = Path.Combine(Path.GetTempPath(), $"omni-xxmi-{Guid.NewGuid():N}");
                 Directory.CreateDirectory(extractRoot);
@@ -308,7 +310,7 @@ public sealed class PluginDependencyService
                     var sourceRoot = FindXxmiRoot(extractRoot);
 
                     if (sourceRoot is null)
-                        return XxmiDownloadResult.Fail("压缩包里没找到 XXMI Launcher.exe");
+                        return XxmiDownloadResult.Fail(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_NoLauncherExe", "压缩包里没找到 XXMI Launcher.exe"));
 
                     var finalDir = Path.Combine(PluginsRoot, "XXMI Launcher");
 
@@ -325,7 +327,7 @@ public sealed class PluginDependencyService
                         Success = true,
                         XxmiRoot = finalDir,
                         LauncherPath = launcher,
-                        Message = $"已下载 {tag}，启动后在里面设一次游戏路径，WWMI 会自动补上"
+                        Message = string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_XxmiDoneHint", "已下载 {0}，启动后在里面设一次游戏路径，WWMI 会自动补上"), tag)
                     };
                 }
                 finally
@@ -432,7 +434,7 @@ public sealed class PluginDependencyService
             });
         }
 
-        progress?.Report(new DownloadProgress { Percent = 100, Text = $"{title} 完成" });
+        progress?.Report(new DownloadProgress { Percent = 100, Text = string.Format(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_TitleDone", "{0} 完成"), title) });
     }
 
     /// <summary>压缩包里可能多套一层，找含 XXMI Launcher.exe 的那个根目录</summary>

@@ -1,3 +1,4 @@
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.Services;
 using Serilog;
 
@@ -43,7 +44,7 @@ public static class ArchiveExtractionHelper
                     .ConfigureAwait(false);
 
             if (string.IsNullOrEmpty(promptedPassword))
-                throw new OperationCanceledException("已取消输入压缩包密码");
+                throw new OperationCanceledException(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ArchiveHelper_PasswordCancelled", "已取消输入压缩包密码"));
 
             password = promptedPassword;
         }

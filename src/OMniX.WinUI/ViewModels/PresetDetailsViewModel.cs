@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkitWrapper;
@@ -28,7 +28,8 @@ public sealed partial class PresetDetailsViewModel(
     IWindowManagerService windowManagerService,
     BusyService busyService,
     ElevatorService elevatorService,
-    UserPreferencesService userPreferencesService)
+    UserPreferencesService userPreferencesService,
+    ILanguageLocalizer localizer)
     : ObservableRecipient, INavigationAware
 {
     private readonly ImageHandlerService _imageHandlerService = imageHandlerService;
@@ -40,6 +41,7 @@ public sealed partial class PresetDetailsViewModel(
     private readonly BusyService _busyService = busyService;
     private readonly ElevatorService _elevatorService = elevatorService;
     private readonly UserPreferencesService _userPreferencesService = userPreferencesService;
+    private readonly ILanguageLocalizer _localizer = localizer;
 
     private const string SelectModsWindowKey = "SelectModsWindow";
 
@@ -188,13 +190,13 @@ public sealed partial class PresetDetailsViewModel(
 
             ModEntries.Remove(modPresetEntryVm);
 
-            _notificationManager.ShowNotification("已从预设里移除",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationRemoved", "已从预设里移除"),
                 $"Removed {(modPresetEntryVm.IsMissing ? "missing" : "")} mod '{modPresetEntryVm.Name}' from preset {PresetName}",
                 null);
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("从预设里移除失败", e.Message, null);
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationRemoveFailed", "从预设里移除失败"), e.Message, null);
         }
         finally
         {
@@ -238,13 +240,13 @@ public sealed partial class PresetDetailsViewModel(
             ModEntries.Insert(0, modEntryVm);
             _backendModEntries.Insert(0, modEntryVm);
 
-            _notificationManager.ShowNotification("已加进预设",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationAdded", "已加进预设"),
                 $"Added mod '{modEntryVm.Name}' to preset {PresetName}",
                 null);
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("加进预设失败", e.Message, null);
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationAddFailed", "加进预设失败"), e.Message, null);
         }
         finally
         {
@@ -351,12 +353,12 @@ public sealed partial class PresetDetailsViewModel(
             _backendModEntries[backendIndex] = updatedModEntry;
 
 
-            _notificationManager.ShowNotification("这个 Mod 的设置已保存",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationEntryPrefsSaved", "这个 Mod 的设置已保存"),
                 $"Preferences saved successfully for mod {presetEntryDetailedVm.Name}", null);
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("保存 Mod 设置失败", e.Message, null);
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationEntryPrefsSaveFailed", "保存 Mod 设置失败"), e.Message, null);
         }
         finally
         {
@@ -405,7 +407,7 @@ public sealed partial class PresetDetailsViewModel(
         var window = new WindowEx()
         {
             SystemBackdrop = new MicaBackdrop(),
-            Title = "选择 Mod",
+            Title = _localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_SelectModWindowTitle", "选择 Mod"),
             Content = modSelector,
             Width = 1200,
             Height = 750,

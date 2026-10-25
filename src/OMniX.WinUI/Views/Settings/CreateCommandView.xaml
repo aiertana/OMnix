@@ -7,6 +7,7 @@
     xmlns:controls1="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:controls2="using:OMniX.WinUI.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:l="using:WinUI3Localizer"
     xmlns:local="using:OMniX.WinUI.Views.Settings"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -20,13 +21,14 @@
 
 
         <StackPanel Margin="0,0,0,16">
-            <TextBlock FontSize="18" Text="新建命令" />
+            <TextBlock FontSize="18" Text="新建命令" l:Uids.Uid="/SettingsUi/CreateCmdTitle" />
             <TextBox
                 MinWidth="300"
                 HorizontalAlignment="Left"
                 Header="* 命令名称："
                 PlaceholderText="显示给你看的名字（必填）"
-                Text="{x:Bind ViewModel.CommandDisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{x:Bind ViewModel.CommandDisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                l:Uids.Uid="/SettingsUi/CreateCmdNameBox" />
         </StackPanel>
 
 
@@ -41,11 +43,12 @@
                 HorizontalAlignment="Center"
                 SelectedIndex="0"
                 SelectionMode="Single">
-                <controls:SegmentedItem Content="单条命令" />
+                <controls:SegmentedItem Content="单条命令" l:Uids.Uid="/SettingsUi/CreateCmdSingle" />
                 <controls:SegmentedItem
                     Content="命令链"
                     IsEnabled="False"
-                    ToolTipService.ToolTip="还没做" />
+                    ToolTipService.ToolTip="还没做"
+                    l:Uids.Uid="/SettingsUi/CreateCmdChain" />
             </controls:Segmented>
 
 
@@ -58,7 +61,8 @@
                                 Title="* 程序"
                                 BrowseCommand="{x:Bind ViewModel.SelectExecutableCommand}"
                                 PlaceHolderText="可以直接写程序名（要求在 PATH 里），也可以填完整路径（必填）"
-                                SelectedFolderValue="{x:Bind ViewModel.Command, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                SelectedFolderValue="{x:Bind ViewModel.Command, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                l:Uids.Uid="/SettingsUi/CreateCmdExecutable" />
 
                             <controls2:FolderSelector
                                 Title="工作目录"
@@ -66,14 +70,16 @@
                                 Footer="{x:Bind ViewModel.EffectiveWorkingDirectory, Mode=OneWay}"
                                 IsEnabled="{x:Bind ViewModel.CanEditWorkingDirectory, Mode=OneWay}"
                                 PlaceHolderText="手动填路径时，文件夹必须已经存在"
-                                SelectedFolderValue="{x:Bind ViewModel.WorkingDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                SelectedFolderValue="{x:Bind ViewModel.WorkingDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                l:Uids.Uid="/SettingsUi/CreateCmdWorkingDir" />
 
                             <StackPanel>
                                 <TextBox
                                     Header="启动参数"
                                     PlaceholderText="传给这个程序的参数"
-                                    Text="{x:Bind ViewModel.Arguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock IsTextSelectionEnabled="True" Text="当命令是对着某个文件/文件夹跑的时候（比如某个 Mod 目录），{{TargetPath}} 会被换成实际路径。" />
+                                    Text="{x:Bind ViewModel.Arguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    l:Uids.Uid="/SettingsUi/CreateCmdArguments" />
+                                <TextBlock IsTextSelectionEnabled="True" Text="当命令是对着某个文件/文件夹跑的时候（比如某个 Mod 目录），{{TargetPath}} 会被换成实际路径。" l:Uids.Uid="/SettingsUi/CreateCmdTargetPathHint" />
                             </StackPanel>
 
 
@@ -81,23 +87,27 @@
                                 <CheckBox
                                     Content="OMniX 退出时一并结束进程"
                                     IsChecked="{x:Bind ViewModel.KillProcessOnMainAppExit, Mode=TwoWay}"
-                                    ToolTipService.ToolTip="勾上之后，OMniX 关掉时这个进程也会被结束" />
+                                    ToolTipService.ToolTip="勾上之后，OMniX 关掉时这个进程也会被结束"
+                                    l:Uids.Uid="/SettingsUi/CreateCmdKillOnExit" />
                                 <CheckBox
                                     Command="{x:Bind ViewModel.ToggleRunAsAdminCommand}"
                                     Content="以管理员身份运行"
                                     IsChecked="{x:Bind ViewModel.RunAsAdmin, Mode=TwoWay}"
-                                    ToolTipService.ToolTip="用管理员权限启动这个程序" />
+                                    ToolTipService.ToolTip="用管理员权限启动这个程序"
+                                    l:Uids.Uid="/SettingsUi/CreateCmdRunAsAdmin" />
                                 <CheckBox
                                     Command="{x:Bind ViewModel.ToggleUseShellExecuteCommand}"
                                     Content="交给系统启动"
                                     IsChecked="{x:Bind ViewModel.UseShellExecute, Mode=TwoWay}"
                                     IsEnabled="{x:Bind ViewModel.CanToggleUseShellExecute, Mode=OneWay}"
-                                    ToolTipService.ToolTip="交给操作系统去拉起程序（ShellExecute）" />
+                                    ToolTipService.ToolTip="交给操作系统去拉起程序（ShellExecute）"
+                                    l:Uids.Uid="/SettingsUi/CreateCmdUseShell" />
                                 <CheckBox
                                     Content="开新窗口"
                                     IsChecked="{x:Bind ViewModel.CreateWindow, Mode=TwoWay}"
                                     IsEnabled="False"
-                                    ToolTipService.ToolTip="勾上会在单独的窗口里跑（暂不可用）" />
+                                    ToolTipService.ToolTip="勾上会在单独的窗口里跑（暂不可用）"
+                                    l:Uids.Uid="/SettingsUi/CreateCmdNewWindow" />
                             </StackPanel>
 
                         </StackPanel>
@@ -112,11 +122,13 @@
             <TextBox
                 Header="最终会执行的命令："
                 IsReadOnly="True"
-                Text="{x:Bind ViewModel.CommandPreview, Mode=OneWay}" />
+                Text="{x:Bind ViewModel.CommandPreview, Mode=OneWay}"
+                l:Uids.Uid="/SettingsUi/CreateCmdPreview" />
             <Button
                 Command="{x:Bind ViewModel.CreateCommandCommand}"
                 Content="保存命令"
-                Style="{ThemeResource AccentButtonStyle}" />
+                Style="{ThemeResource AccentButtonStyle}"
+                l:Uids.Uid="/SettingsUi/CreateCmdSave" />
         </StackPanel>
 
 

@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Act_AdminBody" xml:space="preserve">
+    <value>You are currently running OMniX as administrator. This is not recommended.
+OMniX is not designed to run with administrator privileges.
+Even a small bug could mess up the file system, with serious consequences.
+
+We recommend running OMniX with normal privileges.
+
+Continue at your own risk.</value>
+  </data>
+  <data name="Act_AdminDontShow" xml:space="preserve">
+    <value>Don't show this reminder again</value>
+  </data>
+  <data name="Act_AdminTitle" xml:space="preserve">
+    <value>Running as administrator</value>
+  </data>
+  <data name="Act_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Act_Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Act_FreeBody1" xml:space="preserve">
+    <value>OMniX is completely free and open source. It costs nothing, and there is no such thing as a "premium edition" or an "activation key".</value>
+  </data>
+  <data name="Act_FreeBody2" xml:space="preserve">
+    <value>If anyone asks you for money before giving you the installer, or sells you an activation key or a premium edition, that person is scamming you. Just refuse them, and report it in the group chat or on GitHub so the next person does not get fooled.</value>
+  </data>
+  <data name="Act_FreeBody3" xml:space="preserve">
+    <value>There are only two legitimate ways to get it: the GitHub repository, and the group files in the community group chat. Please do not use anything downloaded from other sources.</value>
+  </data>
+  <data name="Act_FreeTitle" xml:space="preserve">
+    <value>Free software — don't let anyone charge you</value>
+  </data>
+  <data name="Act_GotIt" xml:space="preserve">
+    <value>Got it</value>
+  </data>
+  <data name="Act_ReorganizeDone" xml:space="preserve">
+    <value>Reorganization complete</value>
+  </data>
+  <data name="Act_ReorganizeFailed" xml:space="preserve">
+    <value>Failed to reorganize mods</value>
+  </data>
+  <data name="Act_RestructBackupTip" xml:space="preserve">
+    <value>If you're unsure, back up your mods first. This process has been tested on the author's own mods.</value>
+  </data>
+  <data name="Act_RestructBody" xml:space="preserve">
+    <value>This version of OMniX has a new folder structure.
+
+Characters are now organized by category, with one folder per category, in this layout:
+Mods/Category/Character/&lt;Mod folder&gt;
+So until things are reorganized, OMniX won't see your existing mods.
+This is a one-time thing, and you can also reorganize them yourself.
+
+Character folders are now created on demand, and you can also clean up empty folders in the settings page.</value>
+  </data>
+  <data name="Act_RestructHelpMe" xml:space="preserve">
+    <value>Reorganize for me</value>
+  </data>
+  <data name="Act_RestructMyself" xml:space="preserve">
+    <value>I'll do it myself</value>
+  </data>
+  <data name="Act_RestructNote" xml:space="preserve">
+    <value>
+This dialog will keep showing until you choose one of the options below. There is also a "Reorganize" button in the settings page.
+Check the log if you want to see what exactly happened.</value>
+  </data>
+  <data name="Act_RestructTitle" xml:space="preserve">
+    <value>The folder structure has changed</value>
+  </data>
+  <data name="AppX_CrashBody" xml:space="preserve">
+    <value>OMniX may be unstable right now and could crash at any time. We recommend restarting it.</value>
+  </data>
+  <data name="AppX_CrashTitle" xml:space="preserve">
+    <value>Something went wrong</value>
+  </data>
+  <data name="AppX_ErrorWindowTitle" xml:space="preserve">
+    <value>OMniX - Something went wrong</value>
+  </data>
+  <data name="Appear_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Appear_DefaultName" xml:space="preserve">
+    <value>New section</value>
+  </data>
+  <data name="ArchiveHelper_PasswordCancelled" xml:space="preserve">
+    <value>Archive password entry cancelled</value>
+  </data>
+  <data name="AutoUpd_AlreadyRunning" xml:space="preserve">
+    <value>The updater is already running; close that window and try again.</value>
+  </data>
+  <data name="AutoUpd_ExeMissing" xml:space="preserve">
+    <value>The updater folder exists but does not contain {0}: {1}
+This folder was probably cleaned out; just re-extract a full package over it.</value>
+  </data>
+  <data name="AutoUpd_FolderMissing" xml:space="preserve">
+    <value>Cannot find the updater folder: {0}
+The program root folder must contain the "OMniX - Auto Updater" folder.
+If you are running a source dev build (bin\...\Debug), it won't include the updater — use the official release folder extracted from a Release instead.</value>
+  </data>
+  <data name="AutoUpd_Incomplete" xml:space="preserve">
+    <value>The updater folder is incomplete, missing {0}.
+Most likely a previous incremental update corrupted the updater (the old logic left half a set of files).
+Fix: download the latest full OMniX package from GitHub Releases, extract it, and overwrite the whole "OMniX - Auto Updater" folder in the program directory; then updating will work normally again.</value>
+  </data>
+  <data name="Dlss5Svc_AdminCancelled" xml:space="preserve">
+    <value>Administrator authorization was cancelled</value>
+  </data>
+  <data name="Dlss5Svc_DeployDone" xml:space="preserve">
+    <value>Deployment complete. Launch the game through Kuro's official launcher and select DirectX 11 in the graphics settings.</value>
+  </data>
+  <data name="Dlss5Svc_DeployExitCode" xml:space="preserve">
+    <value>Deployment script exited with code {0}; check the error in that console window</value>
+  </data>
+  <data name="Dlss5Svc_MissingHint" xml:space="preserve">
+    <value>The game path or deployment package path is still missing. Flip the switch to configure it now.</value>
+  </data>
+  <data name="Dlss5Svc_ModOff" xml:space="preserve">
+    <value>Mod disabled</value>
+  </data>
+  <data name="Dlss5Svc_ModOn" xml:space="preserve">
+    <value>Mod enabled</value>
+  </data>
+  <data name="Dlss5Svc_NeedSetup" xml:space="preserve">
+    <value>Paths have not been configured yet</value>
+  </data>
+  <data name="Dlss5Svc_NoLoaderChain" xml:space="preserve">
+    <value>The script finished, but no loader chain was detected. Check the game folder.</value>
+  </data>
+  <data name="Dlss5Svc_NotConfigured" xml:space="preserve">
+    <value>Not configured</value>
+  </data>
+  <data name="Dlss5Svc_Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="Dlss5Svc_OnAddonsDisabled" xml:space="preserve">
+    <value>On (DLSS5 addons disabled)</value>
+  </data>
+  <data name="Dlss5Svc_OnWithAddons" xml:space="preserve">
+    <value>On · {0} plugins</value>
+  </data>
+  <data name="Dlss5Svc_ReadyHint" xml:space="preserve">
+    <value>Turning it on will deploy the loader, ReShade and DLSS5 into the game folder (requires administrator privileges)</value>
+  </data>
+  <data name="Dlss5Svc_ScriptNotFound" xml:space="preserve">
+    <value>{0} not found in the deployment package</value>
+  </data>
+  <data name="Dlss5Svc_StartFailed" xml:space="preserve">
+    <value>Failed to start the deployment process</value>
+  </data>
+  <data name="Dlss5Svc_UninstallExitCode" xml:space="preserve">
+    <value>Uninstall script exited with code {0}; check the error in that console window</value>
+  </data>
+  <data name="Dlss5Svc_Uninstalled" xml:space="preserve">
+    <value>Uninstalled; the game folder is back to a clean state.</value>
+  </data>
+  <data name="DragDrop_BatchBody" xml:space="preserve">
+    <value>{0} mods in total; installer windows will open one by one: {1}</value>
+  </data>
+  <data name="DragDrop_BatchTitle" xml:space="preserve">
+    <value>Batch import</value>
+  </data>
+  <data name="DragDrop_CancelledBody" xml:space="preserve">
+    <value>No archive password was entered; this import was cancelled</value>
+  </data>
+  <data name="DragDrop_CancelledTitle" xml:space="preserve">
+    <value>Import cancelled</value>
+  </data>
+  <data name="DragDrop_WindowTitle" xml:space="preserve">
+    <value>Install mod - {0} ({1}/{2})</value>
+  </data>
+  <data name="ExportSvc_CancelledSummary" xml:space="preserve">
+    <value>Cancelled; {0} files processed.</value>
+  </data>
+  <data name="ExportSvc_Counting" xml:space="preserve">
+    <value>Counting files…</value>
+  </data>
+  <data name="ExportSvc_Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="ExportSvc_FilesPlanned" xml:space="preserve">
+    <value>{0} files total, about {1}</value>
+  </data>
+  <data name="ExportSvc_NoModsSelected" xml:space="preserve">
+    <value>No mods selected</value>
+  </data>
+  <data name="ExportSvc_SkippedSuffix" xml:space="preserve">
+    <value>, {0} files skipped</value>
+  </data>
+  <data name="ExportSvc_Summary" xml:space="preserve">
+    <value>{0} mods, {1} files ({2})</value>
+  </data>
+  <data name="ExportSvc_Unnamed" xml:space="preserve">
+    <value>Untitled</value>
+  </data>
+  <data name="FixerSvc_NoNotes" xml:space="preserve">
+    <value>(No release notes were written for this update)</value>
+  </data>
+  <data name="Installer_WindowTitle" xml:space="preserve">
+    <value>Install mod - {0}</value>
+  </data>
+  <data name="Launch_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Launch_Disabled" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="Launch_Dlss5StatusLine" xml:space="preserve">
+    <value>　 DLSS5: {0}</value>
+  </data>
+  <data name="Launch_Enabled" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="Launch_GameRunningBody" xml:space="preserve">
+    <value>Go ahead and play</value>
+  </data>
+  <data name="Launch_GameRunningTitle" xml:space="preserve">
+    <value>The game is already running</value>
+  </data>
+  <data name="Launch_ModStatusLine" xml:space="preserve">
+    <value>　 Mod: {0}
+</value>
+  </data>
+  <data name="Launch_NoGamePathBody" xml:space="preserve">
+    <value>Pick the game executable once on the characters page, and this button will open the official launcher for you.</value>
+  </data>
+  <data name="Launch_NoGamePathTitle" xml:space="preserve">
+    <value>Game path has not been set</value>
+  </data>
+  <data name="Launch_OpenFailed" xml:space="preserve">
+    <value>Failed to open the launcher</value>
+  </data>
+  <data name="Launch_OpenLauncher" xml:space="preserve">
+    <value>Open official launcher</value>
+  </data>
+  <data name="Launch_OfficialLauncherIntro" xml:space="preserve">
+    <value>Wuthering Waves checks who launches it: starting the game process directly throws "kuro: Use launcher to start game!" and crashes on the spot, so the manager can't click "Start" for you.
+
+Click "Open official launcher" and press start inside it. It will load according to the switches on the left:
+</value>
+  </data>
+  <data name="Launch_OfficialLauncherTitle" xml:space="preserve">
+    <value>This step requires the official launcher</value>
+  </data>
+  <data name="LifeCycle_RestartFailed" xml:space="preserve">
+    <value>Failed to restart the app</value>
+  </data>
+  <data name="ModSet_ImageNotFound" xml:space="preserve">
+    <value>Image path not found</value>
+  </data>
+  <data name="ModUpdChk_DoneBody" xml:space="preserve">
+    <value>Update check complete</value>
+  </data>
+  <data name="ModUpdChk_DoneTitle" xml:space="preserve">
+    <value>Update check complete</value>
+  </data>
+  <data name="ModUpdChk_NothingToCheck" xml:space="preserve">
+    <value>No mods need update checking</value>
+  </data>
+  <data name="NotImpl_Title" xml:space="preserve">
+    <value>Not implemented yet</value>
+  </data>
+  <data name="PaletteSvc_BlueName" xml:space="preserve">
+    <value>Cool blue</value>
+  </data>
+  <data name="PaletteSvc_WarmName" xml:space="preserve">
+    <value>Warm coral</value>
+  </data>
+  <data name="PluginDepSvc_CheckingVersion" xml:space="preserve">
+    <value>Checking for the latest version…</value>
+  </data>
+  <data name="PluginDepSvc_CheckingXxmi" xml:space="preserve">
+    <value>Checking for the latest XXMI…</value>
+  </data>
+  <data name="PluginDepSvc_DoneTag" xml:space="preserve">
+    <value>{0} downloaded</value>
+  </data>
+  <data name="PluginDepSvc_DownloadingTag" xml:space="preserve">
+    <value>Downloading {0}</value>
+  </data>
+  <data name="PluginDepSvc_Extracting" xml:space="preserve">
+    <value>Extracting…</value>
+  </data>
+  <data name="PluginDepSvc_KitMissing" xml:space="preserve">
+    <value>DLSS5 deployment package not downloaded</value>
+  </data>
+  <data name="PluginDepSvc_NoLauncherExe" xml:space="preserve">
+    <value>XXMI Launcher.exe not found in the archive</value>
+  </data>
+  <data name="PluginDepSvc_NoPortableZip" xml:space="preserve">
+    <value>No portable zip found; opening the download page instead</value>
+  </data>
+  <data name="PluginDepSvc_TitleDone" xml:space="preserve">
+    <value>{0} done</value>
+  </data>
+  <data name="PluginDepSvc_TitleKit" xml:space="preserve">
+    <value>Downloading deployment package</value>
+  </data>
+  <data name="PluginDepSvc_TitleXxmi" xml:space="preserve">
+    <value>Downloading XXMI</value>
+  </data>
+  <data name="PluginDepSvc_WwmiMissing" xml:space="preserve">
+    <value>WWMI not detected</value>
+  </data>
+  <data name="PluginDepSvc_XxmiDoneHint" xml:space="preserve">
+    <value>{0} downloaded. Launch it once and set the game path inside; WWMI will be fetched automatically.</value>
+  </data>
+  <data name="PluginDepSvc_XxmiMissing" xml:space="preserve">
+    <value>XXMI Launcher not detected</value>
+  </data>
+  <data name="PresetHandler_AppliedBody" xml:space="preserve">
+    <value>"{0}" is now active</value>
+  </data>
+  <data name="PresetHandler_AppliedTitle" xml:space="preserve">
+    <value>Mod preset applied</value>
+  </data>
+  <data name="PresetHandler_DeleteFailed" xml:space="preserve">
+    <value>Failed to delete preset</value>
+  </data>
+  <data name="PresetHandler_OverwriteFailed" xml:space="preserve">
+    <value>Failed to save to preset</value>
+  </data>
+  <data name="PresetHandler_PrefsAppliedBody" xml:space="preserve">
+    <value>Preferences written to 3DMigoto's {0}</value>
+  </data>
+  <data name="PresetHandler_PrefsAppliedTitle" xml:space="preserve">
+    <value>Saved preferences applied</value>
+  </data>
+  <data name="PresetHandler_PrefsNotWrittenBody" xml:space="preserve">
+    <value>Most likely 3DMigoto's d3dx_user.ini has not been generated yet (it only appears after the game runs once). The mod on/off states have already been updated, so it doesn't affect usage.</value>
+  </data>
+  <data name="PresetHandler_PrefsNotWrittenTitle" xml:space="preserve">
+    <value>The mod key bindings and settings were not written to the game this time</value>
+  </data>
+  <data name="PresetHandler_RenameFailed" xml:space="preserve">
+    <value>Failed to rename</value>
+  </data>
+  <data name="PresetHandler_SaveFailed" xml:space="preserve">
+    <value>Failed to save preset</value>
+  </data>
+  <data name="PresetHandler_UnpinFailed" xml:space="preserve">
+    <value>Failed to unpin preset</value>
+  </data>
+  <data name="Process_StartFailed" xml:space="preserve">
+    <value>Failed to start process</value>
+  </data>
+  <data name="Random_AllowNone" xml:space="preserve">
+    <value>Allow the result to have nothing enabled (some mod folders may be entirely empty)</value>
+  </data>
+  <data name="Random_BackupTip" xml:space="preserve">
+    <value>If you have many mods enabled, save a preset (or back them up) before randomizing.</value>
+  </data>
+  <data name="Random_Button" xml:space="preserve">
+    <value>Randomize</value>
+  </data>
+  <data name="Random_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Random_Done" xml:space="preserve">
+    <value>Randomization complete</value>
+  </data>
+  <data name="Random_Explain" xml:space="preserve">
+    <value>Note: it only randomizes mod folders that can only have one enabled at a time, so the Others folder is left untouched. For skins of the same character, only one mod is enabled at a time.</value>
+  </data>
+  <data name="Random_Failed" xml:space="preserve">
+    <value>Failed to randomize mods</value>
+  </data>
+  <data name="Random_NoneBody" xml:space="preserve">
+    <value>No category was selected, so nothing was changed.</value>
+  </data>
+  <data name="Random_NoneTitle" xml:space="preserve">
+    <value>No category selected</value>
+  </data>
+  <data name="Random_PickHint" xml:space="preserve">
+    <value>Pick which categories to randomize:</value>
+  </data>
+  <data name="Random_Title" xml:space="preserve">
+    <value>Randomize mods</value>
+  </data>
+  <data name="ThemeSvc_Simple" xml:space="preserve">
+    <value>Simple</value>
+  </data>
+  <data name="ThemeSvc_Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+</root>

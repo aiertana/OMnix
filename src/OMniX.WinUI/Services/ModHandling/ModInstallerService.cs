@@ -24,6 +24,7 @@ public class ModInstallerService(
 {
     private readonly ILocalSettingsService _localSettingsService = localSettingsService;
     private readonly IWindowManagerService _windowManagerService = windowManagerService;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     public async Task<InstallMonitor> StartModInstallationAsync(DirectoryInfo modFolder, ICharacterModList modList,
         ICharacterSkin? inGameSkin = null, Action<InstallOptions>? setup = null)
@@ -63,7 +64,7 @@ public class ModInstallerService(
         var modInstallWindow = new WindowEx()
         {
             SystemBackdrop = new DesktopAcrylicBackdrop(),
-            Title = $"安装 Mod - {modTitle}",
+            Title = string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Installer_WindowTitle", "安装 Mod - {0}"), modTitle),
             Content = modInstallPage,
             Width = 1200,
             Height = 750,

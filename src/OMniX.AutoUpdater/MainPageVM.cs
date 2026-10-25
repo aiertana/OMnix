@@ -74,7 +74,7 @@ public partial class MainPageVM : ObservableRecipient
     ///     拼好整句再绑一个 TextBlock 就不会碰到这个限制。
     /// </summary>
     public string LocalPackageHint =>
-        IsLocalUpdate ? $"本地安装模式，不联网下载：{Path.GetFileName(_localZipPath)}" : string.Empty;
+        IsLocalUpdate ? $"Local install mode — no download: {Path.GetFileName(_localZipPath)}" : string.Empty;
 
     public MainPageVM(string installedOmniXVersion, string localZipPath = "")
     {
@@ -106,11 +106,11 @@ public partial class MainPageVM : ObservableRecipient
                 return;
 
             LocalZipPath = file.Path;
-            Log($"已选择本地更新包：{file.Path}");
+            Log($"Selected local update package: {file.Path}");
         }
         catch (Exception ex)
         {
-            Log($"选择本地更新包失败：{ex.Message}");
+            Log($"Failed to pick local update package: {ex.Message}");
         }
     }
 
@@ -138,8 +138,8 @@ public partial class MainPageVM : ObservableRecipient
         StopReason = null;
 
         Log(InstalledVersion.Equals(new Version(0, 0, 0, 0))
-            ? "无法确定当前 OMniX 版本…"
-            : $"当前 OMniX 版本：{InstalledVersion}");
+            ? "Could not determine the current OMniX version…"
+            : $"Current OMniX version: {InstalledVersion}");
 
 
         try
@@ -149,12 +149,12 @@ public partial class MainPageVM : ObservableRecipient
                 // 二开：本地导入的包 —— 已经躺在磁盘上了，
                 // 不用查 GitHub、也不用下载，直接跳到解压那一步。
                 _zipPath = _localZipPath;
-                LatestVersion = GuessVersionFromFileName(_localZipPath) ?? "本地包";
+                LatestVersion = GuessVersionFromFileName(_localZipPath) ?? "Local package";
 
                 UpdateProgress.NextStage(); // 检查版本（跳过）
                 UpdateProgress.NextStage(); // 下载（跳过）
 
-                Log($"使用本地更新包：{_localZipPath}");
+                Log($"Using local update package: {_localZipPath}");
             }
             else
             {
@@ -196,15 +196,15 @@ public partial class MainPageVM : ObservableRecipient
         }
         catch (TaskCanceledException e)
         {
-            Stop("已取消");
+            Stop("Cancelled");
         }
         catch (OperationCanceledException e)
         {
-            Stop("已取消");
+            Stop("Cancelled");
         }
         catch (Exception e)
         {
-            Log("出错了！", e.Message);
+            Log("An error occurred!", e.Message);
             Serilog.Log.Error(e, "An error occurred! Full error");
             Stop(e.Message);
         }
@@ -241,7 +241,7 @@ public partial class MainPageVM : ObservableRecipient
     {
         var newestVersionFound = await GetLatestVersionAsync(cancellationToken);
 
-        Log($"服务器上的最新版本：{newestVersionFound?.tag_name}");
+        Log($"Latest version on the server: {newestVersionFound?.tag_name}");
 
         // 二开：这里原来不判空，直接 new Version(null ?? "")。
         // GitHub 的匿名 API 一小时只给 60 次，点几次「检查更新」就能撞上 403，
@@ -252,13 +252,13 @@ public partial class MainPageVM : ObservableRecipient
 
         if (!Version.TryParse(newestText, out var newestVersion))
         {
-            Log($"取不到可用的版本号，原始值：[{newestVersionFound?.tag_name ?? "<空>"}]");
+            Log($"Could not parse a usable version number, raw value: [{newestVersionFound?.tag_name ?? "<empty>"}]");
 
             Stop(
-                "检查更新失败：没能从 GitHub 取到版本号。\n" +
-                "最常见的原因是匿名访问 GitHub API 的限额用完了（每小时 60 次），\n" +
-                "等一小时再试就行；也可能是网络不通。\n" +
-                $"这次拿到的原始值：{newestVersionFound?.tag_name ?? "<空>"}");
+                "Update check failed: could not get a version number from GitHub.\n" +
+                "The most common cause is that the anonymous GitHub API rate limit (60 requests per hour) is exhausted —\n" +
+                "wait an hour and try again; it could also be a network problem.\n" +
+                $"Raw value received this time: {newestVersionFound?.tag_name ?? "<empty>"}");
 
             return null;
         }
@@ -272,7 +272,7 @@ public partial class MainPageVM : ObservableRecipient
 
         if (release.Version <= InstalledVersion)
         {
-            Stop("当前版本已经是最新，或者比服务器上的还新");
+            Stop("The current version is already up to date, or newer than what's on the server");
             return null;
         }
 
@@ -322,7 +322,7 @@ public partial class MainPageVM : ObservableRecipient
         {
             var baseUrl = $"https://github.com/aiertana/OMnix/releases/download/v{versionText}/";
 
-            Log("附件列表没拿到（API 限流），按命名规则拼链接试试");
+            Log("Could not fetch the asset list (API rate limit), trying to build the link from the naming rules");
 
             // 依次试：对着自己版本的补丁 → 对着基准版本的补丁 → 整包
             var candidates = new List<string> { patchName };
@@ -350,16 +350,16 @@ public partial class MainPageVM : ObservableRecipient
         if (downloadUrl is null || fileName is null)
         {
             Stop(
-                "在最新的 Release 里没找到 OMniX 压缩包。可能是作者还没传完附件（上传要几分钟），" +
-                "过一会儿再试；一直这样也可以去 Release 页面手动下载，用设置页的「导入本地更新包」安装。");
+                "Could not find the OMniX archive in the latest Release. The author may not have finished uploading the assets yet (it takes a few minutes) — " +
+                "try again later; if it keeps failing, download it manually from the Releases page and use the \"Import local update package\" option in Settings.");
             return null;
         }
 
         var isPatch = fileName.StartsWith(patchPrefix, StringComparison.OrdinalIgnoreCase);
 
         Log(isPatch
-            ? $"找到增量补丁：{VersionText(InstalledVersion)} → {versionText}"
-            : "没有适用于当前版本的补丁，改下完整包");
+            ? $"Found an incremental patch: {VersionText(InstalledVersion)} → {versionText}"
+            : "No patch applies to the current version, downloading the full package");
 
         release.DownloadUrl = new Uri(downloadUrl);
         release.BrowserUrl = new Uri(newestVersionFound?.html_url ?? "https://github.com/aiertana/OMnix/releases");
@@ -397,7 +397,7 @@ public partial class MainPageVM : ObservableRecipient
 
         const int maxAttempts = 8;
 
-        Log($"正在下载：{gitHubRelease.FileName}");
+        Log($"Downloading: {gitHubRelease.FileName}");
 
         for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
@@ -423,13 +423,13 @@ public partial class MainPageVM : ObservableRecipient
                 if (response.StatusCode == HttpStatusCode.RequestedRangeNotSatisfiable)
                 {
                     // 服务器说没有这个区间了 —— 说明本地这份其实已经完整
-                    Log("文件已完整");
+                    Log("File already complete");
                     return;
                 }
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    Stop($"下载失败。状态码：{response.StatusCode}，原因：{response.ReasonPhrase}");
+                    Stop($"Download failed. Status code: {response.StatusCode}, reason: {response.ReasonPhrase}");
                     return;
                 }
 
@@ -467,7 +467,7 @@ public partial class MainPageVM : ObservableRecipient
                             if (percent / 10 != lastLogged / 10)
                             {
                                 lastLogged = percent;
-                                Log($"已下载 {percent}%（{written / 1048576.0:F1} / {total / 1048576.0:F1} MB）");
+                                Log($"Downloaded {percent}% ({written / 1048576.0:F1} / {total / 1048576.0:F1} MB)");
                             }
                         }
                     }
@@ -475,11 +475,11 @@ public partial class MainPageVM : ObservableRecipient
 
                 if (total <= 0 || written >= total)
                 {
-                    Log($"下载完成，来自 {gitHubRelease.DownloadUrl}");
+                    Log($"Download complete, from {gitHubRelease.DownloadUrl}");
                     return;
                 }
 
-                Log($"连接提前断开（{written} / {total} 字节），接着下…");
+                Log($"Connection dropped early ({written} / {total} bytes), resuming…");
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -487,20 +487,20 @@ public partial class MainPageVM : ObservableRecipient
             }
             catch (Exception ex) when (attempt < maxAttempts)
             {
-                Log($"下载中断（第 {attempt} 次）：{ex.Message}，3 秒后接着下…");
+                Log($"Download interrupted (attempt {attempt}): {ex.Message}, retrying in 3 seconds…");
                 await Task.Delay(3000, cancellationToken);
             }
             catch (Exception ex)
             {
-                Stop($"下载失败，自动重试 {maxAttempts} 次都没成功：{ex.Message}\n" +
-                     "多半是网络到 GitHub 不通。点「重试」再试（已经下到的部分会保留），" +
-                     "或者去 Release 页面手动下载，用设置页的「导入本地更新包」安装。");
+                Stop($"Download failed after {maxAttempts} automatic retries: {ex.Message}\n" +
+                     "Most likely the network cannot reach GitHub. Press \"Retry\" to try again (the part already downloaded is kept), " +
+                     "or download it manually from the Releases page and use the \"Import local update package\" option in Settings.");
                 return;
             }
         }
 
-        Stop("下载没有完成。点「重试」接着下（已下载的部分会保留），" +
-             "或者去 Release 页面手动下载，用设置页的「导入本地更新包」安装。");
+        Stop("The download did not complete. Press \"Retry\" to continue (the part already downloaded is kept), " +
+             "or download it manually from the Releases page and use the \"Import local update package\" option in Settings.");
     }
 
     private async Task UnzipLatestVersion(CancellationToken cancellationToken)
@@ -519,12 +519,12 @@ public partial class MainPageVM : ObservableRecipient
         };
 
         process.Start();
-        Log("正在解压压缩包…");
+        Log("Extracting the archive…");
         await process.WaitForExitAsync(cancellationToken);
 
         if (process.ExitCode != 0)
         {
-            Stop($"解压失败。退出码：{process.ExitCode}");
+            Stop($"Extraction failed. Exit code: {process.ExitCode}");
             return;
         }
 
@@ -534,11 +534,11 @@ public partial class MainPageVM : ObservableRecipient
 
         if (_extractedOmniXFolder is null)
         {
-            Stop("解压出来的东西里没有 OMniX 文件夹，这不是有效的更新包");
+            Stop("The extracted content does not contain an OMniX folder — this is not a valid update package");
             return;
         }
 
-        Log($"解压完成，程序目录：{_extractedOmniXFolder.FullName}");
+        Log($"Extraction complete, program folder: {_extractedOmniXFolder.FullName}");
     }
 
     private async Task InstallLatestVersion()
@@ -546,7 +546,7 @@ public partial class MainPageVM : ObservableRecipient
         _installedOmniXFolder = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory)).Parent!;
         if (_installedOmniXFolder is null)
         {
-            Stop("找不到已安装的 OMniX 目录");
+            Stop("Could not find the installed OMniX folder");
             return;
         }
 
@@ -576,15 +576,15 @@ public partial class MainPageVM : ObservableRecipient
         if (!containsOmniXExe)
         {
             Stop(
-                $"在 OMniX 目录里没找到 {omnixExe}，确认一下是不是装歪了。路径：{_installedOmniXFolder}");
+                $"{omnixExe} was not found in the OMniX folder — check whether the installation is in the wrong place. Path: {_installedOmniXFolder}");
             return;
         }
 
         if (!string.IsNullOrEmpty(systemFileFound))
         {
             Stop(
-                $"OMniX 目录里出现了 Windows 系统文件，这不该发生，已中止。找到的是：'{systemFileFound}'，" +
-                $"路径：{_installedOmniXFolder}");
+                $"A Windows system file appeared inside the OMniX folder — this should never happen, aborted. Found: '{systemFileFound}', " +
+                $"path: {_installedOmniXFolder}");
             return;
         }
 
@@ -595,11 +595,11 @@ public partial class MainPageVM : ObservableRecipient
         // 现在只把新版本带的文件盖上去，目录里原有的东西一律不动。
         var autoUpdaterFolderName = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Name;
 
-        Log("正在打补丁…", $"目录：{_installedOmniXFolder.FullName}");
+        Log("Applying the patch…", $"Folder: {_installedOmniXFolder.FullName}");
 
         await Task.Run(() => { ApplyPatch(_extractedOmniXFolder, _installedOmniXFolder, autoUpdaterFolderName); });
 
-        Log("OMniX 更新完成");
+        Log("OMniX update complete");
     }
 
     /// <summary>
@@ -640,7 +640,7 @@ public partial class MainPageVM : ObservableRecipient
 
     private void CleanUp()
     {
-        Log("正在清理临时文件…", WorkDir);
+        Log("Cleaning up temporary files…", WorkDir);
 
         if (Directory.Exists(WorkDir))
         {
@@ -672,7 +672,7 @@ public partial class MainPageVM : ObservableRecipient
             }
         }
 
-        Log("清理完成");
+        Log("Cleanup complete");
     }
 
     // Copied from OMniX.WinUI/Services/UpdateChecker.cs
@@ -700,7 +700,7 @@ public partial class MainPageVM : ObservableRecipient
         // 以前遇到这个就彻底没辙 —— 拿不到版本号，更新直接卡死，
         // 用户看到的只是「闪退」或者一句看不懂的版本解析错误。
         // releases.atom 是普通网页，不走 API 限额，用它兜底。
-        Log("GitHub API 取不到版本（多半是匿名限额用完），改读 releases.atom");
+        Log("GitHub API returned no version (most likely the anonymous rate limit is exhausted), falling back to releases.atom");
 
         return await TryGetLatestFromAtomAsync(cancellationToken);
     }

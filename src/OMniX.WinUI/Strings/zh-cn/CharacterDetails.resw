@@ -1,0 +1,433 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Card_CurrentSkinLabel.Text" xml:space="preserve">
+    <value>当前游戏内皮肤</value>
+  </data>
+  <data name="Card_DisableAllButton.Content" xml:space="preserve">
+    <value>禁用全部 Mod</value>
+  </data>
+  <data name="Card_DisableAllErrorTitle" xml:space="preserve">
+    <value>禁用 Mod 时出错</value>
+  </data>
+  <data name="Card_EditChar.ToolTipService.ToolTip" xml:space="preserve">
+    <value>编辑角色</value>
+  </data>
+  <data name="Card_LocateInOverview.ToolTipService.ToolTip" xml:space="preserve">
+    <value>在 Mod 总览中定位</value>
+  </data>
+  <data name="Card_NoMoreSkins.Text" xml:space="preserve">
+    <value>暂无其他皮肤</value>
+  </data>
+  <data name="Card_SelectSkinButton.Content" xml:space="preserve">
+    <value>选择皮肤</value>
+  </data>
+  <data name="Card_SwitchSkinError" xml:space="preserve">
+    <value>切换角色皮肤出错</value>
+  </data>
+  <data name="Card_TrackedModsLabel.Text" xml:space="preserve">
+    <value>已收录 Mod</value>
+  </data>
+  <data name="CtxMenu_ExportZip.Text" xml:space="preserve">
+    <value>导出为压缩包…</value>
+  </data>
+  <data name="CtxMenu_InvalidOpTitle" xml:space="preserve">
+    <value>这个操作不合法</value>
+  </data>
+  <data name="CtxMenu_MoveButton.Content" xml:space="preserve">
+    <value>移动</value>
+  </data>
+  <data name="CtxMenu_MoveFailedTitle" xml:space="preserve">
+    <value>移动失败</value>
+  </data>
+  <data name="CtxMenu_MoveFolderBox.PlaceholderText" xml:space="preserve">
+    <value>Mods 下的文件夹…</value>
+  </data>
+  <data name="CtxMenu_MoveToCharLabel.Text" xml:space="preserve">
+    <value>移动到其他角色：</value>
+  </data>
+  <data name="CtxMenu_MoveToFolderLabel.Text" xml:space="preserve">
+    <value>移动到其他文件夹：</value>
+  </data>
+  <data name="CtxMenu_MovedBody" xml:space="preserve">
+    <value>{0} 个 Mod 已移动到「{1}」：{2}</value>
+  </data>
+  <data name="CtxMenu_MovedTitle" xml:space="preserve">
+    <value>已移动</value>
+  </data>
+  <data name="CtxMenu_NoTargetListTitle" xml:space="preserve">
+    <value>找不到目标 Mod 列表</value>
+  </data>
+  <data name="CtxMenu_OpenFolder.Text" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="CtxMenu_SearchCharBox.PlaceholderText" xml:space="preserve">
+    <value>搜索角色...</value>
+  </data>
+  <data name="CtxMenu_SelectedModsLabel.Text" xml:space="preserve">
+    <value>已选择 Mod：</value>
+  </data>
+  <data name="CtxMenu_SkinOverrideDoneTitle" xml:space="preserve">
+    <value>已改掉这个 Mod 的皮肤归属</value>
+  </data>
+  <data name="Dlg_DeleteErrorTitle" xml:space="preserve">
+    <value>删除 Mod 出错</value>
+  </data>
+  <data name="Dlg_DeleteMoveToRecycle.Content" xml:space="preserve">
+    <value>移到回收站（可恢复）</value>
+  </data>
+  <data name="Dlg_DeletePrimary" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Dlg_DeleteRemoveFromPresets.Content" xml:space="preserve">
+    <value>同时从预设中移除</value>
+  </data>
+  <data name="Dlg_DeleteSecondary" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Dlg_DeleteTitle" xml:space="preserve">
+    <value>删除这 {0} 个 Mod？</value>
+  </data>
+  <data name="Dnd_DragFailedTitle" xml:space="preserve">
+    <value>拖拽操作失败</value>
+  </data>
+  <data name="Dnd_OpenModPageFailed" xml:space="preserve">
+    <value>打开 Mod 页面失败</value>
+  </data>
+  <data name="Grid_DisableError" xml:space="preserve">
+    <value>禁用 Mod 时出错</value>
+  </data>
+  <data name="Grid_DuplicateModsTitle" xml:space="preserve">
+    <value>发现重复的 Mod</value>
+  </data>
+  <data name="Grid_RefreshError" xml:space="preserve">
+    <value>刷新 Mod 出错</value>
+  </data>
+  <data name="Grid_SaveSettingsError" xml:space="preserve">
+    <value>保存 Mod 设置时出错</value>
+  </data>
+  <data name="Grid_SettingsSavedTitle" xml:space="preserve">
+    <value>Mod 设置已保存</value>
+  </data>
+  <data name="Grid_ToggleError" xml:space="preserve">
+    <value>开关 Mod 时出错</value>
+  </data>
+  <data name="Loading_ContextMenu" xml:space="preserve">
+    <value>右键菜单</value>
+  </data>
+  <data name="ModGrid_AuthorHeader" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="ModGrid_DateAddedHeader" xml:space="preserve">
+    <value>添加时间</value>
+  </data>
+  <data name="ModGrid_DisplayNameHeader" xml:space="preserve">
+    <value>Mod 名称</value>
+  </data>
+  <data name="ModGrid_EnabledHeader" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="ModGrid_FolderNameHeader" xml:space="preserve">
+    <value>文件夹名</value>
+  </data>
+  <data name="ModGrid_NotesHeader" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="ModGrid_PresetsHeader" xml:space="preserve">
+    <value>预设</value>
+  </data>
+  <data name="ModPane_BackwardKey.Header" xml:space="preserve">
+    <value>后退键</value>
+  </data>
+  <data name="ModPane_CharAvatar.ToolTipService.ToolTip" xml:space="preserve">
+    <value>角色头像</value>
+  </data>
+  <data name="ModPane_CharLabel.Text" xml:space="preserve">
+    <value>所属角色</value>
+  </data>
+  <data name="ModPane_ClearIni.Text" xml:space="preserve">
+    <value>忽略该 Mod 的 .ini 文件</value>
+  </data>
+  <data name="ModPane_ClearIni.ToolTipService.ToolTip" xml:space="preserve">
+    <value>OMniX 将不再查找 merged.ini / Script.ini，并忽略该 Mod 的按键切换</value>
+  </data>
+  <data name="ModPane_DeleteButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>把 Mod 文件夹移到回收站，可随时还原</value>
+  </data>
+  <data name="ModPane_DeleteButtonText.Text" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="ModPane_EditKeys.ToolTipService.ToolTip" xml:space="preserve">
+    <value>编辑按键原始值</value>
+  </data>
+  <data name="ModPane_EnabledToggle.OffContent" xml:space="preserve">
+    <value>未启用</value>
+  </data>
+  <data name="ModPane_EnabledToggle.OnContent" xml:space="preserve">
+    <value>已启用</value>
+  </data>
+  <data name="ModPane_ForwardKey.Header" xml:space="preserve">
+    <value>前进键</value>
+  </data>
+  <data name="ModPane_KeySwapDisabled.Text" xml:space="preserve">
+    <value>该 Mod 的按键切换管理已关闭</value>
+  </data>
+  <data name="ModPane_KeySwapMenuBadge.Text" xml:space="preserve">
+    <value>菜单</value>
+  </data>
+  <data name="ModPane_ModName.ToolTipService.ToolTip" xml:space="preserve">
+    <value>修改 Mod 显示名称</value>
+  </data>
+  <data name="ModPane_NotesBox.Header" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="ModPane_NotesBox.PlaceholderText" xml:space="preserve">
+    <value>点击添加备注…</value>
+  </data>
+  <data name="ModPane_OpenFolder.Content" xml:space="preserve">
+    <value>打开 Mod 文件夹…</value>
+  </data>
+  <data name="ModPane_SaveButtonText.Text" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="ModPane_SetIni.Text" xml:space="preserve">
+    <value>指定 Mod 的 .ini 文件</value>
+  </data>
+  <data name="ModPane_SetIni.ToolTipService.ToolTip" xml:space="preserve">
+    <value>指定 OMniX 读取该 Mod 的 .ini 文件</value>
+  </data>
+  <data name="ModPane_VariationsLabel.Text" xml:space="preserve">
+    <value>变体：</value>
+  </data>
+  <data name="Pane_DeleteDialogClose" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Pane_DeleteDialogContent" xml:space="preserve">
+    <value>确定要删除「{0}」吗？\n文件会被移到回收站，之后可以还原。</value>
+  </data>
+  <data name="Pane_DeleteDialogPrimary" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Pane_DeleteDialogTitle" xml:space="preserve">
+    <value>删除 Mod</value>
+  </data>
+  <data name="Pane_DeletedBody" xml:space="preserve">
+    <value>{0} 已移到回收站</value>
+  </data>
+  <data name="Pane_DeletedTitle" xml:space="preserve">
+    <value>已删除 Mod</value>
+  </data>
+  <data name="Pane_DeleteFailed" xml:space="preserve">
+    <value>删除失败</value>
+  </data>
+  <data name="Pane_DisableFailed" xml:space="preserve">
+    <value>停用失败</value>
+  </data>
+  <data name="Pane_EnableFailed" xml:space="preserve">
+    <value>启用失败</value>
+  </data>
+  <data name="Pane_FolderExistsBody" xml:space="preserve">
+    <value>已存在同名文件夹「{0}」</value>
+  </data>
+  <data name="Pane_GetClipboardImageFailed" xml:space="preserve">
+    <value>没能从剪贴板取到图片</value>
+  </data>
+  <data name="Pane_LoadError" xml:space="preserve">
+    <value>加载 Mod 出错</value>
+  </data>
+  <data name="Pane_ModFolderNotFound" xml:space="preserve">
+    <value>找不到 Mod 文件夹：{0}</value>
+  </data>
+  <data name="Pane_NoClipboardImage" xml:space="preserve">
+    <value>剪贴板里没有可用的图片</value>
+  </data>
+  <data name="Pane_OperationFailed" xml:space="preserve">
+    <value>操作失败</value>
+  </data>
+  <data name="Pane_PathCopied" xml:space="preserve">
+    <value>Mod 文件夹路径已复制</value>
+  </data>
+  <data name="Pane_PickImageCommit" xml:space="preserve">
+    <value>选这张图</value>
+  </data>
+  <data name="Pane_SaveKeyswapsFailed" xml:space="preserve">
+    <value>保存按键替换失败</value>
+  </data>
+  <data name="Pane_Unknown" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="Page_CommandErrorTitle" xml:space="preserve">
+    <value>执行命令时出了未知错误</value>
+  </data>
+  <data name="Page_LoadErrorTitle" xml:space="preserve">
+    <value>加载角色详情页出错了</value>
+  </data>
+  <data name="Page_NoModsDropHere" xml:space="preserve">
+    <value>拖放到这里</value>
+  </data>
+  <data name="Page_NoModsSubtitle" xml:space="preserve">
+    <value>把 Mod 文件夹拖进来，或从「Mod 安装」导入</value>
+  </data>
+  <data name="Page_NoModsTitle" xml:space="preserve">
+    <value>这个角色还没有 Mod</value>
+  </data>
+  <data name="Page_NoMoreSkinsToolTip" xml:space="preserve">
+    <value>这个角色目前只有默认皮肤。\n安装带有多套皮肤的游戏内 Mod 后，这里会出现可选皮肤。</value>
+  </data>
+  <data name="Page_SelectSkinButtonToolTip" xml:space="preserve">
+    <value>切换游戏内显示的皮肤（快捷键 F1）</value>
+  </data>
+  <data name="Section_AssignButton.Content" xml:space="preserve">
+    <value>选中的 Mod 归入此分区</value>
+  </data>
+  <data name="Section_ConfirmButton.Content" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="Section_DefaultNewName" xml:space="preserve">
+    <value>新分区</value>
+  </data>
+  <data name="Section_DeleteButton.Content" xml:space="preserve">
+    <value>删除分区</value>
+  </data>
+  <data name="Section_EnableButton.Content" xml:space="preserve">
+    <value>只启用此分区</value>
+  </data>
+  <data name="Section_Label.Text" xml:space="preserve">
+    <value>外观分区：</value>
+  </data>
+  <data name="Section_NameBox.PlaceholderText" xml:space="preserve">
+    <value>分区名称</value>
+  </data>
+  <data name="Section_NewButton.Content" xml:space="preserve">
+    <value>新建分区</value>
+  </data>
+  <data name="Toolbar_AddArchive.Text" xml:space="preserve">
+    <value>添加压缩包…</value>
+  </data>
+  <data name="Toolbar_AddArchive.ToolTipService.ToolTip" xml:space="preserve">
+    <value>从压缩包中添加 Mod</value>
+  </data>
+  <data name="Toolbar_AddFileErrorTitle" xml:space="preserve">
+    <value>添加文件时出错</value>
+  </data>
+  <data name="Toolbar_AddModFolder.Text" xml:space="preserve">
+    <value>添加 Mod…</value>
+  </data>
+  <data name="Toolbar_AddModFolder.ToolTipService.ToolTip" xml:space="preserve">
+    <value>添加 Mod 文件夹</value>
+  </data>
+  <data name="Toolbar_FolderMenu.Title" xml:space="preserve">
+    <value>文件夹</value>
+  </data>
+  <data name="Toolbar_LoadModPrefs.Text" xml:space="preserve">
+    <value>读取选中 Mod 的偏好设置</value>
+  </data>
+  <data name="Toolbar_LoadModPrefs.ToolTipService.ToolTip" xml:space="preserve">
+    <value>从 .JASM_Config.json 读取选中 Mod 的偏好设置并写入 d3dx_user.ini 供 3Dmigoto 使用</value>
+  </data>
+  <data name="Toolbar_ModPrefsMenu.Title" xml:space="preserve">
+    <value>Mod 偏好设置</value>
+  </data>
+  <data name="Toolbar_MultiModWarn.Message" xml:space="preserve">
+    <value>有多个 Mod 同时启用</value>
+  </data>
+  <data name="Toolbar_OpenCharFolder.Text" xml:space="preserve">
+    <value>打开角色的 Mod 文件夹…</value>
+  </data>
+  <data name="Toolbar_OpenRootFolder.Text" xml:space="preserve">
+    <value>打开 3Dmigoto 根目录…</value>
+  </data>
+  <data name="Toolbar_OpenSelectedModFolder.Text" xml:space="preserve">
+    <value>打开选中 Mod 的文件夹…</value>
+  </data>
+  <data name="Toolbar_RefreshMods.Text" xml:space="preserve">
+    <value>刷新 Mod</value>
+  </data>
+  <data name="Toolbar_SaveModPrefs.Text" xml:space="preserve">
+    <value>保存选中 Mod 的偏好设置</value>
+  </data>
+  <data name="Toolbar_SaveModPrefs.ToolTipService.ToolTip" xml:space="preserve">
+    <value>读取选中 Mod 在 d3dx_user.ini 中的 3Dmigoto 偏好设置，并保存到该 Mod 的 .JASM_Config.json</value>
+  </data>
+  <data name="Toolbar_SearchBox.PlaceholderText" xml:space="preserve">
+    <value>搜索 Mod…</value>
+  </data>
+  <data name="Toolbar_ShowModFolderColumn.Text" xml:space="preserve">
+    <value>显示“Mod 文件夹名”列</value>
+  </data>
+  <data name="Toolbar_SingleSelect.Text" xml:space="preserve">
+    <value>单选</value>
+  </data>
+  <data name="Toolbar_SingleSelect.ToolTipService.ToolTip" xml:space="preserve">
+    <value>开启后同一时间只允许启用一个 Mod</value>
+  </data>
+  <data name="Toolbar_ViewMenu.Title" xml:space="preserve">
+    <value>视图</value>
+  </data>
+  <data name="Toolbar_ViewToggle.AutomationProperties.Name" xml:space="preserve">
+    <value>切换视图模式</value>
+  </data>
+  <data name="Toolbar_ViewToggle.OffContent" xml:space="preserve">
+    <value>详细视图</value>
+  </data>
+  <data name="Toolbar_ViewToggle.OnContent" xml:space="preserve">
+    <value>画廊视图</value>
+  </data>
+</root>

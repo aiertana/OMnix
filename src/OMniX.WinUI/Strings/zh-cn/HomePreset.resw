@@ -1,0 +1,741 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About_AlipayLabel.Text" xml:space="preserve">
+    <value>支付宝</value>
+  </data>
+  <data name="About_AuthorName.Text" xml:space="preserve">
+    <value>是湫</value>
+  </data>
+  <data name="About_AuthorNote.Text" xml:space="preserve">
+    <value>有什么想加的、用着不顺手的，都能提。</value>
+  </data>
+  <data name="About_AuthorRole.Text" xml:space="preserve">
+    <value>程序 · 界面 · 动效</value>
+  </data>
+  <data name="About_Description.Text" xml:space="preserve">
+    <value>鸣潮的 Mod 管理器。按角色整理 Mod、一键开关、存预设、跟 3Dmigoto 同步，Mod 文件本身还在 XXMI Launcher 的目录里，这个程序只负责管。</value>
+  </data>
+  <data name="About_DonateBody.Text" xml:space="preserve">
+    <value>软件一直免费，这个纯粹是自愿的 —— 觉得好用、想支持一下再扫，不扫也完全没关系。</value>
+  </data>
+  <data name="About_DonateCardTitle.Text" xml:space="preserve">
+    <value>请我喝杯奶茶</value>
+  </data>
+  <data name="About_FeatureCharactersDesc.Text" xml:space="preserve">
+    <value>角色以头像墙列出，可搜索、置顶、隐藏，也能自己新建</value>
+  </data>
+  <data name="About_FeatureCharactersLabel.Text" xml:space="preserve">
+    <value>角色管理</value>
+  </data>
+  <data name="About_FeatureEditDesc.Text" xml:space="preserve">
+    <value>改名称、作者、描述、星级，调整 Mod 内部的分段与优先级</value>
+  </data>
+  <data name="About_FeatureEditLabel.Text" xml:space="preserve">
+    <value>Mod 编辑</value>
+  </data>
+  <data name="About_FeatureFixerDesc.Text" xml:space="preserve">
+    <value>内置 Wuwa Mod Fixer，可直接在程序里下载并运行</value>
+  </data>
+  <data name="About_FeatureFixerLabel.Text" xml:space="preserve">
+    <value>Mod 修复</value>
+  </data>
+  <data name="About_FeatureLaunchDesc.Text" xml:space="preserve">
+    <value>配好路径后能直接拉起 XXMI Launcher 和游戏本体</value>
+  </data>
+  <data name="About_FeatureLaunchLabel.Text" xml:space="preserve">
+    <value>启动游戏</value>
+  </data>
+  <data name="About_FeatureMigrateDesc.Text" xml:space="preserve">
+    <value>Mod 可以在角色之间移动或复制</value>
+  </data>
+  <data name="About_FeatureMigrateLabel.Text" xml:space="preserve">
+    <value>迁移</value>
+  </data>
+  <data name="About_FeaturePresetDesc.Text" xml:space="preserve">
+    <value>一套 Mod 组合存成预设，切换时批量应用，可导出可复制</value>
+  </data>
+  <data name="About_FeaturePresetLabel.Text" xml:space="preserve">
+    <value>Mod 预设</value>
+  </data>
+  <data name="About_FeatureRecycleDesc.Text" xml:space="preserve">
+    <value>删掉的 Mod 先进回收站，误删了还能恢复</value>
+  </data>
+  <data name="About_FeatureRecycleLabel.Text" xml:space="preserve">
+    <value>回收站</value>
+  </data>
+  <data name="About_FeatureToggleDesc.Text" xml:space="preserve">
+    <value>单个 Mod 或整个角色一键启用 / 禁用</value>
+  </data>
+  <data name="About_FeatureToggleLabel.Text" xml:space="preserve">
+    <value>Mod 开关</value>
+  </data>
+  <data name="About_FeatureUpdateDesc.Text" xml:space="preserve">
+    <value>比对本地文件时间戳，把有变动的 Mod 标出来</value>
+  </data>
+  <data name="About_FeatureUpdateLabel.Text" xml:space="preserve">
+    <value>更新检测</value>
+  </data>
+  <data name="About_FeaturesCardTitle.Text" xml:space="preserve">
+    <value>能做什么</value>
+  </data>
+  <data name="About_FreeNotice.Text" xml:space="preserve">
+    <value>完全免费、开源，不收任何费用。有人跟你要钱才给安装包，那就是骗子。</value>
+  </data>
+  <data name="About_GroupBody.Text" xml:space="preserve">
+    <value>扫一扫进群，用着有问题、想加什么功能，都能在这儿说。</value>
+  </data>
+  <data name="About_GroupCardTitle.Text" xml:space="preserve">
+    <value>交流群</value>
+  </data>
+  <data name="About_GroupWarning.Text" xml:space="preserve">
+    <value>群里也能拿到最新版安装包，别的地方下的请不要用。</value>
+  </data>
+  <data name="About_OpenRepoButton.Content" xml:space="preserve">
+    <value>打开项目主页</value>
+  </data>
+  <data name="About_RepoCardTitle.Text" xml:space="preserve">
+    <value>项目主页</value>
+  </data>
+  <data name="About_Subtitle.Text" xml:space="preserve">
+    <value>OMniX 是什么、能做什么、谁做的</value>
+  </data>
+  <data name="About_Title.Text" xml:space="preserve">
+    <value>关于 OMniX</value>
+  </data>
+  <data name="About_WechatLabel.Text" xml:space="preserve">
+    <value>微信</value>
+  </data>
+  <data name="About_WhatIsCardTitle.Text" xml:space="preserve">
+    <value>这是什么</value>
+  </data>
+  <data name="Home_ChangeBackgroundFlyout.Text" xml:space="preserve">
+    <value>更换背景图…</value>
+  </data>
+  <data name="Home_GameSelectorTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>切换当前游戏（会重启应用）</value>
+  </data>
+  <data name="Home_HeroBackgroundTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>右键可以换背景图</value>
+  </data>
+  <data name="Home_LaunchGameText" xml:space="preserve">
+    <value>启动游戏</value>
+  </data>
+  <data name="Home_ModCardDescription.Text" xml:space="preserve">
+    <value>浏览已安装的 Mod，启用 / 禁用、刷新和整理。</value>
+  </data>
+  <data name="Home_ModCardTitle.Text" xml:space="preserve">
+    <value>Mod 管理</value>
+  </data>
+  <data name="Home_ModsSummaryConfigured" xml:space="preserve">
+    <value>已配置</value>
+  </data>
+  <data name="Home_ModsSummaryCount" xml:space="preserve">
+    <value>{0} 个 Mod 文件夹</value>
+  </data>
+  <data name="Home_ModsSummaryNotConfigured" xml:space="preserve">
+    <value>尚未配置</value>
+  </data>
+  <data name="Home_ModulesSectionSubtitle.Text" xml:space="preserve">
+    <value>点开就用，常用的都在这里</value>
+  </data>
+  <data name="Home_ModulesSectionTitle.Text" xml:space="preserve">
+    <value>功能模块</value>
+  </data>
+  <data name="Home_MoreSectionSubtitle.Text" xml:space="preserve">
+    <value>预留位置，后续功能直接填进这些卡里</value>
+  </data>
+  <data name="Home_MoreSectionTitle.Text" xml:space="preserve">
+    <value>更多功能区</value>
+  </data>
+  <data name="Home_NotificationBgFailed" xml:space="preserve">
+    <value>换背景图失败</value>
+  </data>
+  <data name="Home_NotificationFolderOpenFailed" xml:space="preserve">
+    <value>打不开文件夹</value>
+  </data>
+  <data name="Home_NotificationSwitchGameFailed" xml:space="preserve">
+    <value>切换游戏失败</value>
+  </data>
+  <data name="Home_OpenBackgroundFolderFlyout.Text" xml:space="preserve">
+    <value>打开背景图文件夹</value>
+  </data>
+  <data name="Home_OpenCharactersButton.Content" xml:space="preserve">
+    <value>角色管理</value>
+  </data>
+  <data name="Home_OpenGalleryButton.Content" xml:space="preserve">
+    <value>角色图库</value>
+  </data>
+  <data name="Home_OpenModInstallerButton.Content" xml:space="preserve">
+    <value>安装 Mod</value>
+  </data>
+  <data name="Home_OpenModLibraryButton.Content" xml:space="preserve">
+    <value>Mod 总览</value>
+  </data>
+  <data name="Home_OpenPluginAreaButton.Content" xml:space="preserve">
+    <value>进入专区</value>
+  </data>
+  <data name="Home_OpenPresetsButton.Content" xml:space="preserve">
+    <value>预设配置</value>
+  </data>
+  <data name="Home_OpenSetupButton.Content" xml:space="preserve">
+    <value>开始配置</value>
+  </data>
+  <data name="Home_PickerCommit" xml:space="preserve">
+    <value>用作背景</value>
+  </data>
+  <data name="Home_PlaceholderSubtitle.Text" xml:space="preserve">
+    <value>敬请期待</value>
+  </data>
+  <data name="Home_PlaceholderTitle.Text" xml:space="preserve">
+    <value>预留功能区</value>
+  </data>
+  <data name="Home_PluginBadgeText.Text" xml:space="preserve">
+    <value>即将开放</value>
+  </data>
+  <data name="Home_PluginCardDescription.Text" xml:space="preserve">
+    <value>用插件扩展 OMniX：外部工具、批处理、选择器等。</value>
+  </data>
+  <data name="Home_PluginCardTitle.Text" xml:space="preserve">
+    <value>插件专区</value>
+  </data>
+  <data name="Home_ResetBackgroundFlyout.Text" xml:space="preserve">
+    <value>恢复默认背景</value>
+  </data>
+  <data name="Home_SetupHintBody.Text" xml:space="preserve">
+    <value>完成配置后才能浏览和启用 Mod，也可以稍后在设置页里配置。</value>
+  </data>
+  <data name="Home_SetupHintTitle.Text" xml:space="preserve">
+    <value>还没配置游戏与 Mods 路径</value>
+  </data>
+  <data name="Home_ThemeToggleTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>切换浅色 / 深色主题</value>
+  </data>
+  <data name="Home_WelcomeText.Text" xml:space="preserve">
+    <value>欢迎使用 OMniX</value>
+  </data>
+  <data name="Plugin_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Plugin_DefaultPrimaryText" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="Plugin_DeployingText" xml:space="preserve">
+    <value>正在部署…</value>
+  </data>
+  <data name="Plugin_DetailsLabel" xml:space="preserve">
+    <value>详情</value>
+  </data>
+  <data name="Plugin_Dlss5CardName" xml:space="preserve">
+    <value>DLSS5 渲染链</value>
+  </data>
+  <data name="Plugin_Dlss5DescDeployed" xml:space="preserve">
+    <value>加载器已铺进游戏目录，开关可以随时卸载。</value>
+  </data>
+  <data name="Plugin_Dlss5DescKitReady" xml:space="preserve">
+    <value>部署包已就位，点下方开关把它铺进游戏目录（需要管理员权限）。</value>
+  </data>
+  <data name="Plugin_Dlss5DescNoKit" xml:space="preserve">
+    <value>还没有部署包，点「下载部署包」自动拉取最新版，下完会自动部署。</value>
+  </data>
+  <data name="Plugin_Dlss5PrimaryConfig" xml:space="preserve">
+    <value>配置</value>
+  </data>
+  <data name="Plugin_Dlss5PrimaryDownload" xml:space="preserve">
+    <value>下载部署包</value>
+  </data>
+  <data name="Plugin_Dlss5SwitchTipDeploy" xml:space="preserve">
+    <value>把加载链部署进游戏目录（需要管理员权限）</value>
+  </data>
+  <data name="Plugin_Dlss5SwitchTipUninstall" xml:space="preserve">
+    <value>把加载链从游戏目录卸掉</value>
+  </data>
+  <data name="Plugin_Dlss5ToggleDeploy" xml:space="preserve">
+    <value>部署</value>
+  </data>
+  <data name="Plugin_Dlss5ToggleUninstall" xml:space="preserve">
+    <value>卸载</value>
+  </data>
+  <data name="Plugin_DownloadInProgress" xml:space="preserve">
+    <value>下载中…</value>
+  </data>
+  <data name="Plugin_DownloadPreparing" xml:space="preserve">
+    <value>正在准备…</value>
+  </data>
+  <data name="Plugin_FixerCardName" xml:space="preserve">
+    <value>Mod 修复器</value>
+  </data>
+  <data name="Plugin_FixerDescNotDownloaded" xml:space="preserve">
+    <value>Wuwa_Mod_Fixer 独立运行。也可以自己下好丢进插件文件夹，点修复时直接认。</value>
+  </data>
+  <data name="Plugin_FixerDescReady" xml:space="preserve">
+    <value>用的是 {0}，点角色的修复按钮就会跑它。</value>
+  </data>
+  <data name="Plugin_FixerPrimaryDownload" xml:space="preserve">
+    <value>下载修复器</value>
+  </data>
+  <data name="Plugin_FixerPrimaryOpenFolder" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="Plugin_ModCardName" xml:space="preserve">
+    <value>Mod 加载</value>
+  </data>
+  <data name="Plugin_ModDescNoXxmi" xml:space="preserve">
+    <value>还没有 XXMI，点「下载 XXMI」拉取便携版，解压即可用。</value>
+  </data>
+  <data name="Plugin_ModDescReady" xml:space="preserve">
+    <value>WWMI 已就位，开关控制这次启动带不带 Mod。</value>
+  </data>
+  <data name="Plugin_ModDescXxmiReady" xml:space="preserve">
+    <value>XXMI 里设好游戏路径后，它会自动把 WWMI 下载下来。</value>
+  </data>
+  <data name="Plugin_ModPrimaryDownloadXxmi" xml:space="preserve">
+    <value>下载 XXMI</value>
+  </data>
+  <data name="Plugin_ModPrimaryModsDir" xml:space="preserve">
+    <value>Mods 目录</value>
+  </data>
+  <data name="Plugin_ModPrimaryOpenXxmi" xml:space="preserve">
+    <value>打开 XXMI</value>
+  </data>
+  <data name="Plugin_ModSwitchTipDisabled" xml:space="preserve">
+    <value>关掉后启动游戏不加载 Mod</value>
+  </data>
+  <data name="Plugin_ModSwitchTipEnabled" xml:space="preserve">
+    <value>打开后启动游戏会加载 Mod</value>
+  </data>
+  <data name="Plugin_ModSwitchTipNotDeployed" xml:space="preserve">
+    <value>加载链还没部署，现在启动游戏不加载 Mod；打开会顺手把加载链装上</value>
+  </data>
+  <data name="Plugin_ModToggleDisable" xml:space="preserve">
+    <value>停用</value>
+  </data>
+  <data name="Plugin_ModToggleEnable" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="Plugin_NotificationAutoDeployFailedBody" xml:space="preserve">
+    <value>游戏可执行文件或部署包目录不对，点「配置」手动补一下。</value>
+  </data>
+  <data name="Plugin_NotificationAutoDeployFailedTitle" xml:space="preserve">
+    <value>还没法自动部署</value>
+  </data>
+  <data name="Plugin_NotificationAutoDeployNotSuccess" xml:space="preserve">
+    <value>自动部署未成功</value>
+  </data>
+  <data name="Plugin_NotificationAutoDeploying" xml:space="preserve">
+    <value>正在自动部署到游戏目录…</value>
+  </data>
+  <data name="Plugin_NotificationChainDeployed" xml:space="preserve">
+    <value>渲染链已部署</value>
+  </data>
+  <data name="Plugin_NotificationChainUninstalled" xml:space="preserve">
+    <value>渲染链已卸载</value>
+  </data>
+  <data name="Plugin_NotificationDownloadFailed" xml:space="preserve">
+    <value>下载失败</value>
+  </data>
+  <data name="Plugin_NotificationFixerNoVersionBody" xml:space="preserve">
+    <value>GitHub 打不开或者网络不通。也可以自己下好丢进插件文件夹，效果一样。</value>
+  </data>
+  <data name="Plugin_NotificationFixerNoVersionTitle" xml:space="preserve">
+    <value>查不到修复器版本</value>
+  </data>
+  <data name="Plugin_NotificationFixerReadyBody" xml:space="preserve">
+    <value>{0} 已放进插件文件夹，角色页点修复就会用它。</value>
+  </data>
+  <data name="Plugin_NotificationFixerReadyTitle" xml:space="preserve">
+    <value>修复器已就位</value>
+  </data>
+  <data name="Plugin_NotificationModDisabled" xml:space="preserve">
+    <value>Mod 已停用</value>
+  </data>
+  <data name="Plugin_NotificationModEnabled" xml:space="preserve">
+    <value>Mod 已启用</value>
+  </data>
+  <data name="Plugin_NotificationRenameFailed" xml:space="preserve">
+    <value>改文件名失败，检查一下游戏目录的写入权限</value>
+  </data>
+  <data name="Plugin_NotificationTakeEffectNextLaunch" xml:space="preserve">
+    <value>下次启动游戏生效</value>
+  </data>
+  <data name="Plugin_NotificationXxmiDownloaded" xml:space="preserve">
+    <value>XXMI 已下载</value>
+  </data>
+  <data name="Plugin_OpenFolderButton.Content" xml:space="preserve">
+    <value>打开插件文件夹</value>
+  </data>
+  <data name="Plugin_PageDescription.Text" xml:space="preserve">
+    <value>插件独立于管理器：删掉插件文件不影响 Mod 管理和游戏启动，出问题也只影响它自己。</value>
+  </data>
+  <data name="Plugin_PageTitle.Text" xml:space="preserve">
+    <value>插件专区</value>
+  </data>
+  <data name="Plugin_SourceLabel" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="Plugin_StatusDeployed" xml:space="preserve">
+    <value>已部署</value>
+  </data>
+  <data name="Plugin_StatusFixerNotDownloaded" xml:space="preserve">
+    <value>未下载</value>
+  </data>
+  <data name="Plugin_StatusFixerReady" xml:space="preserve">
+    <value>已就绪</value>
+  </data>
+  <data name="Plugin_StatusMissingWwmi" xml:space="preserve">
+    <value>缺 WWMI</value>
+  </data>
+  <data name="Plugin_StatusMissingXxmi" xml:space="preserve">
+    <value>缺 XXMI</value>
+  </data>
+  <data name="Plugin_StatusModDisabled" xml:space="preserve">
+    <value>Mod 已停用</value>
+  </data>
+  <data name="Plugin_StatusModEnabled" xml:space="preserve">
+    <value>Mod 已启用</value>
+  </data>
+  <data name="Plugin_StatusNoKit" xml:space="preserve">
+    <value>未下载部署包</value>
+  </data>
+  <data name="Plugin_StatusNotDeployed" xml:space="preserve">
+    <value>未部署</value>
+  </data>
+  <data name="Plugin_UninstallConfirmContent" xml:space="preserve">
+    <value>会删掉 {0} 下的加载链文件（d3d11.dll、scripts 等）。
+
+注意：被替换掉的 NVIDIA DLSS 库不会自动还原，需要跑一次游戏修复或重新部署。</value>
+  </data>
+  <data name="Plugin_UninstallConfirmPrimary" xml:space="preserve">
+    <value>确认卸载</value>
+  </data>
+  <data name="Plugin_UninstallConfirmTitle" xml:space="preserve">
+    <value>卸载 DLSS5 渲染链？</value>
+  </data>
+  <data name="Plugin_UpcomingCardName" xml:space="preserve">
+    <value>GameBanana 同步</value>
+  </data>
+  <data name="Plugin_UpcomingDescription" xml:space="preserve">
+    <value>自动检查已安装 Mod 的更新，一条列表看完全部待更新项。</value>
+  </data>
+  <data name="Plugin_UpcomingPrimaryText" xml:space="preserve">
+    <value>敬请期待</value>
+  </data>
+  <data name="Plugin_UpcomingStatus" xml:space="preserve">
+    <value>开发中</value>
+  </data>
+  <data name="Preset_ApplyPrefsButton.Content" xml:space="preserve">
+    <value>应用已保存的 Mod 偏好（按键）</value>
+  </data>
+  <data name="Preset_ApplyPrefsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>从 .JASM_Config.json 读取偏好，写进 d3dx_user.ini 让 3DMigoto 生效</value>
+  </data>
+  <data name="Preset_ApplyPresetButton.Content" xml:space="preserve">
+    <value>应用预设</value>
+  </data>
+  <data name="Preset_ApplyPresetButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>启用这个预设里的所有 Mod，并把预设里的偏好写回 Mod</value>
+  </data>
+  <data name="Preset_AutoSyncCheckBox.Content" xml:space="preserve">
+    <value>切换预设时自动同步 Mod 偏好</value>
+  </data>
+  <data name="Preset_AutoSyncOffWarning.Text" xml:space="preserve">
+    <value>自动同步未开启！修改后记得按 F10 手动重新加载 3DMigoto 配置</value>
+  </data>
+  <data name="Preset_AutoSyncCheckBox.ToolTipService.ToolTip" xml:space="preserve">
+    <value>勾选后，创建预设和切换预设时 OMniX 会自动同步偏好设置</value>
+  </data>
+  <data name="Preset_ConfirmApplyButton.Content" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Preset_ConfirmRenameText" xml:space="preserve">
+    <value>保存新名字</value>
+  </data>
+  <data name="Preset_ConfirmResetButton.Content" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Preset_CreateEmptyCheckBox.Content" xml:space="preserve">
+    <value>创建为空预设</value>
+  </data>
+  <data name="Preset_CreateEmptyCheckBox.ToolTipService.ToolTip" xml:space="preserve">
+    <value>勾选后，新预设里不会启用任何 Mod</value>
+  </data>
+  <data name="Preset_CreatePresetButton.Content" xml:space="preserve">
+    <value>保存当前 Mod 偏好并创建预设</value>
+  </data>
+  <data name="Preset_CreatedAtLabel.Text" xml:space="preserve">
+    <value>创建时间：</value>
+  </data>
+  <data name="Preset_DeleteMenuItem.Text" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Preset_DeleteMenuItem.ToolTipService.ToolTip" xml:space="preserve">
+    <value>永久删除这个预设</value>
+  </data>
+  <data name="Preset_DetailsAddedAtLabel.Text" xml:space="preserve">
+    <value>加进预设的时间：</value>
+  </data>
+  <data name="Preset_DetailsMissingWarning.Text" xml:space="preserve">
+    <value>硬盘上找不到这个 Mod！</value>
+  </data>
+  <data name="Preset_DetailsOriginalPathLabel.Text" xml:space="preserve">
+    <value>原来的路径：</value>
+  </data>
+  <data name="Preset_DetailsRemoveMenuItem.Text" xml:space="preserve">
+    <value>从预设里移除这个 Mod</value>
+  </data>
+  <data name="Preset_DetailsReplaceMenuItem.Text" xml:space="preserve">
+    <value>找替代 Mod</value>
+  </data>
+  <data name="Preset_DetailsSavePrefsMenuItem.Text" xml:space="preserve">
+    <value>读取并保存设置</value>
+  </data>
+  <data name="Preset_DetailsSavePrefsMenuItem.ToolTipService.ToolTip" xml:space="preserve">
+    <value>读取这个 Mod 当前的 3Dmigoto 用户 ini，把设置存进当前预设</value>
+  </data>
+  <data name="Preset_DetailsSearchPlaceholder.PlaceholderText" xml:space="preserve">
+    <value>搜索 Mod…</value>
+  </data>
+  <data name="Preset_DialogBody1" xml:space="preserve">
+    <value>一个预设，就是一份「要开哪些 Mod、各自用什么设置」的清单。Mod 的设置本身存在 Mod 目录下的 .OMniX_ModConfig.json 里。</value>
+  </data>
+  <data name="Preset_DialogBody2" xml:space="preserve">
+    <value>新建预设时，OMniX 会把当下所有开着的 Mod 连同它们的设置记下来。以后套用这个预设，就只开这些 Mod，并把设置恢复成当时的样子。</value>
+  </data>
+  <data name="Preset_DialogBody3" xml:space="preserve">
+    <value>想让 OMniX 帮你刷新 3Dmigoto，可以先启动 Elevator，再勾上「自动同步」。也可以自己来：勾上「显示手动控制」，手动保存/读取设置，按 F10 刷新 3Dmigoto。</value>
+  </data>
+  <data name="Preset_DialogBody4" xml:space="preserve">
+    <value>你也可以完全不管预设，只用下面的手动控制来保存 Mod 的设置。</value>
+  </data>
+  <data name="Preset_DialogClose" xml:space="preserve">
+    <value>知道了</value>
+  </data>
+  <data name="Preset_DialogTitle" xml:space="preserve">
+    <value>预设是怎么工作的</value>
+  </data>
+  <data name="Preset_DuplicateMenuItem.Text" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="Preset_EnabledCountLabel.Text" xml:space="preserve">
+    <value>已启用 Mod 数：</value>
+  </data>
+  <data name="Preset_MoreOptions.AutomationProperties.Name" xml:space="preserve">
+    <value>更多操作</value>
+  </data>
+  <data name="Preset_NewNameInput.Header" xml:space="preserve">
+    <value>新预设名称</value>
+  </data>
+  <data name="Preset_NotificationAddFailed" xml:space="preserve">
+    <value>加进预设失败</value>
+  </data>
+  <data name="Preset_NotificationAdded" xml:space="preserve">
+    <value>已加进预设</value>
+  </data>
+  <data name="Preset_NotificationApplied" xml:space="preserve">
+    <value>预设已套用</value>
+  </data>
+  <data name="Preset_NotificationApplyFailed" xml:space="preserve">
+    <value>套用预设失败</value>
+  </data>
+  <data name="Preset_NotificationCreateFailed" xml:space="preserve">
+    <value>新建预设失败</value>
+  </data>
+  <data name="Preset_NotificationDeleteFailed" xml:space="preserve">
+    <value>删除预设失败</value>
+  </data>
+  <data name="Preset_NotificationDuplicateFailed" xml:space="preserve">
+    <value>复制预设失败</value>
+  </data>
+  <data name="Preset_NotificationElevatorFailed" xml:space="preserve">
+    <value>启动 Elevator 失败</value>
+  </data>
+  <data name="Preset_NotificationEntryPrefsSaveFailed" xml:space="preserve">
+    <value>保存 Mod 设置失败</value>
+  </data>
+  <data name="Preset_NotificationEntryPrefsSaved" xml:space="preserve">
+    <value>这个 Mod 的设置已保存</value>
+  </data>
+  <data name="Preset_NotificationPrefsReset" xml:space="preserve">
+    <value>Mod 设置已重置</value>
+  </data>
+  <data name="Preset_NotificationRemoveFailed" xml:space="preserve">
+    <value>从预设里移除失败</value>
+  </data>
+  <data name="Preset_NotificationRemoved" xml:space="preserve">
+    <value>已从预设里移除</value>
+  </data>
+  <data name="Preset_NotificationRenameFailed" xml:space="preserve">
+    <value>重命名预设失败</value>
+  </data>
+  <data name="Preset_NotificationReorderFailed" xml:space="preserve">
+    <value>保存预设顺序失败</value>
+  </data>
+  <data name="Preset_NotificationResetFailed" xml:space="preserve">
+    <value>重置 Mod 设置失败</value>
+  </data>
+  <data name="Preset_NotificationToggleReadOnlyFailed" xml:space="preserve">
+    <value>切换只读失败</value>
+  </data>
+  <data name="Preset_PageTitle.Text" xml:space="preserve">
+    <value>Mod 预设与偏好设置</value>
+  </data>
+  <data name="Preset_RandomizeButton.Content" xml:space="preserve">
+    <value>随机 Mod</value>
+  </data>
+  <data name="Preset_RandomizeButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>打开一个带说明的弹窗</value>
+  </data>
+  <data name="Preset_ReadOnlyMenuItem.Text" xml:space="preserve">
+    <value>只读</value>
+  </data>
+  <data name="Preset_RenameText" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="Preset_ResetAlsoClearIniCheckBox.Content" xml:space="preserve">
+    <value>同时清空 3DMigoto 的 user.ini</value>
+  </data>
+  <data name="Preset_ResetFlyoutTitle.Text" xml:space="preserve">
+    <value>重置已保存的 Mod 偏好</value>
+  </data>
+  <data name="Preset_ResetOnlyEnabledCheckBox.Content" xml:space="preserve">
+    <value>只重置已启用的 Mod</value>
+  </data>
+  <data name="Preset_ResetPrefsButton.Content" xml:space="preserve">
+    <value>重置 Mod 偏好</value>
+  </data>
+  <data name="Preset_ResetPrefsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>清空存在 Mod 的 .JASM_ModConfig.json 里的偏好</value>
+  </data>
+  <data name="Preset_SavePrefsButton.Content" xml:space="preserve">
+    <value>保存当前 Mod 偏好（按键）到 Mod</value>
+  </data>
+  <data name="Preset_SavePrefsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>从 d3dx_user.ini 读取当前启用 Mod 的偏好，存进各自的 .JASM_Config.json</value>
+  </data>
+  <data name="Preset_SelectModWindowTitle" xml:space="preserve">
+    <value>选择 Mod</value>
+  </data>
+  <data name="Preset_ShowManualCheckBox.Content" xml:space="preserve">
+    <value>显示手动控制</value>
+  </data>
+  <data name="Preset_ShowManualCheckBox.ToolTipService.ToolTip" xml:space="preserve">
+    <value>勾选后可以自己手动同步偏好，不用让 Elevator 代劳</value>
+  </data>
+  <data name="Preset_StartElevatorButton.Content" xml:space="preserve">
+    <value>启动 Elevator…</value>
+  </data>
+  <data name="Preset_ViewDetailsButton.Content" xml:space="preserve">
+    <value>查看预设详情</value>
+  </data>
+  <data name="Startup_BackButton.Content" xml:space="preserve">
+    <value>← 重新选择游戏</value>
+  </data>
+  <data name="Startup_ByAuthor.Text" xml:space="preserve">
+    <value>by 是湫</value>
+  </data>
+  <data name="Startup_DefaultModsFolderHint" xml:space="preserve">
+    <value>默认：{0}</value>
+  </data>
+  <data name="Startup_DetectedDialogClose" xml:space="preserve">
+    <value>不用它</value>
+  </data>
+  <data name="Startup_DetectedDialogPrimaryRename" xml:space="preserve">
+    <value>改名并迁移 Mod</value>
+  </data>
+  <data name="Startup_DetectedDialogSecondary" xml:space="preserve">
+    <value>只用这个文件夹，不改名</value>
+  </data>
+  <data name="Startup_DetectedDialogTitle" xml:space="preserve">
+    <value>识别到 Mod 文件夹</value>
+  </data>
+  <data name="Startup_DetectedMessagePlain" xml:space="preserve">
+    <value>在下面这个位置识别到 {0} 个 Mod：
+
+{1}
+
+已自动设为 Mods 文件夹。</value>
+  </data>
+  <data name="Startup_DetectedMessageRename" xml:space="preserve">
+    <value>在下面这个位置识别到 {0} 个 Mod：
+
+{1}
+
+已自动设为 Mods 文件夹。要不要顺便把文件夹名统一成「{2}」？
+改名后的位置：{3}
+（只在原地改名，不会挪到别的地方，Mod 内容会一起搬过去）</value>
+  </data>
+  <data name="Startup_DisableAllCheckBox.Content" xml:space="preserve">
+    <value>同时禁用全部 Mods</value>
+  </data>
+  <data name="Startup_GameSelectHint.Text" xml:space="preserve">
+    <value>选择需要管理的游戏，点击图标进入该游戏的文件夹配置。以后可在“设置”页面中切换游戏。</value>
+  </data>
+  <data name="Startup_LauncherDetectedInfoBar.Title" xml:space="preserve">
+    <value>已识别到启动程序</value>
+  </data>
+  <data name="Startup_LauncherFolderHint.Text" xml:space="preserve">
+    <value>选择启动器所在的文件夹即可，例如 D:\mod\XXMI Launcher。OMniX 会自动识别其中的启动程序（如 Resources\Bin\XXMI Launcher.exe）并推导 Mods 文件夹（如 WWMI\Mods）。</value>
+  </data>
+  <data name="Startup_LauncherFolderSelector.Footer" xml:space="preserve">
+    <value>例如：D:\mod\XXMI Launcher</value>
+  </data>
+  <data name="Startup_LauncherFolderSelector.PlaceHolderText" xml:space="preserve">
+    <value>选择包含 XXMI Launcher.exe 等启动器程序的文件夹</value>
+  </data>
+  <data name="Startup_LauncherFolderSelector.Title" xml:space="preserve">
+    <value>启动器文件夹</value>
+  </data>
+  <data name="Startup_ModsFolderSelector.Title" xml:space="preserve">
+    <value>Mods 文件夹</value>
+  </data>
+  <data name="Startup_NotificationAlpha" xml:space="preserve">
+    <value>OMniX 还在 alpha 阶段</value>
+  </data>
+  <data name="Startup_NotificationFolderRenameFailed" xml:space="preserve">
+    <value>Mods 文件夹改名失败</value>
+  </data>
+  <data name="Startup_NotificationFolderRenameFailedBody" xml:space="preserve">
+    <value>已改用原文件夹：{0}</value>
+  </data>
+  <data name="Startup_NotificationFolderRenamed" xml:space="preserve">
+    <value>Mods 文件夹已改名</value>
+  </data>
+  <data name="Startup_NotificationFolderRenamedBody" xml:space="preserve">
+    <value>已迁移到：{0}</value>
+  </data>
+  <data name="Startup_NotificationSettingsSaved" xml:space="preserve">
+    <value>启动设置已保存</value>
+  </data>
+  <data name="Startup_PageTitle.Text" xml:space="preserve">
+    <value>首次启动配置</value>
+  </data>
+  <data name="Startup_ReorganizeCheckBox.Content" xml:space="preserve">
+    <value>重新整理 Mods</value>
+  </data>
+  <data name="Startup_SaveButton.Content" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Startup_SkipButton.Content" xml:space="preserve">
+    <value>返回首页</value>
+  </data>
+  <data name="Startup_SkipButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>返回首页，之后可从首页的引导卡重新进入配置</value>
+  </data>
+  <data name="Startup_UninstallHint.Text" xml:space="preserve">
+    <value>卸载 Mod 的功能还没做。等以后做了，可以把选中的 Mod 挪到单独的卸载区文件夹里。</value>
+  </data>
+  <data name="Startup_UnloadedFolderSelector.Title" xml:space="preserve">
+    <value>卸载区文件夹（可选）</value>
+  </data>
+</root>

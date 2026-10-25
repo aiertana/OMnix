@@ -414,7 +414,7 @@ public partial class App : Application
         var window = new ErrorWindow(e.Exception, () => _ErrorWindowsOpen--)
         {
             IsAlwaysOnTop = true,
-            Title = "OMniX - 出错了",
+            Title = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/AppX_ErrorWindowTitle", "OMniX - 出错了"),
             SystemBackdrop = new MicaBackdrop()
         };
 
@@ -423,8 +423,8 @@ public partial class App : Application
         window.CenterOnScreen();
 
         GetService<NotificationManager>()
-            .ShowNotification("出错了",
-                "这会儿 OMniX 可能不太稳定，随时可能崩，建议重启一下。",
+            .ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/AppX_CrashTitle", "出错了"),
+                App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/AppX_CrashBody", "这会儿 OMniX 可能不太稳定，随时可能崩，建议重启一下。"),
                 TimeSpan.FromMinutes(60));
 
         if (_ErrorWindowsOpen > 4)

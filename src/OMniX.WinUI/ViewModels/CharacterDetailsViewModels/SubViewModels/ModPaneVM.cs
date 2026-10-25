@@ -31,7 +31,8 @@ public sealed partial class ModPaneVM(
     ISkinManagerService skinManagerService,
     NotificationManager notificationService,
     ModSettingsService modSettingsService,
-    ImageHandlerService imageHandlerService)
+    ImageHandlerService imageHandlerService,
+    ILanguageLocalizer localizer)
     : ObservableRecipient, IRecipient<ModChangedMessage>
 {
     private readonly ILogger _logger = Log.ForContext<ModPaneVM>();
@@ -39,6 +40,7 @@ public sealed partial class ModPaneVM(
     private readonly NotificationManager _notificationService = notificationService;
     private readonly ModSettingsService _modSettingsService = modSettingsService;
     private readonly ImageHandlerService _imageHandlerService = imageHandlerService;
+    private readonly ILanguageLocalizer _localizer = localizer;
 
     private readonly AsyncLock _loadModLock = new();
     private CancellationToken _cancellationToken = new();
@@ -107,7 +109,8 @@ public sealed partial class ModPaneVM(
             }
             catch (Exception e)
             {
-                _notificationService.ShowNotification("加载 Mod 出错", e.Message, null);
+                _notificationService.ShowNotification(
+                    _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_LoadError", "加载 Mod 出错"), e.Message, null);
             }
         }
     }
@@ -261,7 +264,8 @@ public sealed partial class ModPaneVM(
             dataPackage.SetText(modFolderPath);
             Clipboard.SetContent(dataPackage);
 
-            _notificationService.ShowNotification("Mod 文件夹路径已复制", "", TimeSpan.FromSeconds(3));
+            _notificationService.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_PathCopied", "Mod 文件夹路径已复制"), "", TimeSpan.FromSeconds(3));
         }
         catch (Exception e)
         {
@@ -326,7 +330,7 @@ public sealed partial class ModPaneVM(
     {
         if (!IsModLoaded) return;
         var filePicker = new FileOpenPicker();
-        filePicker.CommitButtonText = "选这张图";
+        filePicker.CommitButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_PickImageCommit", "选这张图");
         filePicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
         filePicker.SettingsIdentifier = "ImagePicker";
         foreach (var supportedImageExtension in Constants.SupportedImageExtensions)
@@ -356,7 +360,8 @@ public sealed partial class ModPaneVM(
 
             if (!clipboardHasValidImageResult.Result)
             {
-                _notificationService.ShowNotification("剪贴板里没有可用的图片", "", null);
+                _notificationService.ShowNotification(
+                    _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_NoClipboardImage", "剪贴板里没有可用的图片"), "", null);
                 return;
             }
 
@@ -364,7 +369,8 @@ public sealed partial class ModPaneVM(
 
             if (imagePath == null)
             {
-                _notificationService.ShowNotification("没能从剪贴板取到图片", "", null);
+                _notificationService.ShowNotification(
+                    _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_GetClipboardImageFailed", "没能从剪贴板取到图片"), "", null);
                 return;
             }
 
@@ -479,7 +485,8 @@ public sealed partial class ModPaneVM(
                 _notificationService.ShowNotification(result.Notification);
 
             if (savingKeySwapException is not null)
-                _notificationService.ShowNotification("保存按键替换失败", savingKeySwapException.Message, null);
+                _notificationService.ShowNotification(
+                    _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_SaveKeyswapsFailed", "保存按键替换失败"), savingKeySwapException.Message, null);
 
             _cancellationToken.ThrowIfCancellationRequested();
 
@@ -528,12 +535,18 @@ public sealed partial class ModPaneVM(
                     Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
                     Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin));
 
-            _notificationService.ShowNotification("已删除 Mod", $"{modName} 已移到回收站", TimeSpan.FromSeconds(6));
+            _notificationService.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_DeletedTitle", "已删除 Mod"),
+                string.Format(
+                    _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_DeletedBody", "{0} 已移到回收站"),
+                    modName),
+                TimeSpan.FromSeconds(6));
         }
         catch (Exception e)
         {
             _logger.Error(e, "Could not delete mod {ModName}", modName);
-            _notificationService.ShowNotification("删除失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationService.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_DeleteFailed", "删除失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -553,7 +566,11 @@ public sealed partial class ModPaneVM(
             var dir = new DirectoryInfo(_loadedMod.Mod.FullPath.TrimEnd(Path.DirectorySeparatorChar));
             if (!dir.Exists)
             {
-                _notificationService.ShowNotification("操作失败", $"找不到 Mod 文件夹：{dir.FullName}",
+                _notificationService.ShowNotification(
+                    _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_OperationFailed", "操作失败"),
+                    string.Format(
+                        _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_ModFolderNotFound", "找不到 Mod 文件夹：{0}"),
+                        dir.FullName),
                     TimeSpan.FromSeconds(6));
                 return;
             }
@@ -573,8 +590,14 @@ public sealed partial class ModPaneVM(
 
             if (Directory.Exists(target) || File.Exists(target))
             {
-                _notificationService.ShowNotification(enable ? "启用失败" : "停用失败",
-                    $"已存在同名文件夹「{newName}」", TimeSpan.FromSeconds(8));
+                _notificationService.ShowNotification(
+                    enable
+                        ? _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_EnableFailed", "启用失败")
+                        : _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_DisableFailed", "停用失败"),
+                    string.Format(
+                        _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_FolderExistsBody", "已存在同名文件夹「{0}」"),
+                        newName),
+                    TimeSpan.FromSeconds(8));
                 return;
             }
 
@@ -586,7 +609,11 @@ public sealed partial class ModPaneVM(
         catch (Exception e)
         {
             _logger.Error(e, "Could not toggle mod enabled state for {ModName}", _loadedMod.Mod.Name);
-            _notificationService.ShowNotification(enable ? "启用失败" : "停用失败", e.Message,
+            _notificationService.ShowNotification(
+                enable
+                    ? _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_EnableFailed", "启用失败")
+                    : _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_DisableFailed", "停用失败"),
+                e.Message,
                 TimeSpan.FromSeconds(8));
         }
     }
@@ -729,6 +756,10 @@ public partial class ModPaneFieldsVm : ObservableObject
     public bool IsLoaded { get; private init; }
     public ModPaneFieldsVm? UnchangedValue { get; private init; }
 
+    // 二开：本类由 new 创建，不经 DI，统一在这里取 localizer 处理兜底文案
+    private static string UnknownFallback =>
+        App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/CharacterDetails/Pane_Unknown", "未知") ?? "未知";
+
     /// <summary>
     ///     二开：UI 线程队列，由 ModPaneVM 注入
     /// </summary>
@@ -820,7 +851,7 @@ public partial class ModPaneFieldsVm : ObservableObject
                 Description = keySwap.Description,
                 IsMenu = keySwap.IsMenu,
                 Type = keySwap.Type,
-                VariationsCount = keySwap.Variants?.ToString() ?? "未知"
+                VariationsCount = keySwap.Variants?.ToString() ?? UnknownFallback
             });
 
             KeySwaps.Last().PropertyChanged += (_, e) => { OnPropertyChanged(nameof(KeySwaps)); };
@@ -903,12 +934,16 @@ public partial class ModPaneFieldsVm : ObservableObject
 [DebuggerDisplay("Section: {_sectionKey} - {_forwardHotkey} - {_backwardHotkey}")]
 public partial class ModPaneFieldsKeySwapVm : ObservableObject
 {
+    // 二开：本类由 new 创建，不经 DI，统一在这里取 localizer 处理兜底文案
+    private static string UnknownFallback =>
+        App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/CharacterDetails/Pane_Unknown", "未知") ?? "未知";
+
     [ObservableProperty] private string _sectionKey = string.Empty;
 
     /// <summary>
     ///     二开：美化后的显示名（[KeyHair] → 头发）
     /// </summary>
-    [ObservableProperty] private string _displayName = "未知";
+    [ObservableProperty] private string _displayName = UnknownFallback;
 
     /// <summary>
     ///     二开：ini 注释里写的按键说明
@@ -938,7 +973,7 @@ public partial class ModPaneFieldsKeySwapVm : ObservableObject
     /// <summary>
     ///     二开：主标签，优先显示变量名（switching / swapvar）
     /// </summary>
-    [ObservableProperty] private string _primaryLabel = "未知";
+    [ObservableProperty] private string _primaryLabel = UnknownFallback;
 
     /// <summary>
     ///     二开：拆开后的键帽
@@ -957,5 +992,5 @@ public partial class ModPaneFieldsKeySwapVm : ObservableObject
     /// </summary>
     [ObservableProperty] private bool _isEditingKeys;
     [ObservableProperty] private string? _type;
-    [ObservableProperty] private string _variationsCount = "未知";
+    [ObservableProperty] private string _variationsCount = UnknownFallback;
 }

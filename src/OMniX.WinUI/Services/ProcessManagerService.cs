@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.Services.CommandService;
 using OMniX.Core.Services.CommandService.Models;
 using OMniX.WinUI.Models.Options;
@@ -139,7 +140,7 @@ public abstract partial class BaseProcessManager<TProcessOptions> : ObservableOb
                         $"Failed to start {ProcessName}, this can happen if the exe has the 'Run as administrator' option enabled in the exe properties";
                 }
 
-                _notificationManager.ShowNotification("启动进程失败", message, null);
+                _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Process_StartFailed", "启动进程失败"), message, null);
                 return;
             }
 
@@ -150,7 +151,7 @@ public abstract partial class BaseProcessManager<TProcessOptions> : ObservableOb
                 return;
             }
 
-            _notificationManager.ShowNotification("启动进程失败", "An unknown error occurred", null);
+            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Process_StartFailed", "启动进程失败"), "An unknown error occurred", null);
             return;
         }
 

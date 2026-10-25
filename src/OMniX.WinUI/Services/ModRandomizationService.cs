@@ -25,6 +25,7 @@ public class ModRandomizationService
     private readonly NotificationManager _notificationManager;
     private readonly ILogger _logger;
     private static readonly Random Random = new();
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     public ModRandomizationService(
         IGameService gameService,
@@ -48,9 +49,9 @@ public class ModRandomizationService
     {
         var dialog = new ContentDialog
         {
-            Title = "随机换 Mod",
-            PrimaryButtonText = "随机",
-            CloseButtonText = "取消",
+            Title = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_Title", "随机换 Mod"),
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_Button", "随机"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary
         };
 
@@ -59,12 +60,12 @@ public class ModRandomizationService
 
         stackPanel.Children.Add(new TextBlock
         {
-            Text = "选一下要给哪些分类随机："
+            Text = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_PickHint", "选一下要给哪些分类随机：")
         });
 
         stackPanel.Children.Add(new TextBlock
         {
-            Text = "说明：只会随机那些「本来就只能开一个」的 Mod 文件夹，所以 Others 里的不会动。同一个角色的皮肤，每次只会开一个 Mod。",
+            Text = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_Explain", "说明：只会随机那些「本来就只能开一个」的 Mod 文件夹，所以 Others 里的不会动。同一个角色的皮肤，每次只会开一个 Mod。"),
             TextWrapping = TextWrapping.WrapWholeWords,
             Margin = new Thickness(0, 0, 0, 10)
         });
@@ -82,13 +83,13 @@ public class ModRandomizationService
         stackPanel.Children.Add(new CheckBox
         {
             Margin = new Thickness(0, 10, 0, 0),
-            Content = "允许随机结果是一个都不开（有些 Mod 文件夹可能整个空着）",
+            Content = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_AllowNone", "允许随机结果是一个都不开（有些 Mod 文件夹可能整个空着）"),
             IsChecked = false
         });
 
         stackPanel.Children.Add(new TextBlock
         {
-            Text = "开的 Mod 多的话，建议先存个预设（或者备份）再随机",
+            Text = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_BackupTip", "开的 Mod 多的话，建议先存个预设（或者备份）再随机"),
             TextWrapping = TextWrapping.WrapWholeWords,
             Margin = new Thickness(0, 10, 0, 0)
         });
@@ -115,7 +116,7 @@ public class ModRandomizationService
 
         if (selectedCategories.Count == 0)
         {
-            _notificationManager.ShowNotification("没选分类", "一个分类都没选，什么都没换。",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_NoneTitle", "没选分类"), _localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_NoneBody", "一个分类都没选，什么都没换。"),
                 TimeSpan.FromSeconds(5));
             return;
         }
@@ -184,7 +185,7 @@ public class ModRandomizationService
         catch (Exception e)
         {
             _logger.Error(e, "随机换 Mod 失败");
-            _notificationManager.ShowNotification("随机换 Mod 失败", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_Failed", "随机换 Mod 失败"), e.Message, TimeSpan.FromSeconds(5));
             return;
         }
 
@@ -193,7 +194,7 @@ public class ModRandomizationService
             await Task.Run(() => _elevatorService.RefreshGenshinMods());
         }
 
-        _notificationManager.ShowNotification("随机完成",
+        _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_Done", "随机完成"),
             "Mods have been randomized for the categories: " +
             string.Join(", ", selectedCategories.Select(c => c.DisplayNamePlural)),
             TimeSpan.FromSeconds(5));

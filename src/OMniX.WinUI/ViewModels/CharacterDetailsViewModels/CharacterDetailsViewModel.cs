@@ -38,6 +38,7 @@ public partial class CharacterDetailsViewModel : ObservableObject, INavigationAw
     private readonly IWindowManagerService _windowManagerService = App.GetService<IWindowManagerService>();
     private readonly ModPresetService _presetService = App.GetService<ModPresetService>();
     private readonly AppearanceSectionService _sectionService = App.GetService<AppearanceSectionService>();
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     public Func<Task>? GridLoadedAwaiter { get; set; }
 
@@ -143,7 +144,7 @@ public partial class CharacterDetailsViewModel : ObservableObject, INavigationAw
     [RelayCommand]
     private void StartAddSection()
     {
-        NewSectionName = "新分区";
+        NewSectionName = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Section_DefaultNewName", "新分区");
         IsAddingSection = true;
     }
 
@@ -153,7 +154,9 @@ public partial class CharacterDetailsViewModel : ObservableObject, INavigationAw
         if (_modList is null)
             return;
 
-        var name = string.IsNullOrWhiteSpace(NewSectionName) ? "新分区" : NewSectionName.Trim();
+        var name = string.IsNullOrWhiteSpace(NewSectionName)
+            ? _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Section_DefaultNewName", "新分区")
+            : NewSectionName.Trim();
         var section = await _sectionService.AddSectionAsync(CharacterInternalName, name);
 
         IsAddingSection = false;
@@ -275,7 +278,7 @@ public partial class CharacterDetailsViewModel : ObservableObject, INavigationAw
         if (IsReturning) return;
 
         await InitToolbarAsync();
-        LoadingItemText = "右键菜单";
+        LoadingItemText = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Loading_ContextMenu", "右键菜单");
 
         await InitContextMenuAsync();
         LoadingItemText = "Grid";
@@ -471,12 +474,11 @@ public partial class CharacterDetailsViewModel : ObservableObject, INavigationAw
         Task.Run(async () =>
         {
             await Task.Delay(500);
+            var errorTitle = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Page_LoadErrorTitle", "加载角色详情页出错了");
             if (exception is not null)
-                _notificationService.ShowNotification("加载角色详情页出错了",
-                    exception.Message, null);
+                _notificationService.ShowNotification(errorTitle, exception.Message, null);
             else
-                _notificationService.ShowNotification("加载角色详情页出错了", "",
-                    null);
+                _notificationService.ShowNotification(errorTitle, "", null);
             App.MainWindow.DispatcherQueue.TryEnqueue(() =>
             {
                 if (_navigationService.CanGoBack)
@@ -524,7 +526,8 @@ public partial class CharacterDetailsViewModel : ObservableObject, INavigationAw
         }
         catch (Exception e)
         {
-            _notificationService.ShowNotification("执行命令时出了未知错误", e.Message,
+            _notificationService.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Page_CommandErrorTitle", "执行命令时出了未知错误"), e.Message,
                 TimeSpan.FromSeconds(5));
         }
     }

@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.Services.Plugins;
 
 namespace OMniX.WinUI.Services;
@@ -404,7 +405,7 @@ public sealed class ModFixerService
     public static string FormatNotes(string notes)
     {
         if (string.IsNullOrWhiteSpace(notes))
-            return "（这次更新没有写说明）";
+            return App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/FixerSvc_NoNotes", "（这次更新没有写说明）");
 
         var lines = notes
             .Replace("\r\n", "\n")

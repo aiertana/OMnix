@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.Contracts.Services;
 using Windows.UI;
 
@@ -44,8 +45,8 @@ public sealed class PaletteService
 
     public string DisplayName => Current switch
     {
-        OmniXPalette.Blue => "冷调蓝",
-        _ => "暖白珊瑚"
+        OmniXPalette.Blue => App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/PaletteSvc_BlueName", "冷调蓝"),
+        _ => App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/PaletteSvc_WarmName", "暖白珊瑚")
     };
 
     public async Task InitializeAsync()

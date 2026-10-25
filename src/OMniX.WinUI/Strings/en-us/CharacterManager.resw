@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CharMgr_BackButton.AutomationProperties.Name" xml:space="preserve"><value>Back to character list</value></data>
+  <data name="CharMgr_BackButton.ToolTipService.ToolTip" xml:space="preserve"><value>Back to the character avatar grid</value></data>
+  <data name="CharMgr_NewCharButton.ToolTipService.ToolTip" xml:space="preserve"><value>Create a new character</value></data>
+  <data name="CharMgr_NoMatchResult" xml:space="preserve"><value>No matching characters found</value></data>
+  <data name="CharMgr_PageTitle.Text" xml:space="preserve"><value>Character Manager</value></data>
+  <data name="CharMgr_SearchBox.Header" xml:space="preserve"><value>Search characters (you can also type a new name, then click + on the right to create)</value></data>
+  <data name="CharMgr_SearchBox.PlaceholderText" xml:space="preserve"><value>Type a character name to start searching...</value></data>
+  <data name="CharMgr_Signature.Text" xml:space="preserve"><value>by 是湫</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="CreateChar_AddKeyButton.Content" xml:space="preserve"><value>Add keyword</value></data>
+  <data name="CreateChar_CreatedBody" xml:space="preserve"><value>"{0}" created successfully</value></data>
+  <data name="CreateChar_CreatedTitle" xml:space="preserve"><value>Character created</value></data>
+  <data name="CreateChar_CreateFailedTitle" xml:space="preserve"><value>Failed to create character</value></data>
+  <data name="CreateChar_DisplayNameBox.Header" xml:space="preserve"><value>Display name</value></data>
+  <data name="CreateChar_ElementCombo.Header" xml:space="preserve"><value>Element</value></data>
+  <data name="CreateChar_EnableModsFailedTitle" xml:space="preserve"><value>Character created, but enabling its mod list failed</value></data>
+  <data name="CreateChar_ExportButton.Content" xml:space="preserve"><value>Export character json</value></data>
+  <data name="CreateChar_ExportCopiedBody" xml:space="preserve"><value>Character json copied to clipboard</value></data>
+  <data name="CreateChar_ExportCopyPrimary" xml:space="preserve"><value>Copy to clipboard and close</value></data>
+  <data name="CreateChar_ExportDialogTitle" xml:space="preserve"><value>Export character data Json</value></data>
+  <data name="CreateChar_ExportFailedTitle" xml:space="preserve"><value>Failed to export json</value></data>
+  <data name="CreateChar_ImageSectionLabel.Text" xml:space="preserve"><value>Character artwork</value></data>
+  <data name="CreateChar_InternalNameBox.Header" xml:space="preserve"><value>Internal name (required)</value></data>
+  <data name="CreateChar_InternalNameHelp.Text" xml:space="preserve"><value>OMniX uses the internal name to identify a character/object, and it is also used as the Mod folder name. It must be unique.
+Changing it after creation makes OMniX treat this as a new character.</value></data>
+  <data name="CreateChar_KeysHeader.Text" xml:space="preserve"><value>Search keywords</value></data>
+  <data name="CreateChar_KeysHelp.Text" xml:space="preserve"><value>OMniX uses keywords to improve search hits. Some characters have multiple names or nicknames; you can add them all as keywords.</value></data>
+  <data name="CreateChar_ModFilesNameBox.Header" xml:space="preserve"><value>Mod file name</value></data>
+  <data name="CreateChar_ModFilesNameHelp.Text" xml:space="preserve"><value>OMniX sometimes tries to tell which character a Mod belongs to. It uses the name you enter here to look for matching Mod files.
+For example, if you enter 'paimon' here, it will match files like PaimonHeadLightMap.dds.
+Leave it blank if you do not want OMniX to auto-match.</value></data>
+  <data name="CreateChar_MultiModCheck.Content" xml:space="preserve"><value>Allow multiple mods to be enabled at once</value></data>
+  <data name="CreateChar_MultiModHelp.Text" xml:space="preserve"><value>When checked, OMniX will no longer warn if multiple mods are enabled for this character at once.</value></data>
+  <data name="CreateChar_NewKeyBox.PlaceholderText" xml:space="preserve"><value>New keyword...</value></data>
+  <data name="CreateChar_OpenJsonButton.Content" xml:space="preserve"><value>Open custom character json</value></data>
+  <data name="CreateChar_PageTitle.Text" xml:space="preserve"><value>New Character</value></data>
+  <data name="CreateChar_PasteFailedTitle" xml:space="preserve"><value>Failed to paste image</value></data>
+  <data name="CreateChar_ClipboardNoImage" xml:space="preserve"><value>No image in the clipboard</value></data>
+  <data name="CreateChar_RaritySlider.AutomationProperties.Name" xml:space="preserve"><value>Rarity</value></data>
+  <data name="CreateChar_RaritySlider.Header" xml:space="preserve"><value>Rarity</value></data>
+  <data name="CreateChar_ReleaseDatePicker.Header" xml:space="preserve"><value>Release date</value></data>
+  <data name="CreateChar_RemoveKeyButton.Content" xml:space="preserve"><value>Remove</value></data>
+  <data name="CreateChar_SaveButton.Content" xml:space="preserve"><value>Create character</value></data>
+  <data name="EditChar_AddKeyButton.Content" xml:space="preserve"><value>Add keyword</value></data>
+  <data name="EditChar_CharacterDataTitle" xml:space="preserve"><value>Character data</value></data>
+  <data name="EditChar_ClipboardNoImage" xml:space="preserve"><value>No image in the clipboard</value></data>
+  <data name="EditChar_CustomDeletedBody" xml:space="preserve"><value>"{0}" deleted</value></data>
+  <data name="EditChar_CustomDeletedTitle" xml:space="preserve"><value>Custom character deleted</value></data>
+  <data name="EditChar_DateAddedText.ToolTipService.ToolTip" xml:space="preserve"><value>When it was added to OMniX</value></data>
+  <data name="EditChar_DateUnknown" xml:space="preserve"><value>Unknown</value></data>
+  <data name="EditChar_DeleteCustomButton.Content" xml:space="preserve"><value>Delete custom character</value></data>
+  <data name="EditChar_DeleteCustomButton.ToolTipService.ToolTip" xml:space="preserve"><value>A confirmation dialog will appear first</value></data>
+  <data name="EditChar_DeleteCustomDeleteFolderCheck" xml:space="preserve"><value>Also delete this custom character's folder and the mods inside it?
+Files will be permanently deleted and cannot be recovered!</value></data>
+  <data name="EditChar_DeleteCustomDialogText" xml:space="preserve"><value>Are you sure you want to delete this custom character? The character will be removed and OMniX will no longer recognize it. Click "OK" to run it immediately.</value></data>
+  <data name="EditChar_DeleteCustomPrimary" xml:space="preserve"><value>Delete</value></data>
+  <data name="EditChar_DeleteCustomTitle" xml:space="preserve"><value>Delete custom character</value></data>
+  <data name="EditChar_DeleteFailedTitle" xml:space="preserve"><value>Failed to delete</value></data>
+  <data name="EditChar_DeleteModButton.AutomationProperties.Name" xml:space="preserve"><value>Delete</value></data>
+  <data name="EditChar_DeleteModButton.ToolTipService.ToolTip" xml:space="preserve"><value>Delete this mod from disk</value></data>
+  <data name="EditChar_DeleteModContent" xml:space="preserve"><value>Are you sure you want to delete "{0}"?
+
+The whole folder will be deleted from disk:
+{1}
+
+This action cannot be undone.</value></data>
+  <data name="EditChar_DeleteModPrimary" xml:space="preserve"><value>Delete</value></data>
+  <data name="EditChar_DeleteModTitle" xml:space="preserve"><value>Delete mod</value></data>
+  <data name="EditChar_DisableButton.Content" xml:space="preserve"><value>Disable character</value></data>
+  <data name="EditChar_DisableButton.ToolTipService.ToolTip" xml:space="preserve"><value>A confirmation dialog will appear first</value></data>
+  <data name="EditChar_DisableDeleteFolderCheck" xml:space="preserve"><value>Also delete this character's folder and the mods inside it?
+Files will be permanently deleted and cannot be recovered!</value></data>
+  <data name="EditChar_DisableDialogText" xml:space="preserve"><value>Are you sure you want to disable this character? Disabling does not delete the character, but OMniX will no longer recognize it. You can re-enable it at any time. Click "OK" to run it immediately.</value></data>
+  <data name="EditChar_DisablePrimary" xml:space="preserve"><value>Disable</value></data>
+  <data name="EditChar_DisableTitle" xml:space="preserve"><value>Disable character</value></data>
+  <data name="EditChar_DisplayNameBox.Header" xml:space="preserve"><value>Display name</value></data>
+  <data name="EditChar_DotDisabledToolTip" xml:space="preserve"><value>Disabled; click to enable</value></data>
+  <data name="EditChar_DotEnabledToolTip" xml:space="preserve"><value>Enabled; click to disable</value></data>
+  <data name="EditChar_EnableButton.Content" xml:space="preserve"><value>Enable character</value></data>
+  <data name="EditChar_EnableButton.ToolTipService.ToolTip" xml:space="preserve"><value>A confirmation dialog will appear first</value></data>
+  <data name="EditChar_EnableDialogText" xml:space="preserve"><value>Are you sure you want to enable this character? Click "OK" to run it immediately.</value></data>
+  <data name="EditChar_EnablePrimary" xml:space="preserve"><value>Enable</value></data>
+  <data name="EditChar_EnableTitle" xml:space="preserve"><value>Enable character</value></data>
+  <data name="EditChar_FixerDownloadingBody" xml:space="preserve"><value>{0} ({1}); the first time may be a bit slow</value></data>
+  <data name="EditChar_FixerDownloadingTitle" xml:space="preserve"><value>Downloading the fixer</value></data>
+  <data name="EditChar_FixerOpenedBody" xml:space="preserve"><value>MOD folder set to "{0}"</value></data>
+  <data name="EditChar_FixerOpenedTitle" xml:space="preserve"><value>Fixer opened</value></data>
+  <data name="EditChar_FixerOpenFailedTitle" xml:space="preserve"><value>Failed to open the fixer</value></data>
+  <data name="EditChar_FixerUnreachableBody" xml:space="preserve"><value>Failed to reach GitHub; you can manually download Wuwa_Mod_Fixer from the project page first</value></data>
+  <data name="EditChar_FixerUnreachableTitle" xml:space="preserve"><value>Cannot reach the fixer</value></data>
+  <data name="EditChar_FolderMissingTitle" xml:space="preserve"><value>Folder does not exist</value></data>
+  <data name="EditChar_InternalNameHelp.Text" xml:space="preserve"><value>OMniX uses the internal name to identify a character/object, and it is also used as the Mod folder name. It must be unique.
+Changing it after creation makes OMniX treat this as a new character.</value></data>
+  <data name="EditChar_InternalNameLabel.Text" xml:space="preserve"><value>Internal name (ID):</value></data>
+  <data name="EditChar_InvalidCharsBody" xml:space="preserve"><value>Try a different name</value></data>
+  <data name="EditChar_InvalidCharsTitle" xml:space="preserve"><value>The name contains disallowed characters</value></data>
+  <data name="EditChar_KeysHeader.Text" xml:space="preserve"><value>Search keywords</value></data>
+  <data name="EditChar_KeysHelp.Text" xml:space="preserve"><value>OMniX uses keywords to improve search hits. Some characters have multiple names or nicknames; you can add them all as keywords.</value></data>
+  <data name="EditChar_ModDeletedBody" xml:space="preserve"><value>"{0}" deleted from disk</value></data>
+  <data name="EditChar_ModDeletedTitle" xml:space="preserve"><value>Mod deleted</value></data>
+  <data name="EditChar_ModFolderLabel.Text" xml:space="preserve"><value>Mod folder path:</value></data>
+  <data name="EditChar_ModFolderLink.ToolTipService.ToolTip" xml:space="preserve"><value>Open this character's mod folder</value></data>
+  <data name="EditChar_ModsCountLabel.Text" xml:space="preserve"><value>Total mods:</value></data>
+  <data name="EditChar_MultiModCheck.Content" xml:space="preserve"><value>Allow multiple mods to be enabled at once</value></data>
+  <data name="EditChar_MultiModHelp.Text" xml:space="preserve"><value>When checked, OMniX will no longer warn if multiple mods are enabled for this character at once.</value></data>
+  <data name="EditChar_NameDupBody" xml:space="preserve"><value>"{0}" already exists</value></data>
+  <data name="EditChar_NameDupTitle" xml:space="preserve"><value>Duplicate name</value></data>
+  <data name="EditChar_NewKeyBox.PlaceholderText" xml:space="preserve"><value>New keyword...</value></data>
+  <data name="EditChar_OpenFolderButton.AutomationProperties.Name" xml:space="preserve"><value>Open folder</value></data>
+  <data name="EditChar_OpenFolderButton.ToolTipService.ToolTip" xml:space="preserve"><value>Open this mod's folder</value></data>
+  <data name="EditChar_OpenFolderFailedTitle" xml:space="preserve"><value>Failed to open folder</value></data>
+  <data name="EditChar_PasteFailedTitle" xml:space="preserve"><value>Failed to paste image</value></data>
+  <data name="EditChar_RenameButton.AutomationProperties.Name" xml:space="preserve"><value>Rename</value></data>
+  <data name="EditChar_RenameButton.ToolTipService.ToolTip" xml:space="preserve"><value>Rename (click once to edit directly above)</value></data>
+  <data name="EditChar_RenameFailedTitle" xml:space="preserve"><value>Failed to rename</value></data>
+  <data name="EditChar_RenamedBody" xml:space="preserve"><value>"{0}"</value></data>
+  <data name="EditChar_RenamedTitle" xml:space="preserve"><value>Renamed</value></data>
+  <data name="EditChar_ResetButton.Content" xml:space="preserve"><value>Reset character</value></data>
+  <data name="EditChar_ResetButton.ToolTipService.ToolTip" xml:space="preserve"><value>Restore character data to defaults</value></data>
+  <data name="EditChar_ResetConfirmButton.Content" xml:space="preserve"><value>Reset to default</value></data>
+  <data name="EditChar_RevertButton.Content" xml:space="preserve"><value>Revert changes</value></data>
+  <data name="EditChar_RevertButton.ToolTipService.ToolTip" xml:space="preserve"><value>Discard unsaved changes</value></data>
+  <data name="EditChar_RepairButton.AutomationProperties.Name" xml:space="preserve"><value>Repair</value></data>
+  <data name="EditChar_RepairButton.ToolTipService.ToolTip" xml:space="preserve"><value>Open this mod in the fixer (MOD folder filled in automatically)</value></data>
+  <data name="EditChar_RemoveKeyButton.Content" xml:space="preserve"><value>Remove</value></data>
+  <data name="EditChar_SaveButton.Content" xml:space="preserve"><value>Save changes</value></data>
+  <data name="EditChar_SaveButton.ToolTipService.ToolTip" xml:space="preserve"><value>Write changes to disk</value></data>
+  <data name="EditChar_SaveConfirmButton.Content" xml:space="preserve"><value>Save</value></data>
+  <data name="EditChar_SaveFailedTitle" xml:space="preserve"><value>Failed to save character</value></data>
+  <data name="EditChar_ToggleFailedTitle" xml:space="preserve"><value>Failed to toggle enabled state</value></data>
+  <data name="EditChar_ViewCharButton.Content" xml:space="preserve"><value>View character</value></data>
+  <data name="EditChar_ViewDataButton.Text" xml:space="preserve"><value>View character data...</value></data>
+  <data name="Valid_DisplayNameConflict" xml:space="preserve"><value>Another object ({0}) already uses this display name; search may conflict</value></data>
+  <data name="Valid_DisplayNameRequired" xml:space="preserve"><value>Display name cannot be empty</value></data>
+  <data name="Valid_ElementInvalid" xml:space="preserve"><value>Element "{0}" does not exist. Available values: {1}</value></data>
+  <data name="Valid_FileExistsDefault" xml:space="preserve"><value>File does not exist</value></data>
+  <data name="Valid_FileMissing" xml:space="preserve"><value>Could not find in the folder: {0}</value></data>
+  <data name="Valid_FilesMissing" xml:space="preserve"><value>Could not find a file or folder with these names in the folder: {0}</value></data>
+  <data name="Valid_FolderExistsDefault" xml:space="preserve"><value>Folder does not exist</value></data>
+  <data name="Valid_ImageFileInvalid" xml:space="preserve"><value>Image must be an existing, valid file</value></data>
+  <data name="Valid_ImageFormatUnsupported" xml:space="preserve"><value>Only these image formats are supported: {0}. The current extension {1} is not supported.</value></data>
+  <data name="Valid_ImageRequired" xml:space="preserve"><value>Image cannot be empty</value></data>
+  <data name="Valid_InternalNameInvalidChar" xml:space="preserve"><value>Internal name contains a character not allowed in file names: "{0}"</value></data>
+  <data name="Valid_InternalNameRequired" xml:space="preserve"><value>Internal name cannot be empty</value></data>
+  <data name="Valid_InternalNameTaken" xml:space="preserve"><value>Internal name "{0}" is already used by {1}</value></data>
+  <data name="Valid_KeyTaken" xml:space="preserve"><value>Keyword "{0}" is already used by {1}</value></data>
+  <data name="Valid_ModFilesNameTaken" xml:space="preserve"><value>Mod file name is already used by {0}</value></data>
+  <data name="Valid_NoLauncherExe" xml:space="preserve"><value>Could not detect a launcher executable in this folder (e.g. Resources\Bin\XXMI Launcher.exe)</value></data>
+  <data name="Valid_NotEmptyPath" xml:space="preserve"><value>Folder path cannot be empty</value></data>
+  <data name="Valid_NotLauncherRoot" xml:space="preserve"><value>This folder does not look like a launcher root: no "{0}" subfolder and no XXMI marker file found</value></data>
+  <data name="Valid_NotLauncherRootNoImporter" xml:space="preserve"><value>This folder does not look like a launcher root: no XXMI marker file and no importer folder found</value></data>
+  <data name="Valid_PathFormat" xml:space="preserve"><value>Invalid path format</value></data>
+  <data name="Valid_RarityMax" xml:space="preserve"><value>Rarity cannot be greater than 10</value></data>
+  <data name="Valid_RarityMin" xml:space="preserve"><value>Rarity cannot be less than 0</value></data>
+</root>

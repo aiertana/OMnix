@@ -8,6 +8,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:controls1="using:OMniX.WinUI.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:l="using:WinUI3Localizer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:OMniX.WinUI.Models"
     xmlns:subVms="using:OMniX.WinUI.ViewModels.SubVms"
@@ -36,7 +37,7 @@
                     Command="{x:Bind ViewModel.CheckForUpdatesForCharacterCommand}"
                     CommandParameter="{Binding}"
                     IsEnabled="{x:Bind ViewModel.CanCheckForUpdates, Mode=OneWay}"
-                    Text="检查更新">
+                    Text="检查更新" l:Uids.Uid="/Characters/CharPage_CheckUpdates">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE777;" />
                     </MenuFlyoutItem.Icon>
@@ -45,7 +46,7 @@
                 <MenuFlyoutItem
                     Command="{x:Bind ViewModel.OpenCharacterFolderCommand}"
                     CommandParameter="{Binding}"
-                    Text="打开文件夹...">
+                    Text="打开文件夹..." l:Uids.Uid="/Characters/CharPage_OpenFolder">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE8DA;" />
                     </MenuFlyoutItem.Icon>
@@ -55,14 +56,14 @@
                 <MenuFlyoutItem
                     Command="{x:Bind ViewModel.SetCharacterImageCommand}"
                     CommandParameter="{Binding}"
-                    Text="导入角色头像…">
+                    Text="导入角色头像…" l:Uids.Uid="/Characters/CharPage_ImportAvatar">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xEB9F;" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 
                 <!--  二开：重命名（自定义角色改建角色配置，内置角色写本地 override）  -->
-                <MenuFlyoutItem Command="{x:Bind ViewModel.RenameCharacterCommand}" Text="重命名">
+                <MenuFlyoutItem Command="{x:Bind ViewModel.RenameCharacterCommand}" Text="重命名" l:Uids.Uid="/Characters/CharPage_Rename">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE70F;" />
                     </MenuFlyoutItem.Icon>
@@ -72,7 +73,7 @@
                 <MenuFlyoutItem
                     Command="{x:Bind ViewModel.DeleteCharacterCommand}"
                     CommandParameter="{Binding}"
-                    Text="删除角色">
+                    Text="删除角色" l:Uids.Uid="/Characters/CharPage_DeleteChar">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE74D;" />
                     </MenuFlyoutItem.Icon>
@@ -80,11 +81,11 @@
 
                 <!--  二开：所属属性。内置角色只能看不能改（属性来自游戏数据）。  -->
                 <MenuFlyoutSeparator />
-                <MenuFlyoutSubItem Text="所属属性">
+                <MenuFlyoutSubItem Text="所属属性" l:Uids.Uid="/Characters/CharPage_ElementSub">
                     <MenuFlyoutItem
                         Command="{x:Bind ViewModel.SetCharacterElementCommand}"
                         CommandParameter="Fusion"
-                        Text="热熔">
+                        Text="热熔" l:Uids.Uid="/Characters/CharPage_ElementFusion">
                         <MenuFlyoutItem.Icon>
                             <ImageIcon Source="{x:Bind ViewModel.GetElementIcon('Fusion')}" />
                         </MenuFlyoutItem.Icon>
@@ -92,7 +93,7 @@
                     <MenuFlyoutItem
                         Command="{x:Bind ViewModel.SetCharacterElementCommand}"
                         CommandParameter="Glacio"
-                        Text="冷凝">
+                        Text="冷凝" l:Uids.Uid="/Characters/CharPage_ElementGlacio">
                         <MenuFlyoutItem.Icon>
                             <ImageIcon Source="{x:Bind ViewModel.GetElementIcon('Glacio')}" />
                         </MenuFlyoutItem.Icon>
@@ -100,7 +101,7 @@
                     <MenuFlyoutItem
                         Command="{x:Bind ViewModel.SetCharacterElementCommand}"
                         CommandParameter="Aero"
-                        Text="气动">
+                        Text="气动" l:Uids.Uid="/Characters/CharPage_ElementAero">
                         <MenuFlyoutItem.Icon>
                             <ImageIcon Source="{x:Bind ViewModel.GetElementIcon('Aero')}" />
                         </MenuFlyoutItem.Icon>
@@ -108,7 +109,7 @@
                     <MenuFlyoutItem
                         Command="{x:Bind ViewModel.SetCharacterElementCommand}"
                         CommandParameter="Electro"
-                        Text="导电">
+                        Text="导电" l:Uids.Uid="/Characters/CharPage_ElementElectro">
                         <MenuFlyoutItem.Icon>
                             <ImageIcon Source="{x:Bind ViewModel.GetElementIcon('Electro')}" />
                         </MenuFlyoutItem.Icon>
@@ -116,7 +117,7 @@
                     <MenuFlyoutItem
                         Command="{x:Bind ViewModel.SetCharacterElementCommand}"
                         CommandParameter="Spectro"
-                        Text="衍射">
+                        Text="衍射" l:Uids.Uid="/Characters/CharPage_ElementSpectro">
                         <MenuFlyoutItem.Icon>
                             <ImageIcon Source="{x:Bind ViewModel.GetElementIcon('Spectro')}" />
                         </MenuFlyoutItem.Icon>
@@ -124,7 +125,7 @@
                     <MenuFlyoutItem
                         Command="{x:Bind ViewModel.SetCharacterElementCommand}"
                         CommandParameter="Havoc"
-                        Text="湮灭">
+                        Text="湮灭" l:Uids.Uid="/Characters/CharPage_ElementHavoc">
                         <MenuFlyoutItem.Icon>
                             <ImageIcon Source="{x:Bind ViewModel.GetElementIcon('Havoc')}" />
                         </MenuFlyoutItem.Icon>
@@ -133,7 +134,7 @@
                     <MenuFlyoutItem
                         Command="{x:Bind ViewModel.SetCharacterElementCommand}"
                         CommandParameter="Other"
-                        Text="其他（无属性）">
+                        Text="其他（无属性）" l:Uids.Uid="/Characters/CharPage_ElementOther">
                         <MenuFlyoutItem.Icon>
                             <ImageIcon Source="{x:Bind ViewModel.GetElementIcon('Other')}" />
                         </MenuFlyoutItem.Icon>
@@ -145,7 +146,7 @@
                     <MenuFlyoutItem
                         Command="{x:Bind ViewModel.ClearNotificationsCommand}"
                         CommandParameter="{Binding}"
-                        Text="清除通知">
+                        Text="清除通知" l:Uids.Uid="/Characters/CharPage_ClearNotifications">
                         <MenuFlyoutItem.Icon>
                             <FontIcon Glyph="&#xE894;" />
                         </MenuFlyoutItem.Icon>
@@ -154,7 +155,7 @@
                     <MenuFlyoutItem
                         Command="{x:Bind ViewModel.DisableCharacterModsCommand}"
                         CommandParameter="{Binding}"
-                        Text="禁用该角色全部 Mod" />
+                        Text="禁用该角色全部 Mod" l:Uids.Uid="/Characters/CharPage_DisableAllMods" />
                 </MenuFlyoutSubItem>
             </MenuFlyout>
         </Grid.Resources>
@@ -167,6 +168,7 @@
 
         <ContentDialog
             x:Name="SelectProcessDialog"
+            l:Uids.Uid="/Characters/CharPage_PickProcess"
             Title="选择程序路径"
             DefaultButton="Primary"
             IsPrimaryButtonEnabled="{x:Bind ViewModel.SimpleSelectProcessDialogVM.PathPicker.IsValid, Mode=OneWay}"
@@ -186,7 +188,7 @@
                         Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                         IsTextSelectionEnabled="True"
                         TextWrapping="WrapWholeWords"
-                        Text="选择要启动的程序路径。保存后，点击启动按钮即可直接启动，可在设置页面重置。" />
+                        Text="选择要启动的程序路径。保存后，点击启动按钮即可直接启动，可在设置页面重置。" l:Uids.Uid="/Characters/CharPage_PickProcessHint" />
 
                     <controls1:FolderSelector
                         Title=""
@@ -200,7 +202,7 @@
                     Grid.Row="1"
                     HorizontalAlignment="Right"
                     Command="{x:Bind ViewModel.SimpleSelectProcessDialogVM.ShowAdvancedDialogCommand}"
-                    Content="创建高级启动命令" />
+                    Content="创建高级启动命令" l:Uids.Uid="/Characters/CharPage_AdvancedCmd" />
 
             </Grid>
         </ContentDialog>
@@ -223,12 +225,12 @@
                 Orientation="Horizontal"
                 Spacing="8">
 
-                <Button Content="Mod 预设" Style="{ThemeResource OmniXSoftButtonStyle}">
+                <Button Content="Mod 预设" Style="{ThemeResource OmniXSoftButtonStyle}" l:Uids.Uid="/Characters/CharPage_PresetButton">
                     <Button.Flyout>
                         <Flyout Placement="Bottom">
                             <ScrollViewer Margin="-4">
                                 <StackPanel MinWidth="300" Spacing="8">
-                                    <TextBlock Style="{ThemeResource OmniXCaptionStyle}" Text="应用预设" />
+                                    <TextBlock Style="{ThemeResource OmniXCaptionStyle}" Text="应用预设" l:Uids.Uid="/Characters/CharPage_ApplyPresetCaption" />
 
                                     <!--  二开：随机 Mod 置顶  -->
                                     <Button
@@ -236,10 +238,10 @@
                                         HorizontalContentAlignment="Left"
                                         Command="{x:Bind ViewModel.RandomizeModsCommand}"
                                         Style="{ThemeResource OmniXGhostButtonStyle}"
-                                        ToolTipService.ToolTip="随机启用 Mod">
+                                        ToolTipService.ToolTip="随机启用 Mod" l:Uids.Uid="/Characters/CharPage_RandomizeTip">
                                         <StackPanel Orientation="Horizontal" Spacing="8">
                                             <FontIcon FontSize="12" Glyph="&#xE8B1;" />
-                                            <TextBlock Text="随机 Mod" />
+                                            <TextBlock Text="随机 Mod" l:Uids.Uid="/Characters/CharPage_RandomizeText" />
                                         </StackPanel>
                                     </Button>
 
@@ -269,7 +271,7 @@
                                                         HorizontalAlignment="Stretch"
                                                         HorizontalContentAlignment="Left"
                                                         Style="{ThemeResource OmniXGhostButtonStyle}"
-                                                        ToolTipService.ToolTip="点击应用这个预设">
+                                                        ToolTipService.ToolTip="点击应用这个预设" l:Uids.Uid="/Characters/CharPage_PresetApplyTip">
                                                         <StackPanel Orientation="Horizontal" Spacing="8">
                                                             <FontIcon
                                                                 FontSize="12"
@@ -283,7 +285,7 @@
                                                         <Button.Flyout>
                                                             <Flyout Placement="Right">
                                                                 <Button Command="{x:Bind ApplyPresetCommand}" CommandParameter="{x:Bind}">
-                                                                    <TextBlock Text="确认应用" />
+                                                                    <TextBlock Text="确认应用" l:Uids.Uid="/Characters/CharPage_PresetConfirmApply" />
                                                                 </Button>
                                                             </Flyout>
                                                         </Button.Flyout>
@@ -292,7 +294,7 @@
                                                     <!--  二开：点一下置顶（针变实心 + 深灰），再点一下取消  -->
                                                     <Button
                                                         Grid.Column="1"
-                                                        AutomationProperties.Name="置顶"
+                                                        AutomationProperties.Name="置顶" l:Uids.Uid="/Characters/CharPage_PresetPin"
                                                         Command="{x:Bind PinCommand}"
                                                         CommandParameter="{x:Bind}"
                                                         ToolTipService.ToolTip="{x:Bind PinToolTip, Mode=OneWay}">
@@ -304,28 +306,25 @@
 
                                                     <Button
                                                         Grid.Column="2"
-                                                        AutomationProperties.Name="保存"
                                                         Command="{x:Bind SaveCommand}"
                                                         CommandParameter="{x:Bind}"
-                                                        ToolTipService.ToolTip="用当前已启用的 Mod 组合覆盖这个预设">
+                                                        ToolTipService.ToolTip="用当前已启用的 Mod 组合覆盖这个预设" AutomationProperties.Name="保存" l:Uids.Uid="/Characters/CharPage_PresetSaveTip">
                                                         <FontIcon FontSize="12" Glyph="&#xE74E;" />
                                                     </Button>
 
                                                     <Button
                                                         Grid.Column="3"
-                                                        AutomationProperties.Name="重命名"
                                                         Command="{x:Bind RenameCommand}"
                                                         CommandParameter="{x:Bind}"
-                                                        ToolTipService.ToolTip="给这个预设改名">
+                                                        ToolTipService.ToolTip="给这个预设改名" AutomationProperties.Name="重命名" l:Uids.Uid="/Characters/CharPage_PresetRenameTip">
                                                         <FontIcon FontSize="12" Glyph="&#xE8AC;" />
                                                     </Button>
 
                                                     <Button
                                                         Grid.Column="4"
-                                                        AutomationProperties.Name="删除"
                                                         Command="{x:Bind DeleteCommand}"
                                                         CommandParameter="{x:Bind}"
-                                                        ToolTipService.ToolTip="删除这个预设">
+                                                        ToolTipService.ToolTip="删除这个预设" AutomationProperties.Name="删除" l:Uids.Uid="/Characters/CharPage_PresetDeleteTip">
                                                         <FontIcon FontSize="12" Glyph="&#xE74D;" />
                                                     </Button>
                                                 </Grid>
@@ -341,10 +340,10 @@
                                         HorizontalContentAlignment="Left"
                                         Command="{x:Bind ViewModel.SaveCurrentAsPresetCommand}"
                                         Style="{ThemeResource OmniXGhostButtonStyle}"
-                                        ToolTipService.ToolTip="把当前已启用的 Mod 组合存成一个预设">
+                                        ToolTipService.ToolTip="把当前已启用的 Mod 组合存成一个预设" l:Uids.Uid="/Characters/CharPage_SavePresetTip">
                                         <StackPanel Orientation="Horizontal" Spacing="8">
                                             <FontIcon FontSize="12" Glyph="&#xE74E;" />
-                                            <TextBlock Text="保存当前为预设" />
+                                            <TextBlock Text="保存当前为预设" l:Uids.Uid="/Characters/CharPage_SavePreset" />
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
@@ -355,10 +354,9 @@
 
                 <!--  二开：Mod 修复器（原「刷新」）。不再内置修复，改为下载 Moonholder/Wuwa_Mod_Fixer 最新版  -->
                 <Button
-                    AutomationProperties.Name="修复"
                     Command="{x:Bind ViewModel.RepairModsCommand}"
                     Style="{ThemeResource OmniXGhostButtonStyle}"
-                    ToolTipService.ToolTip="Mod 修复器：检查并下载最新版 Wuwa_Mod_Fixer">
+                    ToolTipService.ToolTip="Mod 修复器：检查并下载最新版 Wuwa_Mod_Fixer" AutomationProperties.Name="修复" l:Uids.Uid="/Characters/CharPage_RepairTip">
                     <StackPanel Orientation="Horizontal" Spacing="6">
                         <Grid>
                             <FontIcon FontSize="12" Glyph="&#xE90F;" />
@@ -372,12 +370,12 @@
                                 Fill="#FFE5484D"
                                 Visibility="{x:Bind ViewModel.HasModFixerUpdate, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}" />
                         </Grid>
-                        <TextBlock FontSize="12" Text="修复" />
+                        <TextBlock FontSize="12" Text="修复" l:Uids.Uid="/Characters/CharPage_RepairText" />
                     </StackPanel>
                 </Button>
 
                 <Button
-                    AutomationProperties.Name="启动器"
+                    AutomationProperties.Name="启动器" l:Uids.Uid="/Characters/CharPage_Launcher"
                     Command="{x:Bind ViewModel.Start3DmigotoCommand}"
                     Style="{ThemeResource OmniXGhostButtonStyle}">
                     <ToolTipService.ToolTip>
@@ -385,7 +383,7 @@
                     </ToolTipService.ToolTip>
                     <StackPanel Orientation="Horizontal" Spacing="6">
                         <FontIcon FontSize="12" Glyph="&#xE7B8;" />
-                        <TextBlock FontSize="12" Text="启动器" />
+                        <TextBlock FontSize="12" Text="启动器" l:Uids.Uid="/Characters/CharPage_LauncherText" />
                     </StackPanel>
                 </Button>
 
@@ -512,24 +510,23 @@
                     Margin="8,0,2,0"
                     VerticalAlignment="Center"
                     Style="{ThemeResource OmniXCaptionStyle}"
-                    Text="显示" />
+                    Text="显示" l:Uids.Uid="/Characters/CharPage_ShowCaption" />
 
                 <ToggleButton
                     Command="{x:Bind ViewModel.ShowCharactersWithModsCommand}"
-                    Content="有内容"
+                    Content="有内容" l:Uids.Uid="/Characters/CharPage_HasContent"
                     IsChecked="{x:Bind ViewModel.ShowOnlyCharactersWithMods, Mode=OneWay}"
                     Style="{ThemeResource OmniXChipToggleStyle}" />
 
                 <ToggleButton
                     Command="{x:Bind ViewModel.ShowOnlyCharactersWithEnabledModsCommand}"
-                    Content="已启用"
                     IsChecked="{x:Bind ViewModel.ShowOnlyWithEnabledMods, Mode=OneWay}"
                     Style="{ThemeResource OmniXChipToggleStyle}"
-                    ToolTipService.ToolTip="仅显示至少启用了一个 Mod 的对象" />
+                    Content="已启用" ToolTipService.ToolTip="仅显示至少启用了一个 Mod 的对象" l:Uids.Uid="/Characters/CharPage_EnabledFilter" />
 
                 <ToggleButton
                     Command="{x:Bind ViewModel.ShowOnlyCharactersWithModNotificationsCommand}"
-                    Content="有通知"
+                    Content="有通知" l:Uids.Uid="/Characters/CharPage_HasNotifications"
                     IsChecked="{x:Bind ViewModel.ShowOnlyModsWithNotifications, Mode=OneWay}"
                     Style="{ThemeResource OmniXChipToggleStyle}" />
 
@@ -537,13 +534,13 @@
                     Margin="12,0,2,0"
                     VerticalAlignment="Center"
                     Style="{ThemeResource OmniXCaptionStyle}"
-                    Text="排序" />
+                    Text="排序" l:Uids.Uid="/Characters/CharPage_SortCaption" />
 
                 <ComboBox
                     x:Name="SortingComboBox"
                     VerticalAlignment="Center"
                     ItemsSource="{x:Bind ViewModel.SortingMethods, Mode=OneWay}"
-                    PlaceholderText="排序方式"
+                    PlaceholderText="排序方式" l:Uids.Uid="/Characters/CharPage_SortBy"
                     SelectedItem="{x:Bind ViewModel.SelectedSortingMethod, Mode=TwoWay}"
                     SelectionChanged="SortingComboBox_OnSelectionChanged"
                     SelectionChangedTrigger="Committed"
@@ -554,7 +551,7 @@
                     Command="{x:Bind ViewModel.InvertSortingCommand}"
                     IsChecked="{x:Bind ViewModel.SortByDescending, Mode=TwoWay}"
                     Style="{ThemeResource OmniXChipToggleStyle}"
-                    ToolTipService.ToolTip="切换升序 / 降序">
+                    ToolTipService.ToolTip="切换升序 / 降序" l:Uids.Uid="/Characters/CharPage_SortDirTip">
                     <FontIcon FontSize="11" Glyph="&#xE8CB;" />
                 </ToggleButton>
 
@@ -562,10 +559,9 @@
                 <Button
                     Padding="9,5"
                     VerticalAlignment="Center"
-                    AutomationProperties.Name="清理同名残留"
                     Command="{x:Bind ViewModel.CleanDuplicateModsCommand}"
                     CornerRadius="10"
-                    ToolTipService.ToolTip="清理重复 Mod 残留（删除后进回收站）">
+                    ToolTipService.ToolTip="清理重复 Mod 残留（删除后进回收站）" AutomationProperties.Name="清理同名残留" l:Uids.Uid="/Characters/CharPage_CleanDupTip">
                     <FontIcon FontSize="12" Glyph="&#xE74C;" />
                 </Button>
 
@@ -573,10 +569,9 @@
                 <Button
                     Padding="9,5"
                     VerticalAlignment="Center"
-                    AutomationProperties.Name="回收站"
                     Command="{x:Bind ViewModel.ShowRecycleBinCommand}"
                     CornerRadius="10"
-                    ToolTipService.ToolTip="回收站：查看清理记录，打开系统回收站还原">
+                    ToolTipService.ToolTip="回收站：查看清理记录，打开系统回收站还原" AutomationProperties.Name="回收站" l:Uids.Uid="/Characters/CharPage_RecycleBinTip">
                     <FontIcon FontSize="12" Glyph="&#xE81C;" />
                 </Button>
 
@@ -584,10 +579,9 @@
                 <Button
                     Padding="9,5"
                     VerticalAlignment="Center"
-                    AutomationProperties.Name="刷新角色列表"
                     Command="{x:Bind ViewModel.RefreshCharactersCommand}"
                     CornerRadius="10"
-                    ToolTipService.ToolTip="刷新角色列表，并整理可识别的旧分类目录">
+                    ToolTipService.ToolTip="刷新角色列表，并整理可识别的旧分类目录" AutomationProperties.Name="刷新角色列表" l:Uids.Uid="/Characters/CharPage_RefreshTip">
                     <FontIcon FontSize="12" Glyph="&#xE72C;" />
                 </Button>
 
@@ -662,7 +656,7 @@
                                     FontFamily="{StaticResource GenshinFont}"
                                     FontSize="13"
                                     Foreground="{ThemeResource AccentFillColorDefaultBrush}"
-                                    Text="新增角色" />
+                                    Text="新增角色" l:Uids.Uid="/Characters/CharPage_AddCard" />
                             </Grid>
                         </Border>
 
@@ -703,7 +697,7 @@
                                                 FontSize="11"
                                                 FontWeight="SemiBold"
                                                 Foreground="White"
-                                                Text="新" />
+                                                Text="新" l:Uids.Uid="/Characters/CharPage_NewBadge" />
                                         </Border>
 
                                         <FontIcon
@@ -726,7 +720,7 @@
                                         FontSize="13"
                                         Foreground="#FFFFB020"
                                         Glyph="&#xE7BA;"
-                                        ToolTipService.ToolTip="启用了多个 Mod / 皮肤冲突"
+                                        ToolTipService.ToolTip="启用了多个 Mod / 皮肤冲突" l:Uids.Uid="/Characters/CharPage_WarningTip"
                                         Visibility="{x:Bind Warning, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}" />
 
                                     <Border
@@ -771,7 +765,7 @@
                                         Height="4"
                                         Background="{ThemeResource OmniXAccentBrush}"
                                         CornerRadius="2"
-                                        ToolTipService.ToolTip="已启用 Mod"
+                                        ToolTipService.ToolTip="已启用 Mod" l:Uids.Uid="/Characters/CharPage_EnabledDotTip"
                                         Visibility="{x:Bind HasEnabledMods, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}" />
                                 </Grid>
 

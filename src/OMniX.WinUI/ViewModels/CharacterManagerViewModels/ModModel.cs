@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Media;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.Entities;
 using Windows.UI;
 
@@ -8,6 +9,8 @@ namespace OMniX.WinUI.ViewModels.CharacterManagerViewModels;
 
 public partial class ModModel : ObservableObject
 {
+    private static readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
+
     public ModModel(Guid modId, string displayName, string dateAdded, string fullPath, bool isEnabled,
         IAsyncRelayCommand<ModModel?> openFolderCommand,
         IAsyncRelayCommand<ModModel?> deleteCommand,
@@ -33,7 +36,7 @@ public partial class ModModel : ObservableObject
 
         var dateAdded = mod.Settings.TryGetSettings(out var settings) && settings.DateAdded.HasValue
             ? settings.DateAdded.Value.ToShortDateString()
-            : "未知";
+            : _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DateUnknown", "未知");
 
         return new ModModel(entry.Id, mod.GetDisplayName(), dateAdded, mod.FullPath, entry.IsEnabled,
             openFolderCommand, deleteCommand, repairCommand);
@@ -72,7 +75,9 @@ public partial class ModModel : ObservableObject
         ? Color.FromArgb(255, 34, 197, 94)
         : Color.FromArgb(255, 140, 142, 148));
 
-    public string DotToolTip => IsEnabled ? "已启用，点一下禁用" : "已禁用，点一下启用";
+    public string DotToolTip => IsEnabled
+        ? _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DotEnabledToolTip", "已启用，点一下禁用")
+        : _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DotDisabledToolTip", "已禁用，点一下启用");
 
     /// <summary>
     ///     二开：进入就地改名状态。

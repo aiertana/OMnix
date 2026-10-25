@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="CharPage_AddCard.Text" xml:space="preserve"><value>Add a character</value></data>
+  <data name="CharPage_AdvancedCmd.Content" xml:space="preserve"><value>Create advanced launch command</value></data>
+  <data name="CharPage_ApplyPresetCaption.Text" xml:space="preserve"><value>Apply preset</value></data>
+  <data name="CharPage_CheckUpdates.Text" xml:space="preserve"><value>Check for updates</value></data>
+  <data name="CharPage_CleanDupTip.ToolTipService.ToolTip" xml:space="preserve"><value>Clean up duplicate mod leftovers (moved to Recycle Bin)</value></data>
+  <data name="CharPage_ClearNotifications.Text" xml:space="preserve"><value>Clear notifications</value></data>
+  <data name="CharPage_DeleteChar.Text" xml:space="preserve"><value>Delete character</value></data>
+  <data name="CharPage_DisableAllMods.Text" xml:space="preserve"><value>Disable all mods for this character</value></data>
+  <data name="CharPage_ElementAero.Text" xml:space="preserve"><value>Aero</value></data>
+  <data name="CharPage_ElementElectro.Text" xml:space="preserve"><value>Electro</value></data>
+  <data name="CharPage_ElementFusion.Text" xml:space="preserve"><value>Fusion</value></data>
+  <data name="CharPage_ElementGlacio.Text" xml:space="preserve"><value>Glacio</value></data>
+  <data name="CharPage_ElementHavoc.Text" xml:space="preserve"><value>Havoc</value></data>
+  <data name="CharPage_ElementOther.Text" xml:space="preserve"><value>Other (no element)</value></data>
+  <data name="CharPage_ElementSpectro.Text" xml:space="preserve"><value>Spectro</value></data>
+  <data name="CharPage_ElementSub.Text" xml:space="preserve"><value>Element</value></data>
+  <data name="CharPage_EnabledDotTip.ToolTipService.ToolTip" xml:space="preserve"><value>Mods enabled</value></data>
+  <data name="CharPage_EnabledFilter.Content" xml:space="preserve"><value>Enabled</value></data>
+  <data name="CharPage_HasContent.Content" xml:space="preserve"><value>Has content</value></data>
+  <data name="CharPage_HasNotifications.Content" xml:space="preserve"><value>Has notifications</value></data>
+  <data name="CharPage_ImportAvatar.Text" xml:space="preserve"><value>Import character image…</value></data>
+  <data name="CharPage_Launcher.AutomationProperties.Name" xml:space="preserve"><value>Launcher</value></data>
+  <data name="CharPage_LauncherText.Text" xml:space="preserve"><value>Launcher</value></data>
+  <data name="CharPage_NewBadge.Text" xml:space="preserve"><value>New</value></data>
+  <data name="CharPage_OpenFolder.Text" xml:space="preserve"><value>Open folder...</value></data>
+  <data name="CharPage_PickProcess.Title" xml:space="preserve"><value>Choose program path</value></data>
+  <data name="CharPage_PickProcess.PrimaryButtonText" xml:space="preserve"><value>Save</value></data>
+  <data name="CharPage_PickProcess.SecondaryButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="CharPage_PickProcessHint.Text" xml:space="preserve"><value>Choose the program to launch. After saving, click the launch button to start it directly; you can reset it on the settings page.</value></data>
+  <data name="CharPage_PresetApplyTip.ToolTipService.ToolTip" xml:space="preserve"><value>Click to apply this preset</value></data>
+  <data name="CharPage_PresetButton.Content" xml:space="preserve"><value>Mod presets</value></data>
+  <data name="CharPage_PresetConfirmApply.Text" xml:space="preserve"><value>Confirm apply</value></data>
+  <data name="CharPage_PresetDeleteTip.ToolTipService.ToolTip" xml:space="preserve"><value>Delete this preset</value></data>
+  <data name="CharPage_PresetPin.AutomationProperties.Name" xml:space="preserve"><value>Pin</value></data>
+  <data name="CharPage_PresetRenameTip.ToolTipService.ToolTip" xml:space="preserve"><value>Rename this preset</value></data>
+  <data name="CharPage_PresetSaveTip.ToolTipService.ToolTip" xml:space="preserve"><value>Overwrite this preset with the currently enabled mod combination</value></data>
+  <data name="CharPage_RandomizeText.Text" xml:space="preserve"><value>Random mods</value></data>
+  <data name="CharPage_RandomizeTip.ToolTipService.ToolTip" xml:space="preserve"><value>Randomly enable mods</value></data>
+  <data name="CharPage_RecycleBinTip.ToolTipService.ToolTip" xml:space="preserve"><value>Recycle Bin: view cleanup records, open system Recycle Bin to restore</value></data>
+  <data name="CharPage_RefreshTip.ToolTipService.ToolTip" xml:space="preserve"><value>Refresh the character list and organize recognizable legacy category folders</value></data>
+  <data name="CharPage_Rename.Text" xml:space="preserve"><value>Rename</value></data>
+  <data name="CharPage_RepairText.Text" xml:space="preserve"><value>Repair</value></data>
+  <data name="CharPage_RepairTip.ToolTipService.ToolTip" xml:space="preserve"><value>Mod Fixer: check and download the latest Wuwa_Mod_Fixer</value></data>
+  <data name="CharPage_SavePreset.Text" xml:space="preserve"><value>Save current as preset</value></data>
+  <data name="CharPage_SavePresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>Save the currently enabled mod combination as a preset</value></data>
+  <data name="CharPage_ShowCaption.Text" xml:space="preserve"><value>Show</value></data>
+  <data name="CharPage_SortBy.PlaceholderText" xml:space="preserve"><value>Sort by</value></data>
+  <data name="CharPage_SortCaption.Text" xml:space="preserve"><value>Sort</value></data>
+  <data name="CharPage_SortDirTip.ToolTipService.ToolTip" xml:space="preserve"><value>Toggle ascending / descending</value></data>
+  <data name="CharPage_WarningTip.ToolTipService.ToolTip" xml:space="preserve"><value>Multiple mods enabled / skin conflict</value></data>
+  <data name="Gallery_AddedLabel.Text" xml:space="preserve"><value>Added:</value></data>
+  <data name="Gallery_AdjustHeight.Text" xml:space="preserve"><value>Adjust height:</value></data>
+  <data name="Gallery_AdjustWidth.Text" xml:space="preserve"><value>Adjust width:</value></data>
+  <data name="Gallery_AuthorLabel.Text" xml:space="preserve"><value>Author:</value></data>
+  <data name="Gallery_DeleteMod.Text" xml:space="preserve"><value>Delete mod</value></data>
+  <data name="Gallery_DropHere.Text" xml:space="preserve"><value>Drop here</value></data>
+  
+  <data name="Gallery_Loading.Text" xml:space="preserve"><value>Loading mods…</value></data>
+  <data name="Gallery_NoModsHint.Text" xml:space="preserve"><value>Drag a mod folder in, or import from "Mod Install"</value></data>
+  <data name="Gallery_NoModsTitle.Text" xml:space="preserve"><value>This character has no mods yet</value></data>
+  <data name="Gallery_OpenModFolder.Text" xml:space="preserve"><value>Open mod folder…</value></data>
+  <data name="Gallery_OpenModUrl.Text" xml:space="preserve"><value>Open mod page…</value></data>
+  <data name="Gallery_SaveImage.Text" xml:space="preserve"><value>Save image</value></data>
+  <data name="Gallery_Search.PlaceholderText" xml:space="preserve"><value>Search mods…</value></data>
+  <data name="Gallery_SelectSkin.Content" xml:space="preserve"><value>Select skin</value></data>
+  <data name="Gallery_SingleSelect.Text" xml:space="preserve"><value>Single select</value></data>
+  <data name="Gallery_SingleSelectTip.ToolTipService.ToolTip" xml:space="preserve"><value>When checked, only one mod can be enabled at a time.</value></data>
+  <data name="Gallery_SortBy.PlaceholderText" xml:space="preserve"><value>Sort mods…</value></data>
+  <data name="Gallery_SortDate.Content" xml:space="preserve"><value>Date added</value></data>
+  <data name="Gallery_SortFolder.Content" xml:space="preserve"><value>Folder name</value></data>
+  <data name="Gallery_SortLabel.Text" xml:space="preserve"><value>Sort:</value></data>
+  <data name="Gallery_SortName.Content" xml:space="preserve"><value>Name</value></data>
+  <data name="Gallery_ViewButton.Text" xml:space="preserve"><value>View</value></data>
+<data name="Gallery_DropInstallCaption" xml:space="preserve"><value>Release to install onto the current character</value></data><data name="PresetUnpinTip" xml:space="preserve"><value>Unpin</value></data><data name="PresetPinTip" xml:space="preserve"><value>Pin this preset</value></data><data name="ElementOtherLabel" xml:space="preserve"><value>Other</value></data><data name="AddCardToString" xml:space="preserve"><value>Add a character</value></data><data name="CharPage_PresetSaveTip.AutomationProperties.Name" xml:space="preserve"><value>Save</value></data><data name="CharPage_PresetRenameTip.AutomationProperties.Name" xml:space="preserve"><value>Rename</value></data><data name="CharPage_PresetDeleteTip.AutomationProperties.Name" xml:space="preserve"><value>Delete</value></data><data name="CharPage_RepairTip.AutomationProperties.Name" xml:space="preserve"><value>Repair</value></data><data name="CharPage_CleanDupTip.AutomationProperties.Name" xml:space="preserve"><value>Clean duplicates</value></data><data name="CharPage_RecycleBinTip.AutomationProperties.Name" xml:space="preserve"><value>Recycle Bin</value></data><data name="CharPage_RefreshTip.AutomationProperties.Name" xml:space="preserve"><value>Refresh characters</value></data><data name="CharPage_EnabledFilter.ToolTipService.ToolTip" xml:space="preserve"><value>Only show objects with at least one mod enabled</value></data><data name="Gallery_ViewToggle.OnContent" xml:space="preserve"><value>Gallery view</value></data><data name="Gallery_ViewToggle.OffContent" xml:space="preserve"><value>Detailed view</value></data><data name="Gallery_ViewToggle.AutomationProperties.Name" xml:space="preserve"><value>Toggle view mode</value></data></root>

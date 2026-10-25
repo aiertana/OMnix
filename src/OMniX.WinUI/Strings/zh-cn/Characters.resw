@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="CharPage_AddCard.Text" xml:space="preserve"><value>新增角色</value></data>
+  <data name="CharPage_AdvancedCmd.Content" xml:space="preserve"><value>创建高级启动命令</value></data>
+  <data name="CharPage_ApplyPresetCaption.Text" xml:space="preserve"><value>应用预设</value></data>
+  <data name="CharPage_CheckUpdates.Text" xml:space="preserve"><value>检查更新</value></data>
+  <data name="CharPage_CleanDupTip.ToolTipService.ToolTip" xml:space="preserve"><value>清理重复 Mod 残留（删除后进回收站）</value></data>
+  <data name="CharPage_ClearNotifications.Text" xml:space="preserve"><value>清除通知</value></data>
+  <data name="CharPage_DeleteChar.Text" xml:space="preserve"><value>删除角色</value></data>
+  <data name="CharPage_DisableAllMods.Text" xml:space="preserve"><value>禁用该角色全部 Mod</value></data>
+  <data name="CharPage_ElementAero.Text" xml:space="preserve"><value>气动</value></data>
+  <data name="CharPage_ElementElectro.Text" xml:space="preserve"><value>导电</value></data>
+  <data name="CharPage_ElementFusion.Text" xml:space="preserve"><value>热熔</value></data>
+  <data name="CharPage_ElementGlacio.Text" xml:space="preserve"><value>冷凝</value></data>
+  <data name="CharPage_ElementHavoc.Text" xml:space="preserve"><value>湮灭</value></data>
+  <data name="CharPage_ElementOther.Text" xml:space="preserve"><value>其他（无属性）</value></data>
+  <data name="CharPage_ElementSpectro.Text" xml:space="preserve"><value>衍射</value></data>
+  <data name="CharPage_ElementSub.Text" xml:space="preserve"><value>所属属性</value></data>
+  <data name="CharPage_EnabledDotTip.ToolTipService.ToolTip" xml:space="preserve"><value>已启用 Mod</value></data>
+  <data name="CharPage_EnabledFilter.Content" xml:space="preserve"><value>已启用</value></data>
+  <data name="CharPage_HasContent.Content" xml:space="preserve"><value>有内容</value></data>
+  <data name="CharPage_HasNotifications.Content" xml:space="preserve"><value>有通知</value></data>
+  <data name="CharPage_ImportAvatar.Text" xml:space="preserve"><value>导入角色头像…</value></data>
+  <data name="CharPage_Launcher.AutomationProperties.Name" xml:space="preserve"><value>启动器</value></data>
+  <data name="CharPage_LauncherText.Text" xml:space="preserve"><value>启动器</value></data>
+  <data name="CharPage_NewBadge.Text" xml:space="preserve"><value>新</value></data>
+  <data name="CharPage_OpenFolder.Text" xml:space="preserve"><value>打开文件夹...</value></data>
+  <data name="CharPage_PickProcess.Title" xml:space="preserve"><value>选择程序路径</value></data>
+  <data name="CharPage_PickProcess.PrimaryButtonText" xml:space="preserve"><value>保存</value></data>
+  <data name="CharPage_PickProcess.SecondaryButtonText" xml:space="preserve"><value>取消</value></data>
+  <data name="CharPage_PickProcessHint.Text" xml:space="preserve"><value>选择要启动的程序路径。保存后，点击启动按钮即可直接启动，可在设置页面重置。</value></data>
+  <data name="CharPage_PresetApplyTip.ToolTipService.ToolTip" xml:space="preserve"><value>点击应用这个预设</value></data>
+  <data name="CharPage_PresetButton.Content" xml:space="preserve"><value>Mod 预设</value></data>
+  <data name="CharPage_PresetConfirmApply.Text" xml:space="preserve"><value>确认应用</value></data>
+  <data name="CharPage_PresetDeleteTip.ToolTipService.ToolTip" xml:space="preserve"><value>删除这个预设</value></data>
+  <data name="CharPage_PresetPin.AutomationProperties.Name" xml:space="preserve"><value>置顶</value></data>
+  <data name="CharPage_PresetRenameTip.ToolTipService.ToolTip" xml:space="preserve"><value>给这个预设改名</value></data>
+  <data name="CharPage_PresetSaveTip.ToolTipService.ToolTip" xml:space="preserve"><value>用当前已启用的 Mod 组合覆盖这个预设</value></data>
+  <data name="CharPage_RandomizeText.Text" xml:space="preserve"><value>随机 Mod</value></data>
+  <data name="CharPage_RandomizeTip.ToolTipService.ToolTip" xml:space="preserve"><value>随机启用 Mod</value></data>
+  <data name="CharPage_RecycleBinTip.ToolTipService.ToolTip" xml:space="preserve"><value>回收站：查看清理记录，打开系统回收站还原</value></data>
+  <data name="CharPage_RefreshTip.ToolTipService.ToolTip" xml:space="preserve"><value>刷新角色列表，并整理可识别的旧分类目录</value></data>
+  <data name="CharPage_Rename.Text" xml:space="preserve"><value>重命名</value></data>
+  <data name="CharPage_RepairText.Text" xml:space="preserve"><value>修复</value></data>
+  <data name="CharPage_RepairTip.ToolTipService.ToolTip" xml:space="preserve"><value>Mod 修复器：检查并下载最新版 Wuwa_Mod_Fixer</value></data>
+  <data name="CharPage_SavePreset.Text" xml:space="preserve"><value>保存当前为预设</value></data>
+  <data name="CharPage_SavePresetTip.ToolTipService.ToolTip" xml:space="preserve"><value>把当前已启用的 Mod 组合存成一个预设</value></data>
+  <data name="CharPage_ShowCaption.Text" xml:space="preserve"><value>显示</value></data>
+  <data name="CharPage_SortBy.PlaceholderText" xml:space="preserve"><value>排序方式</value></data>
+  <data name="CharPage_SortCaption.Text" xml:space="preserve"><value>排序</value></data>
+  <data name="CharPage_SortDirTip.ToolTipService.ToolTip" xml:space="preserve"><value>切换升序 / 降序</value></data>
+  <data name="CharPage_WarningTip.ToolTipService.ToolTip" xml:space="preserve"><value>启用了多个 Mod / 皮肤冲突</value></data>
+  <data name="Gallery_AddedLabel.Text" xml:space="preserve"><value>添加于：</value></data>
+  <data name="Gallery_AdjustHeight.Text" xml:space="preserve"><value>调整高度：</value></data>
+  <data name="Gallery_AdjustWidth.Text" xml:space="preserve"><value>调整宽度：</value></data>
+  <data name="Gallery_AuthorLabel.Text" xml:space="preserve"><value>作者：</value></data>
+  <data name="Gallery_DeleteMod.Text" xml:space="preserve"><value>删除 Mod</value></data>
+  <data name="Gallery_DropHere.Text" xml:space="preserve"><value>拖放到这里</value></data>
+  
+  <data name="Gallery_Loading.Text" xml:space="preserve"><value>正在加载 Mod…</value></data>
+  <data name="Gallery_NoModsHint.Text" xml:space="preserve"><value>把 Mod 文件夹拖进来，或从「Mod 安装」导入</value></data>
+  <data name="Gallery_NoModsTitle.Text" xml:space="preserve"><value>这个角色还没有 Mod</value></data>
+  <data name="Gallery_OpenModFolder.Text" xml:space="preserve"><value>打开 Mod 文件夹…</value></data>
+  <data name="Gallery_OpenModUrl.Text" xml:space="preserve"><value>打开 Mod 主页…</value></data>
+  <data name="Gallery_SaveImage.Text" xml:space="preserve"><value>保存图片</value></data>
+  <data name="Gallery_Search.PlaceholderText" xml:space="preserve"><value>搜索 Mod…</value></data>
+  <data name="Gallery_SelectSkin.Content" xml:space="preserve"><value>选择皮肤</value></data>
+  <data name="Gallery_SingleSelect.Text" xml:space="preserve"><value>单选</value></data>
+  <data name="Gallery_SingleSelectTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾选后同一时间只允许启用一个 Mod。</value></data>
+  <data name="Gallery_SortBy.PlaceholderText" xml:space="preserve"><value>排序 Mod…</value></data>
+  <data name="Gallery_SortDate.Content" xml:space="preserve"><value>添加时间</value></data>
+  <data name="Gallery_SortFolder.Content" xml:space="preserve"><value>文件夹名</value></data>
+  <data name="Gallery_SortLabel.Text" xml:space="preserve"><value>排序：</value></data>
+  <data name="Gallery_SortName.Content" xml:space="preserve"><value>名称</value></data>
+  <data name="Gallery_ViewButton.Text" xml:space="preserve"><value>视图</value></data>
+<data name="Gallery_DropInstallCaption" xml:space="preserve"><value>松开即可安装到当前角色</value></data><data name="PresetUnpinTip" xml:space="preserve"><value>取消置顶</value></data><data name="PresetPinTip" xml:space="preserve"><value>置顶这个预设</value></data><data name="ElementOtherLabel" xml:space="preserve"><value>其他</value></data><data name="AddCardToString" xml:space="preserve"><value>新增角色</value></data><data name="CharPage_PresetSaveTip.AutomationProperties.Name" xml:space="preserve"><value>保存</value></data><data name="CharPage_PresetRenameTip.AutomationProperties.Name" xml:space="preserve"><value>重命名</value></data><data name="CharPage_PresetDeleteTip.AutomationProperties.Name" xml:space="preserve"><value>删除</value></data><data name="CharPage_RepairTip.AutomationProperties.Name" xml:space="preserve"><value>修复</value></data><data name="CharPage_CleanDupTip.AutomationProperties.Name" xml:space="preserve"><value>清理同名残留</value></data><data name="CharPage_RecycleBinTip.AutomationProperties.Name" xml:space="preserve"><value>回收站</value></data><data name="CharPage_RefreshTip.AutomationProperties.Name" xml:space="preserve"><value>刷新角色列表</value></data><data name="CharPage_EnabledFilter.ToolTipService.ToolTip" xml:space="preserve"><value>仅显示至少启用了一个 Mod 的对象</value></data><data name="Gallery_ViewToggle.OnContent" xml:space="preserve"><value>画廊视图</value></data><data name="Gallery_ViewToggle.OffContent" xml:space="preserve"><value>详细视图</value></data><data name="Gallery_ViewToggle.AutomationProperties.Name" xml:space="preserve"><value>切换视图模式</value></data></root>

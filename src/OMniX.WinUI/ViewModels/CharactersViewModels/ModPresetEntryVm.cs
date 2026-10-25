@@ -2,12 +2,14 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using OMniX.Core.Contracts.Services;
 using Windows.UI;
 
 namespace OMniX.WinUI.ViewModels.CharactersViewModels;
 
 public partial class ModPresetEntryVm : ObservableObject
 {
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
     /// <summary>
     ///     二开：预设名的默认颜色（跟随主题的正文色）。
     /// </summary>
@@ -88,7 +90,9 @@ public partial class ModPresetEntryVm : ObservableObject
     /// </summary>
     public string PinGlyph => IsPinned ? "\uE77A" : "\uE840";
 
-    public string PinToolTip => IsPinned ? "取消置顶" : "置顶这个预设";
+    public string PinToolTip => IsPinned
+        ? _localizer.GetLocalizedStringOrDefault("/Characters/PresetUnpinTip", "取消置顶")
+        : _localizer.GetLocalizedStringOrDefault("/Characters/PresetPinTip", "置顶这个预设");
 
     public IAsyncRelayCommand ApplyPresetCommand { get; }
 

@@ -25,6 +25,7 @@ public sealed partial class ModExportDialog : ContentDialog
     private readonly List<CharacterSkinEntry> _allEntries;
     private readonly ILocalSettingsService _localSettingsService = App.GetService<ILocalSettingsService>();
     private readonly ILogger _logger = App.GetService<ILogger>().ForContext<ModExportDialog>();
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
     private readonly IReadOnlyList<ModExportRequest>? _presetRequests;
     private readonly ISkinManagerService _skinManagerService = App.GetService<ISkinManagerService>();
 
@@ -39,6 +40,7 @@ public sealed partial class ModExportDialog : ContentDialog
         InitializeComponent();
 
         BuildScopes();
+        BuildFormats();
         LoadCharacters();
 
         PrimaryButtonClick += OnPrimaryButtonClick;
@@ -62,11 +64,28 @@ public sealed partial class ModExportDialog : ContentDialog
     private void BuildScopes()
     {
         var scopes = _presetRequests is not null
-            ? new List<string> { $"已选的 {_presetRequests.Count} 个 Mod" }
-            : new List<string> { "全部 Mod", "只导出启用中的", "按角色选择" };
+            ? new List<string>
+            {
+                string.Format(
+                    _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_PresetScope", "已选的 {0} 个 Mod"),
+                    _presetRequests.Count)
+            }
+            : new List<string>
+            {
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_ScopeAll", "全部 Mod"),
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_ScopeEnabled", "只导出启用中的"),
+                _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_ScopeByChar", "按角色选择")
+            };
 
         ScopeRadio.ItemsSource = scopes;
         ScopeRadio.SelectedIndex = 0;
+    }
+
+    private void BuildFormats()
+    {
+        FormatRadio.Items.Add(_localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_FormatZip", "打包成一个 zip"));
+        FormatRadio.Items.Add(_localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_FormatFolder", "复制成文件夹（角色 / Mod 结构）"));
+        FormatRadio.SelectedIndex = 0;
     }
 
     private void LoadCharacters()
@@ -95,7 +114,9 @@ public sealed partial class ModExportDialog : ContentDialog
 
     private void UpdateCharacterCount()
     {
-        CharacterCountText.Text = $"已选 {CharacterRows.Count(row => row.IsSelected)} / {CharacterRows.Count} 个角色";
+        CharacterCountText.Text = string.Format(
+            _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_CharCount", "已选 {0} / {1} 个角色"),
+            CharacterRows.Count(row => row.IsSelected), CharacterRows.Count);
     }
 
     private void ScopeRadio_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -159,7 +180,7 @@ public sealed partial class ModExportDialog : ContentDialog
 
         if (requests.Count == 0)
         {
-            ShowProgress("没有可导出的 Mod —— 换个范围试试，或者先勾几个角色。");
+            ShowProgress(_localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_NoRequests", "没有可导出的 Mod —— 换个范围试试，或者先勾几个角色。"));
             return;
         }
 
@@ -188,14 +209,14 @@ public sealed partial class ModExportDialog : ContentDialog
         if (_job.IsPaused)
         {
             _job.Resume();
-            SecondaryButtonText = "暂停";
-            ProgressText.Text = "继续导出…";
+            SecondaryButtonText = _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_BtnPause", "暂停");
+            ProgressText.Text = _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_ResumeInProgress", "继续导出…");
         }
         else
         {
             _job.Pause();
-            SecondaryButtonText = "继续";
-            ProgressText.Text = "已暂停，点「继续」接着导。";
+            SecondaryButtonText = _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_BtnResume", "继续");
+            ProgressText.Text = _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_Paused", "已暂停，点「继续」接着导。");
         }
     }
 
@@ -217,13 +238,15 @@ public sealed partial class ModExportDialog : ContentDialog
         SetRunningState(true);
         ProgressPanel.Visibility = Visibility.Visible;
         ExportBar.Value = 0;
-        ProgressText.Text = "正在统计文件…";
+        ProgressText.Text = _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_Stats", "正在统计文件…");
 
         var progress = new Progress<ModExportProgressInfo>(info =>
         {
             ExportBar.Value = info.Percent;
             ProgressText.Text = info.FilesTotal > 0
-                ? $"{info.Percent:F0}% · {info.FilesDone} / {info.FilesTotal} 个文件 · {info.CurrentText}"
+                ? string.Format(
+                    _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_ProgressFmt", "{0:F0}% · {1} / {2} 个文件 · {3}"),
+                    info.Percent, info.FilesDone, info.FilesTotal, info.CurrentText)
                 : info.CurrentText;
         });
 
@@ -246,7 +269,7 @@ public sealed partial class ModExportDialog : ContentDialog
         catch (Exception ex)
         {
             _logger.Error(ex, "Export mods failed");
-            ProgressText.Text = "导出失败：" + ex.Message;
+            ProgressText.Text = _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_FailedPrefix", "导出失败：") + ex.Message;
         }
         finally
         {
@@ -259,12 +282,18 @@ public sealed partial class ModExportDialog : ContentDialog
     private void SetRunningState(bool running)
     {
         IsPrimaryButtonEnabled = !running;
-        PrimaryButtonText = running ? "导出中…" : "开始导出";
+        PrimaryButtonText = running
+            ? _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_BtnRunning", "导出中…")
+            : _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_PrimaryBtn", "开始导出");
 
-        SecondaryButtonText = running ? "暂停" : string.Empty;
+        SecondaryButtonText = running
+            ? _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_BtnPause", "暂停")
+            : string.Empty;
         IsSecondaryButtonEnabled = running;
 
-        CloseButtonText = running ? "取消并关闭" : "关闭";
+        CloseButtonText = running
+            ? _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_BtnCancelClose", "取消并关闭")
+            : _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_CloseBtn", "关闭");
     }
 
     private void ShowProgress(string message)
@@ -303,10 +332,14 @@ public sealed partial class ModExportDialog : ContentDialog
 
 public partial class CharacterExportRow : ObservableObject
 {
+    private static readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
+
     public string CharacterName { get; set; } = string.Empty;
     public int ModCount { get; set; }
 
     [ObservableProperty] private bool _isSelected = true;
 
-    public string Label => $"{CharacterName}（{ModCount} 个 Mod）";
+    public string Label => string.Format(
+        _localizer.GetLocalizedStringOrDefault("/Dialogs/ModExport_CharRowLabel", "{0}（{1} 个 Mod）"),
+        CharacterName, ModCount);
 }

@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Act_AdminBody" xml:space="preserve">
+    <value>你现在是以管理员身份在跑 OMniX，不推荐这样。
+OMniX 并不是按管理员权限设计的。
+哪怕只是个小 bug，也有可能把文件系统弄乱，后果不小。
+
+建议用普通权限运行 OMniX。
+
+要继续的话风险自负。</value>
+  </data>
+  <data name="Act_AdminDontShow" xml:space="preserve">
+    <value>不再显示这个提醒</value>
+  </data>
+  <data name="Act_AdminTitle" xml:space="preserve">
+    <value>正在以管理员身份运行</value>
+  </data>
+  <data name="Act_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Act_Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="Act_FreeBody1" xml:space="preserve">
+    <value>OMniX 是完全免费的开源软件，不收一分钱，也没有「会员版」「激活码」这种东西。</value>
+  </data>
+  <data name="Act_FreeBody2" xml:space="preserve">
+    <value>如果有人跟你要钱才给安装包，或者卖激活码、卖会员版，那就是骗子。直接拒绝就好，顺手到交流群或者 GitHub 上说一声，别让下一个人上当。</value>
+  </data>
+  <data name="Act_FreeBody3" xml:space="preserve">
+    <value>正经的获取途径只有两个：GitHub 仓库，和交流群里的群文件。其它渠道下载到的，请不要用。</value>
+  </data>
+  <data name="Act_FreeTitle" xml:space="preserve">
+    <value>免费软件，别被人收了钱</value>
+  </data>
+  <data name="Act_GotIt" xml:space="preserve">
+    <value>我知道了</value>
+  </data>
+  <data name="Act_ReorganizeDone" xml:space="preserve">
+    <value>整理完成</value>
+  </data>
+  <data name="Act_ReorganizeFailed" xml:space="preserve">
+    <value>整理 Mod 失败</value>
+  </data>
+  <data name="Act_RestructBackupTip" xml:space="preserve">
+    <value>拿不准的话，先把 Mod 备份一份。这套是在自己的 Mod 上验证过的。</value>
+  </data>
+  <data name="Act_RestructBody" xml:space="preserve">
+    <value>这个版本的 OMniX 换了文件夹结构。
+
+现在角色按分类组织，每个分类一个文件夹，格式变成：
+Mods/分类/角色/&lt;Mod 文件夹&gt;
+所以在整理之前，OMniX 看不到你现有的 Mod。
+这只做一次，你也可以自己动手整理。
+
+另外角色文件夹现在改成按需创建，设置页里也能清理空文件夹。</value>
+  </data>
+  <data name="Act_RestructHelpMe" xml:space="preserve">
+    <value>帮我整理</value>
+  </data>
+  <data name="Act_RestructMyself" xml:space="preserve">
+    <value>我自己来</value>
+  </data>
+  <data name="Act_RestructNote" xml:space="preserve">
+    <value>
+这个弹窗会一直出现，直到你在下面选一个。设置页里也有个「重新整理」按钮。
+想看具体发生了什么，可以翻日志。</value>
+  </data>
+  <data name="Act_RestructTitle" xml:space="preserve">
+    <value>文件夹结构变了</value>
+  </data>
+  <data name="AppX_CrashBody" xml:space="preserve">
+    <value>这会儿 OMniX 可能不太稳定，随时可能崩，建议重启一下。</value>
+  </data>
+  <data name="AppX_CrashTitle" xml:space="preserve">
+    <value>出错了</value>
+  </data>
+  <data name="AppX_ErrorWindowTitle" xml:space="preserve">
+    <value>OMniX - 出错了</value>
+  </data>
+  <data name="Appear_All" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="Appear_DefaultName" xml:space="preserve">
+    <value>新分区</value>
+  </data>
+  <data name="ArchiveHelper_PasswordCancelled" xml:space="preserve">
+    <value>已取消输入压缩包密码</value>
+  </data>
+  <data name="AutoUpd_AlreadyRunning" xml:space="preserve">
+    <value>更新器已经在运行了，先把那个窗口关掉再试。</value>
+  </data>
+  <data name="AutoUpd_ExeMissing" xml:space="preserve">
+    <value>更新器目录在，但里面没有 {0}：{1}
+这个目录大概被清过，重新解压一份完整包覆盖即可。</value>
+  </data>
+  <data name="AutoUpd_FolderMissing" xml:space="preserve">
+    <value>找不到更新器目录：{0}
+程序根目录下得有「OMniX - Auto Updater」这个文件夹。
+如果你跑的是源码里的开发构建（bin\...\Debug），那里不会带更新器——请改用 Releases 里解压出来的正式版目录。</value>
+  </data>
+  <data name="AutoUpd_Incomplete" xml:space="preserve">
+    <value>更新器目录不完整，缺 {0}。
+多半是之前某次增量更新把更新器覆盖坏了（旧逻辑会留下半套文件）。
+修法：去 GitHub Releases 下载最新的 OMniX 完整包，解压后把整个「OMniX - Auto Updater」文件夹覆盖到程序目录下，再点更新就正常了。</value>
+  </data>
+  <data name="Dlss5Svc_AdminCancelled" xml:space="preserve">
+    <value>取消了管理员授权</value>
+  </data>
+  <data name="Dlss5Svc_DeployDone" xml:space="preserve">
+    <value>部署完成。用库洛官方启动器进游戏，图形设置选 DirectX 11</value>
+  </data>
+  <data name="Dlss5Svc_DeployExitCode" xml:space="preserve">
+    <value>部署脚本退出码 {0}，看看那个控制台窗口里的报错</value>
+  </data>
+  <data name="Dlss5Svc_MissingHint" xml:space="preserve">
+    <value>还缺游戏路径或部署包路径，点开关可以现在就配</value>
+  </data>
+  <data name="Dlss5Svc_ModOff" xml:space="preserve">
+    <value>Mod 已停用</value>
+  </data>
+  <data name="Dlss5Svc_ModOn" xml:space="preserve">
+    <value>Mod 已启用</value>
+  </data>
+  <data name="Dlss5Svc_NeedSetup" xml:space="preserve">
+    <value>还没有配置路径</value>
+  </data>
+  <data name="Dlss5Svc_NoLoaderChain" xml:space="preserve">
+    <value>脚本跑完了，但没检测到加载链，检查一下游戏目录</value>
+  </data>
+  <data name="Dlss5Svc_NotConfigured" xml:space="preserve">
+    <value>未配置</value>
+  </data>
+  <data name="Dlss5Svc_Off" xml:space="preserve">
+    <value>未开启</value>
+  </data>
+  <data name="Dlss5Svc_OnAddonsDisabled" xml:space="preserve">
+    <value>已开启（DLSS5 插件被停用）</value>
+  </data>
+  <data name="Dlss5Svc_OnWithAddons" xml:space="preserve">
+    <value>已开启 · {0} 个插件</value>
+  </data>
+  <data name="Dlss5Svc_ReadyHint" xml:space="preserve">
+    <value>开关打开后会把加载器、ReShade、DLSS5 部署进游戏目录（需要管理员权限）</value>
+  </data>
+  <data name="Dlss5Svc_ScriptNotFound" xml:space="preserve">
+    <value>部署包里找不到 {0}</value>
+  </data>
+  <data name="Dlss5Svc_StartFailed" xml:space="preserve">
+    <value>没能启动部署进程</value>
+  </data>
+  <data name="Dlss5Svc_UninstallExitCode" xml:space="preserve">
+    <value>卸载脚本退出码 {0}，看看那个控制台窗口里的报错</value>
+  </data>
+  <data name="Dlss5Svc_Uninstalled" xml:space="preserve">
+    <value>已卸载，游戏目录恢复成干净状态</value>
+  </data>
+  <data name="DragDrop_BatchBody" xml:space="preserve">
+    <value>共 {0} 个 Mod，将逐个打开安装窗口：{1}</value>
+  </data>
+  <data name="DragDrop_BatchTitle" xml:space="preserve">
+    <value>批量导入</value>
+  </data>
+  <data name="DragDrop_CancelledBody" xml:space="preserve">
+    <value>未输入压缩包密码，本次导入已取消</value>
+  </data>
+  <data name="DragDrop_CancelledTitle" xml:space="preserve">
+    <value>已取消导入</value>
+  </data>
+  <data name="DragDrop_WindowTitle" xml:space="preserve">
+    <value>安装 Mod - {0}（{1}/{2}）</value>
+  </data>
+  <data name="ExportSvc_CancelledSummary" xml:space="preserve">
+    <value>已取消，已处理 {0} 个文件。</value>
+  </data>
+  <data name="ExportSvc_Counting" xml:space="preserve">
+    <value>正在统计文件…</value>
+  </data>
+  <data name="ExportSvc_Done" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="ExportSvc_FilesPlanned" xml:space="preserve">
+    <value>共 {0} 个文件，约 {1}</value>
+  </data>
+  <data name="ExportSvc_NoModsSelected" xml:space="preserve">
+    <value>没有选中任何 Mod</value>
+  </data>
+  <data name="ExportSvc_SkippedSuffix" xml:space="preserve">
+    <value>，{0} 个文件被跳过</value>
+  </data>
+  <data name="ExportSvc_Summary" xml:space="preserve">
+    <value>{0} 个 Mod、{1} 个文件（{2}）</value>
+  </data>
+  <data name="ExportSvc_Unnamed" xml:space="preserve">
+    <value>未命名</value>
+  </data>
+  <data name="FixerSvc_NoNotes" xml:space="preserve">
+    <value>（这次更新没有写说明）</value>
+  </data>
+  <data name="Installer_WindowTitle" xml:space="preserve">
+    <value>安装 Mod - {0}</value>
+  </data>
+  <data name="Launch_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Launch_Disabled" xml:space="preserve">
+    <value>停用</value>
+  </data>
+  <data name="Launch_Dlss5StatusLine" xml:space="preserve">
+    <value>　 DLSS5：{0}</value>
+  </data>
+  <data name="Launch_Enabled" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="Launch_GameRunningBody" xml:space="preserve">
+    <value>先去游戏里忙吧</value>
+  </data>
+  <data name="Launch_GameRunningTitle" xml:space="preserve">
+    <value>游戏已经在运行了</value>
+  </data>
+  <data name="Launch_ModStatusLine" xml:space="preserve">
+    <value>　 Mod：{0}
+</value>
+  </data>
+  <data name="Launch_NoGamePathBody" xml:space="preserve">
+    <value>在角色页面点一次游戏可执行文件，之后这里就能帮你开官方启动器。</value>
+  </data>
+  <data name="Launch_NoGamePathTitle" xml:space="preserve">
+    <value>尚未设置游戏路径</value>
+  </data>
+  <data name="Launch_OpenFailed" xml:space="preserve">
+    <value>打开启动器失败</value>
+  </data>
+  <data name="Launch_OpenLauncher" xml:space="preserve">
+    <value>打开官方启动器</value>
+  </data>
+  <data name="Launch_OfficialLauncherIntro" xml:space="preserve">
+    <value>鸣潮会检查是谁在启动它：直接拉游戏进程会弹 “kuro: Use launcher to start game!” 然后当场崩溃，所以管理器没法替你点“开始游戏”。
+
+点「打开官方启动器」，在里面点开始就能进；这次会按左边的开关加载：
+</value>
+  </data>
+  <data name="Launch_OfficialLauncherTitle" xml:space="preserve">
+    <value>这一步得用官方启动器</value>
+  </data>
+  <data name="LifeCycle_RestartFailed" xml:space="preserve">
+    <value>重启应用失败</value>
+  </data>
+  <data name="ModSet_ImageNotFound" xml:space="preserve">
+    <value>找不到图片路径</value>
+  </data>
+  <data name="ModUpdChk_DoneBody" xml:space="preserve">
+    <value>更新检查完成</value>
+  </data>
+  <data name="ModUpdChk_DoneTitle" xml:space="preserve">
+    <value>更新检查完成</value>
+  </data>
+  <data name="ModUpdChk_NothingToCheck" xml:space="preserve">
+    <value>没有 Mod 需要检查更新</value>
+  </data>
+  <data name="NotImpl_Title" xml:space="preserve">
+    <value>还没做</value>
+  </data>
+  <data name="PaletteSvc_BlueName" xml:space="preserve">
+    <value>冷调蓝</value>
+  </data>
+  <data name="PaletteSvc_WarmName" xml:space="preserve">
+    <value>暖白珊瑚</value>
+  </data>
+  <data name="PluginDepSvc_CheckingVersion" xml:space="preserve">
+    <value>正在查询最新版本…</value>
+  </data>
+  <data name="PluginDepSvc_CheckingXxmi" xml:space="preserve">
+    <value>正在查询 XXMI 最新版…</value>
+  </data>
+  <data name="PluginDepSvc_DoneTag" xml:space="preserve">
+    <value>已下载 {0}</value>
+  </data>
+  <data name="PluginDepSvc_DownloadingTag" xml:space="preserve">
+    <value>开始下载 {0}</value>
+  </data>
+  <data name="PluginDepSvc_Extracting" xml:space="preserve">
+    <value>正在解压…</value>
+  </data>
+  <data name="PluginDepSvc_KitMissing" xml:space="preserve">
+    <value>未下载 DLSS5 部署包</value>
+  </data>
+  <data name="PluginDepSvc_NoLauncherExe" xml:space="preserve">
+    <value>压缩包里没找到 XXMI Launcher.exe</value>
+  </data>
+  <data name="PluginDepSvc_NoPortableZip" xml:space="preserve">
+    <value>没找到便携版压缩包，已改为打开下载页</value>
+  </data>
+  <data name="PluginDepSvc_TitleDone" xml:space="preserve">
+    <value>{0} 完成</value>
+  </data>
+  <data name="PluginDepSvc_TitleKit" xml:space="preserve">
+    <value>下载部署包</value>
+  </data>
+  <data name="PluginDepSvc_TitleXxmi" xml:space="preserve">
+    <value>下载 XXMI</value>
+  </data>
+  <data name="PluginDepSvc_WwmiMissing" xml:space="preserve">
+    <value>未检测到 WWMI</value>
+  </data>
+  <data name="PluginDepSvc_XxmiDoneHint" xml:space="preserve">
+    <value>已下载 {0}，启动后在里面设一次游戏路径，WWMI 会自动补上</value>
+  </data>
+  <data name="PluginDepSvc_XxmiMissing" xml:space="preserve">
+    <value>未检测到 XXMI Launcher</value>
+  </data>
+  <data name="PresetHandler_AppliedBody" xml:space="preserve">
+    <value>「{0}」已经生效</value>
+  </data>
+  <data name="PresetHandler_AppliedTitle" xml:space="preserve">
+    <value>Mod 预设已应用</value>
+  </data>
+  <data name="PresetHandler_DeleteFailed" xml:space="preserve">
+    <value>删除预设失败</value>
+  </data>
+  <data name="PresetHandler_OverwriteFailed" xml:space="preserve">
+    <value>保存到预设失败</value>
+  </data>
+  <data name="PresetHandler_PrefsAppliedBody" xml:space="preserve">
+    <value>偏好已写入 3DMigoto 的 {0}</value>
+  </data>
+  <data name="PresetHandler_PrefsAppliedTitle" xml:space="preserve">
+    <value>已应用保存的偏好</value>
+  </data>
+  <data name="PresetHandler_PrefsNotWrittenBody" xml:space="preserve">
+    <value>多半是 3DMigoto 的 d3dx_user.ini 还没生成（游戏运行过一次才会有）。Mod 的开关状态已经改好了，不影响使用。</value>
+  </data>
+  <data name="PresetHandler_PrefsNotWrittenTitle" xml:space="preserve">
+    <value>Mod 的按键等设置这次没写进游戏</value>
+  </data>
+  <data name="PresetHandler_RenameFailed" xml:space="preserve">
+    <value>重命名失败</value>
+  </data>
+  <data name="PresetHandler_SaveFailed" xml:space="preserve">
+    <value>保存预设失败</value>
+  </data>
+  <data name="PresetHandler_UnpinFailed" xml:space="preserve">
+    <value>取消置顶失败</value>
+  </data>
+  <data name="Process_StartFailed" xml:space="preserve">
+    <value>启动进程失败</value>
+  </data>
+  <data name="Random_AllowNone" xml:space="preserve">
+    <value>允许随机结果是一个都不开（有些 Mod 文件夹可能整个空着）</value>
+  </data>
+  <data name="Random_BackupTip" xml:space="preserve">
+    <value>开的 Mod 多的话，建议先存个预设（或者备份）再随机</value>
+  </data>
+  <data name="Random_Button" xml:space="preserve">
+    <value>随机</value>
+  </data>
+  <data name="Random_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Random_Done" xml:space="preserve">
+    <value>随机完成</value>
+  </data>
+  <data name="Random_Explain" xml:space="preserve">
+    <value>说明：只会随机那些「本来就只能开一个」的 Mod 文件夹，所以 Others 里的不会动。同一个角色的皮肤，每次只会开一个 Mod。</value>
+  </data>
+  <data name="Random_Failed" xml:space="preserve">
+    <value>随机换 Mod 失败</value>
+  </data>
+  <data name="Random_NoneBody" xml:space="preserve">
+    <value>一个分类都没选，什么都没换。</value>
+  </data>
+  <data name="Random_NoneTitle" xml:space="preserve">
+    <value>没选分类</value>
+  </data>
+  <data name="Random_PickHint" xml:space="preserve">
+    <value>选一下要给哪些分类随机：</value>
+  </data>
+  <data name="Random_Title" xml:space="preserve">
+    <value>随机换 Mod</value>
+  </data>
+  <data name="ThemeSvc_Simple" xml:space="preserve">
+    <value>简易版</value>
+  </data>
+  <data name="ThemeSvc_Standard" xml:space="preserve">
+    <value>标准版</value>
+  </data>
+</root>

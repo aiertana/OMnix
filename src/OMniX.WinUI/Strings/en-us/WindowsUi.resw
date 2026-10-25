@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="Win_AutoScrollCheckBox.Content" xml:space="preserve">
+    <value>Auto-scroll</value>
+  </data>
+  <data name="Win_CloseWindowTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Close window</value>
+  </data>
+  <data name="Win_ErrorDescription.Text" xml:space="preserve">
+    <value>Something went wrong that OMniX did not handle. It may be unstable right now, so restarting is recommended.</value>
+  </data>
+  <data name="Win_ErrorInnerExceptionTitle.Text" xml:space="preserve">
+    <value>Inner exception</value>
+  </data>
+  <data name="Win_ErrorStackTraceLabel.Text" xml:space="preserve">
+    <value>Stack trace:</value>
+  </data>
+  <data name="Win_ErrorTitle.Text" xml:space="preserve">
+    <value>An error occurred:</value>
+  </data>
+  <data name="Win_GbDownloadTitle.Text" xml:space="preserve">
+    <value>Downloading mod from GameBanana</value>
+  </data>
+  <data name="Win_IgnoreAndCloseButton.Content" xml:space="preserve">
+    <value>Ignore and close</value>
+  </data>
+  <data name="Win_IgnoreAndCloseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Clear this notification and close the window</value>
+  </data>
+  <data name="Win_InputTextBox.Header" xml:space="preserve">
+    <value>Type into the process, press Enter to send</value>
+  </data>
+  <data name="Win_KillProcessButton.Content" xml:space="preserve">
+    <value>End process</value>
+  </data>
+  <data name="Win_LastUpdateCheckLabel.Text" xml:space="preserve">
+    <value>Last checked:</value>
+  </data>
+  <data name="Win_ModFileUpdatedSinceLast.Text" xml:space="preserve">
+    <value>Updated since the last check</value>
+  </data>
+  <data name="Win_ModPageLabel.Text" xml:space="preserve">
+    <value>Mod page:</value>
+  </data>
+  <data name="Win_ModUpdateLoading.Text" xml:space="preserve">
+    <value>Reading mod info from GameBanana…</value>
+  </data>
+  <data name="Win_ModUpdateTitle.Text" xml:space="preserve">
+    <value>New downloadable files found</value>
+  </data>
+  <data name="Win_NotificationDownloadFailed" xml:space="preserve">
+    <value>Failed to download the mod file</value>
+  </data>
+  <data name="Win_NotificationInstallFailed" xml:space="preserve">
+    <value>Failed to install the mod file</value>
+  </data>
+  <data name="Win_NotificationReadFailed" xml:space="preserve">
+    <value>Failed to read mod update info</value>
+  </data>
+  <data name="Win_OpenBrowserTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open in the default browser…</value>
+  </data>
+  <data name="Win_OpenModFolderTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open mod folder…</value>
+  </data>
+</root>

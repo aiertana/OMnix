@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -36,7 +36,8 @@ public partial class PresetViewModel(
     BusyService busyService,
     ModPresetHandlerService modPresetHandlerService,
     ILocalSettingsService localSettingsService,
-    ModRandomizationService modRandomizationService)
+    ModRandomizationService modRandomizationService,
+    ILanguageLocalizer localizer)
     : ObservableRecipient, INavigationAware
 {
     public readonly ElevatorService ElevatorService = elevatorService;
@@ -53,6 +54,7 @@ public partial class PresetViewModel(
     private readonly ILocalSettingsService _localSettingsService = localSettingsService;
     private readonly ModPresetHandlerService _modPresetHandlerService = modPresetHandlerService;
     private readonly ModRandomizationService _modRandomizationService = modRandomizationService;
+    private readonly ILanguageLocalizer _localizer = localizer;
     private static readonly Random Random = new();
 
 
@@ -116,7 +118,7 @@ public partial class PresetViewModel(
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("新建预设失败", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationCreateFailed", "新建预设失败"), e.Message, TimeSpan.FromSeconds(5));
         }
 
         ReloadPresets();
@@ -138,7 +140,7 @@ public partial class PresetViewModel(
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("复制预设失败", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationDuplicateFailed", "复制预设失败"), e.Message, TimeSpan.FromSeconds(5));
         }
 
         ReloadPresets();
@@ -158,7 +160,7 @@ public partial class PresetViewModel(
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("删除预设失败", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationDeleteFailed", "删除预设失败"), e.Message, TimeSpan.FromSeconds(5));
         }
 
         ReloadPresets();
@@ -210,12 +212,12 @@ public partial class PresetViewModel(
                 }
             });
 
-            _notificationManager.ShowNotification("预设已套用", $"Preset '{preset.Name}' has been applied",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationApplied", "预设已套用"), $"Preset '{preset.Name}' has been applied",
                 TimeSpan.FromSeconds(5));
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("套用预设失败", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationApplyFailed", "套用预设失败"), e.Message, TimeSpan.FromSeconds(5));
         }
         finally
         {
@@ -240,7 +242,7 @@ public partial class PresetViewModel(
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("重命名预设失败", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationRenameFailed", "重命名预设失败"), e.Message, TimeSpan.FromSeconds(5));
         }
 
         ReloadPresets();
@@ -258,7 +260,7 @@ public partial class PresetViewModel(
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("保存预设顺序失败", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationReorderFailed", "保存预设顺序失败"), e.Message, TimeSpan.FromSeconds(5));
         }
 
         ReloadPresets();
@@ -301,7 +303,7 @@ public partial class PresetViewModel(
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("切换只读失败", e.Message, TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationToggleReadOnlyFailed", "切换只读失败"), e.Message, TimeSpan.FromSeconds(5));
         }
 
         ReloadPresets();
@@ -321,7 +323,7 @@ public partial class PresetViewModel(
             var isStarted = await Task.Run(() => ElevatorService.StartElevator());
 
             if (!isStarted)
-                _notificationManager.ShowNotification("启动 Elevator 失败",
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationElevatorFailed", "启动 Elevator 失败"),
                     "Elevator failed to start",
                     TimeSpan.FromSeconds(5));
 
@@ -352,14 +354,14 @@ public partial class PresetViewModel(
                     await _userPreferencesService.Clear3DMigotoModPreferencesAsync(ResetOnlyEnabledMods)
                         .ConfigureAwait(false);
 
-                _notificationManager.ShowNotification("Mod 设置已重置",
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationPrefsReset", "Mod 设置已重置"),
                     $"Mod preferences have been removed{(AlsoReset3DmigotoConfig ? $" and {Constants.UserIniFileName} have been cleared" : "")}",
                     TimeSpan.FromSeconds(5));
             });
         }
         catch (Exception e)
         {
-            _notificationManager.ShowNotification("重置 Mod 设置失败", e.Message,
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationResetFailed", "重置 Mod 设置失败"), e.Message,
                 TimeSpan.FromSeconds(5));
         }
     }
@@ -454,6 +456,10 @@ public partial class PresetViewModel(
 
 public partial class ModPresetVm : ObservableObject
 {
+    // 二开：这个类是 new 出来的（不经过 DI），所以不能用构造注入，
+    // 跟 ModInstallerService 一样用 App.GetService 取。
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
+
     public ModPresetVm(ModPreset preset)
     {
         Name = preset.Name;
@@ -466,6 +472,9 @@ public partial class ModPresetVm : ObservableObject
 
         CreatedAt = preset.Created;
         IsReadOnly = preset.IsReadOnly;
+
+        // 二开：初始值里不能引用 RenameText（CS0236），改到构造函数里赋。
+        RenameButtonText = RenameText;
     }
 
     public string Name { get; }
@@ -479,7 +488,7 @@ public partial class ModPresetVm : ObservableObject
 
     [ObservableProperty] private bool _isEditingName;
 
-    [ObservableProperty] private string _renameButtonText = RenameText;
+    [ObservableProperty] private string _renameButtonText = string.Empty;
     [ObservableProperty] private bool _isReadOnly;
 
     [RelayCommand]
@@ -524,8 +533,8 @@ public partial class ModPresetVm : ObservableObject
     public required IAsyncRelayCommand ApplyPresetCommand { get; init; }
     public required IRelayCommand NavigateToPresetDetailsCommand { get; init; }
 
-    private const string RenameText = "重命名";
-    private const string ConfirmText = "保存新名字";
+    private string RenameText => _localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_RenameText", "重命名");
+    private string ConfirmText => _localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_ConfirmRenameText", "保存新名字");
 }
 
 public partial class ModPresetEntryVm : ObservableObject

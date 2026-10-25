@@ -1,5 +1,7 @@
 namespace OMniX.WinUI.Models.Settings;
 
+using OMniX.Core.Contracts.Services;
+
 /// <summary>
 ///     二开：外观分区。用来把一个角色下的 Mod 按“套”分组管理
 /// </summary>
@@ -7,7 +9,7 @@ public class AppearanceSection
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
-    public string Name { get; set; } = "新分区";
+    public string Name { get; set; } = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Appear_DefaultName", "新分区");
 }
 
 /// <summary>
@@ -31,7 +33,7 @@ public class ModSectionMapping
 /// </summary>
 public class SectionItemVm
 {
-    public static SectionItemVm All { get; } = new(string.Empty, "全部");
+    public static SectionItemVm All => new(string.Empty, App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/Appear_All", "全部"));
 
     public SectionItemVm(string id, string name)
     {

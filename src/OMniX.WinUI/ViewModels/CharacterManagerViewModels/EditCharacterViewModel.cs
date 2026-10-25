@@ -32,6 +32,7 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
     private readonly ImageHandlerService _imageHandlerService;
     private readonly INavigationService _navigationService;
     private readonly IWindowManagerService _windowManagerService;
+    private readonly ILanguageLocalizer _localizer;
 
     private ICharacter _character = null!;
 
@@ -56,7 +57,7 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
 
     public EditCharacterViewModel(IGameService gameService, ILogger logger, ISkinManagerService skinManagerService,
         ImageHandlerService imageHandlerService, NotificationManager notificationManager, INavigationService navigationService,
-        IWindowManagerService windowManagerService)
+        IWindowManagerService windowManagerService, ILanguageLocalizer localizer)
     {
         _gameService = gameService;
         _logger = logger.ForContext<EditCharacterViewModel>();
@@ -65,6 +66,7 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
         _notificationManager = notificationManager;
         _navigationService = navigationService;
         _windowManagerService = windowManagerService;
+        _localizer = localizer;
         Form.PropertyChanged += NotifyAllCommands;
     }
 
@@ -176,7 +178,7 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
         catch (Exception e)
         {
             _logger.Error(e, "Failed to toggle mod {ModId}", modModel.ModId);
-            _notificationManager.ShowNotification("切换启用状态失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_ToggleFailedTitle", "切换启用状态失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -211,26 +213,26 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
 
         if (release is null)
         {
-            _notificationManager.ShowNotification("连不上修复器",
-                "访问 GitHub 失败，可以先到项目主页手动下载 Wuwa_Mod_Fixer", TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_FixerUnreachableTitle", "连不上修复器"),
+                _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_FixerUnreachableBody", "访问 GitHub 失败，可以先到项目主页手动下载 Wuwa_Mod_Fixer"), TimeSpan.FromSeconds(8));
             return;
         }
 
         try
         {
             if (!service.IsDownloaded(release))
-                _notificationManager.ShowNotification("正在下载修复器",
-                    $"{release.Tag}（{release.SizeText}），第一次会慢一点", TimeSpan.FromSeconds(6));
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_FixerDownloadingTitle", "正在下载修复器"),
+                    string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_FixerDownloadingBody", "{0}（{1}），第一次会慢一点"), release.Tag, release.SizeText), TimeSpan.FromSeconds(6));
 
             await service.LaunchForModAsync(modModel.FullPath);
 
-            _notificationManager.ShowNotification("已打开修复器",
-                $"MOD 目录已填成「{modModel.DisplayName}」", TimeSpan.FromSeconds(6));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_FixerOpenedTitle", "已打开修复器"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_FixerOpenedBody", "MOD 目录已填成「{0}」"), modModel.DisplayName), TimeSpan.FromSeconds(6));
         }
         catch (Exception e)
         {
             _logger.Error(e, "Failed to launch mod fixer for {Path}", modModel.FullPath);
-            _notificationManager.ShowNotification("打开修复器失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_FixerOpenFailedTitle", "打开修复器失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -255,7 +257,8 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
 
         if (newName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
         {
-            _notificationManager.ShowNotification("名称里有不允许的字符", "换一个名字试试", TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_InvalidCharsTitle", "名称里有不允许的字符"),
+                _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_InvalidCharsBody", "换一个名字试试"), TimeSpan.FromSeconds(5));
             modModel.EditName = modModel.DisplayName;
             return Task.CompletedTask;
         }
@@ -269,7 +272,8 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
 
         if (Directory.Exists(targetPath))
         {
-            _notificationManager.ShowNotification("名字重复", $"「{newName}」已经存在了", TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_NameDupTitle", "名字重复"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_NameDupBody", "「{0}」已经存在了"), newName), TimeSpan.FromSeconds(5));
             modModel.EditName = modModel.DisplayName;
             return Task.CompletedTask;
         }
@@ -281,12 +285,13 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
             modModel.DisplayName = newName;
             modModel.FullPath = targetPath;
 
-            _notificationManager.ShowNotification("已重命名", $"「{newName}」", TimeSpan.FromSeconds(4));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_RenamedTitle", "已重命名"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_RenamedBody", "「{0}」"), newName), TimeSpan.FromSeconds(4));
         }
         catch (Exception e)
         {
             _logger.Error(e, "Failed to rename mod folder {Path}", modModel.FullPath);
-            _notificationManager.ShowNotification("重命名失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_RenameFailedTitle", "重命名失败"), e.Message, TimeSpan.FromSeconds(8));
             modModel.EditName = modModel.DisplayName;
         }
 
@@ -318,7 +323,7 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
         {
             if (!Directory.Exists(modModel.FullPath))
             {
-                _notificationManager.ShowNotification("文件夹不存在", modModel.FullPath, TimeSpan.FromSeconds(6));
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_FolderMissingTitle", "文件夹不存在"), modModel.FullPath, TimeSpan.FromSeconds(6));
                 return;
             }
 
@@ -333,7 +338,7 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
         catch (Exception e)
         {
             _logger.Error(e, "Failed to open mod folder {Path}", modModel.FullPath);
-            _notificationManager.ShowNotification("打开文件夹失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_OpenFolderFailedTitle", "打开文件夹失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -348,12 +353,12 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
 
         var dialog = new ContentDialog
         {
-            Title = "删除 Mod",
-            Content = $"确定要删除「{modModel.DisplayName}」吗？\n\n" +
-                      $"整个文件夹会从磁盘上删除：\n{modModel.FullPath}\n\n" +
-                      "这个操作无法撤销。",
-            PrimaryButtonText = "删除",
-            CloseButtonText = "取消",
+            Title = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DeleteModTitle", "删除 Mod"),
+            Content = string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DeleteModContent",
+                    "确定要删除「{0}」吗？\n\n整个文件夹会从磁盘上删除：\n{1}\n\n这个操作无法撤销。"),
+                modModel.DisplayName, modModel.FullPath),
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DeleteModPrimary", "删除"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Common_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Close
         };
 
@@ -368,13 +373,13 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
             Mods.Remove(modModel);
             ModsCount = Mods.Count.ToString();
 
-            _notificationManager.ShowNotification("Mod 已删除",
-                $"「{modModel.DisplayName}」已从磁盘删除", TimeSpan.FromSeconds(5));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_ModDeletedTitle", "Mod 已删除"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_ModDeletedBody", "「{0}」已从磁盘删除"), modModel.DisplayName), TimeSpan.FromSeconds(5));
         }
         catch (Exception e)
         {
             _logger.Error(e, "Failed to delete mod folder {Path}", modModel.FullPath);
-            _notificationManager.ShowNotification("删除失败", e.Message, TimeSpan.FromSeconds(8));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DeleteFailedTitle", "删除失败"), e.Message, TimeSpan.FromSeconds(8));
         }
     }
 
@@ -403,12 +408,13 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
             if (image is not null)
                 Form.Image.Value = image;
             else
-                _notificationManager.ShowNotification("粘贴图片失败", "剪贴板里没有图片", null);
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_PasteFailedTitle", "粘贴图片失败"),
+                    _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_ClipboardNoImage", "剪贴板里没有图片"), null);
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "Failed to paste image");
-            _notificationManager.ShowNotification("粘贴图片失败", ex.Message, null);
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_PasteFailedTitle", "粘贴图片失败"), ex.Message, null);
         }
     }
 
@@ -432,8 +438,8 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
     {
         var deleteFolderCheckBox = new CheckBox()
         {
-            Content = "同时删除这个角色的文件夹和里面的 Mod？\n" +
-                      "文件会被永久删除，无法找回！",
+            Content = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DisableDeleteFolderCheck",
+                "同时删除这个角色的文件夹和里面的 Mod？\n文件会被永久删除，无法找回！"),
             IsChecked = false
         };
 
@@ -444,10 +450,8 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
                 new TextBlock()
                 {
                     Text =
-                        "确定要禁用这个角色吗？" +
-                        "禁用不会删除角色，但 OMniX 将不再识别它。" +
-                        "之后可以随时重新启用。" +
-                        "点「确定」会立即执行。",
+                        _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DisableDialogText",
+                            "确定要禁用这个角色吗？禁用不会删除角色，但 OMniX 将不再识别它。之后可以随时重新启用。点「确定」会立即执行。"),
                     TextWrapping = TextWrapping.WrapWholeWords,
                     Margin = new Thickness(0, 0, 0, 8)
                 },
@@ -458,10 +462,10 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
 
         var disableDialog = new ContentDialog
         {
-            Title = "禁用角色",
+            Title = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DisableTitle", "禁用角色"),
             Content = dialogContent,
-            PrimaryButtonText = "确定禁用",
-            CloseButtonText = "取消",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DisablePrimary", "确定禁用"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Common_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = App.MainWindow.Content.XamlRoot
         };
@@ -490,8 +494,8 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
     {
         var deleteFolderCheckBox = new CheckBox()
         {
-            Content = "同时删除这个自定义角色的文件夹和里面的 Mod？\n" +
-                      "文件会被永久删除，无法找回！",
+            Content = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DeleteCustomDeleteFolderCheck",
+                "同时删除这个自定义角色的文件夹和里面的 Mod？\n文件会被永久删除，无法找回！"),
             IsChecked = false
         };
 
@@ -502,9 +506,8 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
                 new TextBlock()
                 {
                     Text =
-                        "确定要删除这个自定义角色吗？" +
-                        "角色会被移除，OMniX 将不再识别它。" +
-                        "点「确定」会立即执行。",
+                        _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DeleteCustomDialogText",
+                            "确定要删除这个自定义角色吗？角色会被移除，OMniX 将不再识别它。点「确定」会立即执行。"),
                     TextWrapping = TextWrapping.WrapWholeWords,
                     Margin = new Thickness(0, 0, 0, 8)
                 },
@@ -515,10 +518,10 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
 
         var disableDialog = new ContentDialog
         {
-            Title = "删除自定义角色",
+            Title = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DeleteCustomTitle", "删除自定义角色"),
             Content = dialogContent,
-            PrimaryButtonText = "确定删除",
-            CloseButtonText = "取消",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_DeleteCustomPrimary", "确定删除"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Common_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = App.MainWindow.Content.XamlRoot
         };
@@ -538,7 +541,8 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
         });
 
         _navigationService.NavigateTo(typeof(CharacterManagerViewModel).FullName!, new object(), clearNavigation: true);
-        _notificationManager.ShowNotification("自定义角色已删除", $"「{_character.DisplayName}」已删除", null);
+        _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_CustomDeletedTitle", "自定义角色已删除"),
+            string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_CustomDeletedBody", "「{0}」已删除"), _character.DisplayName), null);
     }
 
     private bool CanEnableCharacter() => !_character.IsCustomModObject && CharacterStatus.IsDisabled && !AnyChanges();
@@ -549,18 +553,18 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
         var dialogContent = new TextBlock()
         {
             Text =
-                "确定要启用这个角色吗？" +
-                "点「确定」会立即执行。",
+                _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_EnableDialogText",
+                    "确定要启用这个角色吗？点「确定」会立即执行。"),
             TextWrapping = TextWrapping.WrapWholeWords,
             Margin = new Thickness(0, 0, 0, 8)
         };
 
         var enableDialog = new ContentDialog
         {
-            Title = "启用角色",
+            Title = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_EnableTitle", "启用角色"),
             Content = dialogContent,
-            PrimaryButtonText = "确定启用",
-            CloseButtonText = "取消",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_EnablePrimary", "确定启用"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Common_Cancel", "取消"),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = App.MainWindow.Content.XamlRoot
         };
@@ -606,7 +610,7 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
         catch (Exception e)
         {
             _logger.Error(e, "Failed to save changes to character");
-            _notificationManager.ShowNotification("保存角色失败", e.Message, null);
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_SaveFailedTitle", "保存角色失败"), e.Message, null);
             return;
         }
 
@@ -761,9 +765,9 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
 
         var characterModelDialog = new ContentDialog
         {
-            Title = "角色数据",
+            Title = _localizer.GetLocalizedStringOrDefault("/CharacterManager/EditChar_CharacterDataTitle", "角色数据"),
             Content = contentWrapper,
-            CloseButtonText = "关闭",
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Common_Close", "关闭"),
             DefaultButton = ContentDialogButton.Close,
             XamlRoot = App.MainWindow.Content.XamlRoot,
             Resources =

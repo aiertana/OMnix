@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AuthorLabel.Text" xml:space="preserve">
+    <value>作者：</value>
+  </data>
+  <data name="AutoUpdateFailTitle" xml:space="preserve">
+    <value>启动更新失败</value>
+  </data>
+  <data name="AutoUpdateFlyoutText.Text" xml:space="preserve">
+    <value>OMniX 会退出，由自带的更新器下载新版本、自动替换文件，完成后自己重新打开。这期间别关机。</value>
+  </data>
+  <data name="AutoUpdateUnavailableTitle" xml:space="preserve">
+    <value>无法启动更新</value>
+  </data>
+  <data name="AutoUpdateYes.Content" xml:space="preserve">
+    <value>是，自动更新并重启</value>
+  </data>
+  <data name="BatchClean.Content" xml:space="preserve">
+    <value>清理空文件夹</value>
+  </data>
+  <data name="BatchDisableAll.Content" xml:space="preserve">
+    <value>禁用全部 Mod</value>
+  </data>
+  <data name="BatchOpsDesc.Text" xml:space="preserve">
+    <value>整理、清理、批量禁用，作用范围都是当前的 Mods 文件夹</value>
+  </data>
+  <data name="BatchOpsTitle.Text" xml:space="preserve">
+    <value>批量操作</value>
+  </data>
+  <data name="BatchReorganize.Content" xml:space="preserve">
+    <value>重新整理 Mod</value>
+  </data>
+  <data name="CacheClear.Content" xml:space="preserve">
+    <value>清空缓存</value>
+  </data>
+  <data name="CacheCurrentUsage.Text" xml:space="preserve">
+    <value>当前占用 </value>
+  </data>
+  <data name="CacheDesc.Text" xml:space="preserve">
+    <value>用 OMniX 下载 Mod 时会顺手存一份压缩包。这里限制它最多占多少空间，超出的会在启动时自动清掉</value>
+  </data>
+  <data name="CacheOpenFolder.Text" xml:space="preserve">
+    <value>打开缓存目录</value>
+  </data>
+  <data name="CacheTitle.Text" xml:space="preserve">
+    <value>下载缓存</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="CheckUpdateButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="CheckUpdateLabel.Text" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="CmdAlreadyGone" xml:space="preserve">
+    <value>这个进程已经不在跑了</value>
+  </data>
+  <data name="CmdAttrKillOnExit" xml:space="preserve">
+    <value>退出时结束进程</value>
+  </data>
+  <data name="CmdAttrPrefix" xml:space="preserve">
+    <value>选项： </value>
+  </data>
+  <data name="CmdAttrRunAsAdmin" xml:space="preserve">
+    <value>管理员运行</value>
+  </data>
+  <data name="CmdAttrUseShell" xml:space="preserve">
+    <value>交给系统启动</value>
+  </data>
+  <data name="CmdDeleted" xml:space="preserve">
+    <value>命令「{0}」已删除</value>
+  </data>
+  <data name="CmdDeleteFailedTitle" xml:space="preserve">
+    <value>删除命令失败</value>
+  </data>
+  <data name="CmdDefArguments.Text" xml:space="preserve">
+    <value>参数： </value>
+  </data>
+  <data name="CmdDefDeleteButton.Content" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="CmdDefDeleteConfirm.Text" xml:space="preserve">
+    <value>确定要删除这条命令吗？</value>
+  </data>
+  <data name="CmdDefDeleteConfirmButton.Content" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="CmdDefDisplayName.Text" xml:space="preserve">
+    <value>显示名称：</value>
+  </data>
+  <data name="CmdDefEditButton.Content" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="CmdDefExecutable.Text" xml:space="preserve">
+    <value>程序： </value>
+  </data>
+  <data name="CmdDefId.Text" xml:space="preserve">
+    <value>命令 ID：</value>
+  </data>
+  <data name="CmdDefRunButton.Content" xml:space="preserve">
+    <value>运行</value>
+  </data>
+  <data name="CmdDefRunConfirm.Text" xml:space="preserve">
+    <value>确定要运行这条命令吗？</value>
+  </data>
+  <data name="CmdDefRunConfirmButton.Content" xml:space="preserve">
+    <value>运行</value>
+  </data>
+  <data name="CmdDefWorkingDir.Text" xml:space="preserve">
+    <value>工作目录： </value>
+  </data>
+  <data name="CmdKilled" xml:space="preserve">
+    <value>进程已结束</value>
+  </data>
+  <data name="CmdKillFailedTitle" xml:space="preserve">
+    <value>结束进程失败</value>
+  </data>
+  <data name="CmdReadFailedBody" xml:space="preserve">
+    <value>找不到这条命令</value>
+  </data>
+  <data name="CmdReadFailedTitle" xml:space="preserve">
+    <value>读取命令失败</value>
+  </data>
+  <data name="CmdRunningDisplayName.Text" xml:space="preserve">
+    <value>显示名称： </value>
+  </data>
+  <data name="CmdRunningFull.Text" xml:space="preserve">
+    <value>完整命令： </value>
+  </data>
+  <data name="CmdRunningId.Text" xml:space="preserve">
+    <value>命令 ID： </value>
+  </data>
+  <data name="CmdRunningKill.Content" xml:space="preserve">
+    <value>结束进程</value>
+  </data>
+  <data name="CmdWarnContent" xml:space="preserve">
+    <value>建命令的时候留个心。命令能拿来跑你电脑上的任何程序，只加你信得过的来源。
+OMniX 本身也不完美，挡不住恶意脚本，也挡不住自己的 bug。
+
+点「我知道了」就表示你清楚这些风险。</value>
+  </data>
+  <data name="CmdWarnPrimary" xml:space="preserve">
+    <value>我知道了</value>
+  </data>
+  <data name="CmdWarnTitle" xml:space="preserve">
+    <value>提个醒</value>
+  </data>
+  <data name="CommandsExistingExpander.Description" xml:space="preserve">
+    <value>这里能看到已经建好的命令，也可以删掉</value>
+  </data>
+  <data name="CommandsExistingExpander.Header" xml:space="preserve">
+    <value>已建命令</value>
+  </data>
+  <data name="CommandsNewButton.Content" xml:space="preserve">
+    <value>新建命令</value>
+  </data>
+  <data name="CommandsNewCard.Description" xml:space="preserve">
+    <value>在这里可以定义 OMniX 帮你跑的指令。带 {{TargetPath}} 的指令，目前只能从「Mod 总览」页运行</value>
+  </data>
+  <data name="CommandsNewCard.Header" xml:space="preserve">
+    <value>新建命令</value>
+  </data>
+  <data name="CommandsRunningExpander.Description" xml:space="preserve">
+    <value>这次运行 OMniX 期间，由 OMniX 启动的进程</value>
+  </data>
+  <data name="CommandsRunningExpander.Header" xml:space="preserve">
+    <value>正在运行的命令</value>
+  </data>
+  <data name="CommandsTitle.Text" xml:space="preserve">
+    <value>命令设置</value>
+  </data>
+  <data name="CreateCmdArguments.Header" xml:space="preserve">
+    <value>启动参数</value>
+  </data>
+  <data name="CreateCmdArguments.PlaceholderText" xml:space="preserve">
+    <value>传给这个程序的参数</value>
+  </data>
+  <data name="CreateCmdChain.Content" xml:space="preserve">
+    <value>命令链</value>
+  </data>
+  <data name="CreateCmdChain.ToolTipService.ToolTip" xml:space="preserve">
+    <value>还没做</value>
+  </data>
+  <data name="CreateCmdExecutable.PlaceHolderText" xml:space="preserve">
+    <value>可以直接写程序名（要求在 PATH 里），也可以填完整路径（必填）</value>
+  </data>
+  <data name="CreateCmdExecutable.Title" xml:space="preserve">
+    <value>* 程序</value>
+  </data>
+  <data name="CreateCmdKillOnExit.Content" xml:space="preserve">
+    <value>OMniX 退出时一并结束进程</value>
+  </data>
+  <data name="CreateCmdKillOnExit.ToolTipService.ToolTip" xml:space="preserve">
+    <value>勾上之后，OMniX 关掉时这个进程也会被结束</value>
+  </data>
+  <data name="CreateCmdNameBox.Header" xml:space="preserve">
+    <value>* 命令名称：</value>
+  </data>
+  <data name="CreateCmdNameBox.PlaceholderText" xml:space="preserve">
+    <value>显示给你看的名字（必填）</value>
+  </data>
+  <data name="CreateCmdNewWindow.Content" xml:space="preserve">
+    <value>开新窗口</value>
+  </data>
+  <data name="CreateCmdNewWindow.ToolTipService.ToolTip" xml:space="preserve">
+    <value>勾上会在单独的窗口里跑（暂不可用）</value>
+  </data>
+  <data name="CreateCmdPickFolder" xml:space="preserve">
+    <value>选择文件夹</value>
+  </data>
+  <data name="CreateCmdPreview.Header" xml:space="preserve">
+    <value>最终会执行的命令：</value>
+  </data>
+  <data name="CreateCmdRunAsAdmin.Content" xml:space="preserve">
+    <value>以管理员身份运行</value>
+  </data>
+  <data name="CreateCmdRunAsAdmin.ToolTipService.ToolTip" xml:space="preserve">
+    <value>用管理员权限启动这个程序</value>
+  </data>
+  <data name="CreateCmdSave.Content" xml:space="preserve">
+    <value>保存命令</value>
+  </data>
+  <data name="CreateCmdSingle.Content" xml:space="preserve">
+    <value>单条命令</value>
+  </data>
+  <data name="CreateCmdTargetPathHint.Text" xml:space="preserve">
+    <value>当命令是对着某个文件/文件夹跑的时候（比如某个 Mod 目录），{{TargetPath}} 会被换成实际路径。</value>
+  </data>
+  <data name="CreateCmdTitle.Text" xml:space="preserve">
+    <value>新建命令</value>
+  </data>
+  <data name="CreateCmdUseShell.Content" xml:space="preserve">
+    <value>交给系统启动</value>
+  </data>
+  <data name="CreateCmdUseShell.ToolTipService.ToolTip" xml:space="preserve">
+    <value>交给操作系统去拉起程序（ShellExecute）</value>
+  </data>
+  <data name="CreateCmdWorkingDir.PlaceHolderText" xml:space="preserve">
+    <value>手动填路径时，文件夹必须已经存在</value>
+  </data>
+  <data name="CreateCmdWorkingDir.Title" xml:space="preserve">
+    <value>工作目录</value>
+  </data>
+  <data name="CustomCommandsCard.Description" xml:space="preserve">
+    <value>可以定义命令（脚本），并对指定的 Mod 执行</value>
+  </data>
+  <data name="CustomCommandsCard.Header" xml:space="preserve">
+    <value>自定义命令</value>
+  </data>
+  <data name="ElevatorDesc.Text" xml:space="preserve">
+    <value>游戏内刷新 Mod 需要一个以管理员权限运行的辅助进程</value>
+  </data>
+  <data name="ElevatorFailedTitle" xml:space="preserve">
+    <value>无法启动 Elevator</value>
+  </data>
+  <data name="ExportBackupDesc.Text" xml:space="preserve">
+    <value>按角色或全量把 Mod 打包成 zip、或复制成文件夹。导出过程中可以随时暂停、取消，不会改动原有 Mod</value>
+  </data>
+  <data name="ExportBackupTitle.Text" xml:space="preserve">
+    <value>导出 / 备份模组</value>
+  </data>
+  <data name="ExportDefaultPath.Text" xml:space="preserve">
+    <value>默认保存到程序目录下的 OMniX Exports</value>
+  </data>
+  <data name="ExportDialog_ChangeStatusTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>为导出的 Mod 添加或移除「DISABLED_」前缀</value>
+  </data>
+  <data name="ExportDialog_KeepStructureTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>保持 OMniX 的目录结构，例如：角色/某个皮肤 Mod</value>
+  </data>
+  <data name="ExportDialog_RemoveOmniXTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>此操作会递归删除所有以 .JASM_ 开头的文件和文件夹</value>
+  </data>
+  <data name="ExportDoneBody" xml:space="preserve">
+    <value>Mod 已导出 to {0}</value>
+  </data>
+  <data name="ExportDoneTitle" xml:space="preserve">
+    <value>Mod 已导出</value>
+  </data>
+  <data name="ExportFailedTitle" xml:space="preserve">
+    <value>导出 Mod 失败</value>
+  </data>
+  <data name="ExportPrimary" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="ExportTitle" xml:space="preserve">
+    <value>导出 Mod</value>
+  </data>
+  <data name="GenshinPathResetHad" xml:space="preserve">
+    <value>记下的游戏程序已清掉，下次启动游戏时会重新定位，找不到会让你重新指定</value>
+  </data>
+  <data name="GenshinPathResetNone" xml:space="preserve">
+    <value>当前没有记下的游戏程序路径，下次启动游戏时会重新定位</value>
+  </data>
+  <data name="GenshinPathResetTitle" xml:space="preserve">
+    <value>已重置游戏程序路径</value>
+  </data>
+  <data name="GithubLabel.Text" xml:space="preserve">
+    <value>GitHub：</value>
+  </data>
+  <data name="IgnoreUpdateButton.Content" xml:space="preserve">
+    <value>忽略这次</value>
+  </data>
+  <data name="ImportCanceled" xml:space="preserve">
+    <value>已取消</value>
+  </data>
+  <data name="ImportCommit" xml:space="preserve">
+    <value>用这个包更新</value>
+  </data>
+  <data name="ImportFailPrefix" xml:space="preserve">
+    <value>导入失败：</value>
+  </data>
+  <data name="ImportFiles" xml:space="preserve">
+    <value>包含 {0} 个文件，会覆盖到当前程序目录。
+OMniX 目录里其它文件一个都不会删。装完 OMniX 会自己重新打开。</value>
+  </data>
+  <data name="ImportFull" xml:space="preserve">
+    <value>完整包</value>
+  </data>
+  <data name="ImportIdentified" xml:space="preserve">
+    <value>识别结果：OMniX {0} · {1}</value>
+  </data>
+  <data name="ImportIdentifying" xml:space="preserve">
+    <value>正在识别…</value>
+  </data>
+  <data name="ImportInstallPrimary" xml:space="preserve">
+    <value>安装并重启</value>
+  </data>
+  <data name="ImportInstallTitle" xml:space="preserve">
+    <value>安装本地更新包</value>
+  </data>
+  <data name="ImportLocalUpdateButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>导入本地更新包</value>
+  </data>
+  <data name="ImportLocalUpdateLabel.Text" xml:space="preserve">
+    <value>导入本地更新包</value>
+  </data>
+  <data name="ImportNotPackage" xml:space="preserve">
+    <value>这不像 OMniX 更新包（包里得有 OMniX 文件夹）</value>
+  </data>
+  <data name="ImportPatch" xml:space="preserve">
+    <value>增量补丁</value>
+  </data>
+  <data name="ImportStartFailed" xml:space="preserve">
+    <value>启动更新器失败</value>
+  </data>
+  <data name="ImportStartingUpdater" xml:space="preserve">
+    <value>正在启动更新器…</value>
+  </data>
+  <data name="ImportUnknownVersion" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="LangSwitchPrimary" xml:space="preserve">
+    <value>切换语言并重启</value>
+  </data>
+  <data name="LoaderPathResetHad" xml:space="preserve">
+    <value>记下的启动程序已清掉，下次会按「XXMI 文件夹」重新识别</value>
+  </data>
+  <data name="LoaderPathResetNone" xml:space="preserve">
+    <value>当前没有记下的启动程序，下次会按「XXMI 文件夹」重新识别</value>
+  </data>
+  <data name="LoaderPathResetTitle" xml:space="preserve">
+    <value>已重置启动器路径</value>
+  </data>
+  <data name="MigrateClose" xml:space="preserve">
+    <value>不用，留旧的</value>
+  </data>
+  <data name="MigrateContent" xml:space="preserve">
+    <value>插件目录要从
+{0}
+换成
+{1}
+
+里面现在大约 {2:0.#} MB（XXMI、DLSS5 部署包、Mod 修复器）。
+要复制一份过去吗？旧目录里的东西我不删 —— 新位置用着没问题你自己删掉就行。</value>
+  </data>
+  <data name="MigrateFailedBody" xml:space="preserve">
+    <value>可以先把旧目录手动复制过去，或者换个目标文件夹再试</value>
+  </data>
+  <data name="MigrateFailedTitle" xml:space="preserve">
+    <value>插件没搬成功，路径没改</value>
+  </data>
+  <data name="MigratePrimary" xml:space="preserve">
+    <value>搬过去</value>
+  </data>
+  <data name="MigrateTitle" xml:space="preserve">
+    <value>把已有插件搬过去？</value>
+  </data>
+  <data name="MigratingBody" xml:space="preserve">
+    <value>文件多的话要等一会儿</value>
+  </data>
+  <data name="MigratingTitle" xml:space="preserve">
+    <value>正在搬插件…</value>
+  </data>
+  <data name="ModCheckerStatusLabel.Text" xml:space="preserve">
+    <value>当前状态</value>
+  </data>
+  <data name="NewVersionLabel.Text" xml:space="preserve">
+    <value>有新版本：</value>
+  </data>
+  <data name="OpenAppFolderButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>打开 OMniX 所在的文件夹</value>
+  </data>
+  <data name="OpenAppFolderLabel.Text" xml:space="preserve">
+    <value>程序目录</value>
+  </data>
+  <data name="OpenExportPanelButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>打开导出面板</value>
+  </data>
+  <data name="OpenExportPanelLabel.Text" xml:space="preserve">
+    <value>打开导出面板</value>
+  </data>
+  <data name="OpenModsFolderButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>在资源管理器里打开 Mods 文件夹</value>
+  </data>
+  <data name="OpenModsFolderLabel.Text" xml:space="preserve">
+    <value>打开 Mods 文件夹</value>
+  </data>
+  <data name="PaletteBlue.Content" xml:space="preserve">
+    <value>冷调蓝</value>
+  </data>
+  <data name="PaletteCardDesc.Text" xml:space="preserve">
+    <value>两套色系，和明暗模式是两回事：暖白珊瑚是 1.0 版那套，冷调蓝是冷白底配蓝色主色</value>
+  </data>
+  <data name="PaletteCardTitle.Text" xml:space="preserve">
+    <value>配色</value>
+  </data>
+  <data name="PaletteSwitchedBlue" xml:space="preserve">
+    <value>冷调蓝：冷白底 + 蓝色主色</value>
+  </data>
+  <data name="PaletteSwitchedTitle" xml:space="preserve">
+    <value>配色已切换</value>
+  </data>
+  <data name="PaletteSwitchedWarm" xml:space="preserve">
+    <value>暖白珊瑚：1.0 版那套</value>
+  </data>
+  <data name="PaletteWarm.Content" xml:space="preserve">
+    <value>暖白珊瑚</value>
+  </data>
+  <data name="PluginsFolderDesc.Text" xml:space="preserve">
+    <value>XXMI、DLSS5 部署包、Mod 修复器下载后存放的位置。默认在 C 盘，空间紧张可以改到别的盘，改完点下面的「保存路径」。</value>
+  </data>
+  <data name="PluginsFolderSelector.Title" xml:space="preserve">
+    <value>插件文件夹</value>
+  </data>
+  <data name="ReorganizeContent" xml:space="preserve">
+    <value>要把 Mods 文件夹重新整理一遍吗？
+程序会把直接躺在 Mods 文件夹和 Others 文件夹里的 Mod，按角色分到各自的文件夹里。
+
+实在对不上角色的 Mod 会被放进「Others」文件夹；本来就在「Others」里的不会动。</value>
+  </data>
+  <data name="ReorganizePrimary" xml:space="preserve">
+    <value>开始整理</value>
+  </data>
+  <data name="ReorganizeTitle" xml:space="preserve">
+    <value>重新整理 Mod？</value>
+  </data>
+  <data name="ReorgDoneBody" xml:space="preserve">
+    <value>已把 {0} 个 Mod 移进角色文件夹</value>
+  </data>
+  <data name="ReorgDoneTitle" xml:space="preserve">
+    <value>整理完成</value>
+  </data>
+  <data name="ReorgFailedBody" xml:space="preserve">
+    <value>详细原因见日志。</value>
+  </data>
+  <data name="ReorgFailedTitle" xml:space="preserve">
+    <value>整理 Mod 失败</value>
+  </data>
+  <data name="Reset3DMigotoButton.Content" xml:space="preserve">
+    <value>重置启动器路径</value>
+  </data>
+  <data name="ResetGenshinButton.Content" xml:space="preserve">
+    <value>重置游戏程序路径</value>
+  </data>
+  <data name="ResetPathsDesc.Text" xml:space="preserve">
+    <value>启动器或游戏程序换了位置时，把记下的路径清掉，下次会重新让程序自己找</value>
+  </data>
+  <data name="ResetPathsTitle.Text" xml:space="preserve">
+    <value>路径重置</value>
+  </data>
+  <data name="RestartingBody" xml:space="preserve">
+    <value>应用马上重启。</value>
+  </data>
+  <data name="RestartingTitle" xml:space="preserve">
+    <value>正在重启…</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="SavedRestartingTitle" xml:space="preserve">
+    <value>设置已保存，正在重启…</value>
+  </data>
+  <data name="SavePathsButton.Content" xml:space="preserve">
+    <value>保存路径</value>
+  </data>
+  <data name="SavePathsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>更新文件夹路径</value>
+  </data>
+  <data name="SavePathsContent" xml:space="preserve">
+    <value>要保存新的文件夹路径吗？保存后应用会重启。</value>
+  </data>
+  <data name="SavePathsRestartButton.Content" xml:space="preserve">
+    <value>保存路径</value>
+  </data>
+  <data name="SavePathsRestartButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>保存后会重新启动应用</value>
+  </data>
+  <data name="SavePathsTitle" xml:space="preserve">
+    <value>保存文件夹路径？</value>
+  </data>
+  <data name="SecAppearance.Text" xml:space="preserve">
+    <value>外观</value>
+  </data>
+  <data name="SecAutomation.Text" xml:space="preserve">
+    <value>自动化</value>
+  </data>
+  <data name="SecBackup.Text" xml:space="preserve">
+    <value>备份</value>
+  </data>
+  <data name="SecExtensions.Text" xml:space="preserve">
+    <value>扩展</value>
+  </data>
+  <data name="SecGamePaths.Text" xml:space="preserve">
+    <value>游戏与路径</value>
+  </data>
+  <data name="SecModMgmt.Text" xml:space="preserve">
+    <value>Mod 管理</value>
+  </data>
+  <data name="SkinsAsCharDesc.Text" xml:space="preserve">
+    <value>开启后，一个角色的每个皮肤会单独列在角色墙里，而不是折叠在角色详情里</value>
+  </data>
+  <data name="SkinsAsCharEnable.Content" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="SkinsAsCharTitle.Text" xml:space="preserve">
+    <value>皮肤当作独立角色</value>
+  </data>
+  <data name="SoundCardDesc.Text" xml:space="preserve">
+    <value>点击按钮和卡片时播放一声轻响。切到简易版会自动静音</value>
+  </data>
+  <data name="SoundCardTitle.Text" xml:space="preserve">
+    <value>交互音效</value>
+  </data>
+  <data name="StyleCardDesc.Text" xml:space="preserve">
+    <value>配色两种风格一样，差的是动效：标准版有流动光斑、悬停抬起和按压反馈，简易版是静态玻璃</value>
+  </data>
+  <data name="StyleCardTitle.Text" xml:space="preserve">
+    <value>界面风格</value>
+  </data>
+  <data name="StyleSimple.Content" xml:space="preserve">
+    <value>简易版</value>
+  </data>
+  <data name="StyleStandard.Content" xml:space="preserve">
+    <value>标准版</value>
+  </data>
+  <data name="StyleSwitchedSimple" xml:space="preserve">
+    <value>简易版：静态玻璃，不带动画</value>
+  </data>
+  <data name="StyleSwitchedStandard" xml:space="preserve">
+    <value>标准版：流动光斑、悬停抬起、按压反馈</value>
+  </data>
+  <data name="StyleSwitchedTitle" xml:space="preserve">
+    <value>界面风格已切换</value>
+  </data>
+  <data name="SwitchGameContent" xml:space="preserve">
+    <value>切换游戏会重启应用，这样才能按新游戏重新配置。
+
+要切换吗？</value>
+  </data>
+  <data name="SwitchGamePrimary" xml:space="preserve">
+    <value>切换到 {0}</value>
+  </data>
+  <data name="SwitchGameTitle" xml:space="preserve">
+    <value>切换游戏</value>
+  </data>
+  <data name="ThemeRestartPrimary" xml:space="preserve">
+    <value>重启</value>
+  </data>
+  <data name="ThemeRestartText" xml:space="preserve">
+    <value>换主题后要重启应用才会生效，不然界面可能会错乱。这是主题处理没做到位，推荐用深色模式。
+
+给你添麻烦了。</value>
+  </data>
+  <data name="ThemeRestartTitle" xml:space="preserve">
+    <value>需要重启</value>
+  </data>
+  <data name="UpdateAlreadyLatest" xml:space="preserve">
+    <value>已经是最新版本</value>
+  </data>
+  <data name="UpdateChecking" xml:space="preserve">
+    <value>正在检查…</value>
+  </data>
+  <data name="UpdateFailGitHub" xml:space="preserve">
+    <value>检查失败：连不上 GitHub</value>
+  </data>
+  <data name="UpdateFailPrefix" xml:space="preserve">
+    <value>检查失败：</value>
+  </data>
+  <data name="UpdateFoundPrefix" xml:space="preserve">
+    <value>发现</value>
+  </data>
+  <data name="UpdateKindMajor" xml:space="preserve">
+    <value>新版本</value>
+  </data>
+  <data name="UpdateKindPatch" xml:space="preserve">
+    <value>补丁</value>
+  </data>
+  <data name="UpdateToButton.Content" xml:space="preserve">
+    <value>更新到</value>
+  </data>
+  <data name="UpdateToLabel.Text" xml:space="preserve">
+    <value>更新到</value>
+  </data>
+  <data name="WhatsNewLink.Text" xml:space="preserve">
+    <value>看看更新了什么</value>
+  </data>
+  <data name="WindowCardDesc.Text" xml:space="preserve">
+    <value>记住上次退出时的窗口状态，下次打开直接还原</value>
+  </data>
+  <data name="WindowCardTitle.Text" xml:space="preserve">
+    <value>窗口</value>
+  </data>
+  <data name="WindowPosition.Content" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="WindowPosition.ToolTipService.ToolTip" xml:space="preserve">
+    <value>勾选后，退出 OMniX 时会记住窗口位置</value>
+  </data>
+  <data name="WindowSize.Content" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="WindowSize.ToolTipService.ToolTip" xml:space="preserve">
+    <value>勾选后，退出 OMniX 时会记住窗口大小</value>
+  </data>
+  <data name="OpenExportPanelButton.AutomationProperties.Name" xml:space="preserve">
+    <value>打开导出面板</value>
+  </data>
+  <data name="CheckUpdateButton.AutomationProperties.Name" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="ImportLocalUpdateButton.AutomationProperties.Name" xml:space="preserve">
+    <value>导入本地更新包</value>
+  </data>
+</root>

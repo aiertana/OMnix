@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="OMniX.WinUI.Views.PresetDetailsPage"
+    xmlns:l="using:WinUI3Localizer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
@@ -70,6 +71,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 PlaceholderText="搜索 Mod…"
+            l:Uids.Uid="/HomePreset/Preset_DetailsSearchPlaceholder"
                 TextChanged="SearchBox_OnTextChanged" />
         </Grid>
 
@@ -152,7 +154,8 @@
                                             Command="{x:Bind ReplaceMissingModCommand}"
                                             CommandParameter="{Binding Mode=OneWay}"
                                             Visibility="{x:Bind IsMissing, Converter={StaticResource BoolToVisibilityConverter}}"
-                                            Text="找替代 Mod">
+                                            Text="找替代 Mod"
+            l:Uids.Uid="/HomePreset/Preset_DetailsReplaceMenuItem">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon Glyph="&#xE8DA;" />
                                             </MenuFlyoutItem.Icon>
@@ -162,7 +165,8 @@
                                             CommandParameter="{Binding Mode=OneWay}"
                                             ToolTipService.ToolTip="读取这个 Mod 当前的 3Dmigoto 用户 ini，把设置存进当前预设"
                                             Visibility="{x:Bind IsNotMissing, Converter={StaticResource BoolToVisibilityConverter}}"
-                                            Text="读取并保存设置">
+                                            Text="读取并保存设置"
+            l:Uids.Uid="/HomePreset/Preset_DetailsSavePrefsMenuItem">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon Glyph="&#xE74E;" />
                                             </MenuFlyoutItem.Icon>
@@ -171,7 +175,8 @@
                                         <MenuFlyoutItem
                                             Command="{x:Bind RemoveModFromPresetCommand}"
                                             CommandParameter="{Binding Mode=OneTime}"
-                                            Text="从预设里移除这个 Mod">
+                                            Text="从预设里移除这个 Mod"
+            l:Uids.Uid="/HomePreset/Preset_DetailsRemoveMenuItem">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon Glyph="&#xE894;" />
                                             </MenuFlyoutItem.Icon>
@@ -216,7 +221,8 @@
                                     Text="{x:Bind ModUrlName}" />
 
                                 <StackPanel>
-                                    <TextBlock HorizontalAlignment="Center" Text="加进预设的时间：" />
+                                    <TextBlock HorizontalAlignment="Center" Text="加进预设的时间："
+            l:Uids.Uid="/HomePreset/Preset_DetailsAddedAtLabel" />
                                     <TextBlock HorizontalAlignment="Center" Text="{x:Bind AddedAt}" />
                                 </StackPanel>
 
@@ -229,10 +235,12 @@
                                 <TextBlock
                                     HorizontalAlignment="Center"
                                     Foreground="Red"
-                                    Text="硬盘上找不到这个 Mod！" />
+                                    Text="硬盘上找不到这个 Mod！"
+            l:Uids.Uid="/HomePreset/Preset_DetailsMissingWarning" />
 
                                 <StackPanel>
-                                    <TextBlock HorizontalAlignment="Center" Text="原来的路径：" />
+                                    <TextBlock HorizontalAlignment="Center" Text="原来的路径："
+            l:Uids.Uid="/HomePreset/Preset_DetailsOriginalPathLabel" />
                                     <TextBlock
                                         HorizontalAlignment="Center"
                                         IsTextSelectionEnabled="True"

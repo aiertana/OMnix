@@ -21,6 +21,7 @@ public sealed class ModUpdateAvailableChecker
     private readonly NotificationManager _notificationManager;
     private readonly ModNotificationManager _modNotificationManager;
     private readonly ILocalSettingsService _localSettingsService;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     private CancellationTokenSource? _stoppingCancellationTokenSource;
     private CancellationTokenSource? _producerWaitingCancellationTokenSource;
@@ -215,7 +216,7 @@ public sealed class ModUpdateAvailableChecker
         if (!modCheckOperation.ModsToCheck.Any())
         {
             if (!modCheckOperation.ModCheckRequest.ScheduledCheck)
-                _notificationManager.ShowNotification("没有 Mod 需要检查更新",
+                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/ModUpdChk_NothingToCheck", "没有 Mod 需要检查更新"),
                     $"None of the mods were valid, therefore no check has been performed", TimeSpan.FromSeconds(4));
             return;
         }
@@ -233,15 +234,15 @@ public sealed class ModUpdateAvailableChecker
         if (modCheckOperation.ModCheckRequest.IsCharacterCheck &&
             modCheckOperation.ModCheckRequest.Characters.Length == 1)
         {
-            _notificationManager.ShowNotification("更新检查完成",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/ModUpdChk_DoneTitle", "更新检查完成"),
                 $"Finished checking {modCheckOperation.ModsToCheck.Count} mods for updates for" +
                 $" {modCheckOperation.ModCheckRequest.Characters.First().DisplayName}",
                 TimeSpan.FromSeconds(4));
         }
         else if (anyModsChecked)
         {
-            _notificationManager.ShowNotification("更新检查完成",
-                "更新检查完成", TimeSpan.FromSeconds(4));
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/ModUpdChk_DoneTitle", "更新检查完成"),
+                _localizer.GetLocalizedStringOrDefault("/ServicesMsg/ModUpdChk_DoneBody", "更新检查完成"), TimeSpan.FromSeconds(4));
         }
     }
 

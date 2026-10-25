@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ArchivePwd_Dialog.CloseButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="ArchivePwd_Dialog.PrimaryButtonText" xml:space="preserve">
+    <value>解压</value>
+  </data>
+  <data name="ArchivePwd_Dialog.Title" xml:space="preserve">
+    <value>压缩包需要密码</value>
+  </data>
+  <data name="ArchivePwd_Hint.Text" xml:space="preserve">
+    <value>该压缩包已被加密，请输入解压密码后继续导入。</value>
+  </data>
+  <data name="ArchivePwd_PasswordBox.Header" xml:space="preserve">
+    <value>解压密码</value>
+  </data>
+  <data name="ArchivePwd_PasswordBox.PlaceholderText" xml:space="preserve">
+    <value>请输入密码</value>
+  </data>
+  <data name="ArchivePwd_ShowCheck.Content" xml:space="preserve">
+    <value>显示密码</value>
+  </data>
+  <data name="ArchivePwd_WrongBar.Message" xml:space="preserve">
+    <value>密码不正确，请重新输入</value>
+  </data>
+  <data name="CharSkins_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="CharSkins_DisableContent" xml:space="preserve">
+    <value>关闭后，游戏里的皮肤会归到本体角色下面，不再单独列出。
+这是 OMniX 目前默认的处理方式。
+OMniX 不会挪动、也不会删除你任何 Mod。
+
+确定要关闭吗？关闭后 OMniX 会重启…</value>
+  </data>
+  <data name="CharSkins_DisablePrimary" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="CharSkins_DisableTitle" xml:space="preserve">
+    <value>不再把皮肤当作独立角色？</value>
+  </data>
+  <data name="CharSkins_EnableContent" xml:space="preserve">
+    <value>开启后，游戏里的皮肤会在角色列表里单独列出来，当成一个角色。
+以后这可能就是 OMniX 的默认设置。
+OMniX 不会挪动、也不会删除你任何 Mod。
+
+确定要开启吗？开启后 OMniX 会重启…</value>
+  </data>
+  <data name="CharSkins_EnablePrimary" xml:space="preserve">
+    <value>开启</value>
+  </data>
+  <data name="CharSkins_EnableTitle" xml:space="preserve">
+    <value>把皮肤当作独立角色？</value>
+  </data>
+  <data name="ClearFolders_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="ClearFolders_Content" xml:space="preserve">
+    <value>会把角色 Mod 列表里的空文件夹删掉（完全空的，或者里面只剩 .OMniX_ 开头的文件/文件夹）。
+角色文件夹本身空了，也会一起删。
+Mods 根目录下的空文件夹同样会删。</value>
+  </data>
+  <data name="ClearFolders_DeletedHeader" xml:space="preserve">
+    <value>删掉的文件夹：</value>
+  </data>
+  <data name="ClearFolders_DoneTitle" xml:space="preserve">
+    <value>空文件夹已清理</value>
+  </data>
+  <data name="ClearFolders_Primary" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="ClearFolders_Title" xml:space="preserve">
+    <value>清理空文件夹</value>
+  </data>
+  <data name="DisableAll_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="DisableAll_DoneMsgFmt" xml:space="preserve">
+    <value>所选分类里由 OMniX 管理的 Mod 都关掉了：{0}</value>
+  </data>
+  <data name="DisableAll_DoneTitle" xml:space="preserve">
+    <value>已禁用 Mod</value>
+  </data>
+  <data name="DisableAll_ErrTitle" xml:space="preserve">
+    <value>禁用 Mod 时出错</value>
+  </data>
+  <data name="DisableAll_ErrorsHeader" xml:space="preserve">
+    <value>下面这些 Mod 出错了：</value>
+  </data>
+  <data name="DisableAll_Hint" xml:space="preserve">
+    <value>开的 Mod 多的话，建议先存个预设（或者备份）再关。
+
+所选分类里，只会关掉 OMniX 记录在案的 Mod</value>
+  </data>
+  <data name="DisableAll_NoneMsg" xml:space="preserve">
+    <value>一个分类都没选，所以什么都没动。</value>
+  </data>
+  <data name="DisableAll_NoneTitle" xml:space="preserve">
+    <value>没选分类</value>
+  </data>
+  <data name="DisableAll_PickPrompt" xml:space="preserve">
+    <value>选一下要给哪些分类关掉 Mod：</value>
+  </data>
+  <data name="DisableAll_Primary" xml:space="preserve">
+    <value>禁用所选分类的 Mod</value>
+  </data>
+  <data name="DisableAll_Title" xml:space="preserve">
+    <value>禁用 Mod</value>
+  </data>
+  <data name="Dlss5_BrowseExeBtn.Content" xml:space="preserve">
+    <value>浏览…</value>
+  </data>
+  <data name="Dlss5_BrowseKitBtn.Content" xml:space="preserve">
+    <value>浏览…</value>
+  </data>
+  <data name="Dlss5_Dialog.CloseButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Dlss5_Dialog.PrimaryButtonText" xml:space="preserve">
+    <value>保存并开启</value>
+  </data>
+  <data name="Dlss5_Dialog.Title" xml:space="preserve">
+    <value>开启 DLSS5 渲染链</value>
+  </data>
+  <data name="Dlss5_ErrExeMsg" xml:space="preserve">
+    <value>路径要指到 Client-Win64-Shipping.exe 本体。</value>
+  </data>
+  <data name="Dlss5_ErrExeTitle" xml:space="preserve">
+    <value>没找到这个可执行文件</value>
+  </data>
+  <data name="Dlss5_ErrKitMsg" xml:space="preserve">
+    <value>这个目录里应该有 install.ps1 和 files 文件夹。</value>
+  </data>
+  <data name="Dlss5_ErrKitTitle" xml:space="preserve">
+    <value>部署包目录不对</value>
+  </data>
+  <data name="Dlss5_ErrPickFile" xml:space="preserve">
+    <value>选文件失败</value>
+  </data>
+  <data name="Dlss5_ErrPickFolder" xml:space="preserve">
+    <value>选文件夹失败</value>
+  </data>
+  <data name="Dlss5_GameExeHeader.Text" xml:space="preserve">
+    <value>游戏可执行文件</value>
+  </data>
+  <data name="Dlss5_GameExeHint.Text" xml:space="preserve">
+    <value>选 Client-Win64-Shipping.exe 本体，它的上一级目录就是部署目标 Win64。</value>
+  </data>
+  <data name="Dlss5_GotIt" xml:space="preserve">
+    <value>知道了</value>
+  </data>
+  <data name="Dlss5_Info1.Message" xml:space="preserve">
+    <value>这个插件要往游戏目录里铺加载器、ReShade 和 DLSS5，所以得先告诉它游戏在哪、部署包在哪。</value>
+  </data>
+  <data name="Dlss5_Info1.Title" xml:space="preserve">
+    <value>尚未配置完整</value>
+  </data>
+  <data name="Dlss5_Info2.Message" xml:space="preserve">
+    <value>点「保存并开启」会弹一次管理员授权，然后清空并重建游戏目录下的 scripts，把加载器和运行时硬链接进去。原有的 Mods 在 XXMI 目录里，不会被删。</value>
+  </data>
+  <data name="Dlss5_Info2.Title" xml:space="preserve">
+    <value>会做什么</value>
+  </data>
+  <data name="Dlss5_KitDirBox.PlaceholderText" xml:space="preserve">
+    <value>…\WWMI-DLSS5-Deploy（里面有 install.ps1）</value>
+  </data>
+  <data name="Dlss5_KitDirHeader.Text" xml:space="preserve">
+    <value>DLSS5 部署包目录</value>
+  </data>
+  <data name="Dlss5_KitDirHint.Text" xml:space="preserve">
+    <value>就是那份带 install.ps1 / files 的部署包。插件只调用它的脚本，不会复制走里面的东西。</value>
+  </data>
+  <data name="Dlss5_PickerChoose" xml:space="preserve">
+    <value>选择</value>
+  </data>
+  <data name="Dlss5_PickerChooseFolder" xml:space="preserve">
+    <value>选择文件夹</value>
+  </data>
+  <data name="ModExport_BrowseBtn.Content" xml:space="preserve">
+    <value>浏览…</value>
+  </data>
+  <data name="ModExport_BtnCancelClose" xml:space="preserve">
+    <value>取消并关闭</value>
+  </data>
+  <data name="ModExport_BtnPause" xml:space="preserve">
+    <value>暂停</value>
+  </data>
+  <data name="ModExport_BtnResume" xml:space="preserve">
+    <value>继续</value>
+  </data>
+  <data name="ModExport_BtnRunning" xml:space="preserve">
+    <value>导出中…</value>
+  </data>
+  <data name="ModExport_CharCount" xml:space="preserve">
+    <value>已选 {0} / {1} 个角色</value>
+  </data>
+  <data name="ModExport_CharRowLabel" xml:space="preserve">
+    <value>{0}（{1} 个 Mod）</value>
+  </data>
+  <data name="ModExport_CloseBtn" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="ModExport_Description.Text" xml:space="preserve">
+    <value>导出只是复制，不会改动原有 Mod。zip 只打包不二次压缩，速度跟直接复制差不多。中途可以暂停或取消，取消时会把没写完的半成品删掉。</value>
+  </data>
+  <data name="ModExport_Dialog.CloseButtonText" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="ModExport_Dialog.PrimaryButtonText" xml:space="preserve">
+    <value>开始导出</value>
+  </data>
+  <data name="ModExport_Dialog.Title" xml:space="preserve">
+    <value>导出 / 备份模组</value>
+  </data>
+  <data name="ModExport_FailedPrefix" xml:space="preserve">
+    <value>导出失败：</value>
+  </data>
+  <data name="ModExport_FormatFolder" xml:space="preserve">
+    <value>复制成文件夹（角色 / Mod 结构）</value>
+  </data>
+  <data name="ModExport_FormatHeader.Text" xml:space="preserve">
+    <value>导出格式</value>
+  </data>
+  <data name="ModExport_FormatZip" xml:space="preserve">
+    <value>打包成一个 zip</value>
+  </data>
+  <data name="ModExport_NoRequests" xml:space="preserve">
+    <value>没有可导出的 Mod —— 换个范围试试，或者先勾几个角色。</value>
+  </data>
+  <data name="ModExport_Paused" xml:space="preserve">
+    <value>已暂停，点「继续」接着导。</value>
+  </data>
+  <data name="ModExport_PresetScope" xml:space="preserve">
+    <value>已选的 {0} 个 Mod</value>
+  </data>
+  <data name="ModExport_PrimaryBtn" xml:space="preserve">
+    <value>开始导出</value>
+  </data>
+  <data name="ModExport_ProgressFmt" xml:space="preserve">
+    <value>{0:F0}% · {1} / {2} 个文件 · {3}</value>
+  </data>
+  <data name="ModExport_ResumeInProgress" xml:space="preserve">
+    <value>继续导出…</value>
+  </data>
+  <data name="ModExport_RemoveSettingsCheck.Content" xml:space="preserve">
+    <value>移除 OMniX 配置文件（.OMniX_ 前缀，别人用不上）</value>
+  </data>
+  <data name="ModExport_SaveToHeader.Text" xml:space="preserve">
+    <value>保存到</value>
+  </data>
+  <data name="ModExport_ScopeAll" xml:space="preserve">
+    <value>全部 Mod</value>
+  </data>
+  <data name="ModExport_ScopeByChar" xml:space="preserve">
+    <value>按角色选择</value>
+  </data>
+  <data name="ModExport_ScopeEnabled" xml:space="preserve">
+    <value>只导出启用中的</value>
+  </data>
+  <data name="ModExport_ScopeHeader.Text" xml:space="preserve">
+    <value>导出范围</value>
+  </data>
+  <data name="ModExport_SelectAllBtn.Content" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="ModExport_SelectNoneBtn.Content" xml:space="preserve">
+    <value>全不选</value>
+  </data>
+  <data name="ModExport_Stats" xml:space="preserve">
+    <value>正在统计文件…</value>
+  </data>
+  <data name="PluginDep_BtnAutoDownload" xml:space="preserve">
+    <value>自动下载</value>
+  </data>
+  <data name="PluginDep_BtnGoDownload" xml:space="preserve">
+    <value>去下载</value>
+  </data>
+  <data name="PluginDep_BtnRedownload" xml:space="preserve">
+    <value>重新下载</value>
+  </data>
+  <data name="PluginDep_BtnShowInfo" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="PluginDep_Dialog.CloseButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="PluginDep_Dialog.PrimaryButtonText" xml:space="preserve">
+    <value>继续</value>
+  </data>
+  <data name="PluginDep_Dialog.Title" xml:space="preserve">
+    <value>插件依赖检查</value>
+  </data>
+  <data name="PluginDep_DonePath" xml:space="preserve">
+    <value>已经放到 {0}</value>
+  </data>
+  <data name="PluginDep_Intro.Text" xml:space="preserve">
+    <value>左边那两个开关要靠下面这几样东西。缺的可以在这里补，补完再打开开关。</value>
+  </data>
+  <data name="PluginDep_KitBtn.Content" xml:space="preserve">
+    <value>自动下载</value>
+  </data>
+  <data name="PluginDep_KitTitle.Text" xml:space="preserve">
+    <value>DLSS5 部署包</value>
+  </data>
+  <data name="PluginDep_TipDownloadingMsg" xml:space="preserve">
+    <value>从 GitHub 拉最新版部署包…</value>
+  </data>
+  <data name="PluginDep_TipDownloadingTitle" xml:space="preserve">
+    <value>正在下载</value>
+  </data>
+  <data name="PluginDep_TipFailTitle" xml:space="preserve">
+    <value>下载失败</value>
+  </data>
+  <data name="PluginDep_TipMissingMsg" xml:space="preserve">
+    <value>XXMI 和 WWMI 都就绪之后，两个开关才能真正控制加载链。</value>
+  </data>
+  <data name="PluginDep_TipMissingTitle" xml:space="preserve">
+    <value>还差东西</value>
+  </data>
+  <data name="PluginDep_WwmiBtn.Content" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="PluginDep_WwmiHintNeedXxmi" xml:space="preserve">
+    <value>需要先装 XXMI Launcher</value>
+  </data>
+  <data name="PluginDep_WwmiHintSetPath" xml:space="preserve">
+    <value>在 XXMI Launcher 里设好游戏路径，它会自动把 WWMI 下载下来</value>
+  </data>
+  <data name="PluginDep_XxmiBtn.Content" xml:space="preserve">
+    <value>去下载</value>
+  </data>
+</root>

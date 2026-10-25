@@ -1,4 +1,5 @@
-﻿using OMniX.Core.GamesService;
+﻿using OMniX.Core.Contracts.Services;
+using OMniX.Core.GamesService;
 using OMniX.Core.GamesService.Interfaces;
 using OMniX.Core.Helpers;
 
@@ -6,14 +7,16 @@ namespace OMniX.WinUI.ViewModels.CharacterManagerViewModels.Validation;
 
 public static class Validators
 {
+    private static readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
+
     public static void AddInternalNameValidators(this FieldValidators<string> validators, ICollection<IModdableObject> allModdableObjects)
     {
         validators.AddRange([
             context => string.IsNullOrWhiteSpace(context.Value.Trim())
-                ? new ValidationResult { Message = "内部名不能为空" }
+                ? new ValidationResult { Message = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_InternalNameRequired", "内部名不能为空") }
                 : null,
             context => allModdableObjects.FirstOrDefault(m => m.InternalNameEquals(context.Value)) is { } existingModdableObject
-                ? new ValidationResult { Message = $"内部名「{context.Value}」已被 {existingModdableObject.DisplayName} 占用" }
+                ? new ValidationResult { Message = string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_InternalNameTaken", "内部名「{0}」已被 {1} 占用"), context.Value, existingModdableObject.DisplayName) }
                 : null,
             context =>
             {
@@ -26,7 +29,7 @@ public static class Validators
                     {
                         return new ValidationResult
                         {
-                            Message = $"内部名里有文件名不允许的字符「{invalidChar}」"
+                            Message = string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_InternalNameInvalidChar", "内部名里有文件名不允许的字符「{0}」"), invalidChar)
                         };
                     }
                 }
@@ -41,7 +44,7 @@ public static class Validators
         validators.Add(context => !context.Value.Trim().IsNullOrEmpty() &&
                                   allModdableObjects.FirstOrDefault(m => m.ModFilesName.Equals(context.Value.Trim(), StringComparison.OrdinalIgnoreCase)) is
                                   { } existingModdableObject
-            ? new ValidationResult { Message = $"Mod 文件名已被 {existingModdableObject.DisplayName} 使用" }
+            ? new ValidationResult { Message = string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_ModFilesNameTaken", "Mod 文件名已被 {0} 使用"), existingModdableObject.DisplayName) }
             : null);
     }
 
@@ -51,7 +54,7 @@ public static class Validators
         { } existingModdableObject
             ? new ValidationResult
             {
-                Message = $"另一个对象（{existingModdableObject.InternalName}）已经用了这个显示名，搜索时可能会有冲突",
+                Message = string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_DisplayNameConflict", "另一个对象（{0}）已经用了这个显示名，搜索时可能会有冲突"), existingModdableObject.InternalName),
                 Type = ValidationType.Warning
             }
             : null);
@@ -60,9 +63,9 @@ public static class Validators
     public static void AddImageValidators(this FieldValidators<Uri> validators)
     {
         validators.AddRange([
-            context => context.Value == null! ? new ValidationResult { Message = "图片不能为空" } : null, context =>
+            context => context.Value == null! ? new ValidationResult { Message = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_ImageRequired", "图片不能为空") } : null, context =>
                 !context.Value!.IsFile || !File.Exists(context.Value.LocalPath)
-                    ? new ValidationResult() { Message = "图片必须是一个存在的有效文件" }
+                    ? new ValidationResult() { Message = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_ImageFileInvalid", "图片必须是一个存在的有效文件") }
                     : null,
             context =>
             {
@@ -76,7 +79,7 @@ public static class Validators
                     : new ValidationResult
                     {
                         Message =
-                            $"图片只支持这几种格式：{string.Join(", ", Constants.SupportedImageExtensions)}。当前扩展名 {fileExtension} 不支持。"
+                            string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_ImageFormatUnsupported", "图片只支持这几种格式：{0}。当前扩展名 {1} 不支持。"), string.Join(", ", Constants.SupportedImageExtensions), fileExtension)
                     };
             }
         ]);
@@ -85,8 +88,8 @@ public static class Validators
     public static void AddRarityValidators(this List<ValidationCallback<int>> validators)
     {
         validators.AddRange([
-            context => context.Value < 0 ? new ValidationResult { Message = "稀有度不能小于 0" } : null,
-            context => context.Value > 10 ? new ValidationResult { Message = "稀有度不能大于 10" } : null
+            context => context.Value < 0 ? new ValidationResult { Message = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_RarityMin", "稀有度不能小于 0") } : null,
+            context => context.Value > 10 ? new ValidationResult { Message = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_RarityMax", "稀有度不能大于 10") } : null
         ]);
     }
 
@@ -96,7 +99,7 @@ public static class Validators
             ? null
             : new ValidationResult
             {
-                Message = $"属性「{context.Value}」不存在。可用值：{string.Join(',', elements.Select(e => e.InternalName))}"
+                Message = string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_ElementInvalid", "属性「{0}」不存在。可用值：{1}"), context.Value, string.Join(',', elements.Select(e => e.InternalName)))
             });
     }
 
@@ -123,7 +126,7 @@ public static class Validators
 
                     return new ValidationResult
                     {
-                        Message = $"关键字「{duplicateKey.Value.Item2}」已被 {duplicateKey.Value.Item1.DisplayName} 使用"
+                        Message = string.Format(_localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_KeyTaken", "关键字「{0}」已被 {1} 使用"), duplicateKey.Value.Item2, duplicateKey.Value.Item1.DisplayName)
                     };
                 });
     }

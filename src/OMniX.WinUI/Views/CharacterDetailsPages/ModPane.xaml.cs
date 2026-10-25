@@ -1,4 +1,5 @@
 using Windows.ApplicationModel.DataTransfer;
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.ViewModels.CharacterDetailsViewModels.SubViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -10,6 +11,8 @@ namespace OMniX.WinUI.Views.CharacterDetailsPages;
 
 public sealed partial class ModPane : UserControl
 {
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
+
     public ModPane()
     {
         InitializeComponent();
@@ -42,10 +45,12 @@ public sealed partial class ModPane : UserControl
     {
         var dialog = new ContentDialog
         {
-            Title = "删除 Mod",
-            Content = $"确定要删除「{ViewModel.ModModel.ModDisplayName}」吗？\n文件会被移到回收站，之后可以还原。",
-            PrimaryButtonText = "删除",
-            CloseButtonText = "取消",
+            Title = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_DeleteDialogTitle", "删除 Mod"),
+            Content = string.Format(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_DeleteDialogContent", "确定要删除「{0}」吗？\n文件会被移到回收站，之后可以还原。"),
+                ViewModel.ModModel.ModDisplayName),
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_DeleteDialogPrimary", "删除"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Pane_DeleteDialogClose", "取消"),
             DefaultButton = ContentDialogButton.Close,
             XamlRoot = XamlRoot
         };

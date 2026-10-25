@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <winUiEx:WindowEx
     x:Class="OMniX.WinUI.Views.ErrorWindow"
+    xmlns:l="using:WinUI3Localizer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:OMniX.WinUI.Views.Controls"
@@ -41,7 +42,8 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Style="{ThemeResource TitleTextBlockStyle}"
-                    Text="出错了：" />
+                    Text="出错了："
+            l:Uids.Uid="/WindowsUi/Win_ErrorTitle" />
 
             </StackPanel>
 
@@ -62,13 +64,15 @@
                     Margin="0,0,0,8"
                     FontSize="18"
                     Style="{ThemeResource BodyStrongTextBlockStyle}"
-                    Text="程序碰到了一个没处理好的问题。这会儿 OMniX 可能不太稳定，建议重启一下。" />
+                    Text="程序碰到了一个没处理好的问题。这会儿 OMniX 可能不太稳定，建议重启一下。"
+            l:Uids.Uid="/WindowsUi/Win_ErrorDescription" />
 
                 <TextBlock
                     Margin="0,4"
                     IsTextSelectionEnabled="True"
                     Style="{ThemeResource BodyStrongTextBlockStyle}"
-                    Text="出错位置：" />
+                    Text="出错位置："
+            l:Uids.Uid="/WindowsUi/Win_ErrorStackTraceLabel" />
 
                 <StackPanel
                     Padding="12"
@@ -85,14 +89,16 @@
                     <TextBlock
                         Margin="4,0"
                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                        Text="里面还有一个异常" />
+                        Text="里面还有一个异常"
+            l:Uids.Uid="/WindowsUi/Win_ErrorInnerExceptionTitle" />
                     <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{x:Bind ViewModel.InnerExceptionMessage, Mode=OneWay}" />
 
                     <TextBlock
                         Margin="0,4"
                         IsTextSelectionEnabled="True"
                         Style="{ThemeResource BodyStrongTextBlockStyle}"
-                        Text="出错位置：" />
+                        Text="出错位置："
+            l:Uids.Uid="/WindowsUi/Win_ErrorStackTraceLabel" />
 
                     <StackPanel
                         Padding="12"

@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="Win_AutoScrollCheckBox.Content" xml:space="preserve">
+    <value>自动滚动</value>
+  </data>
+  <data name="Win_CloseWindowTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>关闭窗口</value>
+  </data>
+  <data name="Win_ErrorDescription.Text" xml:space="preserve">
+    <value>程序碰到了一个没处理好的问题。这会儿 OMniX 可能不太稳定，建议重启一下。</value>
+  </data>
+  <data name="Win_ErrorInnerExceptionTitle.Text" xml:space="preserve">
+    <value>里面还有一个异常</value>
+  </data>
+  <data name="Win_ErrorStackTraceLabel.Text" xml:space="preserve">
+    <value>出错位置：</value>
+  </data>
+  <data name="Win_ErrorTitle.Text" xml:space="preserve">
+    <value>出错了：</value>
+  </data>
+  <data name="Win_GbDownloadTitle.Text" xml:space="preserve">
+    <value>从 GameBanana 下载 Mod</value>
+  </data>
+  <data name="Win_IgnoreAndCloseButton.Content" xml:space="preserve">
+    <value>忽略并关闭</value>
+  </data>
+  <data name="Win_IgnoreAndCloseButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>清掉这条通知并关掉这个窗口</value>
+  </data>
+  <data name="Win_InputTextBox.Header" xml:space="preserve">
+    <value>往进程里写内容，回车发送</value>
+  </data>
+  <data name="Win_KillProcessButton.Content" xml:space="preserve">
+    <value>结束进程</value>
+  </data>
+  <data name="Win_LastUpdateCheckLabel.Text" xml:space="preserve">
+    <value>上次检查：</value>
+  </data>
+  <data name="Win_ModFileUpdatedSinceLast.Text" xml:space="preserve">
+    <value>上次检查之后更新的</value>
+  </data>
+  <data name="Win_ModPageLabel.Text" xml:space="preserve">
+    <value>Mod 页面：</value>
+  </data>
+  <data name="Win_ModUpdateLoading.Text" xml:space="preserve">
+    <value>正在从 GameBanana 读取 Mod 信息…</value>
+  </data>
+  <data name="Win_ModUpdateTitle.Text" xml:space="preserve">
+    <value>发现有新的可下载文件</value>
+  </data>
+  <data name="Win_NotificationDownloadFailed" xml:space="preserve">
+    <value>下载 Mod 文件失败</value>
+  </data>
+  <data name="Win_NotificationInstallFailed" xml:space="preserve">
+    <value>安装 Mod 文件失败</value>
+  </data>
+  <data name="Win_NotificationReadFailed" xml:space="preserve">
+    <value>读取 Mod 更新信息失败</value>
+  </data>
+  <data name="Win_OpenBrowserTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>用默认浏览器打开…</value>
+  </data>
+  <data name="Win_OpenModFolderTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>打开 Mod 文件夹…</value>
+  </data>
+</root>

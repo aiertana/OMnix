@@ -42,13 +42,13 @@ public partial class CharacterDetailsViewModel
 
         var moveToRecycleBinCheckBox = new CheckBox()
         {
-            Content = "移到回收站（可恢复）",
+            Content = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Dlg_DeleteMoveToRecycle.Content", "移到回收站（可恢复）"),
             IsChecked = _moveToRecycleBinCheckBox
         };
 
         var removeFromPresetsCheckBox = new CheckBox()
         {
-            Content = "同时从预设中移除",
+            Content = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Dlg_DeleteRemoveFromPresets.Content", "同时从预设中移除"),
             IsChecked = _removeFromPresetCheckBox
         };
 
@@ -87,10 +87,12 @@ public partial class CharacterDetailsViewModel
 
         var dialog = new ContentDialog()
         {
-            Title = $"删除这 {selectedModsCount} 个 Mod？",
+            Title = string.Format(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Dlg_DeleteTitle", "删除这 {0} 个 Mod？"),
+                selectedModsCount),
             Content = contentWrapper,
-            PrimaryButtonText = "删除",
-            SecondaryButtonText = "取消",
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Dlg_DeletePrimary", "删除"),
+            SecondaryButtonText = _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Dlg_DeleteSecondary", "取消"),
             DefaultButton = ContentDialogButton.Primary
         };
 
@@ -184,7 +186,9 @@ public partial class CharacterDetailsViewModel
                     }
                 }
 
-                _notificationService.ShowNotification("删除 Mod 出错", content.ToString(), TimeSpan.FromSeconds(10));
+                _notificationService.ShowNotification(
+                    _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Dlg_DeleteErrorTitle", "删除 Mod 出错"),
+                    content.ToString(), TimeSpan.FromSeconds(10));
                 return;
             }
 

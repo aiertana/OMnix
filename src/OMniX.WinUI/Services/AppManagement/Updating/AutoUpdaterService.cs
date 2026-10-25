@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using ErrorOr;
 using Microsoft.UI.Xaml;
+using OMniX.Core.Contracts.Services;
 using Serilog;
 
 namespace OMniX.WinUI.Services.AppManagement.Updating;
@@ -9,6 +10,7 @@ public class AutoUpdaterService
 {
     private readonly ILogger _logger;
     private readonly UpdateChecker _updateChecker;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     public const string AutoUpdaterFolder = "OMniX - Auto Updater";
     public const string NewAutoUpdaterFolder = "OMniX - Auto Updater_New";
@@ -133,10 +135,10 @@ public class AutoUpdaterService
             {
                 Error.NotFound(
                     description:
-                    $"找不到更新器目录：{_currentAutoUpdaterFolder.FullName}\n" +
+                    string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/AutoUpd_FolderMissing", "找不到更新器目录：{0}\n" +
                     "程序根目录下得有「OMniX - Auto Updater」这个文件夹。\n" +
                     "如果你跑的是源码里的开发构建（bin\\...\\Debug），那里不会带更新器——" +
-                    "请改用 Releases 里解压出来的正式版目录。")
+                    "请改用 Releases 里解压出来的正式版目录。"), _currentAutoUpdaterFolder.FullName))
             };
         }
 
@@ -150,8 +152,8 @@ public class AutoUpdaterService
             {
                 Error.NotFound(
                     description:
-                    $"更新器目录在，但里面没有 {AutoUpdaterExe}：{_currentAutoUpdaterFolder.FullName}\n" +
-                    "这个目录大概被清过，重新解压一份完整包覆盖即可。")
+                    string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/AutoUpd_ExeMissing", "更新器目录在，但里面没有 {0}：{1}\n" +
+                    "这个目录大概被清过，重新解压一份完整包覆盖即可。"), AutoUpdaterExe, _currentAutoUpdaterFolder.FullName))
             };
         }
 
@@ -172,10 +174,10 @@ public class AutoUpdaterService
             {
                 Error.Failure(
                     description:
-                    $"更新器目录不完整，缺 {missingFile}。\n" +
+                    string.Format(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/AutoUpd_Incomplete", "更新器目录不完整，缺 {0}。\n" +
                     "多半是之前某次增量更新把更新器覆盖坏了（旧逻辑会留下半套文件）。\n" +
                     "修法：去 GitHub Releases 下载最新的 OMniX 完整包，解压后把整个「OMniX - Auto Updater」" +
-                    "文件夹覆盖到程序目录下，再点更新就正常了。")
+                    "文件夹覆盖到程序目录下，再点更新就正常了。"), missingFile))
             };
         }
 
@@ -184,7 +186,7 @@ public class AutoUpdaterService
         if (isAutoUpdaterRunning)
         {
             _logger.Error("Auto updater is already running.");
-            return new[] { Error.Conflict(description: "更新器已经在运行了，先把那个窗口关掉再试。") };
+            return new[] { Error.Conflict(description: _localizer.GetLocalizedStringOrDefault("/ServicesMsg/AutoUpd_AlreadyRunning", "更新器已经在运行了，先把那个窗口关掉再试。")) };
         }
 
         try

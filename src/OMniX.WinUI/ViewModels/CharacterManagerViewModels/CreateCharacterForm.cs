@@ -1,4 +1,5 @@
-﻿using OMniX.Core.GamesService;
+﻿using OMniX.Core.Contracts.Services;
+using OMniX.Core.GamesService;
 using OMniX.Core.GamesService.Interfaces;
 using OMniX.Core.Helpers;
 using OMniX.WinUI.Services;
@@ -8,6 +9,8 @@ namespace OMniX.WinUI.ViewModels.CharacterManagerViewModels;
 
 public partial class CreateCharacterForm : Form
 {
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
+
     public StringInputField InternalName { get; } = new(string.Empty);
     public StringInputField DisplayName { get; } = new(string.Empty);
 
@@ -35,7 +38,7 @@ public partial class CreateCharacterForm : Form
         DisplayName.ValidationRules.AddDisplayNameValidators(allModdableObjects);
 
         DisplayName.ValidationRules.Add(context => context.Value != string.Empty && context.Value.Trim().IsNullOrEmpty()
-            ? new ValidationResult { Message = "显示名称不能为空" }
+            ? new ValidationResult { Message = _localizer.GetLocalizedStringOrDefault("/CharacterManager/Valid_DisplayNameRequired", "显示名称不能为空") }
             : null);
 
         Image.ValidationRules.AddImageValidators();

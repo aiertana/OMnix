@@ -107,7 +107,8 @@ public partial class CharacterDetailsViewModel
             {
                 _logger.Error("Could not find character skin {SkinName} for character {CharacterName}",
                     characterTemplate.DisplayName, ShownModObject.DisplayName);
-                _notificationService.ShowNotification("切换角色皮肤出错", "",
+                _notificationService.ShowNotification(
+                    _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Card_SwitchSkinError", "切换角色皮肤出错"), "",
                     TimeSpan.FromSeconds(5));
                 return;
             }
@@ -171,7 +172,8 @@ public partial class CharacterDetailsViewModel
 
         if (!canDisableAllMods)
         {
-            _notificationService.ShowNotification("禁用 Mod 时出错", "Could not disable all mods.",
+            _notificationService.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Card_DisableAllErrorTitle", "禁用 Mod 时出错"), "Could not disable all mods.",
                 TimeSpan.FromSeconds(5));
             return;
         }

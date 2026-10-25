@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.GamesService;
 using OMniX.Core.GamesService.Interfaces;
 using OMniX.Core.GamesService.Models;
@@ -14,6 +15,7 @@ public partial class CharacterManagerViewModel : ObservableRecipient, INavigatio
 {
     private readonly IGameService _gameService;
     private readonly ImageHandlerService _imageHandlerService;
+    private readonly ILanguageLocalizer _localizer;
 
     [ObservableProperty] private ICharacter? _selectedCharacter;
     [ObservableProperty] private string _searchBoxText;
@@ -42,10 +44,11 @@ public partial class CharacterManagerViewModel : ObservableRecipient, INavigatio
     public event EventHandler<SetSelectionArgs>? SetSelection;
 
     public CharacterManagerViewModel(IGameService gameService,
-        ImageHandlerService imageHandlerService)
+        ImageHandlerService imageHandlerService, ILanguageLocalizer localizer)
     {
         _gameService = gameService;
         _imageHandlerService = imageHandlerService;
+        _localizer = localizer;
     }
 
 
@@ -182,7 +185,7 @@ public partial class CharacterManagerViewModel : ObservableRecipient, INavigatio
         {
             Suggestions.Add(new CharacterSearchResult
             {
-                Name = "没有找到匹配的角色",
+                Name = _localizer.GetLocalizedStringOrDefault("/CharacterManager/CharMgr_NoMatchResult", "没有找到匹配的角色"),
                 ImagePath = _imageHandlerService.PlaceholderImagePath
             });
             return;

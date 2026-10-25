@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Ctl_Browse.Content" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="Ctl_ClearImage.Text" xml:space="preserve">
+    <value>清除图片</value>
+  </data>
+  <data name="Ctl_CopyImage.Text" xml:space="preserve">
+    <value>复制图片</value>
+  </data>
+  <data name="Ctl_CopyLink.Text" xml:space="preserve">
+    <value>复制链接</value>
+  </data>
+  <data name="Ctl_DropImageHint.Text" xml:space="preserve">
+    <value>拖入图片设置预览</value>
+  </data>
+  <data name="Ctl_ModListAdd.Text" xml:space="preserve">
+    <value>添加 Mod…</value>
+  </data>
+  <data name="Ctl_PasteImage.Text" xml:space="preserve">
+    <value>粘贴图片</value>
+  </data>
+  <data name="Ctl_PasteImageHint.Text" xml:space="preserve">
+    <value>或按 Ctrl+V 粘贴图片</value>
+  </data>
+  <data name="Ctl_PickImageTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>选择图片</value>
+  </data>
+  <data name="ModInst_AddAllDefaults.Content" xml:space="preserve">
+    <value>全部按默认添加</value>
+  </data>
+  <data name="ModInst_AddMod.Content" xml:space="preserve">
+    <value>添加 Mod</value>
+  </data>
+  <data name="ModInst_AlwaysOnTopTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>窗口置顶</value>
+  </data>
+  <data name="ModInst_Author.Header" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="ModInst_AutoDetect.Text" xml:space="preserve">
+    <value>已自动识别 Mod 根目录和 merged.ini。想手动指定，在上面的目录树里右键文件夹。</value>
+  </data>
+  <data name="ModInst_AutoDetectTip.Content" xml:space="preserve">
+    <value>根目录通常是包含 merged.ini / Script.ini 的那一层。预览图也会自动从文件夹里找，一般直接点「添加 Mod」就行。</value>
+  </data>
+  <data name="ModInst_BatchQueue.Text" xml:space="preserve">
+    <value>批量导入队列（还没装的）</value>
+  </data>
+  <data name="ModInst_CustomName.Header" xml:space="preserve">
+    <value>显示名称</value>
+  </data>
+  <data name="ModInst_DisplayName.Header" xml:space="preserve">
+    <value>显示名称</value>
+  </data>
+  <data name="ModInst_DisplayName2.Header" xml:space="preserve">
+    <value>显示名称</value>
+  </data>
+  <data name="ModInst_DuplicateDialog.Title" xml:space="preserve">
+    <value>已经有同名文件夹了</value>
+  </data>
+  <data name="ModInst_DuplicateDialog.CloseButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="ModInst_EnableOnly.Content" xml:space="preserve">
+    <value>启用这个 Mod，并禁用同角色的其他 Mod</value>
+  </data>
+  <data name="ModInst_ExistingMod.Text" xml:space="preserve">
+    <value>已存在的 Mod</value>
+  </data>
+  <data name="ModInst_FolderName.Header" xml:space="preserve">
+    <value>文件夹名</value>
+  </data>
+  <data name="ModInst_FolderName2.Header" xml:space="preserve">
+    <value>文件夹名</value>
+  </data>
+  <data name="ModInst_ImageSourceLabel.Text" xml:space="preserve">
+    <value>预览图来源：</value>
+  </data>
+  <data name="ModInst_ManualPick.Content" xml:space="preserve">
+    <value>手动选择</value>
+  </data>
+  <data name="ModInst_MergedIniLabel.Text" xml:space="preserve">
+    <value>MergedIniFile 文件夹：</value>
+  </data>
+  <data name="ModInst_ModFile.Content" xml:space="preserve">
+    <value>Mod 文件</value>
+  </data>
+  <data name="ModInst_ModFolderLabel.Text" xml:space="preserve">
+    <value>Mod 文件夹：</value>
+  </data>
+  <data name="ModInst_ModUrl.Header" xml:space="preserve">
+    <value>Mod 页面链接</value>
+  </data>
+  <data name="ModInst_NewMod.Text" xml:space="preserve">
+    <value>新 Mod</value>
+  </data>
+  <data name="ModInst_Notes.Header" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="ModInst_OpenExistingFolder.Text" xml:space="preserve">
+    <value>打开已有的 Mod 文件夹...</value>
+  </data>
+  <data name="ModInst_Overwrite.Content" xml:space="preserve">
+    <value>覆盖已有的 Mod</value>
+  </data>
+  <data name="ModInst_RefreshInfoTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>从 Mod 页面重新获取信息</value>
+  </data>
+  <data name="ModInst_ReplaceDupInPreset.Text" xml:space="preserve">
+    <value>在预设里用新 Mod 替换重复的 Mod</value>
+  </data>
+  <data name="ModInst_ReplaceUpdate.Content" xml:space="preserve">
+    <value>在预设里用这个新 Mod 替换旧版本</value>
+  </data>
+  <data name="ModInst_SetPreview.Text" xml:space="preserve">
+    <value>设置为 Mod 预览图</value>
+  </data>
+  <data name="ModInst_SetRootFolder.Text" xml:space="preserve">
+    <value>设为 Mod 根目录</value>
+  </data>
+  <data name="ModInst_SetShaderFixes.Text" xml:space="preserve">
+    <value>设为 ShaderFixes 目录</value>
+  </data>
+  <data name="ModInst_ShaderFixesLabel.Text" xml:space="preserve">
+    <value>ShaderFixes 文件夹：</value>
+  </data>
+  <data name="ModRow_AddedLabel.Text" xml:space="preserve">
+    <value>添加于：</value>
+  </data>
+  <data name="ModRow_Disabled.Text" xml:space="preserve">
+    <value>未启用</value>
+  </data>
+  <data name="ModRow_Enabled.Text" xml:space="preserve">
+    <value>已启用</value>
+  </data>
+  <data name="ModRow_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>打开 Mod 文件夹</value>
+  </data>
+  <data name="ModRow_RenameTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>重命名这个 Mod</value>
+  </data>
+  <data name="ModRow_ToggleTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>勾选启用，取消停用</value>
+  </data>
+  <data name="ModSel_AddedLabel.Text" xml:space="preserve">
+    <value>添加时间：</value>
+  </data>
+  <data name="ModSel_Search.PlaceholderText" xml:space="preserve">
+    <value>搜索 Mod…</value>
+  </data>
+  <data name="ModSel_Select.Content" xml:space="preserve">
+    <value>选择这个 Mod</value>
+  </data>
+  <data name="ModSel_Title.Text" xml:space="preserve">
+    <value>选择 Mod</value>
+  </data>
+  <data name="ModsOv_BatchManage.Text" xml:space="preserve">
+    <value>批量管理</value>
+  </data>
+  <data name="ModsOv_Breadcrumb.Text" xml:space="preserve">
+    <value>OMNIX  /  Mod 总览</value>
+  </data>
+  <data name="ModsOv_CheckConflictsDesc.Text" xml:space="preserve">
+    <value>扫描同角色多开的情况</value>
+  </data>
+  <data name="ModsOv_CheckConflictsTitle.Text" xml:space="preserve">
+    <value>冲突检查</value>
+  </data>
+  <data name="ModsOv_ConflictDetect.Text" xml:space="preserve">
+    <value>冲突检测</value>
+  </data>
+  <data name="ModsOv_DisableAllDesc.Text" xml:space="preserve">
+    <value>一键关闭所有 Mod</value>
+  </data>
+  <data name="ModsOv_DisableAllTitle.Text" xml:space="preserve">
+    <value>全部禁用</value>
+  </data>
+  <data name="ModsOv_EnablePresetDesc.Text" xml:space="preserve">
+    <value>选一个预设，启用里面的 Mod</value>
+  </data>
+  <data name="ModsOv_EnablePresetTitle.Text" xml:space="preserve">
+    <value>启用预设</value>
+  </data>
+  <data name="ModsOv_FullCmdLabel.Text" xml:space="preserve">
+    <value>完整命令：</value>
+  </data>
+  <data name="ModsOv_GoToCharacter.Content" xml:space="preserve">
+    <value>前往角色</value>
+  </data>
+  <data name="ModsOv_HeroSuffix.Text" xml:space="preserve">
+    <value> 总览</value>
+  </data>
+  <data name="ModsOv_OpenFolderTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="ModsOv_RefreshDesc.Text" xml:space="preserve">
+    <value>重新读取 Mod 目录</value>
+  </data>
+  <data name="ModsOv_RefreshTitle.Text" xml:space="preserve">
+    <value>刷新列表</value>
+  </data>
+  <data name="ModsOv_Run.Content" xml:space="preserve">
+    <value>运行</value>
+  </data>
+  <data name="ModsOv_RunCmdLabel.Text" xml:space="preserve">
+    <value>对该文件夹运行命令：</value>
+  </data>
+  <data name="ModsOv_Search.PlaceholderText" xml:space="preserve">
+    <value>输入后按回车搜索Mod…</value>
+  </data>
+  <data name="ModsOv_StatusMonitor.Text" xml:space="preserve">
+    <value>状态监控</value>
+  </data>
+  <data name="ModsOv_WorkDirLabel.Text" xml:space="preserve">
+    <value>工作目录：</value>
+  </data>
+  <data name="Ctl_ModListNameHeader" xml:space="preserve">
+    <value>Mod 名称</value>
+  </data>
+  <data name="ModInst_DisplayName.PlaceholderText" xml:space="preserve">
+    <value>在 OMniX 里显示的名字</value>
+  </data>
+  <data name="ModInst_FolderName.PlaceholderText" xml:space="preserve">
+    <value>在磁盘上使用的文件夹名</value>
+  </data>
+  <data name="ModInst_DisplayName2.PlaceholderText" xml:space="preserve">
+    <value>在 OMniX 里显示的名字</value>
+  </data>
+  <data name="ModInst_FolderName2.PlaceholderText" xml:space="preserve">
+    <value>在磁盘上使用的文件夹名</value>
+  </data>
+  <data name="ModInst_ModUrl.PlaceholderText" xml:space="preserve">
+    <value>粘贴 GameBanana 链接，会自动填好名称、作者和预览图</value>
+  </data>
+  <data name="ModInst_CustomName.PlaceholderText" xml:space="preserve">
+    <value>在 OMniX 里显示的名字，留空就用文件夹名</value>
+  </data>
+  <data name="ModInst_Author.PlaceholderText" xml:space="preserve">
+    <value>Mod 的作者</value>
+  </data>
+  <data name="ModInst_Notes.PlaceholderText" xml:space="preserve">
+    <value>随便写点什么，会显示在角色详情页的 Mod 卡片上</value>
+  </data>
+  <data name="ModInst_EnableOnly.ToolTipService.ToolTip" xml:space="preserve">
+    <value>勾选后只启用这一个，同角色的其它 Mod 会被禁用</value>
+  </data>
+  <data name="ModInst_ReplaceUpdate.ToolTipService.ToolTip" xml:space="preserve">
+    <value>把所有预设里引用的旧 Mod 换成这个新装的版本</value>
+  </data>
+  <data name="ModInst_AddAllDefaults.ToolTipService.ToolTip" xml:space="preserve">
+    <value>不改任何字段，直接添加。批量导入时，队列里剩下的也会按默认值自动装完</value>
+  </data>
+  <data name="ModInst_ReplaceDupInPreset.ToolTipService.ToolTip" xml:space="preserve">
+    <value>预设里会把这个重复的 Mod 换成新装的版本。与上面的「用新 Mod 替换旧版本」互斥。</value>
+  </data>
+  <data name="ModInst_ReplaceDupInPresetText.Text" xml:space="preserve">
+    <value>在预设里用新 Mod 替换重复的 Mod</value>
+  </data>
+</root>

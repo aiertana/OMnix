@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.ApplicationModel.DataTransfer;
+using OMniX.Core.Contracts.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -55,7 +56,7 @@ public sealed partial class CharacterGalleryPage : Page
                 if (ViewModel.CanDragDropMod(items))
                 {
                     e.AcceptedOperation = DataPackageOperation.Copy;
-                    e.DragUIOverride.Caption = "松开即可安装到当前角色";
+                    e.DragUIOverride.Caption = App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Characters/Gallery_DropInstallCaption", "松开即可安装到当前角色");
                     e.DragUIOverride.IsCaptionVisible = true;
                 }
             }

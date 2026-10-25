@@ -67,7 +67,7 @@ public partial class App : Application
             MainWindow.IsMaximizable = false;
             MainWindow.IsMinimizable = false;
             MainWindow.IsResizable = false;
-            MainWindow.Title = "OMniX 自动更新器";
+            MainWindow.Title = "OMniX Auto Updater";
 
             var arguments = Environment.GetCommandLineArgs();
 

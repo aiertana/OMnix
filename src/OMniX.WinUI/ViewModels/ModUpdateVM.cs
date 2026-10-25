@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMniX.Core.Contracts.Entities;
@@ -34,6 +34,7 @@ public partial class ModUpdateVM : ObservableRecipient
     private ModNotification? _notification;
     private List<ModFileInfo> _modFiles = new();
     private readonly CancellationToken _ct;
+    private readonly ILanguageLocalizer _localizer = App.GetService<ILanguageLocalizer>();
 
     private ModPageInfo? _modPageInfo;
 
@@ -167,7 +168,7 @@ public partial class ModUpdateVM : ObservableRecipient
         _logger.Error(e, "读取 Mod 更新信息失败");
         App.MainWindow.DispatcherQueue.TryEnqueue(() =>
         {
-            App.GetService<NotificationManager>().ShowNotification("读取 Mod 更新信息失败",
+            App.GetService<NotificationManager>().ShowNotification(_localizer.GetLocalizedStringOrDefault("/WindowsUi/Win_NotificationReadFailed", "读取 Mod 更新信息失败"),
                 e.Message, TimeSpan.FromSeconds(10));
         });
         _window.Close();
@@ -258,7 +259,7 @@ public partial class ModUpdateVM : ObservableRecipient
         {
             _logger.Error(e, "下载 Mod 文件失败");
 
-            _notificationManager.ShowNotification("下载 Mod 文件失败",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/WindowsUi/Win_NotificationDownloadFailed", "下载 Mod 文件失败"),
                 e.Message, TimeSpan.FromSeconds(10));
 
             Reset();
@@ -365,7 +366,7 @@ public partial class ModUpdateVM : ObservableRecipient
         {
             _logger.Error(e, "安装 Mod 文件失败");
 
-            _notificationManager.ShowNotification("安装 Mod 文件失败",
+            _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/WindowsUi/Win_NotificationInstallFailed", "安装 Mod 文件失败"),
                 e.InnerException?.Message ?? e.Message, TimeSpan.FromSeconds(10));
 
             fileInfoVm.Status = ModFileInfoVm.InstallStatus.Downloaded;

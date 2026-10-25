@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:OMniX.WinUI.ViewModels"
     xmlns:xaml="using:OMniX.WinUI.Helpers.Xaml"
+    xmlns:l="using:WinUI3Localizer"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -33,7 +34,8 @@
                 AutomationProperties.Name="返回角色列表"
                 Click="BackToGrid_Click"
                 ToolTipService.ToolTip="返回角色头像列表"
-                Visibility="{x:Bind ViewModel.HasSelectedCharacter, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}">
+                Visibility="{x:Bind ViewModel.HasSelectedCharacter, Mode=OneWay, Converter={StaticResource BoolToVisibleConverter}}"
+                l:Uids.Uid="/CharacterManager/CharMgr_BackButton">
                 <FontIcon FontSize="16" Glyph="&#xE72B;" />
             </Button>
 
@@ -41,7 +43,8 @@
                 VerticalAlignment="Center"
                 FontSize="28"
                 Style="{StaticResource TitleTextBlockStyle}"
-                Text="角色管理" />
+                Text="角色管理"
+                l:Uids.Uid="/CharacterManager/CharMgr_PageTitle" />
 
             <!--  二开：署名  -->
             <TextBlock
@@ -49,7 +52,8 @@
                 VerticalAlignment="Bottom"
                 FontSize="12"
                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                Text="by 是湫" />
+                Text="by 是湫"
+                l:Uids.Uid="/CharacterManager/CharMgr_Signature" />
         </StackPanel>
 
         <Grid Grid.Row="1">
@@ -70,7 +74,8 @@
                 QuerySubmitted="CharacterSearchBox_OnQuerySubmitted"
                 SuggestionChosen="CharacterSearchBox_OnSuggestionChosen"
                 TextChanged="CharacterSearchBox_OnTextChanged"
-                Text="{x:Bind ViewModel.SearchBoxText, Mode=TwoWay}">
+                Text="{x:Bind ViewModel.SearchBoxText, Mode=TwoWay}"
+                l:Uids.Uid="/CharacterManager/CharMgr_SearchBox">
                 <AutoSuggestBox.KeyboardAccelerators>
                     <KeyboardAccelerator
                         Key="F"
@@ -110,7 +115,8 @@
                 Margin="16,0,0,0"
                 VerticalAlignment="Bottom"
                 Command="{x:Bind ViewModel.OpenCreateCharacterFormCommand}"
-                ToolTipService.ToolTip="新建角色">
+                ToolTipService.ToolTip="新建角色"
+                l:Uids.Uid="/CharacterManager/CharMgr_NewCharButton">
                 <FontIcon Glyph="&#xE710;" />
             </Button>
 

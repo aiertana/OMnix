@@ -3,6 +3,7 @@ using Windows.Win32;
 using Windows.Win32.Foundation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OMniX.Core.Contracts.Services;
 using OMniX.Core.Helpers;
 using OMniX.Core.Services.CommandService;
 using OMniX.Core.Services.CommandService.Models;
@@ -19,6 +20,7 @@ public partial class CreateCommandViewModel : ObservableObject
     private readonly CommandService _commandService;
     private readonly NotificationManager _notificationManager;
     private readonly SelectedGameService _selectedGameService;
+    private readonly ILanguageLocalizer _localizer;
 
     private CreateCommandOptions? _createOptions;
 
@@ -26,11 +28,13 @@ public partial class CreateCommandViewModel : ObservableObject
     public bool IsEditingCommand => _createOptions?.IsEditingCommand == true;
 
     public CreateCommandViewModel(ILogger logger, CommandService commandService,
-        NotificationManager notificationManager, SelectedGameService selectedGameService)
+        NotificationManager notificationManager, SelectedGameService selectedGameService,
+        ILanguageLocalizer localizer)
     {
         _commandService = commandService;
         _notificationManager = notificationManager;
         _selectedGameService = selectedGameService;
+        _localizer = localizer;
         _logger = logger.ForContext<CreateCommandViewModel>();
         PropertyChanged += (_, e) =>
         {
@@ -279,7 +283,7 @@ public partial class CreateCommandViewModel : ObservableObject
         var folderPicker = new FolderPicker()
         {
             SuggestedStartLocation = PickerLocationId.ComputerFolder,
-            CommitButtonText = "选择文件夹"
+            CommitButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CreateCmdPickFolder", "选择文件夹")
         };
 
 

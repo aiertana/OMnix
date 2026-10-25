@@ -1,3 +1,4 @@
+using OMniX.Core.Contracts.Services;
 using OMniX.WinUI.Contracts.Services;
 
 namespace OMniX.WinUI.Services;
@@ -74,5 +75,7 @@ public sealed class ThemeStyleService
     }
 
     public string DisplayName =>
-        Current == OmniXThemeStyle.Standard ? "标准版" : "简易版";
+        Current == OmniXThemeStyle.Standard
+            ? App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ThemeSvc_Standard", "标准版")
+            : App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/ServicesMsg/ThemeSvc_Simple", "简易版");
 }

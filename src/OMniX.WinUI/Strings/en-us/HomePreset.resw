@@ -1,0 +1,741 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About_AlipayLabel.Text" xml:space="preserve">
+    <value>Alipay</value>
+  </data>
+  <data name="About_AuthorName.Text" xml:space="preserve">
+    <value>是湫</value>
+  </data>
+  <data name="About_AuthorNote.Text" xml:space="preserve">
+    <value>Anything you want added, or anything that gets in your way — just tell me.</value>
+  </data>
+  <data name="About_AuthorRole.Text" xml:space="preserve">
+    <value>Code · UI · Motion</value>
+  </data>
+  <data name="About_Description.Text" xml:space="preserve">
+    <value>A mod manager for Wuthering Waves: organize mods by character, toggle them in one click, save presets and sync with 3Dmigoto. Your mod files stay in the XXMI Launcher folder, this app only manages them.</value>
+  </data>
+  <data name="About_DonateBody.Text" xml:space="preserve">
+    <value>The software stays free, this is purely optional — scan it only if you found it useful and feel like chipping in. Skipping it changes nothing.</value>
+  </data>
+  <data name="About_DonateCardTitle.Text" xml:space="preserve">
+    <value>Buy me a milk tea</value>
+  </data>
+  <data name="About_FeatureCharactersDesc.Text" xml:space="preserve">
+    <value>Characters listed as a portrait wall — searchable, pinnable, hideable, and you can add your own</value>
+  </data>
+  <data name="About_FeatureCharactersLabel.Text" xml:space="preserve">
+    <value>Characters</value>
+  </data>
+  <data name="About_FeatureEditDesc.Text" xml:space="preserve">
+    <value>Edit name, author, description and rating, rearrange sections and priorities inside a mod</value>
+  </data>
+  <data name="About_FeatureEditLabel.Text" xml:space="preserve">
+    <value>Mod editing</value>
+  </data>
+  <data name="About_FeatureFixerDesc.Text" xml:space="preserve">
+    <value>Wuwa Mod Fixer is built in — download and run it right here</value>
+  </data>
+  <data name="About_FeatureFixerLabel.Text" xml:space="preserve">
+    <value>Mod fixing</value>
+  </data>
+  <data name="About_FeatureLaunchDesc.Text" xml:space="preserve">
+    <value>With paths configured, launches XXMI Launcher and the game itself</value>
+  </data>
+  <data name="About_FeatureLaunchLabel.Text" xml:space="preserve">
+    <value>Game launch</value>
+  </data>
+  <data name="About_FeatureMigrateDesc.Text" xml:space="preserve">
+    <value>Mods can be moved or copied between characters</value>
+  </data>
+  <data name="About_FeatureMigrateLabel.Text" xml:space="preserve">
+    <value>Migration</value>
+  </data>
+  <data name="About_FeaturePresetDesc.Text" xml:space="preserve">
+    <value>Save a set of mods as a preset, apply it in bulk, export it or duplicate it</value>
+  </data>
+  <data name="About_FeaturePresetLabel.Text" xml:space="preserve">
+    <value>Mod presets</value>
+  </data>
+  <data name="About_FeatureRecycleDesc.Text" xml:space="preserve">
+    <value>Deleted mods go to the recycle bin first, so accidents can be undone</value>
+  </data>
+  <data name="About_FeatureRecycleLabel.Text" xml:space="preserve">
+    <value>Recycle bin</value>
+  </data>
+  <data name="About_FeatureToggleDesc.Text" xml:space="preserve">
+    <value>Enable or disable a single mod, or a whole character, in one click</value>
+  </data>
+  <data name="About_FeatureToggleLabel.Text" xml:space="preserve">
+    <value>Mod toggle</value>
+  </data>
+  <data name="About_FeatureUpdateDesc.Text" xml:space="preserve">
+    <value>Compares local file timestamps and flags the mods that changed</value>
+  </data>
+  <data name="About_FeatureUpdateLabel.Text" xml:space="preserve">
+    <value>Update check</value>
+  </data>
+  <data name="About_FeaturesCardTitle.Text" xml:space="preserve">
+    <value>What it can do</value>
+  </data>
+  <data name="About_FreeNotice.Text" xml:space="preserve">
+    <value>Fully free and open source, no charges ever. If anyone asks you to pay for the installer, that is a scam.</value>
+  </data>
+  <data name="About_GroupBody.Text" xml:space="preserve">
+    <value>Scan to join the group — report problems or suggest features here.</value>
+  </data>
+  <data name="About_GroupCardTitle.Text" xml:space="preserve">
+    <value>Community group</value>
+  </data>
+  <data name="About_GroupWarning.Text" xml:space="preserve">
+    <value>The group is also where the latest installer comes from. Please do not use copies from anywhere else.</value>
+  </data>
+  <data name="About_OpenRepoButton.Content" xml:space="preserve">
+    <value>Open project page</value>
+  </data>
+  <data name="About_RepoCardTitle.Text" xml:space="preserve">
+    <value>Project page</value>
+  </data>
+  <data name="About_Subtitle.Text" xml:space="preserve">
+    <value>What OMniX is, what it does, who made it</value>
+  </data>
+  <data name="About_Title.Text" xml:space="preserve">
+    <value>About OMniX</value>
+  </data>
+  <data name="About_WechatLabel.Text" xml:space="preserve">
+    <value>WeChat</value>
+  </data>
+  <data name="About_WhatIsCardTitle.Text" xml:space="preserve">
+    <value>What is this</value>
+  </data>
+  <data name="Home_ChangeBackgroundFlyout.Text" xml:space="preserve">
+    <value>Change background…</value>
+  </data>
+  <data name="Home_GameSelectorTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Switch the current game (restarts the app)</value>
+  </data>
+  <data name="Home_HeroBackgroundTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Right-click to change the background</value>
+  </data>
+  <data name="Home_LaunchGameText" xml:space="preserve">
+    <value>Launch game</value>
+  </data>
+  <data name="Home_ModCardDescription.Text" xml:space="preserve">
+    <value>Browse installed mods, enable / disable, refresh and organize them.</value>
+  </data>
+  <data name="Home_ModCardTitle.Text" xml:space="preserve">
+    <value>Mod management</value>
+  </data>
+  <data name="Home_ModsSummaryConfigured" xml:space="preserve">
+    <value>Configured</value>
+  </data>
+  <data name="Home_ModsSummaryCount" xml:space="preserve">
+    <value>{0} mod folders</value>
+  </data>
+  <data name="Home_ModsSummaryNotConfigured" xml:space="preserve">
+    <value>Not configured yet</value>
+  </data>
+  <data name="Home_ModulesSectionSubtitle.Text" xml:space="preserve">
+    <value>Click and go — the everyday stuff lives here</value>
+  </data>
+  <data name="Home_ModulesSectionTitle.Text" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="Home_MoreSectionSubtitle.Text" xml:space="preserve">
+    <value>Reserved slots; upcoming features drop straight into these cards</value>
+  </data>
+  <data name="Home_MoreSectionTitle.Text" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="Home_NotificationBgFailed" xml:space="preserve">
+    <value>Failed to change the background</value>
+  </data>
+  <data name="Home_NotificationFolderOpenFailed" xml:space="preserve">
+    <value>Failed to open the folder</value>
+  </data>
+  <data name="Home_NotificationSwitchGameFailed" xml:space="preserve">
+    <value>Failed to switch game</value>
+  </data>
+  <data name="Home_OpenBackgroundFolderFlyout.Text" xml:space="preserve">
+    <value>Open background folder</value>
+  </data>
+  <data name="Home_OpenCharactersButton.Content" xml:space="preserve">
+    <value>Characters</value>
+  </data>
+  <data name="Home_OpenGalleryButton.Content" xml:space="preserve">
+    <value>Character gallery</value>
+  </data>
+  <data name="Home_OpenModInstallerButton.Content" xml:space="preserve">
+    <value>Install mods</value>
+  </data>
+  <data name="Home_OpenModLibraryButton.Content" xml:space="preserve">
+    <value>Mods overview</value>
+  </data>
+  <data name="Home_OpenPluginAreaButton.Content" xml:space="preserve">
+    <value>Open plugins</value>
+  </data>
+  <data name="Home_OpenPresetsButton.Content" xml:space="preserve">
+    <value>Presets</value>
+  </data>
+  <data name="Home_OpenSetupButton.Content" xml:space="preserve">
+    <value>Start setup</value>
+  </data>
+  <data name="Home_PickerCommit" xml:space="preserve">
+    <value>Use as background</value>
+  </data>
+  <data name="Home_PlaceholderSubtitle.Text" xml:space="preserve">
+    <value>Coming soon</value>
+  </data>
+  <data name="Home_PlaceholderTitle.Text" xml:space="preserve">
+    <value>Reserved</value>
+  </data>
+  <data name="Home_PluginBadgeText.Text" xml:space="preserve">
+    <value>Coming soon</value>
+  </data>
+  <data name="Home_PluginCardDescription.Text" xml:space="preserve">
+    <value>Extend OMniX with plugins: external tools, batch scripts, selectors and more.</value>
+  </data>
+  <data name="Home_PluginCardTitle.Text" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="Home_ResetBackgroundFlyout.Text" xml:space="preserve">
+    <value>Reset to the default background</value>
+  </data>
+  <data name="Home_SetupHintBody.Text" xml:space="preserve">
+    <value>Finish the setup to browse and enable mods — you can do it later in Settings too.</value>
+  </data>
+  <data name="Home_SetupHintTitle.Text" xml:space="preserve">
+    <value>Game and Mods paths are not set yet</value>
+  </data>
+  <data name="Home_ThemeToggleTip.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Switch light / dark theme</value>
+  </data>
+  <data name="Home_WelcomeText.Text" xml:space="preserve">
+    <value>Welcome to OMniX</value>
+  </data>
+  <data name="Plugin_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Plugin_DefaultPrimaryText" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Plugin_DeployingText" xml:space="preserve">
+    <value>Deploying…</value>
+  </data>
+  <data name="Plugin_DetailsLabel" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Plugin_Dlss5CardName" xml:space="preserve">
+    <value>DLSS5 rendering chain</value>
+  </data>
+  <data name="Plugin_Dlss5DescDeployed" xml:space="preserve">
+    <value>Loader is deployed into the game folder; the switch can remove it at any time.</value>
+  </data>
+  <data name="Plugin_Dlss5DescKitReady" xml:space="preserve">
+    <value>Kit is ready — use the switch below to deploy it into the game folder (administrator rights required).</value>
+  </data>
+  <data name="Plugin_Dlss5DescNoKit" xml:space="preserve">
+    <value>No kit yet. Tap "Download kit" to pull the latest version; it deploys automatically once downloaded.</value>
+  </data>
+  <data name="Plugin_Dlss5PrimaryConfig" xml:space="preserve">
+    <value>Configure</value>
+  </data>
+  <data name="Plugin_Dlss5PrimaryDownload" xml:space="preserve">
+    <value>Download kit</value>
+  </data>
+  <data name="Plugin_Dlss5SwitchTipDeploy" xml:space="preserve">
+    <value>Deploy the loader chain into the game folder (administrator rights required)</value>
+  </data>
+  <data name="Plugin_Dlss5SwitchTipUninstall" xml:space="preserve">
+    <value>Remove the loader chain from the game folder</value>
+  </data>
+  <data name="Plugin_Dlss5ToggleDeploy" xml:space="preserve">
+    <value>Deploy</value>
+  </data>
+  <data name="Plugin_Dlss5ToggleUninstall" xml:space="preserve">
+    <value>Uninstall</value>
+  </data>
+  <data name="Plugin_DownloadInProgress" xml:space="preserve">
+    <value>Downloading…</value>
+  </data>
+  <data name="Plugin_DownloadPreparing" xml:space="preserve">
+    <value>Preparing…</value>
+  </data>
+  <data name="Plugin_FixerCardName" xml:space="preserve">
+    <value>Mod fixer</value>
+  </data>
+  <data name="Plugin_FixerDescNotDownloaded" xml:space="preserve">
+    <value>Wuwa_Mod_Fixer runs standalone. Drop your own copy into the plugins folder and it gets picked up when you hit fix.</value>
+  </data>
+  <data name="Plugin_FixerDescReady" xml:space="preserve">
+    <value>Using {0} — the fix button on the character page runs it.</value>
+  </data>
+  <data name="Plugin_FixerPrimaryDownload" xml:space="preserve">
+    <value>Download fixer</value>
+  </data>
+  <data name="Plugin_FixerPrimaryOpenFolder" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="Plugin_ModCardName" xml:space="preserve">
+    <value>Mod loader</value>
+  </data>
+  <data name="Plugin_ModDescNoXxmi" xml:space="preserve">
+    <value>No XXMI yet. Tap "Download XXMI" to pull the portable build, unzip it and it works.</value>
+  </data>
+  <data name="Plugin_ModDescReady" xml:space="preserve">
+    <value>WWMI is in place; the switch decides whether this launch loads mods.</value>
+  </data>
+  <data name="Plugin_ModDescXxmiReady" xml:space="preserve">
+    <value>Set the game path inside XXMI and it downloads WWMI for you.</value>
+  </data>
+  <data name="Plugin_ModPrimaryDownloadXxmi" xml:space="preserve">
+    <value>Download XXMI</value>
+  </data>
+  <data name="Plugin_ModPrimaryModsDir" xml:space="preserve">
+    <value>Mods folder</value>
+  </data>
+  <data name="Plugin_ModPrimaryOpenXxmi" xml:space="preserve">
+    <value>Open XXMI</value>
+  </data>
+  <data name="Plugin_ModSwitchTipDisabled" xml:space="preserve">
+    <value>Off: launching the game loads no mods</value>
+  </data>
+  <data name="Plugin_ModSwitchTipEnabled" xml:space="preserve">
+    <value>On: launching the game loads mods</value>
+  </data>
+  <data name="Plugin_ModSwitchTipNotDeployed" xml:space="preserve">
+    <value>The loader chain is not deployed yet, so mods stay inert if you launch now — switching it on deploys the chain too</value>
+  </data>
+  <data name="Plugin_ModToggleDisable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="Plugin_ModToggleEnable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="Plugin_NotificationAutoDeployFailedBody" xml:space="preserve">
+    <value>The game executable or the kit folder is wrong. Tap "Configure" to fill them in yourself.</value>
+  </data>
+  <data name="Plugin_NotificationAutoDeployFailedTitle" xml:space="preserve">
+    <value>Cannot deploy automatically yet</value>
+  </data>
+  <data name="Plugin_NotificationAutoDeployNotSuccess" xml:space="preserve">
+    <value>Automatic deployment did not succeed</value>
+  </data>
+  <data name="Plugin_NotificationAutoDeploying" xml:space="preserve">
+    <value>Deploying into the game folder automatically…</value>
+  </data>
+  <data name="Plugin_NotificationChainDeployed" xml:space="preserve">
+    <value>Rendering chain deployed</value>
+  </data>
+  <data name="Plugin_NotificationChainUninstalled" xml:space="preserve">
+    <value>Rendering chain uninstalled</value>
+  </data>
+  <data name="Plugin_NotificationDownloadFailed" xml:space="preserve">
+    <value>Download failed</value>
+  </data>
+  <data name="Plugin_NotificationFixerNoVersionBody" xml:space="preserve">
+    <value>GitHub is unreachable or the network is down. You can also download it yourself and drop it into the plugins folder — same result.</value>
+  </data>
+  <data name="Plugin_NotificationFixerNoVersionTitle" xml:space="preserve">
+    <value>Cannot read the fixer version</value>
+  </data>
+  <data name="Plugin_NotificationFixerReadyBody" xml:space="preserve">
+    <value>{0} is in the plugins folder; the fix button on the character page will use it.</value>
+  </data>
+  <data name="Plugin_NotificationFixerReadyTitle" xml:space="preserve">
+    <value>Fixer ready</value>
+  </data>
+  <data name="Plugin_NotificationModDisabled" xml:space="preserve">
+    <value>Mods disabled</value>
+  </data>
+  <data name="Plugin_NotificationModEnabled" xml:space="preserve">
+    <value>Mods enabled</value>
+  </data>
+  <data name="Plugin_NotificationRenameFailed" xml:space="preserve">
+    <value>Renaming the file failed — check write permission on the game folder</value>
+  </data>
+  <data name="Plugin_NotificationTakeEffectNextLaunch" xml:space="preserve">
+    <value>Takes effect on the next game launch</value>
+  </data>
+  <data name="Plugin_NotificationXxmiDownloaded" xml:space="preserve">
+    <value>XXMI downloaded</value>
+  </data>
+  <data name="Plugin_OpenFolderButton.Content" xml:space="preserve">
+    <value>Open plugins folder</value>
+  </data>
+  <data name="Plugin_PageDescription.Text" xml:space="preserve">
+    <value>Plugins stay independent of the manager: deleting plugin files does not affect mod management or game launch, and a problem only affects the plugin itself.</value>
+  </data>
+  <data name="Plugin_PageTitle.Text" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="Plugin_SourceLabel" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="Plugin_StatusDeployed" xml:space="preserve">
+    <value>Deployed</value>
+  </data>
+  <data name="Plugin_StatusFixerNotDownloaded" xml:space="preserve">
+    <value>Not downloaded</value>
+  </data>
+  <data name="Plugin_StatusFixerReady" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Plugin_StatusMissingWwmi" xml:space="preserve">
+    <value>WWMI missing</value>
+  </data>
+  <data name="Plugin_StatusMissingXxmi" xml:space="preserve">
+    <value>XXMI missing</value>
+  </data>
+  <data name="Plugin_StatusModDisabled" xml:space="preserve">
+    <value>Mods disabled</value>
+  </data>
+  <data name="Plugin_StatusModEnabled" xml:space="preserve">
+    <value>Mods enabled</value>
+  </data>
+  <data name="Plugin_StatusNoKit" xml:space="preserve">
+    <value>Kit not downloaded</value>
+  </data>
+  <data name="Plugin_StatusNotDeployed" xml:space="preserve">
+    <value>Not deployed</value>
+  </data>
+  <data name="Plugin_UninstallConfirmContent" xml:space="preserve">
+    <value>This deletes the loader chain files under {0} (d3d11.dll, scripts and others).
+
+Note: the NVIDIA DLSS library it replaced is not restored automatically — run a game repair or deploy again.</value>
+  </data>
+  <data name="Plugin_UninstallConfirmPrimary" xml:space="preserve">
+    <value>Uninstall</value>
+  </data>
+  <data name="Plugin_UninstallConfirmTitle" xml:space="preserve">
+    <value>Uninstall the DLSS5 rendering chain?</value>
+  </data>
+  <data name="Plugin_UpcomingCardName" xml:space="preserve">
+    <value>GameBanana sync</value>
+  </data>
+  <data name="Plugin_UpcomingDescription" xml:space="preserve">
+    <value>Automatically checks installed mods for updates and lists everything pending in one place.</value>
+  </data>
+  <data name="Plugin_UpcomingPrimaryText" xml:space="preserve">
+    <value>Coming soon</value>
+  </data>
+  <data name="Plugin_UpcomingStatus" xml:space="preserve">
+    <value>In development</value>
+  </data>
+  <data name="Preset_ApplyPrefsButton.Content" xml:space="preserve">
+    <value>Apply saved mod preferences (keys)</value>
+  </data>
+  <data name="Preset_ApplyPrefsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Reads preferences from .JASM_Config.json and writes them into d3dx_user.ini so 3DMigoto picks them up</value>
+  </data>
+  <data name="Preset_ApplyPresetButton.Content" xml:space="preserve">
+    <value>Apply preset</value>
+  </data>
+  <data name="Preset_ApplyPresetButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Enables every mod in this preset and writes the preset preferences back to the mods</value>
+  </data>
+  <data name="Preset_AutoSyncCheckBox.Content" xml:space="preserve">
+    <value>Sync mod preferences automatically when switching presets</value>
+  </data>
+  <data name="Preset_AutoSyncOffWarning.Text" xml:space="preserve">
+    <value>Auto-sync is off! Press F10 after changes to reload the 3DMigoto config manually</value>
+  </data>
+  <data name="Preset_AutoSyncCheckBox.ToolTipService.ToolTip" xml:space="preserve">
+    <value>When checked, OMniX syncs preferences automatically when creating or switching a preset</value>
+  </data>
+  <data name="Preset_ConfirmApplyButton.Content" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Preset_ConfirmRenameText" xml:space="preserve">
+    <value>Save new name</value>
+  </data>
+  <data name="Preset_ConfirmResetButton.Content" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Preset_CreateEmptyCheckBox.Content" xml:space="preserve">
+    <value>Create as an empty preset</value>
+  </data>
+  <data name="Preset_CreateEmptyCheckBox.ToolTipService.ToolTip" xml:space="preserve">
+    <value>When checked, no mod is enabled in the new preset</value>
+  </data>
+  <data name="Preset_CreatePresetButton.Content" xml:space="preserve">
+    <value>Save the current mod preferences and create a preset</value>
+  </data>
+  <data name="Preset_CreatedAtLabel.Text" xml:space="preserve">
+    <value>Created:</value>
+  </data>
+  <data name="Preset_DeleteMenuItem.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Preset_DeleteMenuItem.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Delete this preset permanently</value>
+  </data>
+  <data name="Preset_DetailsAddedAtLabel.Text" xml:space="preserve">
+    <value>Added to preset:</value>
+  </data>
+  <data name="Preset_DetailsMissingWarning.Text" xml:space="preserve">
+    <value>This mod cannot be found on disk!</value>
+  </data>
+  <data name="Preset_DetailsOriginalPathLabel.Text" xml:space="preserve">
+    <value>Original path:</value>
+  </data>
+  <data name="Preset_DetailsRemoveMenuItem.Text" xml:space="preserve">
+    <value>Remove this mod from the preset</value>
+  </data>
+  <data name="Preset_DetailsReplaceMenuItem.Text" xml:space="preserve">
+    <value>Find a replacement mod</value>
+  </data>
+  <data name="Preset_DetailsSavePrefsMenuItem.Text" xml:space="preserve">
+    <value>Read and save settings</value>
+  </data>
+  <data name="Preset_DetailsSavePrefsMenuItem.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Reads this mod's current 3Dmigoto user ini and stores the settings in the current preset</value>
+  </data>
+  <data name="Preset_DetailsSearchPlaceholder.PlaceholderText" xml:space="preserve">
+    <value>Search mods…</value>
+  </data>
+  <data name="Preset_DialogBody1" xml:space="preserve">
+    <value>A preset is a checklist of "which mods to enable, and with which settings". A mod's own settings live in .OMniX_ModConfig.json inside its folder.</value>
+  </data>
+  <data name="Preset_DialogBody2" xml:space="preserve">
+    <value>Creating a preset records every currently enabled mod along with its settings. Applying it later enables exactly those mods and restores the settings to what they were.</value>
+  </data>
+  <data name="Preset_DialogBody3" xml:space="preserve">
+    <value>To let OMniX refresh 3Dmigoto for you, start Elevator first, then check "Auto-sync". Or do it yourself: check "Show manual controls", save / load settings by hand and press F10 to refresh 3Dmigoto.</value>
+  </data>
+  <data name="Preset_DialogBody4" xml:space="preserve">
+    <value>You can also ignore presets entirely and just use the manual controls below to save mod settings.</value>
+  </data>
+  <data name="Preset_DialogClose" xml:space="preserve">
+    <value>Got it</value>
+  </data>
+  <data name="Preset_DialogTitle" xml:space="preserve">
+    <value>How presets work</value>
+  </data>
+  <data name="Preset_DuplicateMenuItem.Text" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="Preset_EnabledCountLabel.Text" xml:space="preserve">
+    <value>Enabled mods:</value>
+  </data>
+  <data name="Preset_MoreOptions.AutomationProperties.Name" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="Preset_NewNameInput.Header" xml:space="preserve">
+    <value>New preset name</value>
+  </data>
+  <data name="Preset_NotificationAddFailed" xml:space="preserve">
+    <value>Failed to add to the preset</value>
+  </data>
+  <data name="Preset_NotificationAdded" xml:space="preserve">
+    <value>Added to the preset</value>
+  </data>
+  <data name="Preset_NotificationApplied" xml:space="preserve">
+    <value>Preset applied</value>
+  </data>
+  <data name="Preset_NotificationApplyFailed" xml:space="preserve">
+    <value>Failed to apply the preset</value>
+  </data>
+  <data name="Preset_NotificationCreateFailed" xml:space="preserve">
+    <value>Failed to create the preset</value>
+  </data>
+  <data name="Preset_NotificationDeleteFailed" xml:space="preserve">
+    <value>Failed to delete the preset</value>
+  </data>
+  <data name="Preset_NotificationDuplicateFailed" xml:space="preserve">
+    <value>Failed to duplicate the preset</value>
+  </data>
+  <data name="Preset_NotificationElevatorFailed" xml:space="preserve">
+    <value>Failed to start Elevator</value>
+  </data>
+  <data name="Preset_NotificationEntryPrefsSaveFailed" xml:space="preserve">
+    <value>Failed to save mod settings</value>
+  </data>
+  <data name="Preset_NotificationEntryPrefsSaved" xml:space="preserve">
+    <value>Settings for this mod saved</value>
+  </data>
+  <data name="Preset_NotificationPrefsReset" xml:space="preserve">
+    <value>Mod preferences reset</value>
+  </data>
+  <data name="Preset_NotificationRemoveFailed" xml:space="preserve">
+    <value>Failed to remove from the preset</value>
+  </data>
+  <data name="Preset_NotificationRemoved" xml:space="preserve">
+    <value>Removed from the preset</value>
+  </data>
+  <data name="Preset_NotificationRenameFailed" xml:space="preserve">
+    <value>Failed to rename the preset</value>
+  </data>
+  <data name="Preset_NotificationReorderFailed" xml:space="preserve">
+    <value>Failed to save the preset order</value>
+  </data>
+  <data name="Preset_NotificationResetFailed" xml:space="preserve">
+    <value>Failed to reset mod settings</value>
+  </data>
+  <data name="Preset_NotificationToggleReadOnlyFailed" xml:space="preserve">
+    <value>Failed to toggle read-only</value>
+  </data>
+  <data name="Preset_PageTitle.Text" xml:space="preserve">
+    <value>Mod presets and preferences</value>
+  </data>
+  <data name="Preset_RandomizeButton.Content" xml:space="preserve">
+    <value>Randomize mods</value>
+  </data>
+  <data name="Preset_RandomizeButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Opens a dialog explaining what it does</value>
+  </data>
+  <data name="Preset_ReadOnlyMenuItem.Text" xml:space="preserve">
+    <value>Read-only</value>
+  </data>
+  <data name="Preset_RenameText" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="Preset_ResetAlsoClearIniCheckBox.Content" xml:space="preserve">
+    <value>Also clear 3DMigoto's user.ini</value>
+  </data>
+  <data name="Preset_ResetFlyoutTitle.Text" xml:space="preserve">
+    <value>Reset saved mod preferences</value>
+  </data>
+  <data name="Preset_ResetOnlyEnabledCheckBox.Content" xml:space="preserve">
+    <value>Only reset enabled mods</value>
+  </data>
+  <data name="Preset_ResetPrefsButton.Content" xml:space="preserve">
+    <value>Reset mod preferences</value>
+  </data>
+  <data name="Preset_ResetPrefsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Clears the preferences stored in each mod's .JASM_ModConfig.json</value>
+  </data>
+  <data name="Preset_SavePrefsButton.Content" xml:space="preserve">
+    <value>Save current mod preferences (keys) to mods</value>
+  </data>
+  <data name="Preset_SavePrefsButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Reads enabled mods' preferences from d3dx_user.ini and stores them into each .JASM_Config.json</value>
+  </data>
+  <data name="Preset_SelectModWindowTitle" xml:space="preserve">
+    <value>Select mod</value>
+  </data>
+  <data name="Preset_ShowManualCheckBox.Content" xml:space="preserve">
+    <value>Show manual controls</value>
+  </data>
+  <data name="Preset_ShowManualCheckBox.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Check this to sync preferences yourself instead of letting Elevator do it</value>
+  </data>
+  <data name="Preset_StartElevatorButton.Content" xml:space="preserve">
+    <value>Start Elevator…</value>
+  </data>
+  <data name="Preset_ViewDetailsButton.Content" xml:space="preserve">
+    <value>View preset details</value>
+  </data>
+  <data name="Startup_BackButton.Content" xml:space="preserve">
+    <value>← Pick a different game</value>
+  </data>
+  <data name="Startup_ByAuthor.Text" xml:space="preserve">
+    <value>by 是湫</value>
+  </data>
+  <data name="Startup_DefaultModsFolderHint" xml:space="preserve">
+    <value>Default: {0}</value>
+  </data>
+  <data name="Startup_DetectedDialogClose" xml:space="preserve">
+    <value>Don't use it</value>
+  </data>
+  <data name="Startup_DetectedDialogPrimaryRename" xml:space="preserve">
+    <value>Rename and migrate mods</value>
+  </data>
+  <data name="Startup_DetectedDialogSecondary" xml:space="preserve">
+    <value>Just use this folder, keep the name</value>
+  </data>
+  <data name="Startup_DetectedDialogTitle" xml:space="preserve">
+    <value>Mod folder detected</value>
+  </data>
+  <data name="Startup_DetectedMessagePlain" xml:space="preserve">
+    <value>Found {0} mods here:
+
+{1}
+
+Set as the Mods folder automatically.</value>
+  </data>
+  <data name="Startup_DetectedMessageRename" xml:space="preserve">
+    <value>Found {0} mods here:
+
+{1}
+
+Set as the Mods folder automatically. Rename the folder to "{2}" while we are at it?
+New location: {3}
+(Renames in place — nothing moves elsewhere, and the mods come along.)</value>
+  </data>
+  <data name="Startup_DisableAllCheckBox.Content" xml:space="preserve">
+    <value>Also disable all mods</value>
+  </data>
+  <data name="Startup_GameSelectHint.Text" xml:space="preserve">
+    <value>Pick the game to manage and click its icon to configure its folders. You can switch games later in Settings.</value>
+  </data>
+  <data name="Startup_LauncherDetectedInfoBar.Title" xml:space="preserve">
+    <value>Launcher detected</value>
+  </data>
+  <data name="Startup_LauncherFolderHint.Text" xml:space="preserve">
+    <value>Just pick the folder the launcher lives in, for example D:\mod\XXMI Launcher. OMniX finds the launcher inside it (like Resources\Bin\XXMI Launcher.exe) and derives the Mods folder (like WWMI\Mods).</value>
+  </data>
+  <data name="Startup_LauncherFolderSelector.Footer" xml:space="preserve">
+    <value>e.g. D:\mod\XXMI Launcher</value>
+  </data>
+  <data name="Startup_LauncherFolderSelector.PlaceHolderText" xml:space="preserve">
+    <value>Pick the folder holding XXMI Launcher.exe and the other launcher files</value>
+  </data>
+  <data name="Startup_LauncherFolderSelector.Title" xml:space="preserve">
+    <value>Launcher folder</value>
+  </data>
+  <data name="Startup_ModsFolderSelector.Title" xml:space="preserve">
+    <value>Mods folder</value>
+  </data>
+  <data name="Startup_NotificationAlpha" xml:space="preserve">
+    <value>OMniX is still in alpha</value>
+  </data>
+  <data name="Startup_NotificationFolderRenameFailed" xml:space="preserve">
+    <value>Failed to rename the Mods folder</value>
+  </data>
+  <data name="Startup_NotificationFolderRenameFailedBody" xml:space="preserve">
+    <value>Kept the original folder: {0}</value>
+  </data>
+  <data name="Startup_NotificationFolderRenamed" xml:space="preserve">
+    <value>Mods folder renamed</value>
+  </data>
+  <data name="Startup_NotificationFolderRenamedBody" xml:space="preserve">
+    <value>Migrated to: {0}</value>
+  </data>
+  <data name="Startup_NotificationSettingsSaved" xml:space="preserve">
+    <value>Startup settings saved</value>
+  </data>
+  <data name="Startup_PageTitle.Text" xml:space="preserve">
+    <value>First-run setup</value>
+  </data>
+  <data name="Startup_ReorganizeCheckBox.Content" xml:space="preserve">
+    <value>Reorganize mods</value>
+  </data>
+  <data name="Startup_SaveButton.Content" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Startup_SkipButton.Content" xml:space="preserve">
+    <value>Back to home</value>
+  </data>
+  <data name="Startup_SkipButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back to home; the setup can be reopened later from the guide card on the home page</value>
+  </data>
+  <data name="Startup_UninstallHint.Text" xml:space="preserve">
+    <value>Uninstalling mods is not implemented yet. Once it lands, selected mods can be moved into a dedicated uninstall folder.</value>
+  </data>
+  <data name="Startup_UnloadedFolderSelector.Title" xml:space="preserve">
+    <value>Uninstall area folder (optional)</value>
+  </data>
+</root>
