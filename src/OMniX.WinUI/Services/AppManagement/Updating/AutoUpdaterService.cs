@@ -192,13 +192,36 @@ public class AutoUpdaterService
         try
         {
             _logger.Information("Starting Auto Updater...");
-            var process = Process.Start(new ProcessStartInfo
+
+            // 二开：主程序是 self-contained 部署，启动时 WindowsAppSDK 会往环境里塞
+            // MICROSOFT_WINDOWSAPPRUNTIME_BASE_DIRECTORY，指向主程序自己的运行时目录。
+            // 更新器是另一份独立的 WindowsAppRuntime —— 一旦继承了这个变量，它就会跑去
+            // 主程序的目录里找 WinUI，版本对不上，Application.LoadComponent 当场抛
+            // XamlParseException，窗口白一下就没了。
+            //
+            // 现象很有意思：在设置页点「用本地包更新」必崩，双击「手动更新.bat」却正常 ——
+            // 因为 bat 是资源管理器/命令行拉起来的，环境是干净的，没有这个变量。
+            //
+            // UseShellExecute 必须改成 false 才能动子进程的环境变量；更新器不需要提权
+            // （app.manifest 是 asInvoker），所以不会因此起不来。
+            var startInfo = new ProcessStartInfo
             {
                 FileName = Path.Combine(_currentAutoUpdaterFolder.FullName, AutoUpdaterExe),
                 WorkingDirectory = _currentAutoUpdaterFolder.FullName,
                 Arguments = BuildArguments(localZipPath),
-                UseShellExecute = true
-            });
+                UseShellExecute = false
+            };
+
+            // 只删 WindowsAppSDK 自己的那组定位变量，其它（PATH、TEMP…）原样保留。
+            // 全部删掉而不是删某一个：不同版本的 SDK 用的变量名不完全一样。
+            foreach (var key in startInfo.Environment.Keys
+                         .Where(k => k.StartsWith("MICROSOFT_WINDOWSAPPRUNTIME", StringComparison.OrdinalIgnoreCase))
+                         .ToList())
+            {
+                startInfo.Environment.Remove(key);
+            }
+
+            var process = Process.Start(startInfo);
 
             if (process is null || process.HasExited)
             {
