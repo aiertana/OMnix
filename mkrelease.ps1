@@ -50,6 +50,27 @@ Write-Output "=== 1. 发布 ==="
 & dotnet publish $proj -p:PublishProfile=FolderProfileSelfContained -c Release -p:Platform=x64 --nologo -v:m 2>&1 |
     Select-String -Pattern 'error|已成功|Publish\\' | Select-Object -Last 4
 
+# ---- 1.5 重建启动器 ----
+# 二开：启动OMniX.exe 以前是手工 publish 一次就丢在根目录，之后再没人动过 ——
+# 于是它一直停在 1.1.7，1.3.3 的包里装的还是那个老版本，跟主程序差了六个版本。
+# 版本号对不上，真出了毛病也查不到用户手里跑的到底是哪一版。
+# csproj 的版本由 bumpVersion.ps1 跟着 version.json 一起升，
+# 所以这里每次打包前自动重建一次即可，不用再记得手工发布。
+Write-Output ""
+Write-Output "=== 1.5 重建启动器 ==="
+$launcherProj = Join-Path $repo 'src\OMniXLauncher\OMniXLauncher.csproj'
+$launcherOut  = Join-Path $repo 'src\OMniXLauncher\publish'
+& dotnet publish $launcherProj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o $launcherOut --nologo -v:m 2>&1 |
+    Select-String -Pattern 'error' | Select-Object -Last 3
+$launcherExe = Join-Path $launcherOut '启动OMniX.exe'
+if (Test-Path $launcherExe) {
+    Copy-Item $launcherExe -Destination $ref -Force
+    Write-Output ("启动OMniX.exe  " + (Get-Item $launcherExe).VersionInfo.FileVersion)
+}
+else {
+    Write-Output "警告：启动器没编译出来，包里会用根目录那份旧的"
+}
+
 # ---- 2. 组装 ----
 Write-Output ""
 Write-Output ("=== 2. 组装 " + $outRoot + " ===")
