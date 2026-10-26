@@ -67,9 +67,14 @@ New-Item -ItemType Directory -Path $outApp -Force | Out-Null
 # 根目录还有 version.json、几个 ps1 脚本，那些是开发用的，不该进包。
 # 二开：外置更新入口。主程序万一打不开（崩了、缺运行时、配置坏了），
 # 软件里的「检查更新」就点不到了，用户只能自己去 GitHub 翻整包 ——
-# 其实更新器是独立进程，完全可以直接跑。这个 bat 放在包顶层，
+# 其实更新器是独立进程，完全可以直接跑。这个东西放在包顶层，
 # 双击就能更新，不经过主程序。
-foreach ($name in @('启动OMniX.exe', '手动更新.bat', 'README.md', '使用说明.txt', '使用说明书.md', 'DISCLAIMER.md', 'LICENSE')) {
+#
+# 二开：原来是 手动更新.bat，双击会闪一个黑框，还容易被安全软件拦；
+# 现在换成 手动更新.exe（见 src\UpdaterLauncher，用系统自带的 .NET Framework
+# 编译器编译，几 KB，不依赖 .NET 9 运行时 —— 这个入口存在的意义就是
+# 「主程序已经起不来了」，依赖越少越好）。带图标，找不到更新器时弹对话框提示。
+foreach ($name in @('启动OMniX.exe', '手动更新.exe', 'README.md', '使用说明.txt', '使用说明书.md', 'DISCLAIMER.md', 'LICENSE')) {
     $src = Join-Path $ref $name
     if (Test-Path $src) {
         Copy-Item $src -Destination $outRoot -Force
@@ -196,6 +201,14 @@ Get-ChildItem -Path $outRoot | ForEach-Object {
 # ---- 3. 压缩 ----
 Write-Output ""
 Write-Output "=== 3. 压缩 ==="
+
+# 二开：调试符号（.pdb）对用户没用，只让包变大（约 1.4 MB），打 zip 之前删掉
+$pdbFiles = @(Get-ChildItem $outRoot -Recurse -Filter '*.pdb' -File -ErrorAction SilentlyContinue)
+if ($pdbFiles.Count -gt 0) {
+    $pdbFiles | Remove-Item -Force
+    Write-Output ("清理调试符号: " + $pdbFiles.Count + " 个")
+}
+
 $zip = $outRoot + '.zip'
 if (Test-Path $zip) { Remove-Item $zip -Force }
 Compress-Archive -Path (Join-Path $outRoot '*') -DestinationPath $zip -Force
