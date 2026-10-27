@@ -4,7 +4,7 @@
 
 使用说明书：[使用说明书.md](使用说明书.md)　·　英文说明：[README_EN.md](README_EN.md)　·　免责声明：[DISCLAIMER.md](DISCLAIMER.md)　·　许可：[GPL-3.0](LICENSE)
 
-当前版本：**1.3.3**
+当前版本：**1.4.0**
 
 ![界面预览](Images/screenshot-home.png)
 
@@ -41,8 +41,25 @@ OMniX **完全免费、开源**。没有会员版，没有激活码，也没有�
 | **Mod 修复** | 集成 Wuwa Mod Fixer，可以直接在程序里下载并运行 |
 | **启动游戏** | 配好路径后直接拉起 XXMI Launcher 和游戏本体；没装启动器会提示去下载或手动指定 |
 | **Mod 迁移** | Mod 可以在角色之间移动，也可以复制 |
+| **功能专区** | 游戏内核与插件按游戏分开管理：点头像切游戏，可下载、可导入离线包（zip），第三方按约定放 `plugin.json` 就能被自动识别 |
+| **多游戏切换** | 首页右上角下拉切换游戏内核（鸣潮 / 绝区零 / 原神 / 崩铁），没下载的内核灰着点不动 |
 
 角色、预设、Mod 的开关状态都保存在本地，换台机器拷过去就能接着用。
+
+> 外壳（首页、设置、通知、关于）与具体游戏无关，游戏及其管理功能作为「内核」单独下载。
+> 目前内置鸣潮一个内核，其余三款在功能专区里补齐。
+
+## 四个游戏分别是怎么启动的
+
+| 游戏 | 启动方式 | 说明 |
+|---|---|---|
+| 鸣潮 | 官方启动器 | 直接拉游戏进程会被 kuro 校验弹崩，必须走 `launcher.exe` |
+| 绝区零 | XXMI 启动器 | ZZMI 那一支 |
+| 原神 | HoYo 系启动器 | `HoYoShadeHub.exe` 等 |
+| 崩坏：星穹铁道 | HoYo 系启动器 | 同上 |
+
+设置页「游戏与路径 → 启动方式」会自动识别，识别不到就点「手动添加」自己指定一个 exe ——
+官方的、第三方的都行，不写死文件名。
 
 ---
 
@@ -64,24 +81,31 @@ OMniX **完全免费、开源**。没有会员版，没有激活码，也没有�
 
 ## 数据存在哪
 
+新版把数据搬到版本目录下，按游戏分开存放：
+
 ```
-C:\Users\<用户名>\AppData\Local\OMniX\
-├─ ApplicationData_WuWa\    鸣潮的数据
-│  ├─ GameService.json      角色定义
-│  ├─ LocalSettings.json    设置（含 Mods 文件夹路径）
-│  ├─ commands.json         启动器 / 游戏启动命令
-│  └─ Presets\              预设
-└─ game.json                当前选中的游戏
+OMniX1.4.0.x\
+├─ Core\            管理器本体（OMniX.exe 在这里）
+├─ GamesData\       游戏数据（可以在设置页改到别的盘）
+│  ├─ WuWa\         鸣潮：Presets\ Plugins\ Cache\ Logs\
+│  ├─ ZZZ\          绝区零
+│  ├─ GI\           原神
+│  └─ HSR\          崩坏：星穹铁道
+├─ 启动OMniX.exe
+└─ 手动更新.exe
 ```
 
-Mod 文件本身**不在**这里，在 XXMI Launcher 的 `WWMI\Mods` 下。
+老版本的数据在 `C:\Users\<用户名>\AppData\Local\OMniX\`。升级上来后软件会问你要不要一键搬过来，
+也可以在「设置 → 游戏与路径 → 数据目录」里手动迁移。搬不搬、搬完删不删都由你决定。
+
+Mod 文件本身**不在** GamesData 里，在 XXMI Launcher 的 `WWMI\Mods` 下（路径可以在设置页自己指定）。
 
 ---
 
 ## 源码与构建
 
 这个仓库放的是**源码**。不想自己编译的话，打好的程序去
-[Releases](https://github.com/aiertana/OMnix/releases) 下载 `OMniX1.3.3.zip`，解压即用。
+[Releases](https://github.com/aiertana/OMnix/releases) 下载 `OMniX1.4.0.zip`，解压即用。
 
 ### 需要什么
 

@@ -21,6 +21,9 @@ internal static class Program
     [
         Path.Combine("src", "OMniX.WinUI", "bin", "x64", "Debug", "net9.0-windows10.0.22621.0", "OMniX.exe"),
         Path.Combine("src", "OMniX.WinUI", "bin", "Release", "Publish", "OMniX.exe"),
+        // 新版目录结构：程序本体在 Core\，游戏数据在同级的 GamesData\
+        Path.Combine("Core", "OMniX.exe"),
+        // 老包还在用 OMniX\ 这个名字，留着兼容，别让老用户点了没反应
         Path.Combine("OMniX", "OMniX.exe")
     ];
 

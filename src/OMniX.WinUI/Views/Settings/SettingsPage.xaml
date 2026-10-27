@@ -319,6 +319,108 @@
                     </Grid>
                 </Border>
 
+                <!--  启动方式：认出来是哪种，左下角「启动游戏」就按哪种拉起。
+                      认不出来也没关系，点「手动添加」自己指定  -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Style="{StaticResource CardTitleStyle}" Text="启动方式" l:Uids.Uid="/SettingsUi/LaunchModeTitle" />
+                        <TextBlock
+                            Style="{StaticResource CardDescStyle}"
+                            Text="程序会自动找这个游戏的启动器。找不到就点「手动添加」自己选一个 exe，官方的、第三方的都行。"
+                            TextWrapping="WrapWholeWords"
+                            l:Uids.Uid="/SettingsUi/LaunchModeDesc" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Spacing="4">
+                                <TextBlock FontWeight="SemiBold" Text="{x:Bind ViewModel.LaunchModeText, Mode=OneWay}" />
+                                <TextBlock
+                                    FontSize="12"
+                                    IsTextSelectionEnabled="True"
+                                    Opacity="0.75"
+                                    Text="{x:Bind ViewModel.LaunchExecutableText, Mode=OneWay}"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Opacity="0.7"
+                                    Text="{x:Bind ViewModel.LaunchStatusText, Mode=OneWay}"
+                                    TextWrapping="WrapWholeWords" />
+                            </StackPanel>
+
+                            <ComboBox
+                                Grid.Column="1"
+                                MinWidth="180"
+                                VerticalAlignment="Center"
+                                ItemsSource="{x:Bind ViewModel.LaunchModeOptions, Mode=OneWay}"
+                                SelectedIndex="{x:Bind ViewModel.SelectedLaunchModeIndex, Mode=TwoWay}"
+                                SelectionChanged="LaunchModeComboBox_OnSelectionChanged"
+                                l:Uids.Uid="/SettingsUi/LaunchModeComboBox" />
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Command="{x:Bind ViewModel.DetectLaunchModeCommand}" Content="重新识别" l:Uids.Uid="/SettingsUi/LaunchRedetectButton" />
+                            <Button Command="{x:Bind ViewModel.BrowseLauncherCommand}" Content="手动添加" l:Uids.Uid="/SettingsUi/LaunchBrowseButton" />
+                            <Button Command="{x:Bind ViewModel.ClearLauncherCommand}" Content="清除手动指定" l:Uids.Uid="/SettingsUi/LaunchClearButton" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!--  数据目录 + 旧数据迁移  -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <StackPanel Spacing="10">
+                        <TextBlock Style="{StaticResource CardTitleStyle}" Text="数据目录" l:Uids.Uid="/SettingsUi/DataRootTitle" />
+                        <TextBlock
+                            Style="{StaticResource CardDescStyle}"
+                            Text="游戏数据按游戏分开放在这里。想挪到别的盘就改下面的路径。"
+                            TextWrapping="WrapWholeWords"
+                            l:Uids.Uid="/SettingsUi/DataRootDesc" />
+                        <TextBlock
+                            FontSize="12"
+                            IsTextSelectionEnabled="True"
+                            Opacity="0.75"
+                            Text="{x:Bind ViewModel.GameDataRootText, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button
+                                Command="{x:Bind ViewModel.MigrateLegacyDataCommand}"
+                                Content="迁移 C 盘旧数据"
+                                Visibility="{x:Bind ViewModel.HasLegacyDataVisibility, Mode=OneWay}"
+                                l:Uids.Uid="/SettingsUi/MigrateButton" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!--  游戏资源管理：只删管理器自己生成的东西  -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="游戏资源管理" l:Uids.Uid="/SettingsUi/CleanupCardTitle" />
+                            <TextBlock
+                                Style="{StaticResource CardDescStyle}"
+                                Text="清理这个游戏的缓存、索引、预设和插件。你自己的 Mod 和 XXMI 本体不会被删。"
+                                TextWrapping="WrapWholeWords"
+                                l:Uids.Uid="/SettingsUi/CleanupCardDesc" />
+                        </StackPanel>
+
+                        <Button
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Command="{x:Bind ViewModel.ShowGameResourceCleanupCommand}"
+                            Content="一键删除"
+                            l:Uids.Uid="/SettingsUi/CleanupButton" />
+                    </Grid>
+                </Border>
+
                 <Border Style="{StaticResource SettingCardStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>

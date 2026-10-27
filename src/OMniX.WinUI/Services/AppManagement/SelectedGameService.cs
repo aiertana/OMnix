@@ -170,5 +170,6 @@ public class SelectedGameService
 
 public class SelectedGameModel
 {
-    public string SelectedGame { get; set; } = "Genshin";
+    // 二开：原来是 Genshin。这个管理器做的是鸣潮，没配置过时默认就该落在鸣潮上
+    public string SelectedGame { get; set; } = "WuWa";
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="OMniX.WinUI.Views.ShellPage"
     xmlns:l="using:WinUI3Localizer"
@@ -173,8 +173,8 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem helpers:NavigationHelper.NavigateTo="OMniX.WinUI.ViewModels.PluginAreaViewModel" Content="插件专区"
-            l:Uids.Uid="/ShellUi/Shell_NavPluginArea">
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="OMniX.WinUI.ViewModels.FeatureAreaViewModel" Content="功能专区"
+            l:Uids.Uid="/ShellUi/Shell_NavFeatureArea">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE9F0;" />
                     </NavigationViewItem.Icon>
@@ -194,7 +194,8 @@
                 <NavigationViewItem
                     x:Name="ModPluginItem"
                     SelectsOnInvoked="False"
-                    ToolTipService.ToolTip="{x:Bind ViewModel.ModToolTip, Mode=OneWay}">
+                    ToolTipService.ToolTip="{x:Bind ViewModel.ModToolTip, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.ModToggleVisibility, Mode=OneWay}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74C;" />
                     </NavigationViewItem.Icon>
@@ -218,7 +219,8 @@
                 <NavigationViewItem
                     x:Name="Dlss5PluginItem"
                     SelectsOnInvoked="False"
-                    ToolTipService.ToolTip="{x:Bind ViewModel.Dlss5ToolTip, Mode=OneWay}">
+                    ToolTipService.ToolTip="{x:Bind ViewModel.Dlss5ToolTip, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.Dlss5ToggleVisibility, Mode=OneWay}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7FC;" />
                     </NavigationViewItem.Icon>

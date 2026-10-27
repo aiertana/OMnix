@@ -52,6 +52,10 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     private readonly ModUpdateAvailableChecker _modUpdateAvailableChecker;
     private readonly LifeCycleService _lifeCycleService;
     private readonly INavigationService _navigationService;
+    private readonly GameLaunchResolver _launchResolver;
+    private readonly GameKernelService _kernel;
+    private readonly GameDataRootService _dataRoot;
+    private readonly PluginCatalogService _pluginCatalog;
     private readonly ModArchiveRepository _modArchiveRepository;
 
     /// <summary>二开：搬插件目录时要顺手更新它记住的部署包路径</summary>
@@ -182,7 +186,9 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         SelectedGameService selectedGameService, ModUpdateAvailableChecker modUpdateAvailableChecker,
         LifeCycleService lifeCycleService, INavigationService navigationService,
         ModArchiveRepository modArchiveRepository, ThemeStyleService themeStyleService,
-        UiSoundService uiSoundService, PaletteService paletteService, Dlss5PluginService dlss5)
+        UiSoundService uiSoundService, PaletteService paletteService, Dlss5PluginService dlss5,
+        GameLaunchResolver launchResolver, GameKernelService kernel, GameDataRootService dataRoot,
+        PluginCatalogService pluginCatalog)
     {
         _uiSoundService = uiSoundService;
         _themeStyleService = themeStyleService;
@@ -207,6 +213,10 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         _navigationService = navigationService;
         _modArchiveRepository = modArchiveRepository;
         _dlss5 = dlss5;
+        _launchResolver = launchResolver;
+        _kernel = kernel;
+        _dataRoot = dataRoot;
+        _pluginCatalog = pluginCatalog;
         GenshinProcessManager = genshinProcessManager;
         ThreeDMigtoProcessManager = threeDMigtoProcessManager;
         _logger = logger.ForContext<SettingsViewModel>();
@@ -1314,6 +1324,17 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     public async void OnNavigatedTo(object parameter)
     {
         SelectedGame = await _selectedGameService.GetSelectedGameAsync();
+
+        // 进页面顺手认一遍启动方式，玩家一眼能看到现在会用哪个启动器
+        try
+        {
+            await RefreshLaunchInfoAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.Warning(ex, "识别启动方式失败");
+        }
+
         var modUpdateCheckerOptions =
             await _localSettingsService.ReadOrCreateSettingAsync<BackGroundModCheckerSettings>(
                 BackGroundModCheckerSettings.Key);
@@ -1449,6 +1470,335 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     {
         var dialog = new DisableAllModsDialog();
         return dialog.ShowDialogAsync();
+    }
+
+    // ==================== 多内核外壳：启动方式 / 数据目录 / 游戏资源 ====================
+
+    [ObservableProperty] private string _launchModeText = string.Empty;
+    [ObservableProperty] private string _launchExecutableText = string.Empty;
+    [ObservableProperty] private string _launchStatusText = string.Empty;
+    [ObservableProperty] private string _gameDataRootText = string.Empty;
+    [ObservableProperty] private bool _hasLegacyData;
+
+    /// <summary>x:Bind 不做 bool → Visibility 的隐式转换，这里直接给个 Visibility</summary>
+    public Visibility HasLegacyDataVisibility => HasLegacyData ? Visibility.Visible : Visibility.Collapsed;
+    [ObservableProperty] private int _selectedLaunchModeIndex;
+    [ObservableProperty] private ObservableCollection<string> _launchModeOptions = new();
+
+    /// <summary>当前设置页选中的游戏对应的内核</summary>
+    private OMniX.WinUI.Helpers.GameDefinition CurrentGameDefinition
+    {
+        get
+        {
+            var core = Enum.TryParse<SupportedGames>(SelectedGame, true, out var parsed)
+                ? parsed
+                : SupportedGames.WuWa;
+
+            return OMniX.WinUI.Helpers.GameCatalog.ByCore(core) ?? OMniX.WinUI.Helpers.GameCatalog.Fallback;
+        }
+    }
+
+    /// <summary>
+    ///     进设置页时把这一游戏的启动方式认一遍。
+    ///     认到什么，左下角「启动游戏」就按什么拉起。
+    /// </summary>
+    public async Task RefreshLaunchInfoAsync()
+    {
+        var game = CurrentGameDefinition;
+
+        LaunchModeOptions.Clear();
+        LaunchModeOptions.Add(_localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchModeAuto", "自动（跟随游戏默认）"));
+        LaunchModeOptions.Add(_localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchModeOfficial", "官方启动器"));
+        LaunchModeOptions.Add(_localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchModeXxmi", "XXMI 启动器"));
+        LaunchModeOptions.Add(_localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchModeHoYo", "HoYo 启动器"));
+
+        var configured = _launchResolver.GetConfiguredMode(game);
+        SelectedLaunchModeIndex = configured is null ? 0 : (int)configured.Value + 1;
+
+        GameDataRootText = _dataRoot.GamesDataRoot;
+        HasLegacyData = GameDataRootService.HasLegacyData();
+
+        await DetectLaunchModeAsync();
+    }
+
+    private string ModeName(OMniX.WinUI.Helpers.GameLaunchMode mode) => mode switch
+    {
+        OMniX.WinUI.Helpers.GameLaunchMode.Official =>
+            _localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchModeOfficial", "官方启动器"),
+        OMniX.WinUI.Helpers.GameLaunchMode.Xxmi =>
+            _localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchModeXxmi", "XXMI 启动器"),
+        OMniX.WinUI.Helpers.GameLaunchMode.HoYo =>
+            _localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchModeHoYo", "HoYo 启动器"),
+        _ => _localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchModeManual", "手动指定")
+    };
+
+    /// <summary>重新识别当前游戏的启动方式</summary>
+    [RelayCommand]
+    private async Task DetectLaunchModeAsync()
+    {
+        var game = CurrentGameDefinition;
+        var options = await _localSettingsService.ReadOrCreateSettingAsync<ModManagerOptions>(ModManagerOptions.Section);
+        var resolution = _launchResolver.Resolve(game, options);
+
+        LaunchModeText = ModeName(resolution.Mode);
+
+        if (resolution.Found)
+        {
+            LaunchExecutableText = resolution.Executable;
+            LaunchStatusText = resolution.IsManual
+                ? _localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchStatusManual", "用的是你手动指定的启动器")
+                : _localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchStatusAuto", "自动识别到的，点左下角「启动游戏」就会用它");
+        }
+        else
+        {
+            LaunchExecutableText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchNotFound", "没找到");
+            LaunchStatusText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/LaunchNotFoundHint",
+                "自动识别没找到启动器，可以点「手动添加」自己指定一个 exe");
+        }
+    }
+
+    /// <summary>下拉选启动方式；选「自动」就是交回给程序自己认</summary>
+    [RelayCommand]
+    private async Task SetLaunchModeAsync(int index)
+    {
+        var game = CurrentGameDefinition;
+        var mode = index <= 0
+            ? (OMniX.WinUI.Helpers.GameLaunchMode?)null
+            : (OMniX.WinUI.Helpers.GameLaunchMode)(index - 1);
+
+        await _launchResolver.SetConfiguredModeAsync(game, mode);
+        await DetectLaunchModeAsync();
+    }
+
+    /// <summary>
+    ///     手动指定启动器。文件名是什么都行 —— 官方的、第三方的都能用，
+    ///     所以这里不写死文件名，玩家选了什么就用什么。
+    /// </summary>
+    [RelayCommand]
+    private async Task BrowseLauncherAsync()
+    {
+        try
+        {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            picker.FileTypeFilter.Add(".exe");
+
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+            var file = await picker.PickSingleFileAsync();
+
+            if (file is null)
+                return;
+
+            await _launchResolver.SetManualPathAsync(CurrentGameDefinition, file.Path);
+            await DetectLaunchModeAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.Warning(ex, "手动选择启动器失败");
+        }
+    }
+
+    /// <summary>清掉手动指定的启动器，回到自动识别</summary>
+    [RelayCommand]
+    private async Task ClearLauncherAsync()
+    {
+        await _launchResolver.SetManualPathAsync(CurrentGameDefinition, string.Empty);
+        await DetectLaunchModeAsync();
+    }
+
+    /// <summary>
+    ///     游戏资源管理：列出这个游戏相关的可清理项，玩家勾选后送回收站。
+    ///     只碰管理器自己生成的东西 —— 玩家的 Mod 和非官方启动器本体一律不动。
+    /// </summary>
+    [RelayCommand]
+    private async Task ShowGameResourceCleanupAsync()
+    {
+        var gameId = CurrentGameDefinition.Id;
+        var candidates = BuildCleanupCandidates(gameId);
+
+        if (candidates.Count == 0)
+        {
+            _notificationManager.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupNothingTitle", "没有可清理的内容"),
+                _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupNothingBody", "这个游戏的数据目录还没生成"),
+                TimeSpan.FromSeconds(5));
+            return;
+        }
+
+        var panel = new StackPanel { Spacing = 10 };
+
+        panel.Children.Add(new TextBlock
+        {
+            Text = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupIntro",
+                "只列出管理器自己生成的东西。你自己的 Mod 文件、XXMI 这类非官方启动器本体都不在里面，也不会被删。"),
+            TextWrapping = TextWrapping.WrapWholeWords
+        });
+
+        var boxes = new List<(CheckBox Box, string Path)>();
+
+        foreach (var candidate in candidates)
+        {
+            var box = new CheckBox
+            {
+                Content = candidate.Label + "\n" + candidate.Path,
+                IsChecked = false,
+                FontSize = 12
+            };
+
+            panel.Children.Add(box);
+            boxes.Add((box, candidate.Path));
+        }
+
+        var permanent = new CheckBox
+        {
+            Content = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupPermanent", "永久删除（不进回收站）"),
+            IsChecked = false
+        };
+
+        panel.Children.Add(permanent);
+
+        var scroll = new ScrollViewer { Content = panel, MaxHeight = 320 };
+
+        var dialog = new ContentDialog
+        {
+            Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupTitle", "清理这个游戏的数据"),
+            Content = scroll,
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupPrimary", "删除勾选的项目"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/Cancel", "取消"),
+            DefaultButton = ContentDialogButton.Close
+        };
+
+        if (await _windowManagerService.ShowDialogAsync(dialog) != ContentDialogResult.Primary)
+            return;
+
+        var removed = 0;
+
+        foreach (var (box, path) in boxes)
+        {
+            if (box.IsChecked != true)
+                continue;
+
+            try
+            {
+                if (permanent.IsChecked == true)
+                    OMniX.WinUI.Helpers.RecycleBin.DeleteDirectory(path);
+                else
+                    OMniX.WinUI.Helpers.RecycleBin.SendDirectory(path);
+
+                removed++;
+            }
+            catch (Exception ex)
+            {
+                _logger.Warning(ex, "清理失败：{Path}", path);
+            }
+        }
+
+        _notificationManager.ShowNotification(
+            _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupDoneTitle", "清理完成"),
+            string.Format(_localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupDoneBody",
+                "处理了 {0} 项。勾了回收站的可以在回收站里找回。"), removed),
+            TimeSpan.FromSeconds(6));
+    }
+
+    /// <summary>
+    ///     可清理项：新旧两套位置都看一眼，存在的才列出来。
+    /// </summary>
+    private List<(string Label, string Path)> BuildCleanupCandidates(string gameId)
+    {
+        var result = new List<(string, string)>();
+        var root = _dataRoot.GameRoot(gameId);
+        var legacy = Path.Combine(GameDataRootService.LegacyAppDataRoot, "ApplicationData_" + CurrentGameDefinition.Core);
+
+        void Add(string label, params string[] paths)
+        {
+            foreach (var path in paths)
+            {
+                if (Directory.Exists(path))
+                    result.Add((label, path));
+            }
+        }
+
+        var characterCache = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupCharacterCache", "角色列表缓存");
+        var modIndex = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupModIndex", "Mod 索引数据库");
+        var presets = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupPresets", "预设配置");
+        var plugins = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupPlugins", "已下载的功能插件");
+        var logs = _localizer.GetLocalizedStringOrDefault("/SettingsUi/CleanupLogs", "日志 / 缓存");
+
+        Add(characterCache, Path.Combine(root, "Cache", "Characters"), Path.Combine(legacy, "Cache", "Characters"));
+        Add(modIndex, Path.Combine(root, "Cache", "ModIndex"), Path.Combine(legacy, "Cache", "ModIndex"));
+        Add(presets, Path.Combine(root, "Presets"), Path.Combine(legacy, "Presets"));
+        Add(plugins, Path.Combine(root, "Plugins"), Path.Combine(GameDataRootService.LegacyAppDataRoot, "Plugins"));
+        Add(logs, Path.Combine(root, "Logs"), Path.Combine(root, "Cache"), Path.Combine(legacy, "Logs"));
+
+        return result;
+    }
+
+    /// <summary>设置页手动触发一次性迁移（启动时的弹窗选了「以后再说」就来这里）</summary>
+    [RelayCommand]
+    private async Task MigrateLegacyDataAsync()
+    {
+        if (!GameDataRootService.HasLegacyData())
+        {
+            _notificationManager.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateNothingTitle", "没有旧数据"),
+                _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateNothingBody", "C 盘上没找到旧版本的 OMniX 数据"),
+                TimeSpan.FromSeconds(5));
+            return;
+        }
+
+        var status = new TextBlock
+        {
+            Text = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateRunning", "正在复制文件…"),
+            TextWrapping = TextWrapping.WrapWholeWords
+        };
+
+        var panel = new StackPanel { Spacing = 10 };
+        panel.Children.Add(status);
+        panel.Children.Add(new ProgressBar { IsIndeterminate = true, Width = 320 });
+
+        var dialog = new ContentDialog
+        {
+            Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/LegacyMigrateTitle", "迁移旧数据"),
+            Content = panel
+        };
+
+        var showing = _windowManagerService.ShowDialogAsync(dialog);
+        MigrationResult migration;
+
+        try
+        {
+            var progress = new Progress<MigrationProgress>(update =>
+                App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                    status.Text = string.Format(
+                        _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateItem", "正在搬：{0}（{1}/{2}）"),
+                        update.CurrentName, update.DoneFiles, update.TotalFiles)));
+
+            migration = await Task.Run(async () => await _dataRoot.MigrateAsync(progress));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "设置页迁移失败");
+            migration = new MigrationResult { Success = false, Message = ex.Message };
+        }
+        finally
+        {
+            dialog.Hide();
+        }
+
+        try
+        {
+            await showing;
+        }
+        catch (Exception)
+        {
+            // 关窗异常忽略
+        }
+
+        _notificationManager.ShowNotification(
+            _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateDoneTitle", "迁移完成"),
+            migration.Message + "\n" + _dataRoot.GamesDataRoot,
+            TimeSpan.FromSeconds(8));
     }
 
     public void OnNavigatedFrom()

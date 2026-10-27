@@ -683,4 +683,43 @@ Sorry for the inconvenience.</value>
   <data name="Cmd_RunAsAdminTip.ToolTipService.ToolTip" xml:space="preserve"><value>Start this program as administrator</value></data>
   <data name="Cmd_ShellExecuteTip.ToolTipService.ToolTip" xml:space="preserve"><value>Let Windows launch the program (ShellExecute)</value></data>
   <data name="Cmd_NewWindowTip.ToolTipService.ToolTip" xml:space="preserve"><value>Runs it in a separate window (not available yet)</value></data>
+  <data name="LaunchModeTitle" xml:space="preserve"><value>Launch method</value></data>
+  <data name="LaunchModeDesc" xml:space="preserve"><value>OMniX looks for this game's launcher automatically. If it cannot find one, use "Add manually" and pick any exe - official or third-party.</value></data>
+  <data name="LaunchModeAuto" xml:space="preserve"><value>Automatic (game default)</value></data>
+  <data name="LaunchModeOfficial" xml:space="preserve"><value>Official launcher</value></data>
+  <data name="LaunchModeXxmi" xml:space="preserve"><value>XXMI launcher</value></data>
+  <data name="LaunchModeHoYo" xml:space="preserve"><value>HoYo launcher</value></data>
+  <data name="LaunchModeManual" xml:space="preserve"><value>Manual</value></data>
+  <data name="LaunchStatusManual" xml:space="preserve"><value>Using the launcher you picked by hand</value></data>
+  <data name="LaunchStatusAuto" xml:space="preserve"><value>Detected automatically - "Launch game" at the bottom left will use it</value></data>
+  <data name="LaunchNotFound" xml:space="preserve"><value>Not found</value></data>
+  <data name="LaunchNotFoundHint" xml:space="preserve"><value>No launcher was detected. Use "Add manually" to pick one yourself.</value></data>
+  <data name="LaunchRedetectButton.Content" xml:space="preserve"><value>Detect again</value></data>
+  <data name="LaunchBrowseButton.Content" xml:space="preserve"><value>Add manually</value></data>
+  <data name="LaunchClearButton.Content" xml:space="preserve"><value>Clear manual choice</value></data>
+  <data name="DataRootTitle" xml:space="preserve"><value>Data folder</value></data>
+  <data name="DataRootDesc" xml:space="preserve"><value>Game data is kept here, separated per game. Move it to another drive if you like.</value></data>
+  <data name="MigrateButton.Content" xml:space="preserve"><value>Move old data from drive C</value></data>
+  <data name="LegacyMigrateTitle" xml:space="preserve"><value>Moving old data</value></data>
+  <data name="MigrateRunning" xml:space="preserve"><value>Copying files...</value></data>
+  <data name="MigrateItem" xml:space="preserve"><value>Moving: {0} ({1}/{2})</value></data>
+  <data name="MigrateDoneTitle" xml:space="preserve"><value>Migration done</value></data>
+  <data name="MigrateNothingTitle" xml:space="preserve"><value>Nothing to move</value></data>
+  <data name="MigrateNothingBody" xml:space="preserve"><value>No old OMniX data was found on drive C</value></data>
+  <data name="CleanupCardTitle" xml:space="preserve"><value>Game resources</value></data>
+  <data name="CleanupCardDesc" xml:space="preserve"><value>Clear this game's cache, index, presets and plugins. Your own mods and XXMI itself are never touched.</value></data>
+  <data name="CleanupButton.Content" xml:space="preserve"><value>Clean up</value></data>
+  <data name="CleanupTitle" xml:space="preserve"><value>Clean up this game's data</value></data>
+  <data name="CleanupIntro" xml:space="preserve"><value>Only things OMniX generated itself are listed. Your own mod files and third-party launchers such as XXMI are not included and will not be deleted.</value></data>
+  <data name="CleanupPrimary" xml:space="preserve"><value>Delete the selected items</value></data>
+  <data name="CleanupPermanent" xml:space="preserve"><value>Delete permanently (skip the recycle bin)</value></data>
+  <data name="CleanupDoneTitle" xml:space="preserve"><value>Cleanup done</value></data>
+  <data name="CleanupDoneBody" xml:space="preserve"><value>Handled {0} item(s). Anything sent to the recycle bin can be restored from there.</value></data>
+  <data name="CleanupNothingTitle" xml:space="preserve"><value>Nothing to clean</value></data>
+  <data name="CleanupNothingBody" xml:space="preserve"><value>This game has no data folder yet</value></data>
+  <data name="CleanupCharacterCache" xml:space="preserve"><value>Character list cache</value></data>
+  <data name="CleanupModIndex" xml:space="preserve"><value>Mod index database</value></data>
+  <data name="CleanupPresets" xml:space="preserve"><value>Presets</value></data>
+  <data name="CleanupPlugins" xml:space="preserve"><value>Downloaded plugins</value></data>
+  <data name="CleanupLogs" xml:space="preserve"><value>Logs / cache</value></data>
 </root>

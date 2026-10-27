@@ -36,7 +36,7 @@ public class PageService : IPageService
         Configure<CommandsSettingsViewModel, CommandsSettingsPage>();
         Configure<CreateCharacterViewModel, CreateCharacterPage>();
         Configure<HomeViewModel, HomePage>();
-        Configure<PluginAreaViewModel, PluginAreaPage>();
+        Configure<FeatureAreaViewModel, FeatureAreaPage>();
         Configure<AboutViewModel, AboutPage>();
     }
 

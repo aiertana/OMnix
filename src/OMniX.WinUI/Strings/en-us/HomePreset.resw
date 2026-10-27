@@ -201,14 +201,14 @@
   <data name="Home_PlaceholderTitle.Text" xml:space="preserve">
     <value>Reserved</value>
   </data>
-  <data name="Home_PluginBadgeText.Text" xml:space="preserve">
+  <data name="Home_FeatureBadgeText.Text" xml:space="preserve">
     <value>Coming soon</value>
   </data>
-  <data name="Home_PluginCardDescription.Text" xml:space="preserve">
+  <data name="Home_FeatureCardDescription.Text" xml:space="preserve">
     <value>Extend OMniX with plugins: external tools, batch scripts, selectors and more.</value>
   </data>
-  <data name="Home_PluginCardTitle.Text" xml:space="preserve">
-    <value>Plugins</value>
+  <data name="Home_FeatureCardTitle.Text" xml:space="preserve">
+    <value>Features</value>
   </data>
   <data name="Home_ResetBackgroundFlyout.Text" xml:space="preserve">
     <value>Reset to the default background</value>
@@ -225,213 +225,213 @@
   <data name="Home_WelcomeText.Text" xml:space="preserve">
     <value>Welcome to OMniX</value>
   </data>
-  <data name="Plugin_Cancel" xml:space="preserve">
+  <data name="Feature_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="Plugin_DefaultPrimaryText" xml:space="preserve">
+  <data name="Feature_DefaultPrimaryText" xml:space="preserve">
     <value>Open</value>
   </data>
-  <data name="Plugin_DeployingText" xml:space="preserve">
+  <data name="Feature_DeployingText" xml:space="preserve">
     <value>Deploying…</value>
   </data>
-  <data name="Plugin_DetailsLabel" xml:space="preserve">
+  <data name="Feature_DetailsLabel" xml:space="preserve">
     <value>Details</value>
   </data>
-  <data name="Plugin_Dlss5CardName" xml:space="preserve">
+  <data name="Feature_Dlss5CardName" xml:space="preserve">
     <value>DLSS5 rendering chain</value>
   </data>
-  <data name="Plugin_Dlss5DescDeployed" xml:space="preserve">
+  <data name="Feature_Dlss5DescDeployed" xml:space="preserve">
     <value>Loader is deployed into the game folder; the switch can remove it at any time.</value>
   </data>
-  <data name="Plugin_Dlss5DescKitReady" xml:space="preserve">
+  <data name="Feature_Dlss5DescKitReady" xml:space="preserve">
     <value>Kit is ready — use the switch below to deploy it into the game folder (administrator rights required).</value>
   </data>
-  <data name="Plugin_Dlss5DescNoKit" xml:space="preserve">
+  <data name="Feature_Dlss5DescNoKit" xml:space="preserve">
     <value>No kit yet. Tap "Download kit" to pull the latest version; it deploys automatically once downloaded.</value>
   </data>
-  <data name="Plugin_Dlss5PrimaryConfig" xml:space="preserve">
+  <data name="Feature_Dlss5PrimaryConfig" xml:space="preserve">
     <value>Configure</value>
   </data>
-  <data name="Plugin_Dlss5PrimaryDownload" xml:space="preserve">
+  <data name="Feature_Dlss5PrimaryDownload" xml:space="preserve">
     <value>Download kit</value>
   </data>
-  <data name="Plugin_Dlss5SwitchTipDeploy" xml:space="preserve">
+  <data name="Feature_Dlss5SwitchTipDeploy" xml:space="preserve">
     <value>Deploy the loader chain into the game folder (administrator rights required)</value>
   </data>
-  <data name="Plugin_Dlss5SwitchTipUninstall" xml:space="preserve">
+  <data name="Feature_Dlss5SwitchTipUninstall" xml:space="preserve">
     <value>Remove the loader chain from the game folder</value>
   </data>
-  <data name="Plugin_Dlss5ToggleDeploy" xml:space="preserve">
+  <data name="Feature_Dlss5ToggleDeploy" xml:space="preserve">
     <value>Deploy</value>
   </data>
-  <data name="Plugin_Dlss5ToggleUninstall" xml:space="preserve">
+  <data name="Feature_Dlss5ToggleUninstall" xml:space="preserve">
     <value>Uninstall</value>
   </data>
-  <data name="Plugin_DownloadInProgress" xml:space="preserve">
+  <data name="Feature_DownloadInProgress" xml:space="preserve">
     <value>Downloading…</value>
   </data>
-  <data name="Plugin_DownloadPreparing" xml:space="preserve">
+  <data name="Feature_DownloadPreparing" xml:space="preserve">
     <value>Preparing…</value>
   </data>
-  <data name="Plugin_FixerCardName" xml:space="preserve">
+  <data name="Feature_FixerCardName" xml:space="preserve">
     <value>Mod fixer</value>
   </data>
-  <data name="Plugin_FixerDescNotDownloaded" xml:space="preserve">
+  <data name="Feature_FixerDescNotDownloaded" xml:space="preserve">
     <value>Wuwa_Mod_Fixer runs standalone. Drop your own copy into the plugins folder and it gets picked up when you hit fix.</value>
   </data>
-  <data name="Plugin_FixerDescReady" xml:space="preserve">
+  <data name="Feature_FixerDescReady" xml:space="preserve">
     <value>Using {0} — the fix button on the character page runs it.</value>
   </data>
-  <data name="Plugin_FixerPrimaryDownload" xml:space="preserve">
+  <data name="Feature_FixerPrimaryDownload" xml:space="preserve">
     <value>Download fixer</value>
   </data>
-  <data name="Plugin_FixerPrimaryOpenFolder" xml:space="preserve">
+  <data name="Feature_FixerPrimaryOpenFolder" xml:space="preserve">
     <value>Open folder</value>
   </data>
-  <data name="Plugin_ModCardName" xml:space="preserve">
+  <data name="Feature_ModCardName" xml:space="preserve">
     <value>Mod loader</value>
   </data>
-  <data name="Plugin_ModDescNoXxmi" xml:space="preserve">
+  <data name="Feature_ModDescNoXxmi" xml:space="preserve">
     <value>No XXMI yet. Tap "Download XXMI" to pull the portable build, unzip it and it works.</value>
   </data>
-  <data name="Plugin_ModDescReady" xml:space="preserve">
+  <data name="Feature_ModDescReady" xml:space="preserve">
     <value>WWMI is in place; the switch decides whether this launch loads mods.</value>
   </data>
-  <data name="Plugin_ModDescXxmiReady" xml:space="preserve">
+  <data name="Feature_ModDescXxmiReady" xml:space="preserve">
     <value>Set the game path inside XXMI and it downloads WWMI for you.</value>
   </data>
-  <data name="Plugin_ModPrimaryDownloadXxmi" xml:space="preserve">
+  <data name="Feature_ModPrimaryDownloadXxmi" xml:space="preserve">
     <value>Download XXMI</value>
   </data>
-  <data name="Plugin_ModPrimaryModsDir" xml:space="preserve">
+  <data name="Feature_ModPrimaryModsDir" xml:space="preserve">
     <value>Mods folder</value>
   </data>
-  <data name="Plugin_ModPrimaryOpenXxmi" xml:space="preserve">
+  <data name="Feature_ModPrimaryOpenXxmi" xml:space="preserve">
     <value>Open XXMI</value>
   </data>
-  <data name="Plugin_ModSwitchTipDisabled" xml:space="preserve">
+  <data name="Feature_ModSwitchTipDisabled" xml:space="preserve">
     <value>Off: launching the game loads no mods</value>
   </data>
-  <data name="Plugin_ModSwitchTipEnabled" xml:space="preserve">
+  <data name="Feature_ModSwitchTipEnabled" xml:space="preserve">
     <value>On: launching the game loads mods</value>
   </data>
-  <data name="Plugin_ModSwitchTipNotDeployed" xml:space="preserve">
+  <data name="Feature_ModSwitchTipNotDeployed" xml:space="preserve">
     <value>The loader chain is not deployed yet, so mods stay inert if you launch now — switching it on deploys the chain too</value>
   </data>
-  <data name="Plugin_ModToggleDisable" xml:space="preserve">
+  <data name="Feature_ModToggleDisable" xml:space="preserve">
     <value>Disable</value>
   </data>
-  <data name="Plugin_ModToggleEnable" xml:space="preserve">
+  <data name="Feature_ModToggleEnable" xml:space="preserve">
     <value>Enable</value>
   </data>
-  <data name="Plugin_NotificationAutoDeployFailedBody" xml:space="preserve">
+  <data name="Feature_NotificationAutoDeployFailedBody" xml:space="preserve">
     <value>The game executable or the kit folder is wrong. Tap "Configure" to fill them in yourself.</value>
   </data>
-  <data name="Plugin_NotificationAutoDeployFailedTitle" xml:space="preserve">
+  <data name="Feature_NotificationAutoDeployFailedTitle" xml:space="preserve">
     <value>Cannot deploy automatically yet</value>
   </data>
-  <data name="Plugin_NotificationAutoDeployNotSuccess" xml:space="preserve">
+  <data name="Feature_NotificationAutoDeployNotSuccess" xml:space="preserve">
     <value>Automatic deployment did not succeed</value>
   </data>
-  <data name="Plugin_NotificationAutoDeploying" xml:space="preserve">
+  <data name="Feature_NotificationAutoDeploying" xml:space="preserve">
     <value>Deploying into the game folder automatically…</value>
   </data>
-  <data name="Plugin_NotificationChainDeployed" xml:space="preserve">
+  <data name="Feature_NotificationChainDeployed" xml:space="preserve">
     <value>Rendering chain deployed</value>
   </data>
-  <data name="Plugin_NotificationChainUninstalled" xml:space="preserve">
+  <data name="Feature_NotificationChainUninstalled" xml:space="preserve">
     <value>Rendering chain uninstalled</value>
   </data>
-  <data name="Plugin_NotificationDownloadFailed" xml:space="preserve">
+  <data name="Feature_NotificationDownloadFailed" xml:space="preserve">
     <value>Download failed</value>
   </data>
-  <data name="Plugin_NotificationFixerNoVersionBody" xml:space="preserve">
+  <data name="Feature_NotificationFixerNoVersionBody" xml:space="preserve">
     <value>GitHub is unreachable or the network is down. You can also download it yourself and drop it into the plugins folder — same result.</value>
   </data>
-  <data name="Plugin_NotificationFixerNoVersionTitle" xml:space="preserve">
+  <data name="Feature_NotificationFixerNoVersionTitle" xml:space="preserve">
     <value>Cannot read the fixer version</value>
   </data>
-  <data name="Plugin_NotificationFixerReadyBody" xml:space="preserve">
+  <data name="Feature_NotificationFixerReadyBody" xml:space="preserve">
     <value>{0} is in the plugins folder; the fix button on the character page will use it.</value>
   </data>
-  <data name="Plugin_NotificationFixerReadyTitle" xml:space="preserve">
+  <data name="Feature_NotificationFixerReadyTitle" xml:space="preserve">
     <value>Fixer ready</value>
   </data>
-  <data name="Plugin_NotificationModDisabled" xml:space="preserve">
+  <data name="Feature_NotificationModDisabled" xml:space="preserve">
     <value>Mods disabled</value>
   </data>
-  <data name="Plugin_NotificationModEnabled" xml:space="preserve">
+  <data name="Feature_NotificationModEnabled" xml:space="preserve">
     <value>Mods enabled</value>
   </data>
-  <data name="Plugin_NotificationRenameFailed" xml:space="preserve">
+  <data name="Feature_NotificationRenameFailed" xml:space="preserve">
     <value>Renaming the file failed — check write permission on the game folder</value>
   </data>
-  <data name="Plugin_NotificationTakeEffectNextLaunch" xml:space="preserve">
+  <data name="Feature_NotificationTakeEffectNextLaunch" xml:space="preserve">
     <value>Takes effect on the next game launch</value>
   </data>
-  <data name="Plugin_NotificationXxmiDownloaded" xml:space="preserve">
+  <data name="Feature_NotificationXxmiDownloaded" xml:space="preserve">
     <value>XXMI downloaded</value>
   </data>
-  <data name="Plugin_OpenFolderButton.Content" xml:space="preserve">
+  <data name="Feature_OpenFolderButton.Content" xml:space="preserve">
     <value>Open plugins folder</value>
   </data>
-  <data name="Plugin_PageDescription.Text" xml:space="preserve">
+  <data name="Feature_PageDescription.Text" xml:space="preserve">
     <value>Plugins stay independent of the manager: deleting plugin files does not affect mod management or game launch, and a problem only affects the plugin itself.</value>
   </data>
-  <data name="Plugin_PageTitle.Text" xml:space="preserve">
-    <value>Plugins</value>
+  <data name="Feature_PageTitle.Text" xml:space="preserve">
+    <value>Features</value>
   </data>
-  <data name="Plugin_SourceLabel" xml:space="preserve">
+  <data name="Feature_SourceLabel" xml:space="preserve">
     <value>Info</value>
   </data>
-  <data name="Plugin_StatusDeployed" xml:space="preserve">
+  <data name="Feature_StatusDeployed" xml:space="preserve">
     <value>Deployed</value>
   </data>
-  <data name="Plugin_StatusFixerNotDownloaded" xml:space="preserve">
+  <data name="Feature_StatusFixerNotDownloaded" xml:space="preserve">
     <value>Not downloaded</value>
   </data>
-  <data name="Plugin_StatusFixerReady" xml:space="preserve">
+  <data name="Feature_StatusFixerReady" xml:space="preserve">
     <value>Ready</value>
   </data>
-  <data name="Plugin_StatusMissingWwmi" xml:space="preserve">
+  <data name="Feature_StatusMissingWwmi" xml:space="preserve">
     <value>WWMI missing</value>
   </data>
-  <data name="Plugin_StatusMissingXxmi" xml:space="preserve">
+  <data name="Feature_StatusMissingXxmi" xml:space="preserve">
     <value>XXMI missing</value>
   </data>
-  <data name="Plugin_StatusModDisabled" xml:space="preserve">
+  <data name="Feature_StatusModDisabled" xml:space="preserve">
     <value>Mods disabled</value>
   </data>
-  <data name="Plugin_StatusModEnabled" xml:space="preserve">
+  <data name="Feature_StatusModEnabled" xml:space="preserve">
     <value>Mods enabled</value>
   </data>
-  <data name="Plugin_StatusNoKit" xml:space="preserve">
+  <data name="Feature_StatusNoKit" xml:space="preserve">
     <value>Kit not downloaded</value>
   </data>
-  <data name="Plugin_StatusNotDeployed" xml:space="preserve">
+  <data name="Feature_StatusNotDeployed" xml:space="preserve">
     <value>Not deployed</value>
   </data>
-  <data name="Plugin_UninstallConfirmContent" xml:space="preserve">
+  <data name="Feature_UninstallConfirmContent" xml:space="preserve">
     <value>This deletes the loader chain files under {0} (d3d11.dll, scripts and others).
 
 Note: the NVIDIA DLSS library it replaced is not restored automatically — run a game repair or deploy again.</value>
   </data>
-  <data name="Plugin_UninstallConfirmPrimary" xml:space="preserve">
+  <data name="Feature_UninstallConfirmPrimary" xml:space="preserve">
     <value>Uninstall</value>
   </data>
-  <data name="Plugin_UninstallConfirmTitle" xml:space="preserve">
+  <data name="Feature_UninstallConfirmTitle" xml:space="preserve">
     <value>Uninstall the DLSS5 rendering chain?</value>
   </data>
-  <data name="Plugin_UpcomingCardName" xml:space="preserve">
+  <data name="Feature_UpcomingCardName" xml:space="preserve">
     <value>GameBanana sync</value>
   </data>
-  <data name="Plugin_UpcomingDescription" xml:space="preserve">
+  <data name="Feature_UpcomingDescription" xml:space="preserve">
     <value>Automatically checks installed mods for updates and lists everything pending in one place.</value>
   </data>
-  <data name="Plugin_UpcomingPrimaryText" xml:space="preserve">
+  <data name="Feature_UpcomingPrimaryText" xml:space="preserve">
     <value>Coming soon</value>
   </data>
-  <data name="Plugin_UpcomingStatus" xml:space="preserve">
+  <data name="Feature_UpcomingStatus" xml:space="preserve">
     <value>In development</value>
   </data>
   <data name="Preset_ApplyPrefsButton.Content" xml:space="preserve">
@@ -738,8 +738,40 @@ New location: {3}
   <data name="Startup_UnloadedFolderSelector.Title" xml:space="preserve">
     <value>Uninstall area folder (optional)</value>
   </data>
-  <data name="Plugin_Preparing" xml:space="preserve"><value>Preparing…</value></data>
+  <data name="Feature_Preparing" xml:space="preserve"><value>Preparing…</value></data>
   <data name="Hp_BgTip.ToolTipService.ToolTip" xml:space="preserve"><value>Right-click to change the background image</value></data>
   <data name="Hp_SwitchGameTip.ToolTipService.ToolTip" xml:space="preserve"><value>Switch the current game (the app restarts)</value></data>
   <data name="Hp_ThemeTip.ToolTipService.ToolTip" xml:space="preserve"><value>Switch between light and dark theme</value></data>
+  <data name="Home_ConfigGameText" xml:space="preserve"><value>Configure Game</value></data>
+  <data name="Home_ConfigGameButton.ToolTipService.ToolTip" xml:space="preserve"><value>Set this game's launcher folder and Mods folder</value></data>
+  <data name="Home_NotDownloadedSuffix.Text" xml:space="preserve"><value>(not downloaded)</value></data>
+  <data name="Home_SwitchGameConfirmTitle" xml:space="preserve"><value>Switch game</value></data>
+  <data name="Home_SwitchGameConfirmBody" xml:space="preserve"><value>The app will refresh: character list, mods overview, character manager and presets all switch to "{0}".</value></data>
+  <data name="Home_Confirm" xml:space="preserve"><value>Confirm</value></data>
+  <data name="Home_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Home_DownloadNow" xml:space="preserve"><value>Download now</value></data>
+  <data name="Home_GameNotDownloadedTitle" xml:space="preserve"><value>Game not downloaded yet</value></data>
+  <data name="Home_GameNotDownloadedBody" xml:space="preserve"><value>The "{0}" module is not on this PC yet. Go to the feature area and download it now?</value></data>
+  <data name="Home_SwitchGameProgressTitle" xml:space="preserve"><value>Switching game</value></data>
+  <data name="Home_SwitchGameProgressBody" xml:space="preserve"><value>Switching to {0}, the app will refresh</value></data>
+  <data name="Game_Name_WuWa" xml:space="preserve"><value>Wuthering Waves</value></data>
+  <data name="Game_Name_ZZZ" xml:space="preserve"><value>Zenless Zone Zero</value></data>
+  <data name="Game_Name_GI" xml:space="preserve"><value>Genshin Impact</value></data>
+  <data name="Game_Name_HSR" xml:space="preserve"><value>Honkai: Star Rail</value></data>
+  <data name="Feature_GameBarTitle" xml:space="preserve"><value>Pick a game</value></data>
+  <data name="Feature_NotInstalled.Text" xml:space="preserve"><value>not installed</value></data>
+  <data name="Feature_InstallKernelButton.Content" xml:space="preserve"><value>Install this module</value></data>
+  <data name="Feature_ImportButton.Content" xml:space="preserve"><value>Import offline package</value></data>
+  <data name="Feature_TemplateButton.Content" xml:space="preserve"><value>Plugin template</value></data>
+  <data name="Feature_KernelMissing" xml:space="preserve"><value>The "{0}" module is not installed yet</value></data>
+  <data name="Feature_KernelReady" xml:space="preserve"><value>The "{0}" module is ready</value></data>
+  <data name="Feature_KernelInstalled" xml:space="preserve"><value>Module installed</value></data>
+  <data name="Feature_KernelInstalledBody" xml:space="preserve"><value>"{0}" is ready. Switch to it from the home page.</value></data>
+  <data name="Feature_ImportDone" xml:space="preserve"><value>Import done</value></data>
+  <data name="Feature_ImportDoneBody" xml:space="preserve"><value>Imported {0} package(s) into:
+{1}</value></data>
+  <data name="Feature_ImportFailed" xml:space="preserve"><value>Import failed</value></data>
+  <data name="Feature_TemplateCreated" xml:space="preserve"><value>Template created</value></data>
+  <data name="Feature_RunPlugin" xml:space="preserve"><value>Run</value></data>
+  <data name="Feature_StatusDiscovered" xml:space="preserve"><value>Detected</value></data>
 </root>

@@ -529,12 +529,19 @@ public partial class MainPageVM : ObservableRecipient
         }
 
 
-        _extractedOmniXFolder = new DirectoryInfo(WorkDir).EnumerateDirectories().FirstOrDefault(folder =>
-            folder.Name.StartsWith("OMniX", StringComparison.CurrentCultureIgnoreCase))!;
+        // 二开：程序本体目录从 OMniX\ 改名为 Core\（游戏数据搬到同级的 GamesData\）。
+        // 两种名字都要认，不然老包认不出、新包也认不出。
+        var extractedFolders = new DirectoryInfo(WorkDir).EnumerateDirectories().ToList();
+
+        _extractedOmniXFolder =
+            extractedFolders.FirstOrDefault(folder =>
+                string.Equals(folder.Name, "Core", StringComparison.OrdinalIgnoreCase))
+            ?? extractedFolders.FirstOrDefault(folder =>
+                folder.Name.StartsWith("OMniX", StringComparison.CurrentCultureIgnoreCase))!;
 
         if (_extractedOmniXFolder is null)
         {
-            Stop("The extracted content does not contain an OMniX folder — this is not a valid update package");
+            Stop("The extracted content does not contain a Core or OMniX folder — this is not a valid update package");
             return;
         }
 

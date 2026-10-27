@@ -687,4 +687,43 @@ OMniX 目录里其它文件一个都不会删。装完 OMniX 会自己重新打�
   <data name="Cmd_RunAsAdminTip.ToolTipService.ToolTip" xml:space="preserve"><value>用管理员权限启动这个程序</value></data>
   <data name="Cmd_ShellExecuteTip.ToolTipService.ToolTip" xml:space="preserve"><value>交给操作系统去拉起程序（ShellExecute）</value></data>
   <data name="Cmd_NewWindowTip.ToolTipService.ToolTip" xml:space="preserve"><value>勾上会在单独的窗口里跑（暂不可用）</value></data>
+  <data name="LaunchModeTitle" xml:space="preserve"><value>启动方式</value></data>
+  <data name="LaunchModeDesc" xml:space="preserve"><value>程序会自动找这个游戏的启动器。找不到就点「手动添加」自己选一个 exe，官方的、第三方的都行。</value></data>
+  <data name="LaunchModeAuto" xml:space="preserve"><value>自动（跟随游戏默认）</value></data>
+  <data name="LaunchModeOfficial" xml:space="preserve"><value>官方启动器</value></data>
+  <data name="LaunchModeXxmi" xml:space="preserve"><value>XXMI 启动器</value></data>
+  <data name="LaunchModeHoYo" xml:space="preserve"><value>HoYo 启动器</value></data>
+  <data name="LaunchModeManual" xml:space="preserve"><value>手动指定</value></data>
+  <data name="LaunchStatusManual" xml:space="preserve"><value>用的是你手动指定的启动器</value></data>
+  <data name="LaunchStatusAuto" xml:space="preserve"><value>自动识别到的，点左下角「启动游戏」就会用它</value></data>
+  <data name="LaunchNotFound" xml:space="preserve"><value>没找到</value></data>
+  <data name="LaunchNotFoundHint" xml:space="preserve"><value>自动识别没找到启动器，可以点「手动添加」自己指定一个 exe</value></data>
+  <data name="LaunchRedetectButton.Content" xml:space="preserve"><value>重新识别</value></data>
+  <data name="LaunchBrowseButton.Content" xml:space="preserve"><value>手动添加</value></data>
+  <data name="LaunchClearButton.Content" xml:space="preserve"><value>清除手动指定</value></data>
+  <data name="DataRootTitle" xml:space="preserve"><value>数据目录</value></data>
+  <data name="DataRootDesc" xml:space="preserve"><value>游戏数据按游戏分开放在这里。想挪到别的盘就改下面的路径。</value></data>
+  <data name="MigrateButton.Content" xml:space="preserve"><value>迁移 C 盘旧数据</value></data>
+  <data name="LegacyMigrateTitle" xml:space="preserve"><value>迁移旧数据</value></data>
+  <data name="MigrateRunning" xml:space="preserve"><value>正在复制文件…</value></data>
+  <data name="MigrateItem" xml:space="preserve"><value>正在搬：{0}（{1}/{2}）</value></data>
+  <data name="MigrateDoneTitle" xml:space="preserve"><value>迁移完成</value></data>
+  <data name="MigrateNothingTitle" xml:space="preserve"><value>没有旧数据</value></data>
+  <data name="MigrateNothingBody" xml:space="preserve"><value>C 盘上没找到旧版本的 OMniX 数据</value></data>
+  <data name="CleanupCardTitle" xml:space="preserve"><value>游戏资源管理</value></data>
+  <data name="CleanupCardDesc" xml:space="preserve"><value>清理这个游戏的缓存、索引、预设和插件。你自己的 Mod 和 XXMI 本体不会被删。</value></data>
+  <data name="CleanupButton.Content" xml:space="preserve"><value>一键删除</value></data>
+  <data name="CleanupTitle" xml:space="preserve"><value>清理这个游戏的数据</value></data>
+  <data name="CleanupIntro" xml:space="preserve"><value>只列出管理器自己生成的东西。你自己的 Mod 文件、XXMI 这类非官方启动器本体都不在里面，也不会被删。</value></data>
+  <data name="CleanupPrimary" xml:space="preserve"><value>删除勾选的项目</value></data>
+  <data name="CleanupPermanent" xml:space="preserve"><value>永久删除（不进回收站）</value></data>
+  <data name="CleanupDoneTitle" xml:space="preserve"><value>清理完成</value></data>
+  <data name="CleanupDoneBody" xml:space="preserve"><value>处理了 {0} 项。勾了回收站的可以在回收站里找回。</value></data>
+  <data name="CleanupNothingTitle" xml:space="preserve"><value>没有可清理的内容</value></data>
+  <data name="CleanupNothingBody" xml:space="preserve"><value>这个游戏的数据目录还没生成</value></data>
+  <data name="CleanupCharacterCache" xml:space="preserve"><value>角色列表缓存</value></data>
+  <data name="CleanupModIndex" xml:space="preserve"><value>Mod 索引数据库</value></data>
+  <data name="CleanupPresets" xml:space="preserve"><value>预设配置</value></data>
+  <data name="CleanupPlugins" xml:space="preserve"><value>已下载的功能插件</value></data>
+  <data name="CleanupLogs" xml:space="preserve"><value>日志 / 缓存</value></data>
 </root>

@@ -398,4 +398,30 @@ Click "Open official launcher" and press start inside it. It will load according
   </data>
   <data name="PluginDepSvc_ManualEmpty" xml:space="preserve"><value>Pick a folder first</value></data>
   <data name="PluginDepSvc_ManualInvalid" xml:space="preserve"><value>That folder does not contain XXMI Launcher: {0}</value></data>
+  <data name="Act_MigrateTitle" xml:space="preserve"><value>Old data found</value></data>
+  <data name="Act_MigrateBody" xml:space="preserve"><value>Data from the old version is still on drive C:
+{0}
+
+The new version keeps game data here instead:
+{1}
+
+Move it now? The original files stay exactly as they are, and you decide afterwards whether to delete them.</value></data>
+  <data name="Act_MigrateNow" xml:space="preserve"><value>Move now</value></data>
+  <data name="Act_MigrateLater" xml:space="preserve"><value>Later</value></data>
+  <data name="Act_MigratingTitle" xml:space="preserve"><value>Moving old data</value></data>
+  <data name="Act_MigratingBody" xml:space="preserve"><value>Copying files, please keep the window open...</value></data>
+  <data name="Act_MigratingItem" xml:space="preserve"><value>Moving: {0} ({1}/{2})</value></data>
+  <data name="Act_MigrateDoneTitle" xml:space="preserve"><value>Migration done</value></data>
+  <data name="Act_MigrateDoneBody" xml:space="preserve"><value>Moved {0} folders to:
+{1}
+
+The old data is still on drive C. Deleting it is up to you.</value></data>
+  <data name="Act_MigrateDeleteOld" xml:space="preserve"><value>Migration verified, delete the old data on drive C</value></data>
+  <data name="Act_MigratePermanent" xml:space="preserve"><value>Delete permanently (skip the recycle bin)</value></data>
+  <data name="Act_MigrateManualTitle" xml:space="preserve"><value>You can move it by hand</value></data>
+  <data name="Act_MigrateManualIntro" xml:space="preserve"><value>The automatic move did not finish. You can do it by hand: copy everything from the old folder into the new one.</value></data>
+  <data name="Act_MigrateManualPaths" xml:space="preserve"><value>Old data:</value></data>
+  <data name="Act_MigrateManualTarget" xml:space="preserve"><value>Move to:</value></data>
+  <data name="Act_Confirm" xml:space="preserve"><value>OK</value></data>
+  <data name="Act_MigrateCancel" xml:space="preserve"><value>Cancel</value></data>
 </root>

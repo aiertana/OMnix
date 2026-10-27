@@ -201,14 +201,14 @@
   <data name="Home_PlaceholderTitle.Text" xml:space="preserve">
     <value>预留功能区</value>
   </data>
-  <data name="Home_PluginBadgeText.Text" xml:space="preserve">
+  <data name="Home_FeatureBadgeText.Text" xml:space="preserve">
     <value>即将开放</value>
   </data>
-  <data name="Home_PluginCardDescription.Text" xml:space="preserve">
+  <data name="Home_FeatureCardDescription.Text" xml:space="preserve">
     <value>用插件扩展 OMniX：外部工具、批处理、选择器等。</value>
   </data>
-  <data name="Home_PluginCardTitle.Text" xml:space="preserve">
-    <value>插件专区</value>
+  <data name="Home_FeatureCardTitle.Text" xml:space="preserve">
+    <value>功能专区</value>
   </data>
   <data name="Home_ResetBackgroundFlyout.Text" xml:space="preserve">
     <value>恢复默认背景</value>
@@ -225,213 +225,213 @@
   <data name="Home_WelcomeText.Text" xml:space="preserve">
     <value>欢迎使用 OMniX</value>
   </data>
-  <data name="Plugin_Cancel" xml:space="preserve">
+  <data name="Feature_Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
-  <data name="Plugin_DefaultPrimaryText" xml:space="preserve">
+  <data name="Feature_DefaultPrimaryText" xml:space="preserve">
     <value>打开</value>
   </data>
-  <data name="Plugin_DeployingText" xml:space="preserve">
+  <data name="Feature_DeployingText" xml:space="preserve">
     <value>正在部署…</value>
   </data>
-  <data name="Plugin_DetailsLabel" xml:space="preserve">
+  <data name="Feature_DetailsLabel" xml:space="preserve">
     <value>详情</value>
   </data>
-  <data name="Plugin_Dlss5CardName" xml:space="preserve">
+  <data name="Feature_Dlss5CardName" xml:space="preserve">
     <value>DLSS5 渲染链</value>
   </data>
-  <data name="Plugin_Dlss5DescDeployed" xml:space="preserve">
+  <data name="Feature_Dlss5DescDeployed" xml:space="preserve">
     <value>加载器已铺进游戏目录，开关可以随时卸载。</value>
   </data>
-  <data name="Plugin_Dlss5DescKitReady" xml:space="preserve">
+  <data name="Feature_Dlss5DescKitReady" xml:space="preserve">
     <value>部署包已就位，点下方开关把它铺进游戏目录（需要管理员权限）。</value>
   </data>
-  <data name="Plugin_Dlss5DescNoKit" xml:space="preserve">
+  <data name="Feature_Dlss5DescNoKit" xml:space="preserve">
     <value>还没有部署包，点「下载部署包」自动拉取最新版，下完会自动部署。</value>
   </data>
-  <data name="Plugin_Dlss5PrimaryConfig" xml:space="preserve">
+  <data name="Feature_Dlss5PrimaryConfig" xml:space="preserve">
     <value>配置</value>
   </data>
-  <data name="Plugin_Dlss5PrimaryDownload" xml:space="preserve">
+  <data name="Feature_Dlss5PrimaryDownload" xml:space="preserve">
     <value>下载部署包</value>
   </data>
-  <data name="Plugin_Dlss5SwitchTipDeploy" xml:space="preserve">
+  <data name="Feature_Dlss5SwitchTipDeploy" xml:space="preserve">
     <value>把加载链部署进游戏目录（需要管理员权限）</value>
   </data>
-  <data name="Plugin_Dlss5SwitchTipUninstall" xml:space="preserve">
+  <data name="Feature_Dlss5SwitchTipUninstall" xml:space="preserve">
     <value>把加载链从游戏目录卸掉</value>
   </data>
-  <data name="Plugin_Dlss5ToggleDeploy" xml:space="preserve">
+  <data name="Feature_Dlss5ToggleDeploy" xml:space="preserve">
     <value>部署</value>
   </data>
-  <data name="Plugin_Dlss5ToggleUninstall" xml:space="preserve">
+  <data name="Feature_Dlss5ToggleUninstall" xml:space="preserve">
     <value>卸载</value>
   </data>
-  <data name="Plugin_DownloadInProgress" xml:space="preserve">
+  <data name="Feature_DownloadInProgress" xml:space="preserve">
     <value>下载中…</value>
   </data>
-  <data name="Plugin_DownloadPreparing" xml:space="preserve">
+  <data name="Feature_DownloadPreparing" xml:space="preserve">
     <value>正在准备…</value>
   </data>
-  <data name="Plugin_FixerCardName" xml:space="preserve">
+  <data name="Feature_FixerCardName" xml:space="preserve">
     <value>Mod 修复器</value>
   </data>
-  <data name="Plugin_FixerDescNotDownloaded" xml:space="preserve">
+  <data name="Feature_FixerDescNotDownloaded" xml:space="preserve">
     <value>Wuwa_Mod_Fixer 独立运行。也可以自己下好丢进插件文件夹，点修复时直接认。</value>
   </data>
-  <data name="Plugin_FixerDescReady" xml:space="preserve">
+  <data name="Feature_FixerDescReady" xml:space="preserve">
     <value>用的是 {0}，点角色的修复按钮就会跑它。</value>
   </data>
-  <data name="Plugin_FixerPrimaryDownload" xml:space="preserve">
+  <data name="Feature_FixerPrimaryDownload" xml:space="preserve">
     <value>下载修复器</value>
   </data>
-  <data name="Plugin_FixerPrimaryOpenFolder" xml:space="preserve">
+  <data name="Feature_FixerPrimaryOpenFolder" xml:space="preserve">
     <value>打开文件夹</value>
   </data>
-  <data name="Plugin_ModCardName" xml:space="preserve">
+  <data name="Feature_ModCardName" xml:space="preserve">
     <value>Mod 加载</value>
   </data>
-  <data name="Plugin_ModDescNoXxmi" xml:space="preserve">
+  <data name="Feature_ModDescNoXxmi" xml:space="preserve">
     <value>还没有 XXMI，点「下载 XXMI」拉取便携版，解压即可用。</value>
   </data>
-  <data name="Plugin_ModDescReady" xml:space="preserve">
+  <data name="Feature_ModDescReady" xml:space="preserve">
     <value>WWMI 已就位，开关控制这次启动带不带 Mod。</value>
   </data>
-  <data name="Plugin_ModDescXxmiReady" xml:space="preserve">
+  <data name="Feature_ModDescXxmiReady" xml:space="preserve">
     <value>XXMI 里设好游戏路径后，它会自动把 WWMI 下载下来。</value>
   </data>
-  <data name="Plugin_ModPrimaryDownloadXxmi" xml:space="preserve">
+  <data name="Feature_ModPrimaryDownloadXxmi" xml:space="preserve">
     <value>下载 XXMI</value>
   </data>
-  <data name="Plugin_ModPrimaryModsDir" xml:space="preserve">
+  <data name="Feature_ModPrimaryModsDir" xml:space="preserve">
     <value>Mods 目录</value>
   </data>
-  <data name="Plugin_ModPrimaryOpenXxmi" xml:space="preserve">
+  <data name="Feature_ModPrimaryOpenXxmi" xml:space="preserve">
     <value>打开 XXMI</value>
   </data>
-  <data name="Plugin_ModSwitchTipDisabled" xml:space="preserve">
+  <data name="Feature_ModSwitchTipDisabled" xml:space="preserve">
     <value>关掉后启动游戏不加载 Mod</value>
   </data>
-  <data name="Plugin_ModSwitchTipEnabled" xml:space="preserve">
+  <data name="Feature_ModSwitchTipEnabled" xml:space="preserve">
     <value>打开后启动游戏会加载 Mod</value>
   </data>
-  <data name="Plugin_ModSwitchTipNotDeployed" xml:space="preserve">
+  <data name="Feature_ModSwitchTipNotDeployed" xml:space="preserve">
     <value>加载链还没部署，现在启动游戏不加载 Mod；打开会顺手把加载链装上</value>
   </data>
-  <data name="Plugin_ModToggleDisable" xml:space="preserve">
+  <data name="Feature_ModToggleDisable" xml:space="preserve">
     <value>停用</value>
   </data>
-  <data name="Plugin_ModToggleEnable" xml:space="preserve">
+  <data name="Feature_ModToggleEnable" xml:space="preserve">
     <value>启用</value>
   </data>
-  <data name="Plugin_NotificationAutoDeployFailedBody" xml:space="preserve">
+  <data name="Feature_NotificationAutoDeployFailedBody" xml:space="preserve">
     <value>游戏可执行文件或部署包目录不对，点「配置」手动补一下。</value>
   </data>
-  <data name="Plugin_NotificationAutoDeployFailedTitle" xml:space="preserve">
+  <data name="Feature_NotificationAutoDeployFailedTitle" xml:space="preserve">
     <value>还没法自动部署</value>
   </data>
-  <data name="Plugin_NotificationAutoDeployNotSuccess" xml:space="preserve">
+  <data name="Feature_NotificationAutoDeployNotSuccess" xml:space="preserve">
     <value>自动部署未成功</value>
   </data>
-  <data name="Plugin_NotificationAutoDeploying" xml:space="preserve">
+  <data name="Feature_NotificationAutoDeploying" xml:space="preserve">
     <value>正在自动部署到游戏目录…</value>
   </data>
-  <data name="Plugin_NotificationChainDeployed" xml:space="preserve">
+  <data name="Feature_NotificationChainDeployed" xml:space="preserve">
     <value>渲染链已部署</value>
   </data>
-  <data name="Plugin_NotificationChainUninstalled" xml:space="preserve">
+  <data name="Feature_NotificationChainUninstalled" xml:space="preserve">
     <value>渲染链已卸载</value>
   </data>
-  <data name="Plugin_NotificationDownloadFailed" xml:space="preserve">
+  <data name="Feature_NotificationDownloadFailed" xml:space="preserve">
     <value>下载失败</value>
   </data>
-  <data name="Plugin_NotificationFixerNoVersionBody" xml:space="preserve">
+  <data name="Feature_NotificationFixerNoVersionBody" xml:space="preserve">
     <value>GitHub 打不开或者网络不通。也可以自己下好丢进插件文件夹，效果一样。</value>
   </data>
-  <data name="Plugin_NotificationFixerNoVersionTitle" xml:space="preserve">
+  <data name="Feature_NotificationFixerNoVersionTitle" xml:space="preserve">
     <value>查不到修复器版本</value>
   </data>
-  <data name="Plugin_NotificationFixerReadyBody" xml:space="preserve">
+  <data name="Feature_NotificationFixerReadyBody" xml:space="preserve">
     <value>{0} 已放进插件文件夹，角色页点修复就会用它。</value>
   </data>
-  <data name="Plugin_NotificationFixerReadyTitle" xml:space="preserve">
+  <data name="Feature_NotificationFixerReadyTitle" xml:space="preserve">
     <value>修复器已就位</value>
   </data>
-  <data name="Plugin_NotificationModDisabled" xml:space="preserve">
+  <data name="Feature_NotificationModDisabled" xml:space="preserve">
     <value>Mod 已停用</value>
   </data>
-  <data name="Plugin_NotificationModEnabled" xml:space="preserve">
+  <data name="Feature_NotificationModEnabled" xml:space="preserve">
     <value>Mod 已启用</value>
   </data>
-  <data name="Plugin_NotificationRenameFailed" xml:space="preserve">
+  <data name="Feature_NotificationRenameFailed" xml:space="preserve">
     <value>改文件名失败，检查一下游戏目录的写入权限</value>
   </data>
-  <data name="Plugin_NotificationTakeEffectNextLaunch" xml:space="preserve">
+  <data name="Feature_NotificationTakeEffectNextLaunch" xml:space="preserve">
     <value>下次启动游戏生效</value>
   </data>
-  <data name="Plugin_NotificationXxmiDownloaded" xml:space="preserve">
+  <data name="Feature_NotificationXxmiDownloaded" xml:space="preserve">
     <value>XXMI 已下载</value>
   </data>
-  <data name="Plugin_OpenFolderButton.Content" xml:space="preserve">
+  <data name="Feature_OpenFolderButton.Content" xml:space="preserve">
     <value>打开插件文件夹</value>
   </data>
-  <data name="Plugin_PageDescription.Text" xml:space="preserve">
+  <data name="Feature_PageDescription.Text" xml:space="preserve">
     <value>插件独立于管理器：删掉插件文件不影响 Mod 管理和游戏启动，出问题也只影响它自己。</value>
   </data>
-  <data name="Plugin_PageTitle.Text" xml:space="preserve">
-    <value>插件专区</value>
+  <data name="Feature_PageTitle.Text" xml:space="preserve">
+    <value>功能专区</value>
   </data>
-  <data name="Plugin_SourceLabel" xml:space="preserve">
+  <data name="Feature_SourceLabel" xml:space="preserve">
     <value>说明</value>
   </data>
-  <data name="Plugin_StatusDeployed" xml:space="preserve">
+  <data name="Feature_StatusDeployed" xml:space="preserve">
     <value>已部署</value>
   </data>
-  <data name="Plugin_StatusFixerNotDownloaded" xml:space="preserve">
+  <data name="Feature_StatusFixerNotDownloaded" xml:space="preserve">
     <value>未下载</value>
   </data>
-  <data name="Plugin_StatusFixerReady" xml:space="preserve">
+  <data name="Feature_StatusFixerReady" xml:space="preserve">
     <value>已就绪</value>
   </data>
-  <data name="Plugin_StatusMissingWwmi" xml:space="preserve">
+  <data name="Feature_StatusMissingWwmi" xml:space="preserve">
     <value>缺 WWMI</value>
   </data>
-  <data name="Plugin_StatusMissingXxmi" xml:space="preserve">
+  <data name="Feature_StatusMissingXxmi" xml:space="preserve">
     <value>缺 XXMI</value>
   </data>
-  <data name="Plugin_StatusModDisabled" xml:space="preserve">
+  <data name="Feature_StatusModDisabled" xml:space="preserve">
     <value>Mod 已停用</value>
   </data>
-  <data name="Plugin_StatusModEnabled" xml:space="preserve">
+  <data name="Feature_StatusModEnabled" xml:space="preserve">
     <value>Mod 已启用</value>
   </data>
-  <data name="Plugin_StatusNoKit" xml:space="preserve">
+  <data name="Feature_StatusNoKit" xml:space="preserve">
     <value>未下载部署包</value>
   </data>
-  <data name="Plugin_StatusNotDeployed" xml:space="preserve">
+  <data name="Feature_StatusNotDeployed" xml:space="preserve">
     <value>未部署</value>
   </data>
-  <data name="Plugin_UninstallConfirmContent" xml:space="preserve">
+  <data name="Feature_UninstallConfirmContent" xml:space="preserve">
     <value>会删掉 {0} 下的加载链文件（d3d11.dll、scripts 等）。
 
 注意：被替换掉的 NVIDIA DLSS 库不会自动还原，需要跑一次游戏修复或重新部署。</value>
   </data>
-  <data name="Plugin_UninstallConfirmPrimary" xml:space="preserve">
+  <data name="Feature_UninstallConfirmPrimary" xml:space="preserve">
     <value>确认卸载</value>
   </data>
-  <data name="Plugin_UninstallConfirmTitle" xml:space="preserve">
+  <data name="Feature_UninstallConfirmTitle" xml:space="preserve">
     <value>卸载 DLSS5 渲染链？</value>
   </data>
-  <data name="Plugin_UpcomingCardName" xml:space="preserve">
+  <data name="Feature_UpcomingCardName" xml:space="preserve">
     <value>GameBanana 同步</value>
   </data>
-  <data name="Plugin_UpcomingDescription" xml:space="preserve">
+  <data name="Feature_UpcomingDescription" xml:space="preserve">
     <value>自动检查已安装 Mod 的更新，一条列表看完全部待更新项。</value>
   </data>
-  <data name="Plugin_UpcomingPrimaryText" xml:space="preserve">
+  <data name="Feature_UpcomingPrimaryText" xml:space="preserve">
     <value>敬请期待</value>
   </data>
-  <data name="Plugin_UpcomingStatus" xml:space="preserve">
+  <data name="Feature_UpcomingStatus" xml:space="preserve">
     <value>开发中</value>
   </data>
   <data name="Preset_ApplyPrefsButton.Content" xml:space="preserve">
@@ -738,8 +738,40 @@
   <data name="Startup_UnloadedFolderSelector.Title" xml:space="preserve">
     <value>卸载区文件夹（可选）</value>
   </data>
-  <data name="Plugin_Preparing" xml:space="preserve"><value>正在准备…</value></data>
+  <data name="Feature_Preparing" xml:space="preserve"><value>正在准备…</value></data>
   <data name="Hp_BgTip.ToolTipService.ToolTip" xml:space="preserve"><value>右键可以换背景图</value></data>
   <data name="Hp_SwitchGameTip.ToolTipService.ToolTip" xml:space="preserve"><value>切换当前游戏（会重启应用）</value></data>
   <data name="Hp_ThemeTip.ToolTipService.ToolTip" xml:space="preserve"><value>切换浅色 / 深色主题</value></data>
+  <data name="Home_ConfigGameText" xml:space="preserve"><value>配置游戏</value></data>
+  <data name="Home_ConfigGameButton.ToolTipService.ToolTip" xml:space="preserve"><value>配置这个游戏的启动器文件夹与 Mods 文件夹</value></data>
+  <data name="Home_NotDownloadedSuffix.Text" xml:space="preserve"><value>（未下载）</value></data>
+  <data name="Home_SwitchGameConfirmTitle" xml:space="preserve"><value>切换游戏</value></data>
+  <data name="Home_SwitchGameConfirmBody" xml:space="preserve"><value>软件会刷新，角色列表、Mod 总览、角色管理、预设配置等都会切换到「{0}」。</value></data>
+  <data name="Home_Confirm" xml:space="preserve"><value>确认</value></data>
+  <data name="Home_Cancel" xml:space="preserve"><value>取消</value></data>
+  <data name="Home_DownloadNow" xml:space="preserve"><value>现在下载</value></data>
+  <data name="Home_GameNotDownloadedTitle" xml:space="preserve"><value>该游戏尚未下载</value></data>
+  <data name="Home_GameNotDownloadedBody" xml:space="preserve"><value>「{0}」的管理功能还没有下载到本机，是否现在去功能专区下载？</value></data>
+  <data name="Home_SwitchGameProgressTitle" xml:space="preserve"><value>正在切换游戏</value></data>
+  <data name="Home_SwitchGameProgressBody" xml:space="preserve"><value>正在切换到 {0}，软件会刷新一下</value></data>
+  <data name="Game_Name_WuWa" xml:space="preserve"><value>鸣潮</value></data>
+  <data name="Game_Name_ZZZ" xml:space="preserve"><value>绝区零</value></data>
+  <data name="Game_Name_GI" xml:space="preserve"><value>原神</value></data>
+  <data name="Game_Name_HSR" xml:space="preserve"><value>崩坏：星穹铁道</value></data>
+  <data name="Feature_GameBarTitle" xml:space="preserve"><value>选择游戏</value></data>
+  <data name="Feature_NotInstalled.Text" xml:space="preserve"><value>未下载</value></data>
+  <data name="Feature_InstallKernelButton.Content" xml:space="preserve"><value>安装这个功能</value></data>
+  <data name="Feature_ImportButton.Content" xml:space="preserve"><value>导入离线包</value></data>
+  <data name="Feature_TemplateButton.Content" xml:space="preserve"><value>插件模板</value></data>
+  <data name="Feature_KernelMissing" xml:space="preserve"><value>「{0}」的管理功能还没装到本机</value></data>
+  <data name="Feature_KernelReady" xml:space="preserve"><value>「{0}」的管理功能已就绪</value></data>
+  <data name="Feature_KernelInstalled" xml:space="preserve"><value>内核已安装</value></data>
+  <data name="Feature_KernelInstalledBody" xml:space="preserve"><value>「{0}」已经可以用了，回首页切换就能看到。</value></data>
+  <data name="Feature_ImportDone" xml:space="preserve"><value>导入完成</value></data>
+  <data name="Feature_ImportDoneBody" xml:space="preserve"><value>导入了 {0} 个功能包，放在：
+{1}</value></data>
+  <data name="Feature_ImportFailed" xml:space="preserve"><value>导入失败</value></data>
+  <data name="Feature_TemplateCreated" xml:space="preserve"><value>模板已生成</value></data>
+  <data name="Feature_RunPlugin" xml:space="preserve"><value>运行</value></data>
+  <data name="Feature_StatusDiscovered" xml:space="preserve"><value>已识别</value></data>
 </root>

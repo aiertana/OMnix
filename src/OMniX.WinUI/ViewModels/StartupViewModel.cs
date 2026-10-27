@@ -189,8 +189,8 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
         }
 
 
-        // 二开：配置完成后同样不改动窗口大小
-        _navigationService.NavigateTo(typeof(CharactersViewModel).FullName!, null, true);
+        // 二开：配置完回首页。首页是外壳的中心，路径配好之后那边会自己显示状态。
+        _navigationService.NavigateTo(typeof(HomeViewModel).FullName!, null, true);
         App.GetService<NotificationManager>().ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Startup_NotificationSettingsSaved", "启动设置已保存"),
             $"启动设置已保存 successfully to '{_localSettingsService.GameScopedSettingsLocation}'",
             TimeSpan.FromSeconds(7));
@@ -473,7 +473,8 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
 
     private async Task SetGameComboBoxValues()
     {
-        // 二开：只显示当前启用的游戏（目前只有鸣潮）
+        // 二开：列出外壳认识的全部内核（鸣潮 / 绝区零 / 原神 / 崩铁）。
+        // 没下载的内核也能选 —— 选了只是把配置写进那个游戏的档案里，资源到了就能用。
         foreach (var supportedGame in EnabledGames.All)
         {
             var gameInfo = await GameService.GetGameInfoAsync(supportedGame);

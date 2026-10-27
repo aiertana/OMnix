@@ -6,7 +6,8 @@
 #      ├─ 启动OMniX.exe      无窗口启动器（从参照目录复制，对它只读不写）
 #      ├─ README.md
 #      ├─ 使用说明.txt
-#      └─ OMniX\             发布出来的程序文件（自带运行时，不需要装 .NET）
+#      ├─ Core\              发布出来的程序文件（自带运行时，不需要装 .NET）
+#      └─ GamesData\          游戏数据，按游戏隔离（预设 / 插件 / 缓存…）
 #
 # 换版本号不要改这里 —— 版本号统一存在 D:\mod\OMniX\version.json，
 # 升版本用 bumpVersion.ps1 -Kind patch|minor。强制指定也可以：
@@ -36,7 +37,9 @@ $proj    = Join-Path $repo 'src\OMniX.WinUI\OMniX.WinUI.csproj'
 $pub     = Join-Path $repo 'src\OMniX.WinUI\bin\Release\Publish'
 $releases= Join-Path $repo 'Releases'
 $outRoot = Join-Path $releases ('OMniX' + $Version)
-$outApp  = Join-Path $outRoot 'OMniX'
+# 二开：程序本体目录改名为 Core\，游戏数据放同级的 GamesData\（按游戏隔离）
+$outApp  = Join-Path $outRoot 'Core'
+$outData = Join-Path $outRoot 'GamesData'
 # 启动器和说明文档的来源。原来指向 D:\mod\OMniX_1.0_release，
 # 那个参照目录早就不在了，于是包顶层一直没有「启动OMniX.exe」和说明文档 ——
 # 用户解压出来只能直接点 OMniX\OMniX.exe。现在统一从项目根目录取。
@@ -75,6 +78,25 @@ else {
 Write-Output ""
 Write-Output ("=== 2. 组装 " + $outRoot + " ===")
 New-Item -ItemType Directory -Path $outApp -Force | Out-Null
+
+# 游戏数据目录：空目录不会进 zip，放一个说明文件把它固定下来。
+# 玩家一看就懂这里放什么，要整体挪盘也能在设置页改路径。
+New-Item -ItemType Directory -Path $outData -Force | Out-Null
+Set-Content -Path (Join-Path $outData '读我.txt') -Encoding UTF8 -Value @(
+    '这个文件夹放的是 OMniX 的游戏数据，按游戏分开存放：',
+    '',
+    '    GamesData\',
+    '    ├─ WuWa\     鸣潮（预设、插件、缓存…）',
+    '    ├─ ZZZ\      绝区零',
+    '    ├─ GI\       原神',
+    '    └─ HSR\      崩坏：星穹铁道',
+    '',
+    '以前这些数据放在 C:\Users\<用户名>\AppData\Local\OMniX，',
+    '新版改到这里，随版本目录一起走。启动时会自动问你要不要搬过来，',
+    '也可以在「设置 → 游戏与路径 → 数据目录」里手动迁移。',
+    '',
+    '想放到别的盘：设置页里改数据目录路径即可，Mods 文件夹的位置也能自己定。'
+)
 
 # 用 /MIR 把发布输出镜像过去：目标里多出来的旧文件会被清掉。
 # 不先 Remove-Item 整个目录 —— 里面上千个文件，会被安全删除守卫拦下来，
@@ -259,7 +281,19 @@ $PatchBaseVersion = '1.1.7'
 
 $patchBaseDir = Join-Path $releases ('OMniX' + $PatchBaseVersion)
 
-if ([version]$Version -gt [version]$PatchBaseVersion -and (Test-Path (Join-Path $patchBaseDir 'OMniX'))) {
+# 二开：程序本体目录从 OMniX\ 改名为 Core\（数据挪到 GamesData\）。
+# 找上一版的时候两种名字都要认，不然 1.3.3 那种老包就匹配不上了。
+function Get-AppDir($root) {
+    $core = Join-Path $root 'Core'
+    if (Test-Path $core) { return $core }
+
+    $old = Join-Path $root 'OMniX'
+    if (Test-Path $old) { return $old }
+
+    return $null
+}
+
+if ([version]$Version -gt [version]$PatchBaseVersion -and (Get-AppDir $patchBaseDir)) {
     $prev = [pscustomobject]@{
         Dir = Get-Item $patchBaseDir
         Ver = [version]$PatchBaseVersion
@@ -274,7 +308,7 @@ else {
         ForEach-Object {
             try { [pscustomobject]@{ Dir = $_; Ver = [version]$_.Name.Substring(5) } } catch { $null }
         } |
-        Where-Object { $null -ne $_ -and $_.Ver -lt [version]$Version -and (Test-Path (Join-Path $_.Dir.FullName 'OMniX')) } |
+        Where-Object { $null -ne $_ -and $_.Ver -lt [version]$Version -and (Get-AppDir $_.Dir.FullName) } |
         Sort-Object -Property Ver -Descending |
         Select-Object -First 1
 }
@@ -283,14 +317,14 @@ if (-not $prev) {
     Write-Output "没有上一版的解压目录，跳过（第一次出包，或者旧目录被清了）"
 }
 else {
-    $prevApp    = Join-Path $prev.Dir.FullName 'OMniX'
+    $prevApp    = Get-AppDir $prev.Dir.FullName
     $prevVer    = $prev.Ver.ToString(3)
     $patchName  = 'OMniX' + $Version + '-patch-' + $prevVer + '.zip'
     $patchZip   = Join-Path $releases $patchName
     $patchStage = Join-Path $releases ('_patch_' + $Version)
 
     if (Test-Path $patchStage) { Remove-Item $patchStage -Recurse -Force }
-    New-Item -ItemType Directory -Force -Path (Join-Path $patchStage 'OMniX') | Out-Null
+    New-Item -ItemType Directory -Force -Path (Join-Path $patchStage 'Core') | Out-Null
 
     # MD5 比 Get-FileHash 快得多 —— 这里要算上千个文件
     $md5 = [System.Security.Cryptography.MD5]::Create()
@@ -325,7 +359,7 @@ else {
             continue
         }
 
-        $dest = Join-Path (Join-Path $patchStage 'OMniX') $rel
+        $dest = Join-Path (Join-Path $patchStage 'Core') $rel
         New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
         Copy-Item $f.FullName -Destination $dest -Force
         $changed++
@@ -349,7 +383,7 @@ else {
     # 代价是补丁会变大（多带一整个更新器），但比让用户更新完用不了强得多。
     if ($auChanged) {
         $auSrc = Join-Path $outApp 'OMniX - Auto Updater'
-        $auDst = Join-Path (Join-Path $patchStage 'OMniX') 'OMniX - Auto Updater_New'
+        $auDst = Join-Path (Join-Path $patchStage 'Core') 'OMniX - Auto Updater_New'
 
         New-Item -ItemType Directory -Force -Path $auDst | Out-Null
 
@@ -397,12 +431,12 @@ try {
     $za = [System.IO.Compression.ZipFile]::OpenRead($zip)
     try {
         # 二开：zip 条目的分隔符不统一 ——
-        #   Windows PowerShell 5.1 的 Compress-Archive 写反斜杠 OMniX\OMniX.exe
-        #   PowerShell 7（CI 上用的）写正斜杠 OMniX/OMniX.exe
+        #   Windows PowerShell 5.1 的 Compress-Archive 写反斜杠 Core\OMniX.exe
+        #   PowerShell 7（CI 上用的）写正斜杠 Core/OMniX.exe
         # 原来硬编码反斜杠，本地能过、CI 上永远匹配不到，于是报「包里找不到
-        # OMniX\OMniX.exe」—— 但包其实是好的，白卡一轮。这里先归一化再比。
+        # Core\OMniX.exe」—— 但包其实是好的，白卡一轮。这里先归一化再比。
         $zipEntry = $za.Entries | Where-Object {
-            ($_.FullName -replace '/', '\') -eq 'OMniX\OMniX.exe'
+            ($_.FullName -replace '/', '\') -eq 'Core\OMniX.exe'
         } | Select-Object -First 1
 
         if ($zipEntry) {
@@ -421,7 +455,7 @@ try {
     }
 
     if (-not $zipEntry) {
-        $verifyError = "包里找不到 OMniX\OMniX.exe，这个包不完整"
+        $verifyError = "包里找不到 Core\OMniX.exe，这个包不完整"
     }
     else {
         $actual = (Get-Item $tmpExe).VersionInfo.FileVersion

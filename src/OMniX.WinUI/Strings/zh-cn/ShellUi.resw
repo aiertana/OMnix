@@ -79,8 +79,8 @@
   <data name="Shell_NavNotifications.Content" xml:space="preserve">
     <value>通知</value>
   </data>
-  <data name="Shell_NavPluginArea.Content" xml:space="preserve">
-    <value>插件专区</value>
+  <data name="Shell_NavFeatureArea.Content" xml:space="preserve">
+    <value>功能专区</value>
   </data>
   <data name="Shell_NavPresets.Content" xml:space="preserve">
     <value>预设配置</value>

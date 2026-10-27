@@ -349,8 +349,8 @@ public partial class App : Application
                 services.AddTransient<CreateCharacterViewModel>();
                 services.AddTransient<HomeViewModel>();
                 services.AddTransient<HomePage>();
-                services.AddTransient<PluginAreaViewModel>();
-                services.AddTransient<PluginAreaPage>();
+                services.AddTransient<FeatureAreaViewModel>();
+                services.AddTransient<FeatureAreaPage>();
                 services.AddTransient<AboutViewModel>();
                 services.AddTransient<AboutPage>();
 
@@ -360,6 +360,12 @@ public partial class App : Application
 
                 // 二开：首页和左侧栏两个「启动游戏」共用同一套逻辑
                 services.AddSingleton<GameLaunchService>();
+
+                // 多内核外壳：数据根目录、内核登记、启动方式识别、插件目录
+                services.AddSingleton<GameDataRootService>();
+                services.AddSingleton<GameKernelService>();
+                services.AddSingleton<GameLaunchResolver>();
+                services.AddSingleton<PluginCatalogService>();
 
                 // 二开：界面风格（简易版 / 标准版），只切换动效不动配色
                 services.AddSingleton<ThemeStyleService>();

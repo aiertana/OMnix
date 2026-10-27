@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="OMniX.WinUI.Views.HomePage"
     xmlns:l="using:WinUI3Localizer"
@@ -126,21 +126,40 @@
                         VerticalAlignment="Center"
                         Orientation="Horizontal"
                         Spacing="10">
+                        <!--  内核切换：四个游戏都在列表里，没下载的那个画成灰的，
+                              点它会问要不要去功能专区下载  -->
                         <ComboBox
                             x:Name="GameSelector"
-                            Width="168"
-                            DisplayMemberPath="Name"
+                            Width="190"
                             ItemsSource="{x:Bind ViewModel.Games, Mode=OneWay}"
                             SelectedItem="{x:Bind ViewModel.SelectedGame, Mode=TwoWay}"
                             SelectionChanged="GameSelector_OnSelectionChanged"
                             ToolTipService.ToolTip="切换当前游戏（会重启应用）"
-            l:Uids.Uid="/HomePreset/Home_GameSelectorTip" />
+            l:Uids.Uid="/HomePreset/Home_GameSelectorTip">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="models:GameSwitchItem">
+                                    <StackPanel Orientation="Horizontal" Spacing="6" Opacity="{x:Bind ItemOpacity, Mode=OneWay}">
+                                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" />
+                                        <TextBlock
+                                            FontSize="11"
+                                            Opacity="0.7"
+                                            Text="（未下载）"
+                                            Visibility="{x:Bind NotDownloadedVisibility, Mode=OneWay}"
+                                            l:Uids.Uid="/HomePreset/Home_NotDownloadedSuffix" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
+                        <!--  配置游戏：去填 XXMI 文件夹 / Mods 文件夹。
+                              拉起游戏是左下角那个大按钮的事，别混  -->
                         <Button
                             Height="40"
-                            Command="{x:Bind ViewModel.LaunchGameCommand}"
-                            Content="{x:Bind ViewModel.LaunchGameText, Mode=OneWay}"
-                            Style="{ThemeResource OmniXHeroButtonStyle}" />
+                            Command="{x:Bind ViewModel.ConfigureGameCommand}"
+                            Content="{x:Bind ViewModel.ConfigureGameText, Mode=OneWay}"
+                            Style="{ThemeResource OmniXHeroButtonStyle}"
+                            ToolTipService.ToolTip="配置这个游戏的启动器文件夹与 Mods 文件夹"
+            l:Uids.Uid="/HomePreset/Home_ConfigGameButton" />
 
                         <Button
                             Command="{x:Bind ViewModel.ToggleThemeCommand}"
@@ -333,9 +352,10 @@
                     </Grid>
                 </Border>
 
-                <!--  插件专区卡  -->
+                <!--  功能专区卡：游戏内核和插件都搬进专区了，首页这里只留一个入口  -->
                 <Border
                     Grid.Column="1"
+                    MinHeight="188"
                     fx:GlassFx.Attach="True"
                     Style="{ThemeResource OmniXGlassCardStyle}">
                     <Grid>
@@ -374,7 +394,7 @@
                                         FontSize="10.5"
                                         Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                                         Text="即将开放"
-            l:Uids.Uid="/HomePreset/Home_PluginBadgeText"/>
+            l:Uids.Uid="/HomePreset/Home_FeatureBadgeText"/>
                                 </Border>
                             </Grid>
 
@@ -382,13 +402,13 @@
                                 FontSize="17"
                                 FontWeight="SemiBold"
                                 Foreground="{ThemeResource OmniXTextPrimaryBrush}"
-                                Text="插件专区"
-            l:Uids.Uid="/HomePreset/Home_PluginCardTitle"/>
+                                Text="功能专区"
+            l:Uids.Uid="/HomePreset/Home_FeatureCardTitle"/>
                             <TextBlock
     FontSize="12"
     Foreground="{ThemeResource OmniXTextSecondaryBrush}"
     Text="用插件扩展 OMniX：外部工具、批处理、选择器等。"
-    l:Uids.Uid="/HomePreset/Home_PluginCardDescription"
+    l:Uids.Uid="/HomePreset/Home_FeatureCardDescription"
     TextWrapping="Wrap"/>
                         </StackPanel>
 
@@ -404,20 +424,6 @@
     Content="进入专区"
     l:Uids.Uid="/HomePreset/Home_OpenPluginAreaButton"
     Style="{ThemeResource OmniXAccentButtonStyle}"/>
-                            <Button
-    Height="34"
-    Padding="16,0"
-    Command="{x:Bind ViewModel.OpenPresetsCommand}"
-    Content="预设配置"
-    l:Uids.Uid="/HomePreset/Home_OpenPresetsButton"
-    Style="{ThemeResource OmniXGhostButtonStyle}"/>
-                            <Button
-    Height="34"
-    Padding="16,0"
-    Command="{x:Bind ViewModel.OpenModInstallerCommand}"
-    Content="安装 Mod"
-    l:Uids.Uid="/HomePreset/Home_OpenModInstallerButton"
-    Style="{ThemeResource OmniXGhostButtonStyle}"/>
                         </StackPanel>
 
                         <!--  二开：顶部流光条  -->

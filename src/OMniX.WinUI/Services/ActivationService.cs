@@ -9,6 +9,7 @@ using OMniX.Core.GamesService;
 using OMniX.Core.Helpers;
 using OMniX.WinUI.Activation;
 using OMniX.WinUI.Contracts.Services;
+using OMniX.WinUI.Helpers;
 using OMniX.WinUI.Models.Options;
 using OMniX.WinUI.Models.Settings;
 using OMniX.WinUI.Services.AppManagement;
@@ -46,6 +47,8 @@ public class ActivationService : IActivationService
     private readonly ModUpdateAvailableChecker _modUpdateAvailableChecker;
     private readonly ModNotificationManager _modNotificationManager;
     private readonly LifeCycleService _lifeCycleService;
+    private readonly GameKernelService _kernelService;
+    private readonly GameDataRootService _dataRootService;
     private UIElement? _shell = null;
 
     private readonly string[] _args = Environment.GetCommandLineArgs().Skip(1).ToArray();
@@ -60,7 +63,8 @@ public class ActivationService : IActivationService
         ModUpdateAvailableChecker modUpdateAvailableChecker, ILogger logger,
         ModNotificationManager modNotificationManager, INavigationViewService navigationViewService,
         ISkinManagerService skinManagerService, NotificationManager notificationManager,
-        LifeCycleService lifeCycleService)
+        LifeCycleService lifeCycleService, GameKernelService kernelService,
+        GameDataRootService dataRootService)
     {
         _defaultHandler = defaultHandler;
         _activationHandlers = activationHandlers;
@@ -81,6 +85,8 @@ public class ActivationService : IActivationService
         _skinManagerService = skinManagerService;
         _notificationManager = notificationManager;
         _lifeCycleService = lifeCycleService;
+        _kernelService = kernelService;
+        _dataRootService = dataRootService;
         _logger = logger.ForContext<ActivationService>();
     }
 
@@ -197,6 +203,17 @@ public class ActivationService : IActivationService
     private async Task InitializeAsync()
     {
         await _selectedGameService.InitializeAsync();
+
+        // 内置内核（鸣潮）登记一次：不然首页下拉会把它当成没下载
+        try
+        {
+            _kernelService.EnsureBuiltinKernels();
+        }
+        catch (Exception ex)
+        {
+            _logger.Warning(ex, "内核登记失败，下拉里的游戏可能显示为未下载");
+        }
+
         await SetLanguage();
         await SetWindowSettings();
         await _themeSelectorService.InitializeAsync().ConfigureAwait(false);
@@ -403,7 +420,217 @@ public class ActivationService : IActivationService
             await AdminWarningPopup();
             await Task.Delay(1000);
             await NewFolderStructurePopup();
+            await LegacyMigrationPopup();
         });
+    }
+
+    /// <summary>
+    ///     老用户升级上来时，C 盘 %LOCALAPPDATA%\OMniX 里还留着旧数据。
+    ///     检测到就问一句要不要搬到版本目录下的 GamesData —— 搬不搬、搬完删不删都由玩家定。
+    /// </summary>
+    public const string IgnoreLegacyMigrationKey = "IgnoreLegacyMigration";
+
+    private async Task LegacyMigrationPopup()
+    {
+        if (await _localSettingsService.ReadOrCreateSettingAsync<bool>(IgnoreLegacyMigrationKey))
+            return;
+
+        if (!GameDataRootService.HasLegacyData())
+            return;
+
+        var body = new TextBlock
+        {
+            TextWrapping = TextWrapping.WrapWholeWords,
+            IsTextSelectionEnabled = true,
+            Text = string.Format(
+                _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateBody",
+                    "检测到旧版本的数据还在 C 盘：\n{0}\n\n新版把游戏数据放到了：\n{1}\n\n要现在搬过去吗？原来的数据会原样保留，搬完再让你决定删不删。"),
+                GameDataRootService.LegacyAppDataRoot, _dataRootService.GamesDataRoot)
+        };
+
+        var ask = new ContentDialog
+        {
+            Title = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateTitle", "发现旧版本数据"),
+            Content = body,
+            PrimaryButtonText = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateNow", "一键迁移"),
+            CloseButtonText = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateLater", "以后再说"),
+            DefaultButton = ContentDialogButton.Primary
+        };
+
+        if (await _windowManagerService.ShowDialogAsync(ask).ConfigureAwait(false) != ContentDialogResult.Primary)
+        {
+            await _localSettingsService.SaveSettingAsync(IgnoreLegacyMigrationKey, true);
+            return;
+        }
+
+        var migration = await RunMigrationWithProgressAsync();
+
+        if (migration.CopiedItems.Count == 0 || migration.Failures.Count > 0 || !migration.Verified)
+            await ManualMigrationHintPopup(migration);
+        else
+            await DeleteLegacyAfterMigrationPopup(migration);
+
+        await _localSettingsService.SaveSettingAsync(IgnoreLegacyMigrationKey, true);
+    }
+
+    private async Task<MigrationResult> RunMigrationWithProgressAsync()
+    {
+        var status = new TextBlock
+        {
+            Text = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigratingBody", "正在复制文件，别关掉窗口…"),
+            TextWrapping = TextWrapping.WrapWholeWords
+        };
+
+        var panel = new StackPanel { Spacing = 10 };
+        panel.Children.Add(status);
+        panel.Children.Add(new ProgressBar { IsIndeterminate = true, Width = 320 });
+
+        var dialog = new ContentDialog
+        {
+            Title = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigratingTitle", "正在迁移旧数据"),
+            Content = panel
+        };
+
+        var showing = _windowManagerService.ShowDialogAsync(dialog);
+        MigrationResult migration;
+
+        try
+        {
+            var progress = new Progress<MigrationProgress>(update =>
+                App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                    status.Text = string.Format(
+                        _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigratingItem", "正在搬：{0}（{1}/{2}）"),
+                        update.CurrentName, update.DoneFiles, update.TotalFiles)));
+
+            migration = await Task.Run(async () => await _dataRootService.MigrateAsync(progress));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "旧数据迁移失败");
+            migration = new MigrationResult { Success = false, Message = ex.Message };
+        }
+        finally
+        {
+            dialog.Hide();
+        }
+
+        try
+        {
+            await showing.ConfigureAwait(false);
+        }
+        catch (Exception)
+        {
+            // 关窗时抛的不用管
+        }
+
+        return migration;
+    }
+
+    /// <summary>
+    ///     自动迁移没成（或校验没过）时的兜底：把两个路径原样告诉玩家，让他自己拷。
+    ///     不给个出路的话，玩家就卡在报错里了。
+    /// </summary>
+    private async Task ManualMigrationHintPopup(MigrationResult migration)
+    {
+        var lines = new StackPanel { Spacing = 8 };
+
+        lines.Children.Add(new TextBlock
+        {
+            Text = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateManualIntro",
+                "自动迁移没能全部完成，你可以手动搬：把左边文件夹里的东西复制到右边文件夹。"),
+            TextWrapping = TextWrapping.WrapWholeWords
+        });
+
+        foreach (var item in migration.Failures)
+        {
+            lines.Children.Add(new TextBlock
+            {
+                Text = $"{item.Source}  →  {item.Target}\n{item.Error}",
+                FontSize = 12,
+                IsTextSelectionEnabled = true,
+                TextWrapping = TextWrapping.WrapWholeWords
+            });
+        }
+
+        lines.Children.Add(new TextBlock
+        {
+            Text = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateManualPaths", "旧数据：") +
+                   GameDataRootService.LegacyAppDataRoot +
+                   "\n" +
+                   _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateManualTarget", "搬到：") +
+                   _dataRootService.GamesDataRoot,
+            FontSize = 12,
+            IsTextSelectionEnabled = true,
+            TextWrapping = TextWrapping.WrapWholeWords
+        });
+
+        var dialog = new ContentDialog
+        {
+            Title = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateManualTitle", "可以手动迁移"),
+            Content = lines,
+            CloseButtonText = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_GotIt", "我知道了")
+        };
+
+        await _windowManagerService.ShowDialogAsync(dialog).ConfigureAwait(false);
+    }
+
+    /// <summary>搬完并校验通过，才问玩家要不要清掉 C 盘那份 —— 默认不清。</summary>
+    private async Task DeleteLegacyAfterMigrationPopup(MigrationResult migration)
+    {
+        var checkBox = new CheckBox
+        {
+            Content = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateDeleteOld",
+                "迁移已校验，删除 C 盘上的旧数据"),
+            IsChecked = false
+        };
+
+        var permanent = new CheckBox
+        {
+            Content = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigratePermanent", "永久删除（不进回收站）"),
+            IsChecked = false
+        };
+
+        var panel = new StackPanel { Spacing = 8 };
+        panel.Children.Add(new TextBlock
+        {
+            Text = string.Format(
+                _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateDoneBody",
+                    "已经把 {0} 个文件夹搬到：\n{1}\n\n旧数据还在 C 盘，删不删随你。"),
+                migration.CopiedItems.Count, _dataRootService.GamesDataRoot),
+            TextWrapping = TextWrapping.WrapWholeWords,
+            IsTextSelectionEnabled = true
+        });
+        panel.Children.Add(checkBox);
+        panel.Children.Add(permanent);
+
+        var dialog = new ContentDialog
+        {
+            Title = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateDoneTitle", "迁移完成"),
+            Content = panel,
+            PrimaryButtonText = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_Confirm", "确定"),
+            CloseButtonText = _languageLocalizer.GetLocalizedStringOrDefault("/ServicesMsg/Act_MigrateCancel", "取消")
+        };
+
+        if (await _windowManagerService.ShowDialogAsync(dialog).ConfigureAwait(false) != ContentDialogResult.Primary)
+            return;
+
+        if (checkBox.IsChecked != true)
+            return;
+
+        foreach (var item in migration.CopiedItems)
+        {
+            try
+            {
+                if (permanent.IsChecked == true)
+                    RecycleBin.DeleteDirectory(item.Source);
+                else
+                    RecycleBin.SendDirectory(item.Source);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warning(ex, "删除旧数据失败：{Path}", item.Source);
+            }
+        }
     }
 
     /// <summary>免费声明只在第一次启动时弹一次，勾了「不再提示」或者看过了就写进本地设置。</summary>

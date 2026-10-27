@@ -79,8 +79,8 @@ The scripts folder there is cleared and rebuilt, and the NVIDIA DLSS library shi
   <data name="Shell_NavNotifications.Content" xml:space="preserve">
     <value>Notifications</value>
   </data>
-  <data name="Shell_NavPluginArea.Content" xml:space="preserve">
-    <value>Plugins</value>
+  <data name="Shell_NavFeatureArea.Content" xml:space="preserve">
+    <value>Features</value>
   </data>
   <data name="Shell_NavPresets.Content" xml:space="preserve">
     <value>Presets</value>

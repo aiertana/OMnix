@@ -398,4 +398,30 @@ Mods/分类/角色/&lt;Mod 文件夹&gt;
   </data>
   <data name="PluginDepSvc_ManualEmpty" xml:space="preserve"><value>先选一个文件夹</value></data>
   <data name="PluginDepSvc_ManualInvalid" xml:space="preserve"><value>这个文件夹里没有 XXMI Launcher：{0}</value></data>
+  <data name="Act_MigrateTitle" xml:space="preserve"><value>发现旧版本数据</value></data>
+  <data name="Act_MigrateBody" xml:space="preserve"><value>检测到旧版本的数据还在 C 盘：
+{0}
+
+新版把游戏数据放到了：
+{1}
+
+要现在搬过去吗？原来的数据会原样保留，搬完再让你决定删不删。</value></data>
+  <data name="Act_MigrateNow" xml:space="preserve"><value>一键迁移</value></data>
+  <data name="Act_MigrateLater" xml:space="preserve"><value>以后再说</value></data>
+  <data name="Act_MigratingTitle" xml:space="preserve"><value>正在迁移旧数据</value></data>
+  <data name="Act_MigratingBody" xml:space="preserve"><value>正在复制文件，别关掉窗口…</value></data>
+  <data name="Act_MigratingItem" xml:space="preserve"><value>正在搬：{0}（{1}/{2}）</value></data>
+  <data name="Act_MigrateDoneTitle" xml:space="preserve"><value>迁移完成</value></data>
+  <data name="Act_MigrateDoneBody" xml:space="preserve"><value>已经把 {0} 个文件夹搬到：
+{1}
+
+旧数据还在 C 盘，删不删随你。</value></data>
+  <data name="Act_MigrateDeleteOld" xml:space="preserve"><value>迁移已校验，删除 C 盘上的旧数据</value></data>
+  <data name="Act_MigratePermanent" xml:space="preserve"><value>永久删除（不进回收站）</value></data>
+  <data name="Act_MigrateManualTitle" xml:space="preserve"><value>可以手动迁移</value></data>
+  <data name="Act_MigrateManualIntro" xml:space="preserve"><value>自动迁移没能全部完成，你可以手动搬：把旧数据文件夹里的东西复制到新目录。</value></data>
+  <data name="Act_MigrateManualPaths" xml:space="preserve"><value>旧数据：</value></data>
+  <data name="Act_MigrateManualTarget" xml:space="preserve"><value>搬到：</value></data>
+  <data name="Act_Confirm" xml:space="preserve"><value>确定</value></data>
+  <data name="Act_MigrateCancel" xml:space="preserve"><value>取消</value></data>
 </root>

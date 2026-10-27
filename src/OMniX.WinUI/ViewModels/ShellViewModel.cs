@@ -10,6 +10,7 @@ using OMniX.WinUI.Services.Notifications;
 using OMniX.WinUI.Services.Plugins;
 using OMniX.WinUI.Views;
 using OMniX.WinUI.Views.Dialogs;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System.Diagnostics;
@@ -153,6 +154,14 @@ public partial class ShellViewModel : ObservableRecipient
         await _gameLaunchService.LaunchAsync();
     }
 
+    /// <summary>插件开关是否该出现在侧栏：插件没装就不显示</summary>
+    private bool _switchesVisible = true;
+
+    public Visibility ModToggleVisibility =>
+        _switchesVisible ? Visibility.Visible : Visibility.Collapsed;
+
+    public Visibility Dlss5ToggleVisibility => ModToggleVisibility;
+
     /// <summary>
     ///     二开：刷新插件的开关状态（启动时、切换完开关后都调一次）。
     /// </summary>
@@ -165,6 +174,16 @@ public partial class ShellViewModel : ObservableRecipient
         ModEnabled = state.ModLoaderActive;
         Dlss5StatusText = state.StatusText;
         Dlss5DetailText = state.DetailText;
+
+        // 开关跟着插件状态走：加载链装了（或能装）才显示，没装就不占侧栏的位置
+        var visible = state.Deployed || state.Ready;
+
+        if (visible != _switchesVisible)
+        {
+            _switchesVisible = visible;
+            OnPropertyChanged(nameof(ModToggleVisibility));
+            OnPropertyChanged(nameof(Dlss5ToggleVisibility));
+        }
         Dlss5ToolTip = !state.Deployed
             ? state.Ready
                 ? _localizer.GetLocalizedStringOrDefault("/ShellUi/Shell_Dlss5TipReady", "点右侧开关部署加载链（需要管理员权限）")

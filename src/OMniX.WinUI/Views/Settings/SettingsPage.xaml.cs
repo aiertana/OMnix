@@ -41,6 +41,15 @@ public sealed partial class SettingsPage : Page
         await ViewModel.SelectGameCommand.ExecuteAsync(item).ConfigureAwait(false);
     }
 
+    private void LaunchModeComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var index = ((ComboBox)sender).SelectedIndex;
+        if (index < 0) return;
+
+        if (ViewModel.SetLaunchModeCommand.CanExecute(index))
+            ViewModel.SetLaunchModeCommand.ExecuteAsync(index);
+    }
+
     private void LocalCacheSlider_OnValueChanged(object _, RangeBaseValueChangedEventArgs e)
     {
         if (ViewModel.SetCacheLimitCommand.CanExecute((int)e.NewValue))
