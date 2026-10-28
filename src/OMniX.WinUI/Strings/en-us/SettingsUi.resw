@@ -704,6 +704,19 @@ Sorry for the inconvenience.</value>
   <data name="MigrateRunning" xml:space="preserve"><value>Copying files...</value></data>
   <data name="MigrateItem" xml:space="preserve"><value>Moving: {0} ({1}/{2})</value></data>
   <data name="MigrateDoneTitle" xml:space="preserve"><value>Migration done</value></data>
+  <data name="MigrateDoneBody" xml:space="preserve"><value>Moved {0} folder(s) to:
+{1}
+
+The old data is still on drive C. Deleting it is up to you.</value></data>
+  <data name="MigrateDeleteOld" xml:space="preserve"><value>Migration verified, delete the old data on drive C</value></data>
+  <data name="MigratePermanent" xml:space="preserve"><value>Delete permanently (skip the recycle bin)</value></data>
+  <data name="MigrateManualTitle" xml:space="preserve"><value>You can move it by hand</value></data>
+  <data name="MigrateManualIntro" xml:space="preserve"><value>The automatic move did not finish. You can do it by hand: copy everything from the old folder into the new one.</value></data>
+  <data name="MigrateManualPaths" xml:space="preserve"><value>Old data:</value></data>
+  <data name="MigrateManualTarget" xml:space="preserve"><value>Move to:</value></data>
+  <data name="MigrateGotIt" xml:space="preserve"><value>Got it</value></data>
+  <data name="MigrateConfirm" xml:space="preserve"><value>OK</value></data>
+  <data name="MigrateCancel" xml:space="preserve"><value>Cancel</value></data>
   <data name="MigrateNothingTitle" xml:space="preserve"><value>Nothing to move</value></data>
   <data name="MigrateNothingBody" xml:space="preserve"><value>No old OMniX data was found on drive C</value></data>
   <data name="CleanupCardTitle" xml:space="preserve"><value>Game resources</value></data>

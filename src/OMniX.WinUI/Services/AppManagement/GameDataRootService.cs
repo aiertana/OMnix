@@ -154,11 +154,13 @@ public sealed class GameDataRootService
                              ?? GameCatalog.ByCoreName(suffix)?.Id
                              ?? GameCatalog.Fallback.Id;
 
-                items.Add(new LegacyItem(directory, Path.Combine("GamesData", gameId, "Profile"), true));
+                // 注意：RelativeTarget 是相对 GamesDataRoot 的，而 GamesDataRoot 本身就叫 GamesData
+                // —— 这里再多拼一个 "GamesData" 就成了 GamesData\GamesData（1.4.0 出过的嵌套事故）
+                items.Add(new LegacyItem(directory, Path.Combine(gameId, "Profile"), true));
             }
             else if (string.Equals(name, "Plugins", StringComparison.OrdinalIgnoreCase))
             {
-                items.Add(new LegacyItem(directory, Path.Combine("GamesData", GameCatalog.Fallback.Id, "Plugins"), false));
+                items.Add(new LegacyItem(directory, Path.Combine(GameCatalog.Fallback.Id, "Plugins"), false));
             }
         }
 

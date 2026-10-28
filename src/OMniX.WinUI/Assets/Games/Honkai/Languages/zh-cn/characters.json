@@ -965,5 +965,197 @@
     "InGameSkins": [],
     "InternalName": "Moze",
     "DisplayName": "貊泽"
+  },
+  {
+    "Keys": [
+      "yaoguang",
+      "爻光"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Physical",
+    "Class": "Elation",
+    "Region": [],
+    "ModFilesName": "YaoGuang",
+    "InGameSkins": [],
+    "InternalName": "YaoGuang",
+    "DisplayName": "爻光"
+  },
+  {
+    "Keys": [
+      "sparxie",
+      "火花"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Fire",
+    "Class": "Elation",
+    "Region": [],
+    "ModFilesName": "Sparxie",
+    "InGameSkins": [],
+    "InternalName": "Sparxie",
+    "DisplayName": "火花"
+  },
+  {
+    "Keys": [
+      "ashveil",
+      "不死途"
+    ],
+    "ReleaseDate": "2026-03-25",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Lightning",
+    "Class": "Hunt",
+    "Region": [],
+    "ModFilesName": "Ashveil",
+    "InGameSkins": [],
+    "InternalName": "Ashveil",
+    "DisplayName": "不死途"
+  },
+  {
+    "Keys": [
+      "silverwolflv999",
+      "银狼LV.999"
+    ],
+    "ReleaseDate": "2026-04-22",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Imaginary",
+    "Class": "Elation",
+    "Region": [],
+    "ModFilesName": "SilverWolfLV999",
+    "InGameSkins": [],
+    "InternalName": "SilverWolfLV999",
+    "DisplayName": "银狼LV.999"
+  },
+  {
+    "Keys": [
+      "evanescia",
+      "绯英"
+    ],
+    "ReleaseDate": "2026-04-22",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Physical",
+    "Class": "Elation",
+    "Region": [],
+    "ModFilesName": "Evanescia",
+    "InGameSkins": [],
+    "InternalName": "Evanescia",
+    "DisplayName": "绯英"
+  },
+  {
+    "Keys": [
+      "mortenaxblade",
+      "千冶·刃"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Fire",
+    "Class": "Nihility",
+    "Region": [],
+    "ModFilesName": "MortenaxBlade",
+    "InGameSkins": [],
+    "InternalName": "MortenaxBlade",
+    "DisplayName": "千冶·刃"
+  },
+  {
+    "Keys": [
+      "himekonova",
+      "姬子·启行"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Fire",
+    "Class": "Erudition",
+    "Region": [],
+    "ModFilesName": "HimekoNova",
+    "InGameSkins": [],
+    "InternalName": "HimekoNova",
+    "DisplayName": "姬子·启行"
+  },
+  {
+    "Keys": [
+      "rintohsaka",
+      "远坂凛"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Quantum",
+    "Class": "Erudition",
+    "Region": [],
+    "ModFilesName": "RinTohsaka",
+    "InGameSkins": [],
+    "InternalName": "RinTohsaka",
+    "DisplayName": "远坂凛"
+  },
+  {
+    "Keys": [
+      "gilgamesh",
+      "吉尔伽美什"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Lightning",
+    "Class": "Destruction",
+    "Region": [],
+    "ModFilesName": "Gilgamesh",
+    "InGameSkins": [],
+    "InternalName": "Gilgamesh",
+    "DisplayName": "吉尔伽美什"
+  },
+  {
+    "Keys": [
+      "robinsummeretto",
+      "知更鸟·晴歌"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Wind",
+    "Class": "Remembrance",
+    "Region": [],
+    "ModFilesName": "RobinSummeretto",
+    "InGameSkins": [],
+    "InternalName": "RobinSummeretto",
+    "DisplayName": "知更鸟·晴歌"
+  },
+  {
+    "Keys": [
+      "aventurinewaveflair",
+      "砂金·戏浪"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Quantum",
+    "Class": "Elation",
+    "Region": [],
+    "ModFilesName": "AventurineWaveflair",
+    "InGameSkins": [],
+    "InternalName": "AventurineWaveflair",
+    "DisplayName": "砂金·戏浪"
+  },
+  {
+    "Keys": [
+      "pearl",
+      "真珠"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Ice",
+    "Class": "Elation",
+    "Region": [],
+    "ModFilesName": "Pearl",
+    "InGameSkins": [],
+    "InternalName": "Pearl",
+    "DisplayName": "真珠"
   }
 ]

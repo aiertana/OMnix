@@ -2130,5 +2130,181 @@
     "InGameSkins": [],
     "InternalName": "Illuga",
     "DisplayName": "Illuga"
+  },
+  {
+    "Keys": [
+      "varka",
+      "法尔伽"
+    ],
+    "ReleaseDate": "2026-02-25",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Anemo",
+    "Class": "Claymore",
+    "Region": [],
+    "ModFilesName": "Varka",
+    "InGameSkins": [],
+    "InternalName": "Varka",
+    "DisplayName": "Varka"
+  },
+  {
+    "Keys": [
+      "linnea",
+      "莉奈娅"
+    ],
+    "ReleaseDate": "2026-04-08",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Geo",
+    "Class": "Bow",
+    "Region": [],
+    "ModFilesName": "Linnea",
+    "InGameSkins": [],
+    "InternalName": "Linnea",
+    "DisplayName": "Linnea"
+  },
+  {
+    "Keys": [
+      "nicole",
+      "尼可"
+    ],
+    "ReleaseDate": "2026-05-20",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Pyro",
+    "Class": "Catalyst",
+    "Region": [],
+    "ModFilesName": "Nicole",
+    "InGameSkins": [],
+    "InternalName": "Nicole",
+    "DisplayName": "Nicole"
+  },
+  {
+    "Keys": [
+      "lohen",
+      "洛恩"
+    ],
+    "ReleaseDate": "2026-05-20",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Cryo",
+    "Class": "Polearm",
+    "Region": [],
+    "ModFilesName": "Lohen",
+    "InGameSkins": [],
+    "InternalName": "Lohen",
+    "DisplayName": "Lohen"
+  },
+  {
+    "Keys": [
+      "sandrone",
+      "桑多涅"
+    ],
+    "ReleaseDate": "2026-07-01",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Cryo",
+    "Class": "Claymore",
+    "Region": [],
+    "ModFilesName": "Sandrone",
+    "InGameSkins": [],
+    "InternalName": "Sandrone",
+    "DisplayName": "Sandrone"
+  },
+  {
+    "Keys": [
+      "odette",
+      "奥黛塔"
+    ],
+    "ReleaseDate": "2026-08-12",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Cryo",
+    "Class": "Sword",
+    "Region": [],
+    "ModFilesName": "Odette",
+    "InGameSkins": [],
+    "InternalName": "Odette",
+    "DisplayName": "Odette"
+  },
+  {
+    "Keys": [
+      "vesna",
+      "薇斯纳"
+    ],
+    "ReleaseDate": "2026-09-23",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Anemo",
+    "Class": "Sword",
+    "Region": [],
+    "ModFilesName": "Vesna",
+    "InGameSkins": [],
+    "InternalName": "Vesna",
+    "DisplayName": "Vesna"
+  },
+  {
+    "Keys": [
+      "vodyanitsa",
+      "沃雅妮莎"
+    ],
+    "ReleaseDate": "2026-09-23",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Hydro",
+    "Class": "Catalyst",
+    "Region": [],
+    "ModFilesName": "Vodyanitsa",
+    "InGameSkins": [],
+    "InternalName": "Vodyanitsa",
+    "DisplayName": "Vodyanitsa"
+  },
+  {
+    "Keys": [
+      "iffah",
+      "伊法"
+    ],
+    "ReleaseDate": "2025-12-10",
+    "Image": "_placeholder.png",
+    "Rarity": 4,
+    "Element": "Anemo",
+    "Class": "Catalyst",
+    "Region": [],
+    "ModFilesName": "Iffah",
+    "InGameSkins": [],
+    "InternalName": "Iffah",
+    "DisplayName": "Iffah"
+  },
+  {
+    "Keys": [
+      "prune",
+      "布伦妮"
+    ],
+    "ReleaseDate": "2026-05-20",
+    "Image": "_placeholder.png",
+    "Rarity": 4,
+    "Element": "Anemo",
+    "Class": "Catalyst",
+    "Region": [],
+    "ModFilesName": "Prune",
+    "InGameSkins": [],
+    "InternalName": "Prune",
+    "DisplayName": "Prune"
+  },
+  {
+    "Keys": [
+      "alyosha",
+      "阿罗夏"
+    ],
+    "ReleaseDate": "2026-08-12",
+    "Image": "_placeholder.png",
+    "Rarity": 4,
+    "Element": "Electro",
+    "Class": "Polearm",
+    "Region": [],
+    "ModFilesName": "Alyosha",
+    "InGameSkins": [],
+    "InternalName": "Alyosha",
+    "DisplayName": "Alyosha"
   }
 ]

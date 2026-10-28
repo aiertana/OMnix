@@ -103,14 +103,18 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
 
     public ObservableCollection<GameComboBoxEntryVM> Games { get; } = new();
 
+    /// <summary>二开：游戏资源包根目录（GamesData）</summary>
+    private readonly GameDataRootService _dataRoot;
+
     public StartupViewModel(INavigationService navigationService, ILocalSettingsService localSettingsService,
         IWindowManagerService windowManagerService, ISkinManagerService skinManagerService,
         SelectedGameService selectedGameService, IGameService gameService, ModPresetService modPresetService,
         UserPreferencesService userPreferencesService, ModArchiveRepository modArchiveRepository,
         CommandService commandService, ThreeDMigtoProcessManager modelImporterProcessManager,
-        ILanguageLocalizer localizer)
+        ILanguageLocalizer localizer, GameDataRootService dataRoot)
     {
         _navigationService = navigationService;
+        _dataRoot = dataRoot;
         _localSettingsService = localSettingsService;
         _windowManagerService = windowManagerService;
         _skinManagerService = skinManagerService;
@@ -150,8 +154,9 @@ public partial class StartupViewModel : ObservableRecipient, INavigationAware
 
         await _selectedGameService.SetSelectedGame(SelectedGame.Value.ToString());
 
+        // 二开：资源从 GamesData 的包里读（管理功能仍在 Core），包不存在才回内置
         await _gameService.InitializeAsync(
-            Path.Combine(App.ASSET_DIR, "Games", await _selectedGameService.GetSelectedGameAsync()),
+            GameAssetsLocator.Resolve(_dataRoot, await _selectedGameService.GetSelectedGameAsync()),
             _localSettingsService.ApplicationDataFolder);
 
         await _localSettingsService.SaveSettingAsync(ModManagerOptions.Section,

@@ -81,6 +81,10 @@ New-Item -ItemType Directory -Path $outApp -Force | Out-Null
 
 # 游戏数据目录：空目录不会进 zip，放一个说明文件把它固定下来。
 # 玩家一看就懂这里放什么，要整体挪盘也能在设置页改路径。
+# 二开：必须整个重置 —— 上一轮在包目录里测试时，启动器把四个游戏的资源包、
+# 迁移数据全装进了这里，不清理就全打进 zip（376MB 的事故）。
+# 资源包本来就会在玩家第一次启动时自动装，包里不该带。
+if (Test-Path $outData) { Remove-Item $outData -Recurse -Force }
 New-Item -ItemType Directory -Path $outData -Force | Out-Null
 Set-Content -Path (Join-Path $outData '读我.txt') -Encoding UTF8 -Value @(
     '这个文件夹放的是 OMniX 的游戏数据，按游戏分开存放：',

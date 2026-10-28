@@ -25,7 +25,7 @@
     <value>Code · UI · Motion</value>
   </data>
   <data name="About_Description.Text" xml:space="preserve">
-    <value>A mod manager for Wuthering Waves: organize mods by character, toggle them in one click, save presets and sync with 3Dmigoto. Your mod files stay in the XXMI Launcher folder, this app only manages them.</value>
+    <value>A multi-game mod manager. The Wuthering Waves kernel is built in; ZZZ, Genshin and Star Rail kernels can be downloaded and switched anytime. Organizes mods by character, one-click toggles and presets — your mod files stay where they are, this app only manages them.</value>
   </data>
   <data name="About_DonateBody.Text" xml:space="preserve">
     <value>The software stays free, this is purely optional — scan it only if you found it useful and feel like chipping in. Skipping it changes nothing.</value>
@@ -39,11 +39,23 @@
   <data name="About_FeatureCharactersLabel.Text" xml:space="preserve">
     <value>Characters</value>
   </data>
+  <data name="About_FeatureDataRootDesc.Text" xml:space="preserve">
+    <value>Data is stored per game, can live on any drive, and caches or logs can be cleaned up from Settings</value>
+  </data>
+  <data name="About_FeatureDataRootLabel.Text" xml:space="preserve">
+    <value>Data folders</value>
+  </data>
   <data name="About_FeatureEditDesc.Text" xml:space="preserve">
     <value>Edit name, author, description and rating, rearrange sections and priorities inside a mod</value>
   </data>
   <data name="About_FeatureEditLabel.Text" xml:space="preserve">
     <value>Mod editing</value>
+  </data>
+  <data name="About_FeatureFeaturePackDesc.Text" xml:space="preserve">
+    <value>Each game's tools ship as a downloadable resource pack; offline zip import is supported too</value>
+  </data>
+  <data name="About_FeatureFeaturePackLabel.Text" xml:space="preserve">
+    <value>Feature packs</value>
   </data>
   <data name="About_FeatureFixerDesc.Text" xml:space="preserve">
     <value>Wuwa Mod Fixer is built in — download and run it right here</value>
@@ -52,7 +64,7 @@
     <value>Mod fixing</value>
   </data>
   <data name="About_FeatureLaunchDesc.Text" xml:space="preserve">
-    <value>With paths configured, launches XXMI Launcher and the game itself</value>
+    <value>The launch method is detected per game: WuWa via its official launcher, ZZZ via XXMI, Genshin / Star Rail via HoYo</value>
   </data>
   <data name="About_FeatureLaunchLabel.Text" xml:space="preserve">
     <value>Game launch</value>
@@ -62,6 +74,12 @@
   </data>
   <data name="About_FeatureMigrateLabel.Text" xml:space="preserve">
     <value>Migration</value>
+  </data>
+  <data name="About_FeatureMultiKernelDesc.Text" xml:space="preserve">
+    <value>The Wuthering Waves kernel is built in; download ZZZ / Genshin / Star Rail kernels and switch from the home page</value>
+  </data>
+  <data name="About_FeatureMultiKernelLabel.Text" xml:space="preserve">
+    <value>Multi-game</value>
   </data>
   <data name="About_FeaturePresetDesc.Text" xml:space="preserve">
     <value>Save a set of mods as a preset, apply it in bulk, export it or duplicate it</value>

@@ -1,5 +1,5 @@
-﻿using OMniX.WinUI.ViewModels;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
+using OMniX.WinUI.ViewModels;
 
 namespace OMniX.WinUI.Views;
 

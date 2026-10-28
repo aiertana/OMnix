@@ -25,6 +25,8 @@ namespace OMniX.WinUI.ViewModels;
 /// </summary>
 public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAware
 {
+    /// <summary>「全局」头像的 Id：选它看所有插件（不分游戏），放全局通用的配置和插件。</summary>
+    public const string GlobalId = "Global";
     // 两张开着用的插件卡统一用主色红（图标底色更淡一档），未上线的用更淡的灰。
     // 之前 Mod 加载那张是中性灰，和旁边 DLSS5 的红不一样，看着像没开，按你的要求统一了。
     private static readonly Color ActiveTint = Color.FromArgb(0x24, 0xE5, 0x48, 0x4D);
@@ -63,17 +65,35 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
     private GameDefinition CurrentGame =>
         GameCatalog.ById(SelectedGame?.Id) ?? GameCatalog.Fallback;
 
+    /// <summary>现在是不是在「全局」视图（看所有插件、管全局配置）</summary>
+    public bool IsGlobalView =>
+        string.Equals(SelectedGame?.Id, GlobalId, StringComparison.OrdinalIgnoreCase);
+
     public FeatureAreaViewModel()
     {
-        LoadGames();
-        Reload();
+        // 二开：这里一行都别加。
+        // 以前在构造函数里用 .GetAwaiter().GetResult() 去取游戏信息和当前游戏 ——
+        // 那是在 UI 线程上干等异步，结果就是「一点功能专区整个界面卡死」。
+        // 加载一律挪到 OnNavigatedToAsync 里 await。
     }
 
-    public string PluginsFolderPath => PluginDependencyService.PluginsRoot;
+    /// <summary>
+    ///     插件目录：全局一份，GamesData\Plugins。
+    ///     插件适用于哪些游戏由 plugin.json 的 games 字段定，不靠放的位置。
+    /// </summary>
+    public string PluginsFolderPath => _catalog.PluginsDirectory();
+
+    partial void OnSelectedGameChanged(GameAvatarItem? value) =>
+        OnPropertyChanged(nameof(PluginsFolderPath));
 
     public ObservableCollection<PluginCard> Plugins { get; } = new();
 
-    public void OnNavigatedTo(object parameter)
+    // 二开：导航框架调的是同步的 OnNavigatedTo，真正的加载丢给后台跑。
+    // 不能在这里 .GetAwaiter().GetResult() —— 那会占住 UI 线程，页面直接卡死。
+    public void OnNavigatedTo(object parameter) => _ = OnNavigatedToAsync(parameter);
+
+    /// <summary>导航进来时才加载。全程 await，不占着 UI 线程。</summary>
+    private async Task OnNavigatedToAsync(object parameter)
     {
         // 首页点灰态游戏跳过来时会带上游戏 Id，直接把头像栏选中它
         if (parameter is string gameId)
@@ -85,24 +105,43 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
                 SelectedGame = match;
         }
 
-        LoadGames();
+        // 旧版插件放在各游戏目录下，进来先搬一次到全局目录（幂等，搬过就跳过）
+        await Task.Run(() => _catalog.EnsureMigrated());
+
+        await LoadGamesAsync();
         Reload();
     }
 
     /// <summary>头像栏：四个内核，没下载的画成灰的。</summary>
-    private void LoadGames()
+    private async Task LoadGamesAsync()
     {
         var current = SelectedGame?.Id;
-        var currentCore = _selectedGameService.GetSelectedGameAsync().GetAwaiter().GetResult();
-        var items = GameCatalog.All.Select(game => new GameAvatarItem
+        var currentCore = await _selectedGameService.GetSelectedGameAsync();
+        var items = new List<GameAvatarItem>();
+
+        foreach (var game in GameCatalog.All)
         {
-            Id = game.Id,
-            Name = _localizer.GetLocalizedStringOrDefault("/HomePreset/" + game.NameKey, game.FallbackName),
-            IconPath = ResolveGameIcon(game),
-            Icon = TryLoadImage(ResolveGameIcon(game)),
-            IsInstalled = _kernel.IsInstalled(game),
-            IsCurrent = string.Equals(game.Core.ToString(), currentCore, StringComparison.OrdinalIgnoreCase)
-        }).ToList();
+            // 图标直接从包目录读，不初始化游戏 —— 以前没加载的游戏全显示成白块
+            var iconPath = GameAssetsLocator.ResolveIconPath(_dataRoot, game);
+
+            items.Add(new GameAvatarItem
+            {
+                Id = game.Id,
+                Name = _localizer.GetLocalizedStringOrDefault("/HomePreset/" + game.NameKey, game.FallbackName),
+                IconPath = iconPath,
+                Icon = TryLoadImage(iconPath),
+                IsInstalled = _kernel.IsInstalled(game),
+                IsCurrent = string.Equals(game.Core.ToString(), currentCore, StringComparison.OrdinalIgnoreCase)
+            });
+        }
+
+        // 「全局」放最前面：看所有插件、管全局配置（GamesData\Plugins）
+        items.Insert(0, new GameAvatarItem
+        {
+            Id = GlobalId,
+            Name = "全局",
+            IsInstalled = true
+        });
 
         Games.Clear();
 
@@ -116,21 +155,16 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
         UpdateKernelStatus();
     }
 
-    private static string ResolveGameIcon(GameDefinition game)
-    {
-        try
-        {
-            var info = GameService.GetGameInfoAsync(game.Core).GetAwaiter().GetResult();
-            return info?.GameIcon ?? string.Empty;
-        }
-        catch
-        {
-            return string.Empty;
-        }
-    }
-
     private void UpdateKernelStatus()
     {
+        // 全局视图：不装内核这回事，状态行说明这里是干嘛的
+        if (IsGlobalView)
+        {
+            CanInstallKernel = false;
+            KernelStatusText = "全局配置 · 所有插件存放在 GamesData\\Plugins，适用于哪个游戏由插件自己声明";
+            return;
+        }
+
         var game = CurrentGame;
 
         CanInstallKernel = !_kernel.IsInstalled(game);
@@ -188,7 +222,9 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
     {
         var game = CurrentGame;
 
-        await Task.Run(() => _kernel.Register(game, "local"));
+        // 二开：装内核 = 把资源包（角色头像、Languages、那几个 json）装到 GamesData\<游戏>\ 下，
+        // 管理功能仍在 Core。所以「安装」这一步是真的把资源搬过去了。
+        await Task.Run(() => _kernel.Install(game, "local"));
 
         _notifications.ShowNotification(
             _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_KernelInstalled", "内核已安装"),
@@ -196,7 +232,7 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
                 "「{0}」已经可以用了，回首页切换就能看到。"), game.FallbackName),
             TimeSpan.FromSeconds(6));
 
-        LoadGames();
+        await LoadGamesAsync();
         Reload();
     }
 
@@ -337,7 +373,8 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
 
         try
         {
-            found = _catalog.Scan(CurrentGame.Id);
+            // 全局视图全列出来（各自标注适用范围），游戏视图只列适用的
+            found = IsGlobalView ? _catalog.ScanAll() : _catalog.Scan(CurrentGame.Id);
         }
         catch (Exception)
         {
@@ -348,15 +385,22 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
         {
             var captured = plugin;
 
+            // 适用范围标出来：通用的不标，限定了游戏的列一下，
+            // 不然玩家不知道这个插件换个游戏还在不在
+            var description = string.IsNullOrWhiteSpace(plugin.Description)
+                ? plugin.DirectoryPath
+                : plugin.Description;
+
+            if (!string.IsNullOrWhiteSpace(plugin.GamesText))
+                description += $"\n适用：{plugin.GamesText}";
+
             var card = new PluginCard
             {
                 Name = plugin.Name,
                 Glyph = string.IsNullOrWhiteSpace(plugin.Glyph) ? "\uE9F0" : plugin.Glyph,
                 BadgeBackground = new SolidColorBrush(MutedTint),
                 BadgeForeground = new SolidColorBrush(MutedText),
-                Description = string.IsNullOrWhiteSpace(plugin.Description)
-                    ? plugin.DirectoryPath
-                    : plugin.Description,
+                Description = description,
                 Status = plugin.IsToggle
                     ? _localizer.GetLocalizedStringOrDefault(plugin.Enabled
                         ? "/HomePreset/Feature_StatusDeployed"
@@ -951,4 +995,7 @@ public class GameAvatarItem
     public double ItemOpacity => IsInstalled ? 1.0 : 0.45;
 
     public Visibility NotInstalledVisibility => IsInstalled ? Visibility.Collapsed : Visibility.Visible;
+
+    /// <summary>没有头像图的（比如「全局」那颗）就显示一个通用图标顶着。</summary>
+    public Visibility FallbackIconVisibility => Icon is null ? Visibility.Visible : Visibility.Collapsed;
 }

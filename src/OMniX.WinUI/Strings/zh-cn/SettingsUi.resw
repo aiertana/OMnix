@@ -708,6 +708,19 @@ OMniX 目录里其它文件一个都不会删。装完 OMniX 会自己重新打�
   <data name="MigrateRunning" xml:space="preserve"><value>正在复制文件…</value></data>
   <data name="MigrateItem" xml:space="preserve"><value>正在搬：{0}（{1}/{2}）</value></data>
   <data name="MigrateDoneTitle" xml:space="preserve"><value>迁移完成</value></data>
+  <data name="MigrateDoneBody" xml:space="preserve"><value>已经把 {0} 个文件夹搬到：
+{1}
+
+旧数据还在 C 盘，删不删随你。</value></data>
+  <data name="MigrateDeleteOld" xml:space="preserve"><value>迁移已校验，删除 C 盘上的旧数据</value></data>
+  <data name="MigratePermanent" xml:space="preserve"><value>永久删除（不进回收站）</value></data>
+  <data name="MigrateManualTitle" xml:space="preserve"><value>可以手动迁移</value></data>
+  <data name="MigrateManualIntro" xml:space="preserve"><value>自动迁移没能全部完成，你可以自己搬：把旧数据文件夹里的东西复制到新目录。</value></data>
+  <data name="MigrateManualPaths" xml:space="preserve"><value>旧数据：</value></data>
+  <data name="MigrateManualTarget" xml:space="preserve"><value>搬到：</value></data>
+  <data name="MigrateGotIt" xml:space="preserve"><value>我知道了</value></data>
+  <data name="MigrateConfirm" xml:space="preserve"><value>确定</value></data>
+  <data name="MigrateCancel" xml:space="preserve"><value>取消</value></data>
   <data name="MigrateNothingTitle" xml:space="preserve"><value>没有旧数据</value></data>
   <data name="MigrateNothingBody" xml:space="preserve"><value>C 盘上没找到旧版本的 OMniX 数据</value></data>
   <data name="CleanupCardTitle" xml:space="preserve"><value>游戏资源管理</value></data>

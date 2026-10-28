@@ -92,7 +92,7 @@
                     <TextBlock
                         Margin="0,8,0,0"
                         Style="{StaticResource AboutBodyStyle}"
-                        Text="鸣潮的 Mod 管理器。按角色整理 Mod、一键开关、存预设、跟 3Dmigoto 同步，Mod 文件本身还在 XXMI Launcher 的目录里，这个程序只负责管。"
+                        Text="多游戏 Mod 管理器。内置鸣潮内核，绝区零 / 原神 / 崩铁内核可随时下载切换；按角色整理 Mod、一键开关、存预设，Mod 文件本身还在原处，这个程序只负责管。"
             l:Uids.Uid="/HomePreset/About_Description"/>
                     <TextBlock
                         Margin="0,6,0,0"
@@ -107,6 +107,20 @@
                 <StackPanel Spacing="10">
                     <TextBlock Style="{StaticResource AboutCardTitleStyle}" Text="能做什么"
             l:Uids.Uid="/HomePreset/About_FeaturesCardTitle"/>
+
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="多游戏"
+            l:Uids.Uid="/HomePreset/About_FeatureMultiKernelLabel"/>
+                        <TextBlock
+                            Grid.Column="1"
+                            Style="{StaticResource AboutBodyStyle}"
+                            Text="内置鸣潮内核，绝区零 / 原神 / 崩铁内核在首页即可下载，右上角一键切换"
+            l:Uids.Uid="/HomePreset/About_FeatureMultiKernelDesc"/>
+                    </Grid>
 
                     <Grid ColumnSpacing="12">
                         <Grid.ColumnDefinitions>
@@ -216,7 +230,7 @@
                         <TextBlock
                             Grid.Column="1"
                             Style="{StaticResource AboutBodyStyle}"
-                            Text="配好路径后能直接拉起 XXMI Launcher 和游戏本体"
+                            Text="按游戏自动识别启动方式：鸣潮走官方启动器，绝区零走 XXMI，原神 / 崩铁走 HoYo"
             l:Uids.Uid="/HomePreset/About_FeatureLaunchDesc"/>
                     </Grid>
 
@@ -232,6 +246,34 @@
                             Style="{StaticResource AboutBodyStyle}"
                             Text="Mod 可以在角色之间移动或复制"
             l:Uids.Uid="/HomePreset/About_FeatureMigrateDesc"/>
+                    </Grid>
+
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="功能专区"
+            l:Uids.Uid="/HomePreset/About_FeatureFeaturePackLabel"/>
+                        <TextBlock
+                            Grid.Column="1"
+                            Style="{StaticResource AboutBodyStyle}"
+                            Text="每个游戏的管理功能独立成资源包，可在线下载，也支持离线 zip 导入"
+            l:Uids.Uid="/HomePreset/About_FeatureFeaturePackDesc"/>
+                    </Grid>
+
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource AboutRowLabelStyle}" Text="数据目录"
+            l:Uids.Uid="/HomePreset/About_FeatureDataRootLabel"/>
+                        <TextBlock
+                            Grid.Column="1"
+                            Style="{StaticResource AboutBodyStyle}"
+                            Text="数据按游戏分目录存放，可挪到任意盘，设置里能按类清理缓存与日志"
+            l:Uids.Uid="/HomePreset/About_FeatureDataRootDesc"/>
                     </Grid>
                 </StackPanel>
             </Border>

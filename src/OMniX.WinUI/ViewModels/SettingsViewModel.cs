@@ -1795,10 +1795,117 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
             // 关窗异常忽略
         }
 
-        _notificationManager.ShowNotification(
-            _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateDoneTitle", "迁移完成"),
-            migration.Message + "\n" + _dataRoot.GamesDataRoot,
-            TimeSpan.FromSeconds(8));
+        // 没搬成（或校验没过）就把两个路径原样摆出来，让玩家自己拷 —— 不能只丢一句“失败”就完事
+        if (migration.CopiedItems.Count == 0 || migration.Failures.Count > 0 || !migration.Verified)
+            await ShowManualMigrationHintAsync(migration);
+        else
+            await AskDeleteLegacyAsync(migration);
+    }
+
+    private async Task ShowManualMigrationHintAsync(MigrationResult migration)
+    {
+        var lines = new StackPanel { Spacing = 8 };
+
+        lines.Children.Add(new TextBlock
+        {
+            Text = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateManualIntro",
+                "自动迁移没能全部完成，你可以自己搬：把旧数据文件夹里的东西复制到新目录。"),
+            TextWrapping = TextWrapping.WrapWholeWords
+        });
+
+        foreach (var item in migration.Failures)
+        {
+            lines.Children.Add(new TextBlock
+            {
+                Text = $"{item.Source}  →  {item.Target}\n{item.Error}",
+                FontSize = 12,
+                IsTextSelectionEnabled = true,
+                TextWrapping = TextWrapping.WrapWholeWords
+            });
+        }
+
+        lines.Children.Add(new TextBlock
+        {
+            Text = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateManualPaths", "旧数据：") +
+                   GameDataRootService.LegacyAppDataRoot +
+                   "\n" +
+                   _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateManualTarget", "搬到：") +
+                   _dataRoot.GamesDataRoot,
+            FontSize = 12,
+            IsTextSelectionEnabled = true,
+            TextWrapping = TextWrapping.WrapWholeWords
+        });
+
+        var dialog = new ContentDialog
+        {
+            Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateManualTitle", "可以手动迁移"),
+            Content = lines,
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateGotIt", "我知道了")
+        };
+
+        await _windowManagerService.ShowDialogAsync(dialog);
+    }
+
+    /// <summary>搬完并校验通过才问要不要清掉 C 盘那份 —— 默认不清。</summary>
+    private async Task AskDeleteLegacyAsync(MigrationResult migration)
+    {
+        var checkBox = new CheckBox
+        {
+            Content = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateDeleteOld",
+                "迁移已校验，删除 C 盘上的旧数据"),
+            IsChecked = false
+        };
+
+        var permanent = new CheckBox
+        {
+            Content = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigratePermanent", "永久删除（不进回收站）"),
+            IsChecked = false
+        };
+
+        var panel = new StackPanel { Spacing = 8 };
+        panel.Children.Add(new TextBlock
+        {
+            Text = string.Format(
+                _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateDoneBody",
+                    "已经把 {0} 个文件夹搬到：\n{1}\n\n旧数据还在 C 盘，删不删随你。"),
+                migration.CopiedItems.Count, _dataRoot.GamesDataRoot),
+            TextWrapping = TextWrapping.WrapWholeWords,
+            IsTextSelectionEnabled = true
+        });
+        panel.Children.Add(checkBox);
+        panel.Children.Add(permanent);
+
+        var dialog = new ContentDialog
+        {
+            Title = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateDoneTitle", "迁移完成"),
+            Content = panel,
+            PrimaryButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateConfirm", "确定"),
+            CloseButtonText = _localizer.GetLocalizedStringOrDefault("/SettingsUi/MigrateCancel", "取消")
+        };
+
+        if (await _windowManagerService.ShowDialogAsync(dialog) != ContentDialogResult.Primary)
+            return;
+
+        if (checkBox.IsChecked != true)
+            return;
+
+        foreach (var item in migration.CopiedItems)
+        {
+            try
+            {
+                if (permanent.IsChecked == true)
+                    OMniX.WinUI.Helpers.RecycleBin.DeleteDirectory(item.Source);
+                else
+                    OMniX.WinUI.Helpers.RecycleBin.SendDirectory(item.Source);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warning(ex, "删除旧数据失败：{Path}", item.Source);
+            }
+        }
+
+        HasLegacyData = GameDataRootService.HasLegacyData();
+        OnPropertyChanged(nameof(HasLegacyDataVisibility));
     }
 
     public void OnNavigatedFrom()

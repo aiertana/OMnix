@@ -38,6 +38,9 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     private readonly IWindowManagerService _windowManagerService;
     private readonly ILanguageLocalizer _localizer;
 
+    /// <summary>二开：游戏资源包根目录（GamesData）</summary>
+    private readonly GameDataRootService _dataRoot;
+
     /// <summary>Hero 背景图存在这个键里；没有就用内置的默认图。</summary>
     public const string HeroBackgroundKey = "Home.Hero.BackgroundImage";
 
@@ -75,7 +78,8 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         GenshinProcessManager genshinProcessManager, IThemeSelectorService themeSelectorService,
         LifeCycleService lifeCycleService, NotificationManager notificationManager,
         GameLaunchService gameLaunchService, GameKernelService kernel,
-        IWindowManagerService windowManagerService, ILanguageLocalizer localizer)
+        IWindowManagerService windowManagerService, ILanguageLocalizer localizer,
+        GameDataRootService dataRoot)
     {
         _navigationService = navigationService;
         _gameService = gameService;
@@ -89,6 +93,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         _kernel = kernel;
         _windowManagerService = windowManagerService;
         _localizer = localizer;
+        _dataRoot = dataRoot;
 
         LaunchGameText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Home_LaunchGameText", "启动游戏");
         ConfigureGameText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Home_ConfigGameText", "配置游戏");
@@ -311,16 +316,21 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
             foreach (var game in GameCatalog.All)
             {
-                var info = await SafeGetGameInfoAsync(game.Core.ToString());
+                var isSelected = string.Equals(game.Core.ToString(), selected, StringComparison.OrdinalIgnoreCase);
+
+                // 图标直接从包目录读（读一个 json 字段），不初始化游戏。
+                // 以前给四个内核都调 GetGameInfoAsync，等于启动时把没在玩的游戏也全加载一遍，
+                // 界面直接卡死（1.4.0 出过一次）；后来只取当前的，其余又变成白块。
+                var iconPath = GameAssetsLocator.ResolveIconPath(_dataRoot, game);
 
                 items.Add(new GameSwitchItem
                 {
                     Id = game.Id,
                     ShortName = game.Core.ToString(),
                     Name = _localizer.GetLocalizedStringOrDefault("/HomePreset/" + game.NameKey, game.FallbackName),
-                    IconPath = info?.GameIcon ?? string.Empty,
+                    IconPath = iconPath,
                     IsInstalled = _kernel.IsInstalled(game),
-                    IsSelected = string.Equals(game.Core.ToString(), selected, StringComparison.OrdinalIgnoreCase)
+                    IsSelected = isSelected
                 });
             }
 
@@ -383,7 +393,24 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         if (string.Equals(current, target.ShortName, StringComparison.OrdinalIgnoreCase))
             return;
 
-        // 内核还没下载：灰态项被点到时问一句，点「是」就带玩家去功能专区下载
+        // 资源包没装好（比如玩家自己把 GamesData 里那包删了）：先用随程序带来的资源补装一次
+        if (!target.IsInstalled)
+        {
+            var definition = GameCatalog.ById(target.Id);
+
+            if (definition is not null)
+                await Task.Run(() => _kernel.EnsureInstalled(definition));
+
+            await LoadSwitchableGamesAsync();
+
+            var refreshed = Games.FirstOrDefault(game => game.Id == target.Id);
+
+            // 补装成功就换用刷新后的那一项，接着往下走正常切换流程
+            if (refreshed?.IsInstalled == true)
+                target = refreshed;
+        }
+
+        // 补装完还是没有：灰态项被点到时问一句，点「是」就带玩家去功能专区
         if (!target.IsInstalled)
         {
             var download = await AskDownloadAsync(target);

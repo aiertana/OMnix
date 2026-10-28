@@ -5,6 +5,7 @@ using OMniX.Core.Services.CommandService;
 using OMniX.Core.Services.GameBanana;
 using OMniX.Core.Services.ModPresetService;
 using OMniX.WinUI.Contracts.Services;
+using OMniX.WinUI.Helpers;
 using OMniX.WinUI.Models.Options;
 using OMniX.WinUI.Models.Settings;
 using OMniX.WinUI.Services.AppManagement;
@@ -28,13 +29,18 @@ public class FirstTimeStartupActivationHandler : ActivationHandler<LaunchActivat
     private readonly SelectedGameService _selectedGameService;
     private readonly ModArchiveRepository _modArchiveRepository;
     private readonly CommandService _commandService;
+
+    /// <summary>二开：游戏资源包根目录（GamesData）</summary>
+    private readonly GameDataRootService _dataRoot;
+
     public override string ActivationName { get; } = "RegularStartup";
 
     public FirstTimeStartupActivationHandler(INavigationService navigationService,
         ILocalSettingsService localSettingsService,
         ISkinManagerService skinManagerService, IGameService gameService, SelectedGameService selectedGameService,
         ModPresetService modPresetService, UserPreferencesService userPreferencesService,
-        ModArchiveRepository modArchiveRepository, CommandService commandService)
+        ModArchiveRepository modArchiveRepository, CommandService commandService,
+        GameDataRootService dataRoot)
     {
         _navigationService = navigationService;
         _localSettingsService = localSettingsService;
@@ -45,6 +51,7 @@ public class FirstTimeStartupActivationHandler : ActivationHandler<LaunchActivat
         _userPreferencesService = userPreferencesService;
         _modArchiveRepository = modArchiveRepository;
         _commandService = commandService;
+        _dataRoot = dataRoot;
     }
 
     protected override bool CanHandleInternal(LaunchActivatedEventArgs args)
@@ -67,7 +74,8 @@ public class FirstTimeStartupActivationHandler : ActivationHandler<LaunchActivat
 
         var gameServiceOptions = new InitializationOptions
         {
-            AssetsDirectory = Path.Combine(App.ASSET_DIR, "Games",
+            // 二开：资源走 GamesData 里的包（管理功能仍在 Core）
+            AssetsDirectory = GameAssetsLocator.Resolve(_dataRoot,
                 await _selectedGameService.GetSelectedGameAsync()),
             LocalSettingsDirectory = _localSettingsService.ApplicationDataFolder,
             CharacterSkinsAsCharacters = modManagerOptions?.CharacterSkinsAsCharacters ?? false

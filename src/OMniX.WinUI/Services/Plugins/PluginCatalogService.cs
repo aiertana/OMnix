@@ -20,16 +20,62 @@ public sealed class PluginCatalogService
         _dataRoot = dataRoot;
     }
 
-    /// <summary>该游戏的插件目录</summary>
+    /// <summary>该游戏的插件目录（旧版布局，只用来迁移）</summary>
     public string PluginsDirectory(string gameId) => _dataRoot.EnsureGameDirectory(gameId, "Plugins");
+
+    /// <summary>
+    ///     插件统一放这儿：GamesData\Plugins，全局一份。
+    ///     插件经常是好几个游戏通用的（XXMI 那套），按游戏各存一份就得复制好几遍；
+    ///     适用于哪个游戏由 plugin.json 的 games 字段说了，不靠放的位置。
+    /// </summary>
+    public string PluginsDirectory()
+    {
+        var path = Path.Combine(_dataRoot.GamesDataRoot, "Plugins");
+        Directory.CreateDirectory(path);
+        return path;
+    }
+
+    /// <summary>
+    ///     旧版把插件放 GamesData\&lt;游戏&gt;\Plugins，现在统一搬到全局目录。
+    ///     只搬带 plugin.json 的（那才是插件），同名的不覆盖。幂等，随时调都行。
+    /// </summary>
+    public void EnsureMigrated()
+    {
+        foreach (var game in GameCatalog.All)
+        {
+            var legacy = Path.Combine(_dataRoot.GameRoot(game.Id), "Plugins");
+
+            if (!Directory.Exists(legacy))
+                continue;
+
+            foreach (var directory in Directory.EnumerateDirectories(legacy))
+            {
+                if (!File.Exists(Path.Combine(directory, ManifestFileName)))
+                    continue;
+
+                var target = Path.Combine(PluginsDirectory(), Path.GetFileName(directory));
+
+                if (Directory.Exists(target))
+                    continue; // 全局已有同名，不动旧的
+
+                Directory.Move(directory, target);
+            }
+        }
+    }
 
     /// <summary>
     ///     扫一遍插件目录，每个含 plugin.json 的子目录算一个插件。
     ///     没有 manifest 的旧目录也给列出来（标成「缺少描述文件」），方便玩家自己补。
+    ///     只列当前游戏能用的：games 留空算通用，写了就按声明过滤。
     /// </summary>
-    public IReadOnlyList<PluginManifest> Scan(string gameId)
+    public IReadOnlyList<PluginManifest> Scan(string gameId) => ScanCore(gameId);
+
+    /// <summary>全量扫描，不过滤游戏 —— 「全局」视图用：所有插件都在，各自标适用范围。</summary>
+    public IReadOnlyList<PluginManifest> ScanAll() => ScanCore(null);
+
+    private IReadOnlyList<PluginManifest> ScanCore(string? gameId)
     {
-        var root = PluginsDirectory(gameId);
+        var root = PluginsDirectory();
         var found = new List<PluginManifest>();
 
         foreach (var directory in Directory.EnumerateDirectories(root))
@@ -54,6 +100,10 @@ public sealed class PluginCatalogService
                     Type = "link"
                 };
             }
+
+            // 不适用于当前游戏的插件不显示（文件还在，换个游戏就能看到）
+            if (gameId is not null && !manifest.SupportsGame(gameId))
+                continue;
 
             if (string.IsNullOrWhiteSpace(manifest.Id))
                 manifest.Id = Path.GetFileName(directory);
@@ -125,7 +175,7 @@ public sealed class PluginCatalogService
         if (!File.Exists(zipPath))
             throw new FileNotFoundException("离线包不存在", zipPath);
 
-        var root = PluginsDirectory(gameId);
+        var root = PluginsDirectory();
         var imported = new List<PluginManifest>();
         var staging = Path.Combine(Path.GetTempPath(), "OMniX_plugin_" + Guid.NewGuid().ToString("N"));
 
@@ -186,13 +236,14 @@ public sealed class PluginCatalogService
         return imported;
     }
 
-    /// <summary>给第三方一个能照着填的模板</summary>
+    /// <summary>给第三方一个能照着填的模板。默认只适用于生成它的那个游戏，自己再改 games。</summary>
     public string WriteTemplate(string gameId, string pluginId)
     {
-        var directory = Path.Combine(PluginsDirectory(gameId), pluginId);
+        var directory = Path.Combine(PluginsDirectory(), pluginId);
         Directory.CreateDirectory(directory);
 
         var manifest = PluginManifest.CreateSample(pluginId);
+        manifest.Games = [gameId];
         manifest.DirectoryPath = directory;
         Save(manifest);
 

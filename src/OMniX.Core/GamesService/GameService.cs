@@ -127,9 +127,29 @@ public class GameService : IGameService
     }
 
 
+    /// <summary>
+    ///     游戏资源包的根目录（GamesData）。外壳启动时把它指过去；
+    ///     为空就只用程序内置的那份。管理功能始终在 Core，这里指的只是资源。
+    /// </summary>
+    public static string? ExternalAssetsRoot { get; set; }
+
+    /// <summary>先找 GamesData 里的包，没有再回退程序内置那份。</summary>
+    private static string ResolveGameAssetDirectory(SupportedGames game)
+    {
+        if (!string.IsNullOrWhiteSpace(ExternalAssetsRoot))
+        {
+            var packaged = Path.Combine(ExternalAssetsRoot, game.ToString());
+
+            if (File.Exists(Path.Combine(packaged, "game.json")))
+                return packaged;
+        }
+
+        return Path.Combine(AppContext.BaseDirectory, "Assets", "Games", game.ToString());
+    }
+
     public static async Task<GameInfo?> GetGameInfoAsync(SupportedGames game)
     {
-        var gameAssetDir = Path.Combine(AppContext.BaseDirectory, "Assets", "Games", game.ToString());
+        var gameAssetDir = ResolveGameAssetDirectory(game);
 
         var gameFilePath = Path.Combine(gameAssetDir, "game.json");
 

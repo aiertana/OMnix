@@ -45,6 +45,13 @@ public sealed class PluginManifest
     /// <summary>动作型插件要拉起的文件（相对插件目录）。</summary>
     public string Entry { get; set; } = string.Empty;
 
+    /// <summary>
+    ///     适用于哪些游戏（内核 Id：WuWa / ZZZ / GI / HSR）。
+    ///     留空 = 哪个游戏都能用（XXMI 那套共用的就是这种）。
+    ///     插件全局只存一份，按这个字段决定在哪个游戏下显示。
+    /// </summary>
+    public List<string> Games { get; set; } = [];
+
     /// <summary>当前是否启用。由管理器写回。</summary>
     public bool Enabled { get; set; }
 
@@ -57,6 +64,16 @@ public sealed class PluginManifest
     [JsonIgnore] public bool IsToggle => string.Equals(Type, "toggle", StringComparison.OrdinalIgnoreCase);
 
     [JsonIgnore] public bool IsAction => string.Equals(Type, "action", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>这个游戏能不能用（games 留空就是通用）。</summary>
+    public bool SupportsGame(string gameId) =>
+        Games.Count == 0 ||
+        Games.Any(game => string.Equals(game, gameId, StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>适用范围文案：通用的不标，限定了游戏的列出来。</summary>
+    [JsonIgnore]
+    public string GamesText =>
+        Games.Count == 0 ? string.Empty : string.Join(" / ", Games);
 
     public IEnumerable<string> TargetFiles()
     {

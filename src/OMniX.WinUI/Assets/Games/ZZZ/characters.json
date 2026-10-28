@@ -945,5 +945,229 @@
     "InGameSkins": [],
     "InternalName": "Zhao",
     "DisplayName": "Zhao"
+  },
+  {
+    "Keys": [
+      "sunna",
+      "千夏"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Physical",
+    "Class": "Support",
+    "Region": [],
+    "ModFilesName": "Sunna",
+    "InGameSkins": [],
+    "InternalName": "Sunna",
+    "DisplayName": "Sunna"
+  },
+  {
+    "Keys": [
+      "aria",
+      "爱芮"
+    ],
+    "ReleaseDate": "2026-03-04",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Ether",
+    "Class": "Anomaly",
+    "Region": [],
+    "ModFilesName": "Aria",
+    "InGameSkins": [],
+    "InternalName": "Aria",
+    "DisplayName": "Aria"
+  },
+  {
+    "Keys": [
+      "nangongyu",
+      "南宫羽"
+    ],
+    "ReleaseDate": "2026-03-24",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Ether",
+    "Class": "Stun",
+    "Region": [],
+    "ModFilesName": "NangongYu",
+    "InGameSkins": [],
+    "InternalName": "NangongYu",
+    "DisplayName": "Nangong Yu"
+  },
+  {
+    "Keys": [
+      "cissia",
+      "希希芙"
+    ],
+    "ReleaseDate": "2026-04-15",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Electric",
+    "Class": "Attack",
+    "Region": [],
+    "ModFilesName": "Cissia",
+    "InGameSkins": [],
+    "InternalName": "Cissia",
+    "DisplayName": "Cissia"
+  },
+  {
+    "Keys": [
+      "promeia",
+      "普罗米娅"
+    ],
+    "ReleaseDate": "2026-05-06",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Ice",
+    "Class": "Anomaly",
+    "Region": [],
+    "ModFilesName": "Promeia",
+    "InGameSkins": [],
+    "InternalName": "Promeia",
+    "DisplayName": "Promeia"
+  },
+  {
+    "Keys": [
+      "starlightbilly",
+      "星徽·比利"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Physical",
+    "Class": "Rupture",
+    "Region": [],
+    "ModFilesName": "StarlightBilly",
+    "InGameSkins": [],
+    "InternalName": "StarlightBilly",
+    "DisplayName": "Starlight Billy"
+  },
+  {
+    "Keys": [
+      "velina",
+      "维琳娜"
+    ],
+    "ReleaseDate": "2026-06-17",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Wind",
+    "Class": "Anomaly",
+    "Region": [],
+    "ModFilesName": "Velina",
+    "InGameSkins": [],
+    "InternalName": "Velina",
+    "DisplayName": "Velina"
+  },
+  {
+    "Keys": [
+      "norma",
+      "诺姆"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Fire",
+    "Class": "Stun",
+    "Region": [],
+    "ModFilesName": "Norma",
+    "InGameSkins": [],
+    "InternalName": "Norma",
+    "DisplayName": "Norma"
+  },
+  {
+    "Keys": [
+      "remielle",
+      "蕾米埃尔"
+    ],
+    "ReleaseDate": "2026-07-29",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Lumiflux",
+    "Class": "Anomaly",
+    "Region": [],
+    "ModFilesName": "Remielle",
+    "InGameSkins": [],
+    "InternalName": "Remielle",
+    "DisplayName": "Remielle"
+  },
+  {
+    "Keys": [
+      "sigrid",
+      "希格莉德"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Ice",
+    "Class": "Attack",
+    "Region": [],
+    "ModFilesName": "Sigrid",
+    "InGameSkins": [],
+    "InternalName": "Sigrid",
+    "DisplayName": "Sigrid"
+  },
+  {
+    "Keys": [
+      "claret",
+      "克拉蕾"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Electric",
+    "Class": "Armorer",
+    "Region": [],
+    "ModFilesName": "Claret",
+    "InGameSkins": [],
+    "InternalName": "Claret",
+    "DisplayName": "Claret"
+  },
+  {
+    "Keys": [
+      "roxy",
+      "洛克茜"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Wind",
+    "Class": "Stun",
+    "Region": [],
+    "ModFilesName": "Roxy",
+    "InGameSkins": [],
+    "InternalName": "Roxy",
+    "DisplayName": "Roxy"
+  },
+  {
+    "Keys": [
+      "phoenix",
+      "菲欧妮"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Fire",
+    "Class": "Anomaly",
+    "Region": [],
+    "ModFilesName": "Phoenix",
+    "InGameSkins": [],
+    "InternalName": "Phoenix",
+    "DisplayName": "Phoenix"
+  },
+  {
+    "Keys": [
+      "severian",
+      "赛维里安"
+    ],
+    "ReleaseDate": "2026-10-28",
+    "Image": "_placeholder.png",
+    "Rarity": 5,
+    "Element": "Wind",
+    "Class": "Attack",
+    "Region": [],
+    "ModFilesName": "Severian",
+    "InGameSkins": [],
+    "InternalName": "Severian",
+    "DisplayName": "Severian"
   }
 ]

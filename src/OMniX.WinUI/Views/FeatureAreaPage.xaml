@@ -82,18 +82,19 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel VerticalAlignment="Center" Spacing="3">
-                            <TextBlock
-                                FontSize="15"
-                                FontWeight="SemiBold"
-                                Text="选择游戏"
-            l:Uids.Uid="/HomePreset/Feature_GameBarTitle" />
-                            <TextBlock
+                        <!--  标题和内核状态并成一行：「选择游戏 · 「鸣潮」的管理功能已就绪」  -->
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            FontWeight="SemiBold"
+                            TextWrapping="WrapWholeWords">
+                            <Run Text="选择游戏" />
+                            <Run
                                 FontSize="12"
+                                FontWeight="Normal"
                                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
-                                Text="{Binding KernelStatusText}"
-                                TextWrapping="WrapWholeWords" />
-                        </StackPanel>
+                                Text="{Binding KernelStatusText, Mode=OneWay, TargetNullValue={x:Null}}" />
+                        </TextBlock>
 
                         <StackPanel
                             Grid.Column="1"
@@ -135,12 +136,16 @@
                                         Width="86"
                                         HorizontalAlignment="Center"
                                         Spacing="4">
-                                        <Image
-                                            Width="54"
-                                            Height="54"
-                                            HorizontalAlignment="Center"
-                                            Source="{x:Bind Icon, Mode=OneWay}"
-                                            Stretch="Uniform" />
+                                        <Grid Width="54" Height="54" HorizontalAlignment="Center">
+                                            <Image
+                                                Source="{x:Bind Icon, Mode=OneWay}"
+                                                Stretch="Uniform" />
+                                            <FontIcon
+                                                FontSize="26"
+                                                Foreground="{ThemeResource OmniXTextSecondaryBrush}"
+                                                Glyph="&#xE713;"
+                                                Visibility="{x:Bind FallbackIconVisibility, Mode=OneWay}" />
+                                        </Grid>
                                         <TextBlock
                                             HorizontalAlignment="Center"
                                             FontSize="12"

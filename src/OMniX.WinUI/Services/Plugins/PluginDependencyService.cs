@@ -7,6 +7,7 @@ using Serilog;
 using OMniX.Core.Contracts.Services;
 using OMniX.Core.Helpers;
 using OMniX.WinUI.Contracts.Services;
+using OMniX.WinUI.Helpers;
 using OMniX.WinUI.Services;
 
 namespace OMniX.WinUI.Services.Plugins;
@@ -159,13 +160,17 @@ public sealed class PluginDependencyService
     public DependencySnapshot Detect()
     {
         var xxmiRoot = ResolveXxmiInstallation(out var xxmiLauncher);
-        var wwmiRoot = string.IsNullOrWhiteSpace(xxmiRoot) ? string.Empty : ResolveWwmiFolder(xxmiRoot);
+
+        // 二开：导入器随游戏走 —— 鸣潮是 WWMI、绝区零是 ZZMI、原神 GIMI、崩铁 SRMI。
+        // 以前写死 WWMI，切到别的游戏后这里还在报鸣潮那套，Mod 开关跟着判错。
+        var wwmiRoot = string.IsNullOrWhiteSpace(xxmiRoot) ? string.Empty : ResolveImporterFolder(xxmiRoot);
 
         ApplyGamePathFromXxmi(xxmiRoot);
 
-        _logger.Information("插件依赖检测：XXMI={XxmiRoot} 启动器={Launcher} WWMI={WwmiRoot}",
+        _logger.Information("插件依赖检测：XXMI={XxmiRoot} 启动器={Launcher} {Importer}={ImporterRoot}",
             string.IsNullOrWhiteSpace(xxmiRoot) ? "(未找到)" : xxmiRoot,
             string.IsNullOrWhiteSpace(xxmiLauncher) ? "(未找到)" : xxmiLauncher,
+            GameContext.ImporterShortName,
             string.IsNullOrWhiteSpace(wwmiRoot) ? "(未找到)" : wwmiRoot);
 
         return new DependencySnapshot
@@ -178,7 +183,7 @@ public sealed class PluginDependencyService
     }
 
     /// <summary>
-    ///     二开：XXMI 的配置文件里记着鸣潮装在哪（Importers.WWMI.Importer.game_folder）。
+    ///     二开：XXMI 的配置文件里记着游戏装在哪（Importers.&lt;导入器&gt;.Importer.game_folder）。
     ///     插件要用的游戏路径还没配过时，顺手从这儿填上 —— 「启动游戏」也就能直接用了。
     /// </summary>
     private void ApplyGamePathFromXxmi(string xxmiRoot)
@@ -235,7 +240,9 @@ public sealed class PluginDependencyService
             if (!File.Exists(configPath))
                 return null;
 
-            var importer = JObject.Parse(File.ReadAllText(configPath))["Importers"]?["WWMI"]?["Importer"];
+            // 二开：读哪个导入器的段由当前游戏定，别再写死鸣潮的 WWMI
+            var importer = JObject.Parse(File.ReadAllText(configPath))["Importers"]
+                ?[GameContext.ImporterShortName]?["Importer"];
 
             if (importer is null)
                 return null;
@@ -641,20 +648,25 @@ public sealed class PluginDependencyService
         return Directory.GetParent(folder)?.Parent?.FullName ?? string.Empty;
     }
 
-    /// <summary>WWMI 目录名大小写/写法可能不同，按归一化名找，最后才退回默认拼法</summary>
-    private static string ResolveWwmiFolder(string xxmiRoot)
+    /// <summary>
+    ///     导入器目录名大小写/写法可能不同，按归一化名找，最后才退回默认拼法。
+    ///     二开：找哪个导入器由当前游戏定（WWMI / ZZMI / GIMI / SRMI），不再写死 WWMI。
+    /// </summary>
+    private static string ResolveImporterFolder(string xxmiRoot)
     {
+        var importer = GameContext.ImporterShortName;
+
         try
         {
             foreach (var directory in Directory.EnumerateDirectories(xxmiRoot))
             {
-                if (string.Equals(Path.GetFileName(directory), "WWMI", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(Path.GetFileName(directory), importer, StringComparison.OrdinalIgnoreCase))
                     return directory;
             }
 
             foreach (var directory in Directory.EnumerateDirectories(xxmiRoot))
             {
-                if (ModFolderHelpers.NormalizeName(Path.GetFileName(directory)) == "wwmi")
+                if (ModFolderHelpers.NormalizeName(Path.GetFileName(directory)) == importer.ToLowerInvariant())
                     return directory;
             }
         }
@@ -663,7 +675,7 @@ public sealed class PluginDependencyService
             // 读不到就退回默认拼法
         }
 
-        return Path.Combine(xxmiRoot, "WWMI");
+        return Path.Combine(xxmiRoot, importer);
     }
 
     private static List<string> EnumerateDirectoriesSafe(string path)
