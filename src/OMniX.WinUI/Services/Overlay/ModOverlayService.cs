@@ -117,6 +117,7 @@ public class ModOverlayService
 
         EnsureHotKey();
         IsEnabled = true;
+        IsBallHidden = false;
         _logger.Information("游戏内悬浮球已显示");
     }
 
@@ -221,14 +222,52 @@ public class ModOverlayService
     }
 
     /// <summary>
+    ///     悬浮球是不是被面板右键临时收起来了（设置开关没动，下次启动照旧显示）。
+    /// </summary>
+    public bool IsBallHidden { get; private set; }
+
+    /// <summary>
     ///     面板右键「隐藏浮标」：悬浮球和面板一起收起来，热键与设置开关都不动 ——
-    ///     Alt+C 仍然有效，按一下就能把面板再呼出来。
+    ///     Alt+C 仍然能把面板呼出来，再右键一次就能把球放回去。
     /// </summary>
     public void HideBall()
     {
         HidePanel();
         _ball?.Hide();
-        _logger.Information("悬浮窗：已从面板右键隐藏悬浮球（Alt+C 可重新呼出面板）");
+        IsBallHidden = true;
+        _logger.Information("悬浮窗：已从面板右键隐藏悬浮球（Alt+C 呼出面板后可再右键显示）");
+    }
+
+    /// <summary>
+    ///     面板右键「显示浮标」：把临时收起来的悬浮球放回去。
+    ///     球还没创建过（设置里关着的情况）这里不动 —— 那种走设置页开关。
+    /// </summary>
+    public void ShowBall()
+    {
+        if (_ball is null)
+        {
+            return;
+        }
+
+        _ball.Show();
+        IsBallHidden = false;
+        EnsureHotKey();
+        _logger.Information("悬浮窗：已重新显示悬浮球");
+    }
+
+    /// <summary>
+    ///     面板右键菜单：在显示 / 隐藏悬浮球之间切换。
+    /// </summary>
+    public void ToggleBall()
+    {
+        if (IsBallHidden)
+        {
+            ShowBall();
+        }
+        else
+        {
+            HideBall();
+        }
     }
 
     #endregion

@@ -100,7 +100,7 @@
 
         <!--  右键菜单：面板任意位置右键弹出（子控件没有自己的菜单时冒泡到这里）  -->
         <Grid.ContextFlyout>
-            <MenuFlyout>
+            <MenuFlyout Opening="PanelContextMenu_OnOpening">
                 <MenuFlyoutItem Click="OpenMainWindow_OnClick" Text="打开 OMniX 主界面">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE80F;" />
@@ -119,7 +119,8 @@
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator />
-                <MenuFlyoutItem Click="HideBall_OnClick" Text="隐藏浮标">
+                <!--  文字和图标按悬浮球当前状态切：藏了就是「显示浮标」，露着就是「隐藏浮标」  -->
+                <MenuFlyoutItem x:Name="BallToggleMenuItem" Click="BallToggle_OnClick" Text="隐藏浮标">
                     <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xED1A;" />
                     </MenuFlyoutItem.Icon>

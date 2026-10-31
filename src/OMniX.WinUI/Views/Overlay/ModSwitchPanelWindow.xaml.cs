@@ -156,12 +156,21 @@ public sealed partial class ModSwitchPanelWindow : WindowEx
     }
 
     /// <summary>
-    ///     右键菜单：把悬浮球（和面板）一起收起来，不动设置开关，
-    ///     下次启动还在；想再呼出用设置页开关或重启前记的 Alt+C 热键。
+    ///     右键菜单：在显示 / 隐藏悬浮球之间切换。球藏了之后 Alt+C 还能把面板叫出来，
+    ///     再右键一次就能放回去，不用去设置页翻开关。
     /// </summary>
-    private void HideBall_OnClick(object sender, RoutedEventArgs e)
+    private void BallToggle_OnClick(object sender, RoutedEventArgs e)
     {
-        _service.HideBall();
+        _service.ToggleBall();
+    }
+
+    /// <summary>
+    ///     菜单每次打开时按悬浮球的当前状态改写那一项的文字与图标。
+    /// </summary>
+    private void PanelContextMenu_OnOpening(object sender, object e)
+    {
+        // 图标保持眼睛（显 / 隐都是它），只切文字
+        BallToggleMenuItem.Text = _service.IsBallHidden ? "显示浮标" : "隐藏浮标";
     }
 
     /// <summary>
