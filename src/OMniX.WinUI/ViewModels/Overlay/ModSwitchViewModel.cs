@@ -483,6 +483,51 @@ public partial class ModSwitchViewModel : ObservableObject
     }
 
     /// <summary>
+    ///     右键菜单：重新读一遍 Mod 文件夹 —— 在别处（资源管理器 / 游戏里）动过 Mod
+    ///     之后不用关掉面板再开一次。
+    /// </summary>
+    [RelayCommand]
+    private void ReloadMods()
+    {
+        Reload();
+        StatusText = "已重新载入 Mod 列表";
+    }
+
+    /// <summary>
+    ///     右键菜单：用资源管理器打开当前角色的 Mod 文件夹。
+    ///     某个 Mod 没生效想直接去翻文件时最快的一条路。
+    /// </summary>
+    [RelayCommand]
+    private void OpenCharacterFolder()
+    {
+        var character = SelectedTab?.Character;
+        if (character is null)
+        {
+            StatusText = "先选一个角色再打开它的 Mod 文件夹";
+            return;
+        }
+
+        var path = _skinManagerService.GetCharacterModListOrDefault(character.InternalName.Id)?.AbsModsFolderPath;
+
+        if (string.IsNullOrEmpty(path) || !Directory.Exists(path))
+        {
+            StatusText = $"找不到 {character.DisplayName} 的 Mod 文件夹";
+            return;
+        }
+
+        try
+        {
+            Process.Start(new ProcessStartInfo("explorer.exe", path) { UseShellExecute = true });
+            StatusText = $"已打开 {character.DisplayName} 的 Mod 文件夹";
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, "悬浮窗：打开 Mod 文件夹失败 —— {Path}", path);
+            StatusText = $"打开文件夹失败：{e.Message}";
+        }
+    }
+
+    /// <summary>
     ///     顶栏缩放百分比显示。
     /// </summary>
     public string UiScaleText => $"{Math.Round(UiScale * 100)}%";

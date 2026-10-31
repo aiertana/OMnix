@@ -103,6 +103,18 @@
             <MenuFlyout>
                 <MenuFlyoutItem Click="OpenMainWindow_OnClick" Text="打开 OMniX 主界面">
                     <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE80F;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <!--  Flyout 不继承宿主的 DataContext，所以这里走 Click 转发，不用 Command 绑定  -->
+                <MenuFlyoutItem Click="ReloadMods_OnClick" Text="重新载入列表"
+                                ToolTipService.ToolTip="重读一遍 Mod 文件夹，在别处改过文件后用">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE72C;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Click="OpenCharacterFolder_OnClick" Text="打开当前角色的 Mod 文件夹">
+                    <MenuFlyoutItem.Icon>
                         <FontIcon Glyph="&#xE8A7;" />
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>

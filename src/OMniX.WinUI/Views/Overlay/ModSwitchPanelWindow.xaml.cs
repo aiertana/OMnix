@@ -140,6 +140,22 @@ public sealed partial class ModSwitchPanelWindow : WindowEx
     }
 
     /// <summary>
+    ///     右键菜单：重读一遍 Mod 文件夹（在别处改过文件后不用关掉面板重开）。
+    /// </summary>
+    private void ReloadMods_OnClick(object sender, RoutedEventArgs e)
+    {
+        ViewModel.ReloadModsCommand.Execute(null);
+    }
+
+    /// <summary>
+    ///     右键菜单：用资源管理器打开当前角色的 Mod 文件夹。
+    /// </summary>
+    private void OpenCharacterFolder_OnClick(object sender, RoutedEventArgs e)
+    {
+        ViewModel.OpenCharacterFolderCommand.Execute(null);
+    }
+
+    /// <summary>
     ///     右键菜单：把悬浮球（和面板）一起收起来，不动设置开关，
     ///     下次启动还在；想再呼出用设置页开关或重启前记的 Alt+C 热键。
     /// </summary>
