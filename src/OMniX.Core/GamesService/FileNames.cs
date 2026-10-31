@@ -22,5 +22,11 @@ public enum SupportedGames
     Genshin,
     Honkai,
     WuWa,
-    ZZZ
+    ZZZ,
+
+    /// <summary>明日方舟终末地（XXMI 的 EFMI 包）</summary>
+    Endfield,
+
+    /// <summary>异环 Neverness to Everness（XXMI 的 NEMI 包）</summary>
+    Neverness
 }

@@ -1,0 +1,26 @@
+[
+  {
+    "InternalName": "Vanguard",
+    "DisplayName": "先锋"
+  },
+  {
+    "InternalName": "Guard",
+    "DisplayName": "近卫"
+  },
+  {
+    "InternalName": "Caster",
+    "DisplayName": "术师"
+  },
+  {
+    "InternalName": "Supporter",
+    "DisplayName": "辅助"
+  },
+  {
+    "InternalName": "Defender",
+    "DisplayName": "重装"
+  },
+  {
+    "InternalName": "Striker",
+    "DisplayName": "突击"
+  }
+]

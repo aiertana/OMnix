@@ -138,8 +138,48 @@ public static class GameCatalog
         KernelPackageUrl = string.Empty
     };
 
-    /// <summary>外壳认识的四个内核。顺序即下拉与头像栏的展示顺序。</summary>
-    public static readonly IReadOnlyList<GameDefinition> All = [WuWa, ZZZ, GI, HSR];
+    /// <summary>
+    ///     明日方舟终末地。走 XXMI 的 EFMI 包，Mods 在 <XXMI 根目录>\EFMI\Mods。
+    ///     官方启动器装在 <盘>:\Hypergryph Launcher\games\Endfield Game\。
+    /// </summary>
+    public static readonly GameDefinition Endfield = new()
+    {
+        Id = "Endfield",
+        Core = SupportedGames.Endfield,
+        AssetsFolder = "Endfield",
+        NameKey = "Game_Name_Endfield",
+        FallbackName = "明日方舟终末地",
+        DefaultLaunchMode = GameLaunchMode.Xxmi,
+        LauncherExeNames = ["launcher.exe", "Endfield.exe"],
+        InstallFolderKeywords = ["endfield", "hypergryph", "gryphline"],
+        GameProcessNames = ["Endfield"],
+        ImporterExeNames = ["XXMI Launcher.exe", "3DMigoto Loader.exe"],
+        ImporterShortName = "EFMI",
+        KernelPackageUrl = string.Empty
+    };
+
+    /// <summary>
+    ///     异环（Neverness to Everness）。走 XXMI 的 NEMI 包，Mods 在
+    ///     <XXMI 根目录>\NEMI\Mods；官方启动器是 NTELauncher.exe，游戏本体 NTEGame.exe。
+    /// </summary>
+    public static readonly GameDefinition Neverness = new()
+    {
+        Id = "Neverness",
+        Core = SupportedGames.Neverness,
+        AssetsFolder = "Neverness",
+        NameKey = "Game_Name_Neverness",
+        FallbackName = "异环",
+        DefaultLaunchMode = GameLaunchMode.Xxmi,
+        LauncherExeNames = ["NTELauncher.exe", "launcher.exe"],
+        InstallFolderKeywords = ["neverness", "hotta", "perfect world", "pwgame"],
+        GameProcessNames = ["NTEGame", "HTGame"],
+        ImporterExeNames = ["XXMI Launcher.exe", "3DMigoto Loader.exe"],
+        ImporterShortName = "NEMI",
+        KernelPackageUrl = string.Empty
+    };
+
+    /// <summary>外壳认识的内核。顺序即下拉与头像栏的展示顺序。</summary>
+    public static readonly IReadOnlyList<GameDefinition> All = [WuWa, ZZZ, GI, HSR, Endfield, Neverness];
 
     public static GameDefinition? ById(string? id)
     {

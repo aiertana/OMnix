@@ -220,6 +220,17 @@ public class ModOverlayService
         _panelVisible = false;
     }
 
+    /// <summary>
+    ///     面板右键「隐藏浮标」：悬浮球和面板一起收起来，热键与设置开关都不动 ——
+    ///     Alt+C 仍然有效，按一下就能把面板再呼出来。
+    /// </summary>
+    public void HideBall()
+    {
+        HidePanel();
+        _ball?.Hide();
+        _logger.Information("悬浮窗：已从面板右键隐藏悬浮球（Alt+C 可重新呼出面板）");
+    }
+
     #endregion
 
     /// <summary>

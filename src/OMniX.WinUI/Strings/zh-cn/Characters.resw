@@ -115,6 +115,7 @@
   <data name="CharVM_RefreshFailedTitle" xml:space="preserve"><value>刷新失败</value></data>
   <data name="CharVM_MigrateExplain" xml:space="preserve"><value>只会移动分类目录里的真实 Mod 文件夹；空的旧目录会被清理，不会删除 Mod 内容，也不会覆盖同名目录。</value></data>
   <data name="CharVM_MigrateTargetsPrefix" xml:space="preserve"><value>准备整理到这些角色：</value></data>
+  <data name="CharVM_MigrateTargetsMore" xml:space="preserve"><value>……等 {0} 个角色</value></data>
   <data name="CharVM_TargetMissing" xml:space="preserve"><value>目标位置还没有这个目录</value></data>
   <data name="CharVM_ExistsSkipped" xml:space="preserve"><value>[已存在，跳过]</value></data>
   <data name="CharVM_MigrateFoundTitle" xml:space="preserve"><value>发现还没归类好的 Mod</value></data>

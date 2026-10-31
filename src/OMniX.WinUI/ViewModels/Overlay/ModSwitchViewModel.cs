@@ -115,16 +115,26 @@ public partial class ModSwitchViewModel : ObservableObject
     {
         var previous = SelectedTab?.Character;
 
-        // 常用优先：按点开的次数降序，没点过的保持游戏里的原顺序（排序稳定）
-        var characters = _gameService.GetCharacters()
-            .OrderByDescending(c => _characterUsage.GetValueOrDefault(c.InternalName.Id))
+        // 最近改动优先：按角色 Mod 文件夹的最后修改时间降序，刚动过的角色排前面；
+        // 没 Mod / 时间拿不到的角色保持游戏里的原顺序（OrderByDescending 排序稳定）
+        var tabs = _gameService.GetCharacters()
+            .Select(character =>
+            {
+                var modList = _skinManagerService.GetCharacterModListOrDefault(character.InternalName.Id);
+                var lastModified = modList?.Mods.Count > 0
+                    ? modList.Mods.Max(m => Directory.Exists(m.Mod.FullPath)
+                        ? Directory.GetLastWriteTime(m.Mod.FullPath)
+                        : DateTime.MinValue)
+                    : DateTime.MinValue;
+                return (Character: character, ModList: modList, LastModified: lastModified);
+            })
+            .OrderByDescending(x => x.LastModified)
             .ToList();
 
         CharacterTabs.Clear();
 
-        foreach (var character in characters)
+        foreach (var (character, modList, _) in tabs)
         {
-            var modList = _skinManagerService.GetCharacterModListOrDefault(character.InternalName.Id);
             var total = modList?.Mods.Count ?? 0;
             var enabled = modList?.Mods.Count(m => m.IsEnabled) ?? 0;
 

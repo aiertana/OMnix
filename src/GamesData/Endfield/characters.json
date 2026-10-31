@@ -1,0 +1,600 @@
+[
+  {
+    "Keys": [
+      "汤汤",
+      "Tangtang",
+      "Tangtang"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Tangtang.jpg",
+    "Rarity": 6,
+    "Element": "None",
+    "Class": "Caster",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "Tangtang",
+    "InGameSkins": [],
+    "InternalName": "Tangtang",
+    "DisplayName": "Tangtang"
+  },
+  {
+    "Keys": [
+      "洛茜",
+      "Rossi",
+      "Rossi"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Rossi.jpg",
+    "Rarity": 6,
+    "Element": "None",
+    "Class": "Guard",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "Rossi",
+    "InGameSkins": [],
+    "InternalName": "Rossi",
+    "DisplayName": "Rossi"
+  },
+  {
+    "Keys": [
+      "男主",
+      "Endministrator",
+      "EndministratorMale"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "EndministratorMale.png",
+    "Rarity": 6,
+    "Element": "Physical",
+    "Class": "Guard",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "EndministratorMale",
+    "InGameSkins": [],
+    "InternalName": "EndministratorMale",
+    "DisplayName": "Endministrator"
+  },
+  {
+    "Keys": [
+      "女主",
+      "EndministratorF",
+      "EndministratorFemale"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "EndministratorFemale.png",
+    "Rarity": 6,
+    "Element": "Physical",
+    "Class": "Guard",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "EndministratorFemale",
+    "InGameSkins": [],
+    "InternalName": "EndministratorFemale",
+    "DisplayName": "EndministratorF"
+  },
+  {
+    "Keys": [
+      "佩丽卡",
+      "Perlica",
+      "Perlica"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Perlica.png",
+    "Rarity": 5,
+    "Element": "Electric",
+    "Class": "Caster",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "Perlica",
+    "InGameSkins": [],
+    "InternalName": "Perlica",
+    "DisplayName": "Perlica"
+  },
+  {
+    "Keys": [
+      "陈千语",
+      "Chen Qianyu",
+      "ChenQianyu"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "ChenQianyu.png",
+    "Rarity": 5,
+    "Element": "Physical",
+    "Class": "Guard",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "ChenQianyu",
+    "InGameSkins": [],
+    "InternalName": "ChenQianyu",
+    "DisplayName": "Chen Qianyu"
+  },
+  {
+    "Keys": [
+      "莱万汀",
+      "Laevatain",
+      "Laevatain"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Laevatain.png",
+    "Rarity": 6,
+    "Element": "Heat",
+    "Class": "Striker",
+    "Region": [
+      "Rhodes Island"
+    ],
+    "ModFilesName": "Laevatain",
+    "InGameSkins": [],
+    "InternalName": "Laevatain",
+    "DisplayName": "Laevatain"
+  },
+  {
+    "Keys": [
+      "伊冯",
+      "Yvonne",
+      "Yvonne"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Yvonne.png",
+    "Rarity": 6,
+    "Element": "Cryo",
+    "Class": "Striker",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "Yvonne",
+    "InGameSkins": [],
+    "InternalName": "Yvonne",
+    "DisplayName": "Yvonne"
+  },
+  {
+    "Keys": [
+      "洁尔佩塔",
+      "Gilberta",
+      "Gilberta"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Gilberta.png",
+    "Rarity": 6,
+    "Element": "Nature",
+    "Class": "Supporter",
+    "Region": [
+      "Rhodes Island"
+    ],
+    "ModFilesName": "Gilberta",
+    "InGameSkins": [],
+    "InternalName": "Gilberta",
+    "DisplayName": "Gilberta"
+  },
+  {
+    "Keys": [
+      "艾尔黛拉",
+      "Ardelia",
+      "Ardelia"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Ardelia.png",
+    "Rarity": 6,
+    "Element": "Nature",
+    "Class": "Supporter",
+    "Region": [
+      "Rhodes Island"
+    ],
+    "ModFilesName": "Ardelia",
+    "InGameSkins": [],
+    "InternalName": "Ardelia",
+    "DisplayName": "Ardelia"
+  },
+  {
+    "Keys": [
+      "余烬",
+      "Ember",
+      "Ember"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Ember.png",
+    "Rarity": 6,
+    "Element": "Heat",
+    "Class": "Defender",
+    "Region": [
+      "Order of Steel Oath"
+    ],
+    "ModFilesName": "Ember",
+    "InGameSkins": [],
+    "InternalName": "Ember",
+    "DisplayName": "Ember"
+  },
+  {
+    "Keys": [
+      "别礼",
+      "Last Rite",
+      "LastRite"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "LastRite.png",
+    "Rarity": 6,
+    "Element": "Cryo",
+    "Class": "Striker",
+    "Region": [
+      "Seš'qa"
+    ],
+    "ModFilesName": "LastRite",
+    "InGameSkins": [],
+    "InternalName": "LastRite",
+    "DisplayName": "Last Rite"
+  },
+  {
+    "Keys": [
+      "黎风",
+      "Lifeng",
+      "Lifeng"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Lifeng.png",
+    "Rarity": 6,
+    "Element": "Physical",
+    "Class": "Guard",
+    "Region": [
+      "Hongshan"
+    ],
+    "ModFilesName": "Lifeng",
+    "InGameSkins": [],
+    "InternalName": "Lifeng",
+    "DisplayName": "Lifeng"
+  },
+  {
+    "Keys": [
+      "骏卫",
+      "Pogranichnik",
+      "Pogranichnik"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Pogranichnik.png",
+    "Rarity": 6,
+    "Element": "Physical",
+    "Class": "Vanguard",
+    "Region": [
+      "Rhodes Island"
+    ],
+    "ModFilesName": "Pogranichnik",
+    "InGameSkins": [],
+    "InternalName": "Pogranichnik",
+    "DisplayName": "Pogranichnik"
+  },
+  {
+    "Keys": [
+      "阿列什",
+      "Alesh",
+      "Alesh"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Alesh.png",
+    "Rarity": 5,
+    "Element": "Cryo",
+    "Class": "Vanguard",
+    "Region": [
+      "UWST"
+    ],
+    "ModFilesName": "Alesh",
+    "InGameSkins": [],
+    "InternalName": "Alesh",
+    "DisplayName": "Alesh"
+  },
+  {
+    "Keys": [
+      "弧光",
+      "Arclight",
+      "Arclight"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Arclight.png",
+    "Rarity": 5,
+    "Element": "Electric",
+    "Class": "Vanguard",
+    "Region": [
+      "Hannabit Circuit"
+    ],
+    "ModFilesName": "Arclight",
+    "InGameSkins": [],
+    "InternalName": "Arclight",
+    "DisplayName": "Arclight"
+  },
+  {
+    "Keys": [
+      "艾维文娜",
+      "Avywenna",
+      "Avywenna"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Avywenna.png",
+    "Rarity": 5,
+    "Element": "Electric",
+    "Class": "Striker",
+    "Region": [
+      "Talos-II General Chamber of Commerce"
+    ],
+    "ModFilesName": "Avywenna",
+    "InGameSkins": [],
+    "InternalName": "Avywenna",
+    "DisplayName": "Avywenna"
+  },
+  {
+    "Keys": [
+      "大潘",
+      "Da Pan",
+      "DaPan"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "DaPan.png",
+    "Rarity": 5,
+    "Element": "Physical",
+    "Class": "Striker",
+    "Region": [
+      "Hongshan Academy of Sciences"
+    ],
+    "ModFilesName": "DaPan",
+    "InGameSkins": [],
+    "InternalName": "DaPan",
+    "DisplayName": "Da Pan"
+  },
+  {
+    "Keys": [
+      "昼雪",
+      "Snowshine",
+      "Snowshine"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Snowshine.png",
+    "Rarity": 5,
+    "Element": "Cryo",
+    "Class": "Defender",
+    "Region": [
+      "Rhodes Island"
+    ],
+    "ModFilesName": "Snowshine",
+    "InGameSkins": [],
+    "InternalName": "Snowshine",
+    "DisplayName": "Snowshine"
+  },
+  {
+    "Keys": [
+      "狼卫",
+      "Wulfgard",
+      "Wulfgard"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Wulfgard.png",
+    "Rarity": 5,
+    "Element": "Heat",
+    "Class": "Caster",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "Wulfgard",
+    "InGameSkins": [],
+    "InternalName": "Wulfgard",
+    "DisplayName": "Wulfgard"
+  },
+  {
+    "Keys": [
+      "赛希",
+      "Xaihi",
+      "Xaihi"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Xaihi.png",
+    "Rarity": 5,
+    "Element": "Cryo",
+    "Class": "Supporter",
+    "Region": [
+      "Cabal of Tranquility"
+    ],
+    "ModFilesName": "Xaihi",
+    "InGameSkins": [],
+    "InternalName": "Xaihi",
+    "DisplayName": "Xaihi"
+  },
+  {
+    "Keys": [
+      "秋栗",
+      "Akekuri",
+      "Akekuri"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Akekuri.png",
+    "Rarity": 4,
+    "Element": "Heat",
+    "Class": "Vanguard",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "Akekuri",
+    "InGameSkins": [],
+    "InternalName": "Akekuri",
+    "DisplayName": "Akekuri"
+  },
+  {
+    "Keys": [
+      "安塔尔",
+      "Antal",
+      "Antal"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Antal.png",
+    "Rarity": 4,
+    "Element": "Electric",
+    "Class": "Supporter",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "Antal",
+    "InGameSkins": [],
+    "InternalName": "Antal",
+    "DisplayName": "Antal"
+  },
+  {
+    "Keys": [
+      "卡契尔",
+      "Catcher",
+      "Catcher"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Catcher.png",
+    "Rarity": 4,
+    "Element": "Physical",
+    "Class": "Defender",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "Catcher",
+    "InGameSkins": [],
+    "InternalName": "Catcher",
+    "DisplayName": "Catcher"
+  },
+  {
+    "Keys": [
+      "埃特拉",
+      "Estella",
+      "Estella"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Estella.png",
+    "Rarity": 4,
+    "Element": "Cryo",
+    "Class": "Guard",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "Estella",
+    "InGameSkins": [],
+    "InternalName": "Estella",
+    "DisplayName": "Estella"
+  },
+  {
+    "Keys": [
+      "萤石",
+      "Fluorite",
+      "Fluorite"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Fluorite.png",
+    "Rarity": 4,
+    "Element": "Nature",
+    "Class": "Caster",
+    "Region": [
+      "Endfield Industries"
+    ],
+    "ModFilesName": "Fluorite",
+    "InGameSkins": [],
+    "InternalName": "Fluorite",
+    "DisplayName": "Fluorite"
+  },
+  {
+    "Keys": [
+      "庄方宜",
+      "Zhuang Fangyi",
+      "ZhuangFangyi"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "ZhuangFangyi.png",
+    "Rarity": 6,
+    "Element": "None",
+    "Class": "Striker",
+    "Region": [
+      "Hongshan Academy of Sciences"
+    ],
+    "ModFilesName": "ZhuangFangyi",
+    "InGameSkins": [],
+    "InternalName": "ZhuangFangyi",
+    "DisplayName": "Zhuang Fangyi"
+  },
+  {
+    "Keys": [
+      "NPC",
+      "NPC",
+      "NPC"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "NPC.jpg",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "NPC",
+    "InGameSkins": [],
+    "InternalName": "NPC",
+    "DisplayName": "NPC"
+  },
+  {
+    "Keys": [
+      "大世界",
+      "OpenWorld",
+      "OpenWorld"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "OpenWorld.jpg",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "OpenWorld",
+    "InGameSkins": [],
+    "InternalName": "OpenWorld",
+    "DisplayName": "OpenWorld"
+  },
+  {
+    "Keys": [
+      "UI",
+      "UI",
+      "UI"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "UI.jpg",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "UI",
+    "InGameSkins": [],
+    "InternalName": "UI",
+    "DisplayName": "UI"
+  },
+  {
+    "Keys": [
+      "功能",
+      "Function",
+      "Function"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Function.png",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "Function",
+    "InGameSkins": [],
+    "InternalName": "Function",
+    "DisplayName": "Function"
+  },
+  {
+    "Keys": [
+      "武器",
+      "Weapons",
+      "Weapons"
+    ],
+    "ReleaseDate": "2026-01-01T00:00:00",
+    "Image": "Weapons.jpg",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "Weapons",
+    "InGameSkins": [],
+    "InternalName": "Weapons",
+    "DisplayName": "Weapons"
+  }
+]

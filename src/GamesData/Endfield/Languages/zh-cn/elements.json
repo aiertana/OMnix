@@ -1,0 +1,22 @@
+[
+  {
+    "InternalName": "Physical",
+    "DisplayName": "物理"
+  },
+  {
+    "InternalName": "Cryo",
+    "DisplayName": "冰霜"
+  },
+  {
+    "InternalName": "Heat",
+    "DisplayName": "烈焰"
+  },
+  {
+    "InternalName": "Electric",
+    "DisplayName": "电磁"
+  },
+  {
+    "InternalName": "Nature",
+    "DisplayName": "自然"
+  }
+]

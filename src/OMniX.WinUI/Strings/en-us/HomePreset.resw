@@ -776,6 +776,8 @@ New location: {3}
   <data name="Game_Name_ZZZ" xml:space="preserve"><value>Zenless Zone Zero</value></data>
   <data name="Game_Name_GI" xml:space="preserve"><value>Genshin Impact</value></data>
   <data name="Game_Name_HSR" xml:space="preserve"><value>Honkai: Star Rail</value></data>
+  <data name="Game_Name_Endfield" xml:space="preserve"><value>Arknights: Endfield</value></data>
+  <data name="Game_Name_Neverness" xml:space="preserve"><value>Neverness to Everness</value></data>
   <data name="Feature_GameBarTitle" xml:space="preserve"><value>Pick a game</value></data>
   <data name="Feature_NotInstalled.Text" xml:space="preserve"><value>not installed</value></data>
   <data name="Feature_InstallKernelButton.Content" xml:space="preserve"><value>Install this module</value></data>

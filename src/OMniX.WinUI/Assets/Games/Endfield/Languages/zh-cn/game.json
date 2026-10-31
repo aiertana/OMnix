@@ -1,0 +1,14 @@
+{
+  "GameName": "明日方舟终末地",
+  "GameShortName": "明日方舟终末地",
+  "RarityName": "稀有度",
+  "GameIcon": "Start_Game.png",
+  "GameBananaUrl": "",
+  "GameModelImporterUrl": "",
+  "GameModelImporterName": "Endfield Model Importer",
+  "GameModelImporterShortName": "EFMI",
+  "GameModelImporterExeName": [
+    "XXMI Launcher.exe",
+    "3DMigoto Loader.exe"
+  ]
+}

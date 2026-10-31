@@ -3,6 +3,7 @@ using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using OMniX.Core.Contracts.Services;
 using OMniX.Core.GamesService;
+using OMniX.WinUI.Services;
 using Serilog;
 
 namespace OMniX.WinUI.ViewModels.SubVms;
@@ -34,9 +35,12 @@ public partial class OverviewDockPanelVM : ObservableRecipient
             // 二开：属性图标换成新的一套。
             // 注意这里必须用「绝对文件路径」而不是 ms-appx:/// —— 原来的 svg 也是绝对路径，
             // 用 ms-appx 在 Debug 下取不到，界面上就只剩两三个图标。
+            // 二开：终末地 / 异环这类新内核暂时没有属性图标素材，
+            // 这里必须给个能用的兜底 —— 返回空字符串会让 x:Bind 把 "" 转成 ImageSource 时抛异常，
+            // 整个角色页直接崩掉（实测报「The value cannot be converted to type ImageSource」）。
             var iconUri = ResolveElementIcon(element.InternalName.ToString())
                           ?? element.ImageUri?.ToString()
-                          ?? string.Empty;
+                          ?? ImageHandlerService.StaticPlaceholderImageUri.ToString();
 
             Elements.Add(new ElementIcon(element.DisplayName, iconUri, element.InternalName));
         }

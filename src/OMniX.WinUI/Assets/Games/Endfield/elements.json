@@ -1,0 +1,22 @@
+[
+  {
+    "InternalName": "Physical",
+    "DisplayName": "Physical"
+  },
+  {
+    "InternalName": "Cryo",
+    "DisplayName": "Cryo"
+  },
+  {
+    "InternalName": "Heat",
+    "DisplayName": "Heat"
+  },
+  {
+    "InternalName": "Electric",
+    "DisplayName": "Electric"
+  },
+  {
+    "InternalName": "Nature",
+    "DisplayName": "Nature"
+  }
+]

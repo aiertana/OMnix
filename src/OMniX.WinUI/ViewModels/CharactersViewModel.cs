@@ -991,6 +991,9 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         }
     }
 
+    /// <summary>整理预览里最多列出多少个目标角色，超出的只报数量。</summary>
+    private const int MaxPreviewTargets = 12;
+
     /// <summary>
     ///     二开：整理前的预览弹窗，列出会把哪些 Mod 搬到哪个角色
     /// </summary>
@@ -1012,10 +1015,23 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
             Opacity = 0.7
         });
 
+        // 二开：游戏角色变多以后（加了终末地 / 异环，一个游戏就有二三十个），
+        // 这一行会把几十个名字连成一长串，弹窗里根本看不过来。
+        // 只列前若干个，剩下的报个数。
+        var targetText = string.Join("、", scan.TargetCharacters.Take(MaxPreviewTargets));
+
+        if (scan.TargetCharacters.Count > MaxPreviewTargets)
+        {
+            targetText += string.Format(
+                _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_MigrateTargetsMore", "……等 {0} 个角色"),
+                scan.TargetCharacters.Count - MaxPreviewTargets);
+        }
+
         panel.Children.Add(new TextBlock
         {
             Margin = new Thickness(0, 10, 0, 0),
-            Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_MigrateTargetsPrefix", "准备整理到这些角色：") + string.Join("、", scan.TargetCharacters)
+            TextWrapping = TextWrapping.Wrap,
+            Text = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_MigrateTargetsPrefix", "准备整理到这些角色：") + targetText
         });
 
         var skipCount = scan.Moves.Count(move => move.TargetExists);

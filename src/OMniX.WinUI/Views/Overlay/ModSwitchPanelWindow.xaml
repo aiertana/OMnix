@@ -10,7 +10,7 @@
     xmlns:winUiEx="using:WinUIEx"
     mc:Ignorable="d">
 
-    <!--  最外层：背景图铺满，上面盖一层半透明白保证文字可读  -->
+    <!--  最外层：背景图铺满，上面盖一层半透明白保证文字可读；右键任意位置弹菜单  -->
     <Grid x:Name="LayoutRoot">
         <Grid.Resources>
             <conv:BoolToObjectConverter x:Key="TabBackgroundConverter">
@@ -97,6 +97,23 @@
                 <Setter Property="FontSize" Value="13" />
             </Style>
         </Grid.Resources>
+
+        <!--  右键菜单：面板任意位置右键弹出（子控件没有自己的菜单时冒泡到这里）  -->
+        <Grid.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem Click="OpenMainWindow_OnClick" Text="打开 OMniX 主界面">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE8A7;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Click="HideBall_OnClick" Text="隐藏浮标">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xED1A;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuFlyout>
+        </Grid.ContextFlyout>
 
         <!--  背景图：Uniform 完整显示不裁切，白纱轻一点保证看得到背景  -->
         <Image x:Name="BackgroundImage" Stretch="Uniform" />

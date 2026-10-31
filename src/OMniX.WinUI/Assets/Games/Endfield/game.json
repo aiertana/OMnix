@@ -1,0 +1,14 @@
+{
+  "GameName": "Arknights: Endfield",
+  "GameShortName": "Endfield",
+  "RarityName": "Rarity",
+  "GameIcon": "Start_Game.png",
+  "GameBananaUrl": "",
+  "GameModelImporterUrl": "",
+  "GameModelImporterName": "Endfield Model Importer",
+  "GameModelImporterShortName": "EFMI",
+  "GameModelImporterExeName": [
+    "XXMI Launcher.exe",
+    "3DMigoto Loader.exe"
+  ]
+}

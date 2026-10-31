@@ -115,6 +115,7 @@
   <data name="CharVM_RefreshFailedTitle" xml:space="preserve"><value>Refresh failed</value></data>
   <data name="CharVM_MigrateExplain" xml:space="preserve"><value>Only real mod folders inside category folders are moved; empty old folders are cleaned up. Mod contents are never deleted and folders with the same name are never overwritten.</value></data>
   <data name="CharVM_MigrateTargetsPrefix" xml:space="preserve"><value>These characters will be used: </value></data>
+  <data name="CharVM_MigrateTargetsMore" xml:space="preserve"><value>… and {0} more characters</value></data>
   <data name="CharVM_TargetMissing" xml:space="preserve"><value>The target does not exist yet</value></data>
   <data name="CharVM_ExistsSkipped" xml:space="preserve"><value>[exists, skipped]</value></data>
   <data name="CharVM_MigrateFoundTitle" xml:space="preserve"><value>Mods that are not filed yet</value></data>

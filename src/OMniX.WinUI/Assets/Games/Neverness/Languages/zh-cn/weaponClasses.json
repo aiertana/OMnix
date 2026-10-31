@@ -1,0 +1,14 @@
+[
+  {
+    "InternalName": "DPS",
+    "DisplayName": "输出"
+  },
+  {
+    "InternalName": "Support",
+    "DisplayName": "辅助"
+  },
+  {
+    "InternalName": "Survival",
+    "DisplayName": "生存"
+  }
+]

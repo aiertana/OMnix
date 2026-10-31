@@ -266,7 +266,7 @@
                             <TextBlock Style="{StaticResource CardTitleStyle}" Text="游戏内悬浮窗" />
                             <TextBlock
                                 Style="{StaticResource CardDescStyle}"
-                                Text="桌面和窗口化游戏上显示一个可拖动的圆形悬浮球，点击或按 Alt+C 呼出 Mod 切换面板，切 Mod 不用手动 F10"
+                                Text="桌面和窗口化游戏上显示一个可拖动的圆形悬浮球，点击或按 Alt+C 呼出 Mod 切换面板，随时开关 Mod、套用预设"
                                 TextWrapping="Wrap" />
                         </StackPanel>
 

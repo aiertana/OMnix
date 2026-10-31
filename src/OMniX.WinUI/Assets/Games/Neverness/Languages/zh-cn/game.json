@@ -1,0 +1,14 @@
+{
+  "GameName": "异环",
+  "GameShortName": "异环",
+  "RarityName": "稀有度",
+  "GameIcon": "Start_Game.webp",
+  "GameBananaUrl": "",
+  "GameModelImporterUrl": "",
+  "GameModelImporterName": "Neverness Model Importer",
+  "GameModelImporterShortName": "NEMI",
+  "GameModelImporterExeName": [
+    "XXMI Launcher.exe",
+    "3DMigoto Loader.exe"
+  ]
+}

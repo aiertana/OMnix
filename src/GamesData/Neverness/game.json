@@ -1,0 +1,14 @@
+{
+  "GameName": "Neverness to Everness",
+  "GameShortName": "NTE",
+  "RarityName": "Rarity",
+  "GameIcon": "Start_Game.webp",
+  "GameBananaUrl": "",
+  "GameModelImporterUrl": "",
+  "GameModelImporterName": "Neverness Model Importer",
+  "GameModelImporterShortName": "NEMI",
+  "GameModelImporterExeName": [
+    "XXMI Launcher.exe",
+    "3DMigoto Loader.exe"
+  ]
+}

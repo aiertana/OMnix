@@ -1,0 +1,512 @@
+[
+  {
+    "Keys": [
+      "九原",
+      "Jiuyuan",
+      "Jiuyuan"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Jiuyuan.webp",
+    "Rarity": 5,
+    "Element": "Anima",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Jiuyuan",
+    "InGameSkins": [],
+    "InternalName": "Jiuyuan",
+    "DisplayName": "Jiuyuan"
+  },
+  {
+    "Keys": [
+      "凛子",
+      "Lingko",
+      "Lingko"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Lingko.webp",
+    "Rarity": 5,
+    "Element": "Anima",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Lingko",
+    "InGameSkins": [],
+    "InternalName": "Lingko",
+    "DisplayName": "Lingko"
+  },
+  {
+    "Keys": [
+      "哈尼娅",
+      "Haniel",
+      "Haniel"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Haniel.webp",
+    "Rarity": 4,
+    "Element": "Psyche",
+    "Class": "Support",
+    "Region": [],
+    "ModFilesName": "Haniel",
+    "InGameSkins": [],
+    "InternalName": "Haniel",
+    "DisplayName": "Haniel"
+  },
+  {
+    "Keys": [
+      "哈索尔",
+      "Hathor",
+      "Hathor"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Hathor.webp",
+    "Rarity": 5,
+    "Element": "Lakshana",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Hathor",
+    "InGameSkins": [],
+    "InternalName": "Hathor",
+    "DisplayName": "Hathor"
+  },
+  {
+    "Keys": [
+      "埃德加",
+      "Edgar",
+      "Edgar"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Edgar.webp",
+    "Rarity": 4,
+    "Element": "Cosmos",
+    "Class": "Survival",
+    "Region": [],
+    "ModFilesName": "Edgar",
+    "InGameSkins": [],
+    "InternalName": "Edgar",
+    "DisplayName": "Edgar"
+  },
+  {
+    "Keys": [
+      "女主",
+      "Zero (Female)",
+      "Zero (Female)"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Zero (Female).webp",
+    "Rarity": 5,
+    "Element": "Cosmos",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Zero (Female)",
+    "InGameSkins": [],
+    "InternalName": "Zero (Female)",
+    "DisplayName": "Zero (Female)"
+  },
+  {
+    "Keys": [
+      "娜娜莉",
+      "Nanally",
+      "Nanally"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Nanally.webp",
+    "Rarity": 5,
+    "Element": "Anima",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Nanally",
+    "InGameSkins": [],
+    "InternalName": "Nanally",
+    "DisplayName": "Nanally"
+  },
+  {
+    "Keys": [
+      "安魂曲",
+      "Requiem",
+      "Requiem"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Requiem.webp",
+    "Rarity": 5,
+    "Element": "Chaos",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Requiem",
+    "InGameSkins": [],
+    "InternalName": "Requiem",
+    "DisplayName": "Requiem"
+  },
+  {
+    "Keys": [
+      "小吱",
+      "Chiz",
+      "Chiz"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Chiz.webp",
+    "Rarity": 5,
+    "Element": "Cosmos",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Chiz",
+    "InGameSkins": [],
+    "InternalName": "Chiz",
+    "DisplayName": "Chiz"
+  },
+  {
+    "Keys": [
+      "尼察",
+      "Nitsa",
+      "Nitsa"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Nitsa.webp",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "Nitsa",
+    "InGameSkins": [],
+    "InternalName": "Nitsa",
+    "DisplayName": "Nitsa"
+  },
+  {
+    "Keys": [
+      "早雾",
+      "Sayuri",
+      "Sayuri"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Sayuri.webp",
+    "Rarity": 5,
+    "Element": "Incantation",
+    "Class": "Support",
+    "Region": [],
+    "ModFilesName": "Sayuri",
+    "InGameSkins": [],
+    "InternalName": "Sayuri",
+    "DisplayName": "Sayuri"
+  },
+  {
+    "Keys": [
+      "沁红",
+      "Shinku",
+      "Shinku"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Shinku.webp",
+    "Rarity": 5,
+    "Element": "Cosmos",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Shinku",
+    "InGameSkins": [],
+    "InternalName": "Shinku",
+    "DisplayName": "Shinku"
+  },
+  {
+    "Keys": [
+      "法蒂亚",
+      "Fadia",
+      "Fadia"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Fadia.webp",
+    "Rarity": 5,
+    "Element": "Psyche",
+    "Class": "Survival",
+    "Region": [],
+    "ModFilesName": "Fadia",
+    "InGameSkins": [],
+    "InternalName": "Fadia",
+    "DisplayName": "Fadia"
+  },
+  {
+    "Keys": [
+      "浔",
+      "Xun",
+      "Xun"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Xun.webp",
+    "Rarity": 5,
+    "Element": "Cosmos",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Xun",
+    "InGameSkins": [],
+    "InternalName": "Xun",
+    "DisplayName": "Xun"
+  },
+  {
+    "Keys": [
+      "海月",
+      "Mitsuki",
+      "Mitsuki"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Mitsuki.webp",
+    "Rarity": 4,
+    "Element": "Psyche",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Mitsuki",
+    "InGameSkins": [],
+    "InternalName": "Mitsuki",
+    "DisplayName": "Mitsuki"
+  },
+  {
+    "Keys": [
+      "男主",
+      "Zero (Male)",
+      "Zero (Male)"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Zero (Male).webp",
+    "Rarity": 5,
+    "Element": "Cosmos",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Zero (Male)",
+    "InGameSkins": [],
+    "InternalName": "Zero (Male)",
+    "DisplayName": "Zero (Male)"
+  },
+  {
+    "Keys": [
+      "白藏",
+      "Baicang",
+      "Baicang"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Baicang.webp",
+    "Rarity": 5,
+    "Element": "Incantation",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Baicang",
+    "InGameSkins": [],
+    "InternalName": "Baicang",
+    "DisplayName": "Baicang"
+  },
+  {
+    "Keys": [
+      "翳",
+      "Skia",
+      "Skia"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Skia.webp",
+    "Rarity": 4,
+    "Element": "Lakshana",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Skia",
+    "InGameSkins": [],
+    "InternalName": "Skia",
+    "DisplayName": "Skia"
+  },
+  {
+    "Keys": [
+      "薄荷",
+      "Mint",
+      "Mint"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Mint.webp",
+    "Rarity": 4,
+    "Element": "Anima",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Mint",
+    "InGameSkins": [],
+    "InternalName": "Mint",
+    "DisplayName": "Mint"
+  },
+  {
+    "Keys": [
+      "赤音",
+      "Akane",
+      "Akane"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Akane.webp",
+    "Rarity": 5,
+    "Element": "Lakshana",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Akane",
+    "InGameSkins": [],
+    "InternalName": "Akane",
+    "DisplayName": "Akane"
+  },
+  {
+    "Keys": [
+      "达芙迪尔",
+      "Daffodil",
+      "Daffodil"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Daffodil.webp",
+    "Rarity": 5,
+    "Element": "Chaos",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Daffodil",
+    "InGameSkins": [],
+    "InternalName": "Daffodil",
+    "DisplayName": "Daffodil"
+  },
+  {
+    "Keys": [
+      "阿尔法德",
+      "Alphard",
+      "Alphard"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Alphard.webp",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "Alphard",
+    "InGameSkins": [],
+    "InternalName": "Alphard",
+    "DisplayName": "Alphard"
+  },
+  {
+    "Keys": [
+      "阿德勒",
+      "Adler",
+      "Adler"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Adler.webp",
+    "Rarity": 4,
+    "Element": "Incantation",
+    "Class": "Survival",
+    "Region": [],
+    "ModFilesName": "Adler",
+    "InGameSkins": [],
+    "InternalName": "Adler",
+    "DisplayName": "Adler"
+  },
+  {
+    "Keys": [
+      "黑鸟",
+      "Black Bird",
+      "Black Bird"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Black Bird.webp",
+    "Rarity": 5,
+    "Element": "Psyche",
+    "Class": "DPS",
+    "Region": [],
+    "ModFilesName": "Black Bird",
+    "InGameSkins": [],
+    "InternalName": "Black Bird",
+    "DisplayName": "Black Bird"
+  },
+  {
+    "Keys": [
+      "NPC",
+      "NPC",
+      "NPC"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "NPC.jpg",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "NPC",
+    "InGameSkins": [],
+    "InternalName": "NPC",
+    "DisplayName": "NPC"
+  },
+  {
+    "Keys": [
+      "大世界",
+      "OpenWorld",
+      "OpenWorld"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "OpenWorld.jpg",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "OpenWorld",
+    "InGameSkins": [],
+    "InternalName": "OpenWorld",
+    "DisplayName": "OpenWorld"
+  },
+  {
+    "Keys": [
+      "UI",
+      "UI",
+      "UI"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "UI.jpg",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "UI",
+    "InGameSkins": [],
+    "InternalName": "UI",
+    "DisplayName": "UI"
+  },
+  {
+    "Keys": [
+      "功能",
+      "Function",
+      "Function"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Function.png",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "Function",
+    "InGameSkins": [],
+    "InternalName": "Function",
+    "DisplayName": "Function"
+  },
+  {
+    "Keys": [
+      "武器",
+      "Weapons",
+      "Weapons"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Weapons.jpg",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "Weapons",
+    "InGameSkins": [],
+    "InternalName": "Weapons",
+    "DisplayName": "Weapons"
+  },
+  {
+    "Keys": [
+      "载具",
+      "Vehicles",
+      "Vehicles"
+    ],
+    "ReleaseDate": "2026-04-29T00:00:00",
+    "Image": "Vehicles.png",
+    "Rarity": 0,
+    "Element": "None",
+    "Class": "None",
+    "Region": [],
+    "ModFilesName": "Vehicles",
+    "InGameSkins": [],
+    "InternalName": "Vehicles",
+    "DisplayName": "Vehicles"
+  }
+]

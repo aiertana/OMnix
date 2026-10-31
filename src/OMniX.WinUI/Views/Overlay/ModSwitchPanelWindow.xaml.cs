@@ -14,7 +14,7 @@ namespace OMniX.WinUI.Views.Overlay;
 
 /// <summary>
 ///     悬浮球点开的小面板：角色标签 → Mod 封面卡片 → 开关 / 预设。
-///     切换完会顺带刷新 3Dmigoto，不用回游戏按 F10（需要同步进程在跑）。
+///     切完 Mod 想立刻生效，用右下角 ⟳ 刷新按钮（模拟 F10）或回游戏手动按 F10。
 /// </summary>
 public sealed partial class ModSwitchPanelWindow : WindowEx
 {
@@ -115,6 +115,37 @@ public sealed partial class ModSwitchPanelWindow : WindowEx
     private void CloseButton_OnClick(object sender, RoutedEventArgs e)
     {
         _service.HidePanel();
+    }
+
+    /// <summary>
+    ///     右键菜单：把 OMniX 主窗口拉到前台（主窗口被挡住或最小化时用）。
+    /// </summary>
+    private void OpenMainWindow_OnClick(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var main = App.MainWindow;
+            if (main is null)
+            {
+                return;
+            }
+
+            main.AppWindow.Show();
+            main.Activate();
+        }
+        catch (Exception ex)
+        {
+            Serilog.Log.Warning(ex, "悬浮窗：右键打开主界面失败");
+        }
+    }
+
+    /// <summary>
+    ///     右键菜单：把悬浮球（和面板）一起收起来，不动设置开关，
+    ///     下次启动还在；想再呼出用设置页开关或重启前记的 Alt+C 热键。
+    /// </summary>
+    private void HideBall_OnClick(object sender, RoutedEventArgs e)
+    {
+        _service.HideBall();
     }
 
     /// <summary>

@@ -776,6 +776,8 @@
   <data name="Game_Name_ZZZ" xml:space="preserve"><value>绝区零</value></data>
   <data name="Game_Name_GI" xml:space="preserve"><value>原神</value></data>
   <data name="Game_Name_HSR" xml:space="preserve"><value>崩坏：星穹铁道</value></data>
+  <data name="Game_Name_Endfield" xml:space="preserve"><value>明日方舟终末地</value></data>
+  <data name="Game_Name_Neverness" xml:space="preserve"><value>异环</value></data>
   <data name="Feature_GameBarTitle" xml:space="preserve"><value>选择游戏</value></data>
   <data name="Feature_NotInstalled.Text" xml:space="preserve"><value>未下载</value></data>
   <data name="Feature_InstallKernelButton.Content" xml:space="preserve"><value>安装这个功能</value></data>
