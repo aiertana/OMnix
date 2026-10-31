@@ -254,6 +254,30 @@
                     </Grid>
                 </Border>
 
+                <!--  二开：游戏内悬浮窗开关  -->
+                <Border Style="{StaticResource SettingCardStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="游戏内悬浮窗" />
+                            <TextBlock
+                                Style="{StaticResource CardDescStyle}"
+                                Text="桌面和窗口化游戏上显示一个可拖动的圆形悬浮球，点击或按 Alt+C 呼出 Mod 切换面板，切 Mod 不用手动 F10"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <ToggleSwitch
+                            Grid.Column="1"
+                            Margin="0,0,4,0"
+                            VerticalAlignment="Center"
+                            IsOn="{x:Bind ViewModel.ModOverlayEnabled, Mode=TwoWay}" />
+                    </Grid>
+                </Border>
+
                 <Border Style="{StaticResource SettingCardStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -682,38 +706,6 @@
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource SettingCardStyle}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel>
-                            <TextBlock Style="{StaticResource CardTitleStyle}" Text="提权进程" l:Uids.Uid="/Settings/ElevatorSectionHeader" />
-                            <TextBlock Style="{StaticResource CardDescStyle}" Text="游戏内刷新 Mod 需要一个以管理员权限运行的辅助进程" l:Uids.Uid="/SettingsUi/ElevatorDesc"/>
-                        </StackPanel>
-
-                        <StackPanel
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal"
-                            Spacing="8">
-                            <Border
-                                Padding="8,2"
-                                VerticalAlignment="Center"
-                                Background="{ThemeResource ControlAltFillColorDisabledBrush}"
-                                CornerRadius="8">
-                                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{x:Bind ViewModel.ElevatorService.ElevatorStatus, Mode=OneWay}" />
-                            </Border>
-                            <Button
-                                Command="{x:Bind ViewModel.StartElevatorCommand}"
-                                Content="启动"
-                                l:Uids.Uid="/Settings/StartElevatorButton" />
-                        </StackPanel>
-                    </Grid>
                 </Border>
 
                 <!--  ===== 扩展  =====  -->

@@ -30,7 +30,6 @@ using OMniX.WinUI.Helpers;
 using OMniX.WinUI.Models;
 using OMniX.WinUI.Models.Settings;
 using OMniX.WinUI.Models.ViewModels;
-using OMniX.WinUI.Services;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Services.ModHandling;
 using OMniX.WinUI.Services.Notifications;
@@ -65,7 +64,6 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     public readonly string StartGameIcon;
     public readonly string ShortGameName;
     public NotificationManager NotificationManager { get; }
-    public ElevatorService ElevatorService { get; }
 
     public OverviewDockPanelVM DockPanelVM { get; }
 
@@ -130,7 +128,7 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
 
     public CharactersViewModel(IGameService gameService, ILogger logger, INavigationService navigationService,
         ISkinManagerService skinManagerService, ILocalSettingsService localSettingsService,
-        NotificationManager notificationManager, ElevatorService elevatorService,
+        NotificationManager notificationManager,
         GenshinProcessManager genshinProcessManager, ThreeDMigtoProcessManager threeDMigtoProcessManager,
         ModDragAndDropService modDragAndDropService, ModNotificationManager modNotificationManager,
         ModCrawlerService modCrawlerService, ModSettingsService modSettingsService,
@@ -144,7 +142,6 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         _skinManagerService = skinManagerService;
         _localSettingsService = localSettingsService;
         NotificationManager = notificationManager;
-        ElevatorService = elevatorService;
         GenshinProcessManager = genshinProcessManager;
         ThreeDMigtoProcessManager = threeDMigtoProcessManager;
         _modDragAndDropService = modDragAndDropService;
@@ -158,12 +155,6 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
         _pinText = _localizer.GetLocalizedStringOrDefault("/Characters/CharVM_Pin", "置顶");
         _modRandomizationService = modRandomizationService;
         _windowManagerService = windowManagerService;
-
-        ElevatorService.PropertyChanged += (_, args) =>
-        {
-            if (args.PropertyName == nameof(ElevatorService.ElevatorStatus))
-                RefreshModsInGameCommand.NotifyCanExecuteChanged();
-        };
 
         _modNotificationManager.OnModNotification += (_, _) =>
             App.MainWindow.DispatcherQueue.EnqueueAsync(RefreshNotificationsAsync);
@@ -2507,18 +2498,6 @@ public partial class CharactersViewModel : ObservableRecipient, INavigationAware
     private async Task StartGenshinAsync() =>
         await SimpleSelectProcessDialogVM.InternalStart(GenshinProcessManager,
             SimpleSelectProcessDialogVM.StartType.Game);
-
-    private bool CanRefreshModsInGame()
-    {
-        return ElevatorService.ElevatorStatus == ElevatorStatus.Running;
-    }
-
-    [RelayCommand(CanExecute = nameof(CanRefreshModsInGame))]
-    private async Task RefreshModsInGameAsync()
-    {
-        _logger.Debug("Refreshing Mods In Game");
-        await ElevatorService.RefreshGenshinMods();
-    }
 
     [ObservableProperty] private bool _isAddingMod = false;
 

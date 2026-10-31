@@ -12,6 +12,7 @@ using OMniX.WinUI.Configuration;
 using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.Models.Options;
 using OMniX.WinUI.Services;
+using OMniX.WinUI.Services.Overlay;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Services.AppManagement.Updating;
 using OMniX.WinUI.Services.ModExport;
@@ -201,7 +202,6 @@ public partial class App : Application
                 services.AddSingleton<IArchivePasswordPromptService, ArchivePasswordPromptService>();
                 services.AddSingleton<CharacterSkinService>();
 
-                services.AddSingleton<ElevatorService>();
                 services.AddSingleton<GenshinProcessManager>();
                 services.AddSingleton<ThreeDMigtoProcessManager>();
 
@@ -228,6 +228,8 @@ public partial class App : Application
                 services.AddSingleton<ILanguageLocalizer, Localizer>();
                 services.AddSingleton<ModPresetService>();
                 services.AddSingleton<UserPreferencesService>();
+                // 二开：游戏内悬浮窗（Alt+C 呼出）
+                services.AddSingleton<ModOverlayService>();
                 services.AddSingleton<ArchiveService>();
                 services.AddSingleton<ModArchiveRepository>();
                 services.AddSingleton<GameBananaCoreService>();

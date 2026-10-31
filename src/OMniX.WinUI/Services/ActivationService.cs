@@ -16,6 +16,7 @@ using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Services.AppManagement.Updating;
 using OMniX.WinUI.Services.ModHandling;
 using OMniX.WinUI.Services.Notifications;
+using OMniX.WinUI.Services.Overlay;
 using OMniX.WinUI.Services.Plugins;
 using OMniX.WinUI.Views;
 using Microsoft.UI.Text;
@@ -38,7 +39,6 @@ public class ActivationService : IActivationService
     private readonly ILocalSettingsService _localSettingsService;
     private readonly IGameService _gameService;
     private readonly ILanguageLocalizer _languageLocalizer;
-    private readonly ElevatorService _elevatorService;
     private readonly GenshinProcessManager _genshinProcessManager;
     private readonly ThreeDMigtoProcessManager _threeDMigtoProcessManager;
     private readonly UpdateChecker _updateChecker;
@@ -57,7 +57,7 @@ public class ActivationService : IActivationService
     public ActivationService(ActivationHandler<LaunchActivatedEventArgs> defaultHandler,
         IEnumerable<IActivationHandler> activationHandlers, IThemeSelectorService themeSelectorService,
         ILocalSettingsService localSettingsService,
-        ElevatorService elevatorService, GenshinProcessManager genshinProcessManager,
+        GenshinProcessManager genshinProcessManager,
         ThreeDMigtoProcessManager threeDMigtoProcessManager, UpdateChecker updateChecker,
         IWindowManagerService windowManagerService, AutoUpdaterService autoUpdaterService, IGameService gameService,
         ILanguageLocalizer languageLocalizer, SelectedGameService selectedGameService,
@@ -71,7 +71,6 @@ public class ActivationService : IActivationService
         _activationHandlers = activationHandlers;
         _themeSelectorService = themeSelectorService;
         _localSettingsService = localSettingsService;
-        _elevatorService = elevatorService;
         _genshinProcessManager = genshinProcessManager;
         _threeDMigtoProcessManager = threeDMigtoProcessManager;
         _updateChecker = updateChecker;
@@ -131,6 +130,21 @@ public class ActivationService : IActivationService
 
         // Execute tasks after activation.
         await StartupAsync();
+
+        // 二开：游戏内悬浮窗（Alt+C 呼出）。出问题不能拖累整个启动流程。
+        // StartupAsync 尾部有 ConfigureAwait(false)，直接 await 的话这段代码可能
+        // 已经不在 UI 线程上 —— 而 WinUI 窗口必须在 UI 线程创建，所以显式派发回去。
+        App.MainWindow.DispatcherQueue.TryEnqueue(async () =>
+        {
+            try
+            {
+                await App.GetService<ModOverlayService>().InitializeAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "游戏内悬浮窗初始化失败");
+            }
+        });
 
         // Show popups
         ShowStartupPopups();
@@ -294,7 +308,9 @@ public class ActivationService : IActivationService
         await _updateChecker.InitializeAsync();
         await _modUpdateAvailableChecker.InitializeAsync().ConfigureAwait(false);
         await Task.Run(() => _autoUpdaterService.UpdateAutoUpdater()).ConfigureAwait(false);
-        await Task.Run(() => _elevatorService.Initialize()).ConfigureAwait(false);
+
+        // 二开：调试悬浮窗初始化用，确认启动流程走完了
+        _logger.Information("游戏内悬浮窗：StartupAsync 全部完成");
     }
 
     const int MinimizedPosition = -32000;

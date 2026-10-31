@@ -1,0 +1,9 @@
+{
+  "GameId": "GI",
+  "CoreName": "Genshin",
+  "AssetsFolder": "Genshin",
+  "DisplayName": "原神",
+  "Version": "1.0.0",
+  "Source": "builtin",
+  "InstalledAt": "2026-10-29T19:58:30.2743082+08:00"
+}

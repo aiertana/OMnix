@@ -36,7 +36,6 @@ public partial class ShellViewModel : ObservableRecipient
     public INavigationService NavigationService { get; }
     public INavigationViewService NavigationViewService { get; }
     public NotificationManager NotificationManager { get; }
-    public ElevatorService ElevatorService { get; }
     public GenshinProcessManager GenshinProcessManager { get; }
 
     [ObservableProperty] private string _launchGameText = string.Empty;
@@ -64,7 +63,7 @@ public partial class ShellViewModel : ObservableRecipient
     private readonly ILanguageLocalizer _localizer;
 
     public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService,
-        NotificationManager notificationManager, ElevatorService elevatorService, UpdateChecker updateChecker,
+        NotificationManager notificationManager, UpdateChecker updateChecker,
         IGameService gameService, SelectedGameService selectedGameService, BusyService busyService,
         GenshinProcessManager genshinProcessManager, Dlss5PluginService dlss5Plugin,
         IWindowManagerService windowManagerService, ThreeDMigtoProcessManager threeDMigtoProcessManager,
@@ -85,7 +84,6 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
         NotificationManager = notificationManager;
-        ElevatorService = elevatorService;
         GenshinProcessManager = genshinProcessManager;
         _updateChecker = updateChecker;
         GameService = gameService;
@@ -405,20 +403,5 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
     }
 
-    public async Task RefreshGenshinMods()
-    {
-        if (!IsNotFirstTimeStartupPage)
-        {
-            return;
-        }
 
-        if (ElevatorService.ElevatorStatus == ElevatorStatus.NotRunning)
-        {
-            NotificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ShellUi/Shell_NotificationElevatorNotRunning", "Elevator 没在运行"),
-                "Please start the Elevator first in the Settings page",
-                TimeSpan.FromSeconds(5));
-        }
-        else
-            await Task.Run(async () => await ElevatorService.RefreshGenshinMods());
-    }
 }

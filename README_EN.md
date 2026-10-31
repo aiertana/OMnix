@@ -5,7 +5,7 @@ Windows desktop app built with WinUI 3 / .NET 9.
 
 中文说明：[README.md](README.md)　·　完整使用说明书（中文）：[使用说明书.md](使用说明书.md)　·　Disclaimer: [DISCLAIMER.md](DISCLAIMER.md)　·　License: [GPL-3.0](LICENSE)
 
-Version: **1.4.0**
+Version: **1.4.1**
 
 ![UI Preview](Images/screenshot-home.png)
 
@@ -82,7 +82,7 @@ The full illustrated walkthrough — installation, UI tour, every feature, setti
 Since 1.4, data lives next to the program and is separated per game:
 
 ```
-OMniX1.4.0.x\
+OMniX1.4.1.x\
 ├─ Core\            the app itself (OMniX.exe lives here)
 ├─ GamesData\       game data (relocatable from Settings)
 │  ├─ WuWa\         Wuthering Waves: Presets\ Plugins\ Cache\ Logs\
@@ -101,7 +101,7 @@ Settings. Whether to migrate — and whether to delete the old copy afterwards �
 
 ## Source code and building
 
-This repository holds the **source code**. If you just want the app, grab `OMniX1.4.0.zip`
+This repository holds the **source code**. If you just want the app, grab `OMniX1.4.1.zip`
 from [Releases](https://github.com/aiertana/OMnix/releases) and unzip it.
 
 ### Prerequisites

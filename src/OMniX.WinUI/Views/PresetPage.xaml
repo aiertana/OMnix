@@ -119,11 +119,6 @@
     l:Uids.Uid="/HomePreset/Preset_AutoSyncCheckBox"
     IsChecked="{x:Bind ViewModel.AutoSync3DMigotoConfig, Mode=OneWay}"
     ToolTipService.ToolTip="勾选后，创建预设和切换预设时 OMniX 会自动同步偏好设置"/>
-                        <Button
-    Command="{x:Bind ViewModel.StartElevatorCommand}"
-    Content="启动 Elevator…"
-    l:Uids.Uid="/HomePreset/Preset_StartElevatorButton"
-    IsEnabled="{x:Bind ViewModel.ElevatorService.CanStartElevator, Mode=OneWay}"/>
                     </StackPanel>
 
                     <StackPanel
@@ -149,7 +144,7 @@
     Content="显示手动控制"
     l:Uids.Uid="/HomePreset/Preset_ShowManualCheckBox"
     IsChecked="{x:Bind ViewModel.ShowManualControls, Mode=TwoWay}"
-    ToolTipService.ToolTip="勾选后可以自己手动同步偏好，不用让 Elevator 代劳"/>
+    ToolTipService.ToolTip="勾选后可以自己手动同步偏好"/>
                     </StackPanel>
 
                 </Grid>

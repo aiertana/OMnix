@@ -31,7 +31,6 @@ public partial class PresetViewModel(
     IWindowManagerService windowManagerService,
     CharacterSkinService characterSkinService,
     ILogger logger,
-    ElevatorService elevatorService,
     INavigationService navigationService,
     BusyService busyService,
     ModPresetHandlerService modPresetHandlerService,
@@ -40,7 +39,6 @@ public partial class PresetViewModel(
     ILanguageLocalizer localizer)
     : ObservableRecipient, INavigationAware
 {
-    public readonly ElevatorService ElevatorService = elevatorService;
     private readonly BusyService _busyService = busyService;
     private readonly CharacterSkinService _characterSkinService = characterSkinService;
     private readonly IWindowManagerService _windowManagerService = windowManagerService;
@@ -80,10 +78,6 @@ public partial class PresetViewModel(
     [ObservableProperty] private bool _showManualControls;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(ToggleAutoSyncCommand))]
-    private bool _elevatorIsRunning;
-
-    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AutoSync3DMigotoConfigIsDisabled))]
     private bool _autoSync3DMigotoConfig;
 
@@ -105,14 +99,6 @@ public partial class PresetViewModel(
         IsBusy = true;
         try
         {
-            if (CanAutoSync())
-                await Task.Run(async () =>
-                {
-                    await ElevatorService.RefreshGenshinMods().ConfigureAwait(false);
-                    await Task.Delay(2000).ConfigureAwait(false);
-                });
-
-
             await Task.Run(() => _userPreferencesService.SaveModPreferencesAsync());
             await Task.Run(() => _modPresetService.CreatePresetAsync(NewPresetNameInput, CreateEmptyPresetInput));
         }
@@ -183,33 +169,6 @@ public partial class PresetViewModel(
             {
                 await _modPresetService.ApplyPresetAsync(preset.Name).ConfigureAwait(false);
                 await _userPreferencesService.SetModPreferencesAsync().ConfigureAwait(false);
-
-
-                if (CanAutoSync())
-                {
-                    await ElevatorService.RefreshGenshinMods().ConfigureAwait(false);
-                    if (preset.Mods.Count == 0)
-                        return;
-                    await Task.Delay(5000).ConfigureAwait(false);
-                    await _userPreferencesService.SetModPreferencesAsync().ConfigureAwait(false);
-                }
-
-
-                if (CanAutoSync())
-                {
-                    //await ElevatorService.RefreshGenshinMods().ConfigureAwait(false); // Wait and check for changes timout 5 seconds
-                    //await Task.Delay(5000).ConfigureAwait(false);
-                    await ElevatorService.RefreshAndWaitForUserIniChangesAsync().ConfigureAwait(false);
-                    await Task.Delay(1000).ConfigureAwait(false);
-                    await _userPreferencesService.SetModPreferencesAsync().ConfigureAwait(false);
-                }
-
-
-                if (CanAutoSync())
-                {
-                    await Task.Delay(2000).ConfigureAwait(false);
-                    await ElevatorService.RefreshGenshinMods().ConfigureAwait(false);
-                }
             });
 
             _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationApplied", "预设已套用"), $"Preset '{preset.Name}' has been applied",
@@ -314,32 +273,6 @@ public partial class PresetViewModel(
 
 
     [RelayCommand]
-    private async Task StartElevator()
-    {
-        IsBusy = true;
-
-        try
-        {
-            var isStarted = await Task.Run(() => ElevatorService.StartElevator());
-
-            if (!isStarted)
-                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_NotificationElevatorFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_ElevatorFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_ElevatorFailed", "启动 Elevator 失败"))),
-                    "Elevator failed to start",
-                    TimeSpan.FromSeconds(5));
-
-            AutoSync3DMigotoConfig = ElevatorService.ElevatorStatus == ElevatorStatus.Running &&
-                                     (await _localSettingsService.ReadOrCreateSettingAsync<ModPresetSettings>(
-                                         ModPresetSettings.Key)).AutoSyncMods;
-        }
-        catch (Exception e)
-        {
-            _notificationManager.ShowNotification(App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_ElevatorFailed", App.GetService<ILanguageLocalizer>().GetLocalizedStringOrDefault("/Presets/Pd_ElevatorFailed", "启动 Elevator 失败")), e.Message, TimeSpan.FromSeconds(5));
-        }
-
-        IsBusy = false;
-    }
-
-    [RelayCommand]
     private async Task ResetModPreferences()
     {
         using var _ = StartBusy();
@@ -380,7 +313,7 @@ public partial class PresetViewModel(
 
     private bool CanToggleAutoSync()
     {
-        return ElevatorIsRunning && IsNotBusy;
+        return IsNotBusy;
     }
 
     [RelayCommand(CanExecute = nameof(CanToggleAutoSync))]
@@ -396,24 +329,14 @@ public partial class PresetViewModel(
     public async void OnNavigatedTo(object parameter)
     {
         ReloadPresets();
-        ElevatorService.PropertyChanged += ElevatorStatusChangedHandler;
-        ElevatorService.CheckStatus();
-        ElevatorIsRunning = ElevatorService.ElevatorStatus == ElevatorStatus.Running;
 
-        AutoSync3DMigotoConfig = ElevatorService.ElevatorStatus == ElevatorStatus.Running &&
-                                 (await _localSettingsService.ReadOrCreateSettingAsync<ModPresetSettings>(
-                                     ModPresetSettings.Key)).AutoSyncMods;
-    }
-
-    private void ElevatorStatusChangedHandler(object? o, PropertyChangedEventArgs propertyChangedEventArgs)
-    {
-        App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            ElevatorIsRunning = ElevatorService.ElevatorStatus == ElevatorStatus.Running);
+        AutoSync3DMigotoConfig =
+            (await _localSettingsService.ReadOrCreateSettingAsync<ModPresetSettings>(
+                ModPresetSettings.Key)).AutoSyncMods;
     }
 
     public void OnNavigatedFrom()
     {
-        ElevatorService.PropertyChanged -= ElevatorStatusChangedHandler;
     }
 
     private void ReloadPresets()
@@ -450,7 +373,7 @@ public partial class PresetViewModel(
 
     private bool CanAutoSync()
     {
-        return ElevatorIsRunning && AutoSync3DMigotoConfig && ElevatorService.ElevatorStatus == ElevatorStatus.Running;
+        return AutoSync3DMigotoConfig;
     }
 }
 

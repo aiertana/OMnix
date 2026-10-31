@@ -103,7 +103,7 @@ public sealed class GameLaunchResolver
 
         foreach (var root in roots)
         {
-            var found = SearchUpwards(root, game.LauncherExeNames, 6);
+            var found = SearchUpwards(root, game, game.LauncherExeNames, 6);
             if (!string.IsNullOrWhiteSpace(found))
                 return found;
         }
@@ -126,7 +126,7 @@ public sealed class GameLaunchResolver
     {
         foreach (var root in CommonInstallRoots())
         {
-            var found = SearchUpwards(root, game.LauncherExeNames, 3);
+            var found = SearchUpwards(root, game, game.LauncherExeNames, 3);
             if (!string.IsNullOrWhiteSpace(found))
                 return found;
         }
@@ -176,8 +176,13 @@ public sealed class GameLaunchResolver
         }
     }
 
-    /// <summary>从起点往上找若干层，每层试一遍候选文件名</summary>
-    private static string SearchUpwards(string? start, IEnumerable<string> exeNames, int maxLevels)
+    /// <summary>
+    ///     从起点往上找若干层，每层试一遍候选文件名。
+    ///     各家官方启动器都叫 launcher.exe，候选要是明显装在别的游戏目录里
+    ///     （目录名带其它游戏的关键词，比如 Genshin Impact）就跳过，
+    ///     不然鸣潮会把原神的启动器认成自己的。
+    /// </summary>
+    private static string SearchUpwards(string? start, GameDefinition game, IEnumerable<string> exeNames, int maxLevels)
     {
         if (string.IsNullOrWhiteSpace(start))
             return string.Empty;
@@ -189,7 +194,7 @@ public sealed class GameLaunchResolver
             foreach (var name in exeNames)
             {
                 var candidate = Path.Combine(directory, name);
-                if (File.Exists(candidate))
+                if (File.Exists(candidate) && !BelongsToOtherGame(candidate, game))
                     return candidate;
             }
 
@@ -201,7 +206,7 @@ public sealed class GameLaunchResolver
                     foreach (var name in exeNames)
                     {
                         var candidate = Path.Combine(sub, name);
-                        if (File.Exists(candidate))
+                        if (File.Exists(candidate) && !BelongsToOtherGame(candidate, game))
                             return candidate;
                     }
                 }
@@ -215,6 +220,36 @@ public sealed class GameLaunchResolver
         }
 
         return string.Empty;
+    }
+
+    /// <summary>
+    ///     候选启动器所在的目录链（往上数 3 层）要是带着别的游戏安装目录的特征词，
+    ///     就认为它装在别人家，不是当前游戏的启动器。
+    ///     目录名不带任何游戏特征的（自定义目录）仍然接受，免得误杀。
+    /// </summary>
+    private static bool BelongsToOtherGame(string candidate, GameDefinition game)
+    {
+        var ownKeywords = game.InstallFolderKeywords;
+        var otherKeywords = GameCatalog.All
+            .Where(g => !ReferenceEquals(g, game))
+            .SelectMany(g => g.InstallFolderKeywords)
+            .ToArray();
+
+        var directory = Path.GetDirectoryName(candidate);
+        for (var i = 0; i < 3 && !string.IsNullOrWhiteSpace(directory); i++)
+        {
+            var folder = Path.GetFileName(directory).ToLowerInvariant();
+
+            if (ownKeywords.Any(k => folder.Contains(k)))
+                return false;
+
+            if (otherKeywords.Any(k => folder.Contains(k)))
+                return true;
+
+            directory = Path.GetDirectoryName(directory);
+        }
+
+        return false;
     }
 }
 

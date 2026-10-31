@@ -484,16 +484,11 @@ public sealed partial class ShellPage : Page
 
     private readonly List<VirtualKey> _codeKeys = new();
 
-    private async void GlobalKeyHandler_Invoked(object sender, KeyRoutedEventArgs e)
+    private void GlobalKeyHandler_Invoked(object sender, KeyRoutedEventArgs e)
     {
         if (!IsEnabled)
             return;
 
-        if (e.Key == VirtualKey.F10)
-        {
-            await ViewModel.RefreshGenshinMods();
-            return;
-        }
 
 
         if (_code.Contains(e.Key))

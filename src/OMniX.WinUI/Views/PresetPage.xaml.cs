@@ -68,7 +68,7 @@ public sealed partial class PresetPage : Page
                         localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_DialogBody2", "新建预设时，OMniX 会把当下所有开着的 Mod 连同它们的设置记下来。以后套用这个预设，就只开这些 Mod，并把设置恢复成当时的样子。")),
 
                     CreateTextBlock(
-                        localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_DialogBody3", "想让 OMniX 帮你刷新 3Dmigoto，可以先启动 Elevator，再勾上「自动同步」。也可以自己来：勾上「显示手动控制」，手动保存/读取设置，按 F10 刷新 3Dmigoto。")),
+                        localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_DialogBody3", "套用预设后，回游戏按 F10 让 3Dmigoto 重载即可生效。偏好设置可以自己来：勾上「显示手动控制」，手动保存/读取设置。")),
 
                     CreateTextBlock(
                         localizer.GetLocalizedStringOrDefault("/HomePreset/Preset_DialogBody4", "你也可以完全不管预设，只用下面的手动控制来保存 Mod 的设置。")

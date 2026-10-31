@@ -55,6 +55,18 @@ public sealed class GameDefinition
 
     /// <summary>内核资源包的下载来源，暂时为空表示「本地已有 / 待补」</summary>
     public string KernelPackageUrl { get; init; } = string.Empty;
+
+    /// <summary>
+    ///     这个游戏安装目录名的特征词（小写比对）。
+    ///     各家官方启动器都叫 launcher.exe，自动识别时靠它分辨候选启动器装在谁家。
+    /// </summary>
+    public required string[] InstallFolderKeywords { get; init; }
+
+    /// <summary>
+    ///     游戏本体的进程名（不含 .exe）。悬浮窗「刷新」按钮按它找游戏进程，
+    ///     用来判断游戏有没有提权、模拟按键能不能送进去。
+    /// </summary>
+    public required string[] GameProcessNames { get; init; }
 }
 
 /// <summary>
@@ -71,6 +83,8 @@ public static class GameCatalog
         FallbackName = "鸣潮",
         DefaultLaunchMode = GameLaunchMode.Official,
         LauncherExeNames = ["launcher.exe", "Wuthering Waves.exe"],
+        InstallFolderKeywords = ["wuthering waves", "wuwa"],
+        GameProcessNames = ["Client-Win64-Shipping"],
         ImporterExeNames = ["WWMI Loader.exe"],
         ImporterShortName = "WWMI",
         KernelPackageUrl = string.Empty
@@ -85,6 +99,8 @@ public static class GameCatalog
         FallbackName = "绝区零",
         DefaultLaunchMode = GameLaunchMode.Xxmi,
         LauncherExeNames = ["launcher.exe"],
+        InstallFolderKeywords = ["zenless", "zzz", "mihoyo", "hoyoplay"],
+        GameProcessNames = ["ZenlessZoneZero"],
         ImporterExeNames = ["3DMigoto Loader.exe", "ZZZ3dmLoader.exe"],
         ImporterShortName = "ZZMI",
         KernelPackageUrl = string.Empty
@@ -99,6 +115,8 @@ public static class GameCatalog
         FallbackName = "原神",
         DefaultLaunchMode = GameLaunchMode.HoYo,
         LauncherExeNames = ["HoYoShadeHub.exe", "launcher.exe", "GenshinImpact.exe"],
+        InstallFolderKeywords = ["genshin", "yuanshen", "mihoyo", "hoyoplay"],
+        GameProcessNames = ["GenshinImpact", "YuanShen"],
         ImporterExeNames = ["3DMigoto Loader.exe"],
         ImporterShortName = "GIMI",
         KernelPackageUrl = string.Empty
@@ -113,6 +131,8 @@ public static class GameCatalog
         FallbackName = "崩坏：星穹铁道",
         DefaultLaunchMode = GameLaunchMode.HoYo,
         LauncherExeNames = ["HoYoShadeHub.exe", "launcher.exe", "StarRail.exe"],
+        InstallFolderKeywords = ["star rail", "starrail", "honkai", "mihoyo", "hoyoplay"],
+        GameProcessNames = ["StarRail"],
         ImporterExeNames = ["3DMigotoLoader.exe"],
         ImporterShortName = "SRMI",
         KernelPackageUrl = string.Empty

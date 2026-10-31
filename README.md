@@ -4,7 +4,7 @@
 
 使用说明书：[使用说明书.md](使用说明书.md)　·　英文说明：[README_EN.md](README_EN.md)　·　免责声明：[DISCLAIMER.md](DISCLAIMER.md)　·　许可：[GPL-3.0](LICENSE)
 
-当前版本：**1.4.0**
+当前版本：**1.4.1**
 
 ![界面预览](Images/screenshot-home.png)
 
@@ -87,7 +87,7 @@ OMniX **完全免费、开源**。没有会员版，没有激活码，也没有�
 新版把数据搬到版本目录下，按游戏分开存放：
 
 ```
-OMniX1.4.0.x\
+OMniX1.4.1.x\
 ├─ Core\            管理器本体（OMniX.exe 在这里）
 ├─ GamesData\       游戏数据（可以在设置页改到别的盘）
 │  ├─ WuWa\         鸣潮：Presets\ Plugins\ Cache\ Logs\
@@ -108,7 +108,7 @@ Mod 文件本身**不在** GamesData 里，在 XXMI Launcher 的 `WWMI\Mods` 下
 ## 源码与构建
 
 这个仓库放的是**源码**。不想自己编译的话，打好的程序去
-[Releases](https://github.com/aiertana/OMnix/releases) 下载 `OMniX1.4.0.zip`，解压即用。
+[Releases](https://github.com/aiertana/OMnix/releases) 下载 `OMniX1.4.1.zip`，解压即用。
 
 ### 需要什么
 

@@ -21,7 +21,6 @@ public class ModRandomizationService
     private readonly ISkinManagerService _skinManagerService;
     private readonly IWindowManagerService _windowManagerService;
     private readonly CharacterSkinService _characterSkinService;
-    private readonly ElevatorService _elevatorService;
     private readonly NotificationManager _notificationManager;
     private readonly ILogger _logger;
     private static readonly Random Random = new();
@@ -32,7 +31,6 @@ public class ModRandomizationService
         ISkinManagerService skinManagerService,
         IWindowManagerService windowManagerService,
         CharacterSkinService characterSkinService,
-        ElevatorService elevatorService,
         NotificationManager notificationManager,
         ILogger logger)
     {
@@ -40,7 +38,6 @@ public class ModRandomizationService
         _skinManagerService = skinManagerService;
         _windowManagerService = windowManagerService;
         _characterSkinService = characterSkinService;
-        _elevatorService = elevatorService;
         _notificationManager = notificationManager;
         _logger = logger.ForContext<ModRandomizationService>();
     }
@@ -187,11 +184,6 @@ public class ModRandomizationService
             _logger.Error(e, "随机换 Mod 失败");
             _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_Failed", "随机换 Mod 失败"), e.Message, TimeSpan.FromSeconds(5));
             return;
-        }
-
-        if (_elevatorService.ElevatorStatus == ElevatorStatus.Running)
-        {
-            await Task.Run(() => _elevatorService.RefreshGenshinMods());
         }
 
         _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/ServicesMsg/Random_Done", "随机完成"),

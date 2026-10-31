@@ -25,6 +25,7 @@ using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Services.AppManagement.Updating;
 using OMniX.WinUI.Services.ModHandling;
 using OMniX.WinUI.Services.Notifications;
+using OMniX.WinUI.Services.Overlay;
 using OMniX.WinUI.Services.Plugins;
 using OMniX.WinUI.Validators.PreConfigured;
 using OMniX.WinUI.ViewModels.SettingsViewModels;
@@ -64,7 +65,6 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
 
     private readonly NotificationManager _notificationManager;
     private readonly UpdateChecker _updateChecker;
-    public ElevatorService ElevatorService;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ResetGenshinExePathCommand))]
@@ -170,15 +170,38 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
     }
 
 
-    private static bool _showElevatorStartDialog = true;
-
     private ModManagerOptions? _modManagerOptions = null!;
+
+    private readonly ModOverlayService _modOverlayService;
 
     [ObservableProperty] private string _modCacheSizeGB = string.Empty;
 
+    /// <summary>
+    ///     二开：游戏内悬浮窗开关（Alt+C 呼出 / 桌面上也能显示）。
+    /// </summary>
+    public bool ModOverlayEnabled
+    {
+        get => _modOverlayService.IsEnabled;
+        set
+        {
+            if (_modOverlayService.IsEnabled == value)
+            {
+                return;
+            }
+
+            _ = ApplyModOverlayEnabledAsync(value);
+        }
+    }
+
+    private async Task ApplyModOverlayEnabledAsync(bool value)
+    {
+        await _modOverlayService.SetEnabledAsync(value);
+        OnPropertyChanged(nameof(ModOverlayEnabled));
+    }
+
     public SettingsViewModel(
         IThemeSelectorService themeSelectorService, ILocalSettingsService localSettingsService,
-        ElevatorService elevatorService, ILogger logger, NotificationManager notificationManager,
+        ILogger logger, NotificationManager notificationManager,
         INavigationViewService navigationViewService, IWindowManagerService windowManagerService,
         ISkinManagerService skinManagerService, UpdateChecker updateChecker,
         GenshinProcessManager genshinProcessManager, ThreeDMigtoProcessManager threeDMigtoProcessManager,
@@ -188,17 +211,17 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         ModArchiveRepository modArchiveRepository, ThemeStyleService themeStyleService,
         UiSoundService uiSoundService, PaletteService paletteService, Dlss5PluginService dlss5,
         GameLaunchResolver launchResolver, GameKernelService kernel, GameDataRootService dataRoot,
-        PluginCatalogService pluginCatalog)
+        PluginCatalogService pluginCatalog, ModOverlayService modOverlayService)
     {
         _uiSoundService = uiSoundService;
         _themeStyleService = themeStyleService;
         _paletteService = paletteService;
+        _modOverlayService = modOverlayService;
 
         // 音效开关改动后，让绑定把 ToggleSwitch 拉回一致状态
         _uiSoundService.EnabledChanged += (_, _) => OnPropertyChanged(nameof(SoundEnabled));
         _themeSelectorService = themeSelectorService;
         _localSettingsService = localSettingsService;
-        ElevatorService = elevatorService;
         _notificationManager = notificationManager;
         _navigationViewService = navigationViewService;
         _windowManagerService = windowManagerService;
@@ -298,8 +321,6 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
                 or nameof(ThreeDMigtoProcessManager.ProcessPath))
                 Reset3DmigotoPathCommand.NotifyCanExecuteChanged();
         };
-
-        ElevatorService.CheckStatus();
 
         MaxCacheLimit = localSettingsService.ReadSetting<ModArchiveSettings>(ModArchiveSettings.Key)
             ?.MaxLocalArchiveCacheSizeGb ?? new ModArchiveSettings().MaxLocalArchiveCacheSizeGb;
@@ -710,80 +731,6 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware
         await Task.Delay(TimeSpan.FromSeconds(delay));
 
         await _lifeCycleService.RestartAsync(notifyOnError: true);
-    }
-
-    private bool CanStartElevator()
-    {
-        return ElevatorService.ElevatorStatus == ElevatorStatus.NotRunning;
-    }
-
-    [RelayCommand(CanExecute = nameof(CanStartElevator))]
-    private async Task StartElevator()
-    {
-        var text = new TextBlock
-        {
-            TextWrapping = TextWrapping.WrapWholeWords,
-            Text = _localizer.GetLocalizedStringOrDefault("/Settings/StartElevatorDialogText") ??
-                   "Press Start to launch the Elevator. The Elevator is an elevated (admin) process that is used for communication with the Genshin game process.\n\n" +
-                   "While the Elevator is active, you can press F10 within this App to refresh active mods in Genshin.\n\n" +
-                   "Enabling and disabling mods will also automatically refresh active mods in Genshin " +
-                   "The Elevator process should automatically close when this program is closed.\n\n" +
-                   "After pressing Start, a User Account Control (UAC) prompt will appear to confirm the elevation.\n\n" +
-                   "(This requires that Genshin and that 3Dmigoto is running, when pressing F10\n\n" +
-                   "Check the FAQ on the OMniX github to download it separately as it gets flagged as malware.",
-            Margin = new Thickness(0, 0, 0, 12),
-            IsTextSelectionEnabled = true
-        };
-
-
-        var doNotShowAgainCheckBox = new CheckBox
-        {
-            Content = _localizer.GetLocalizedStringOrDefault("/Settings/StartElevatorDialogDontShowContent") ??
-                      "Don't Show this Again",
-            IsChecked = false
-        };
-
-        var stackPanel = new StackPanel
-        {
-            Children =
-            {
-                text,
-                doNotShowAgainCheckBox
-            }
-        };
-
-
-        var dialog = new ContentDialog
-        {
-            Title = _localizer.GetLocalizedStringOrDefault("/Settings/StartElevatorDialogTitle") ??
-                    "Start Elevator Process?",
-            Content = stackPanel,
-            DefaultButton = ContentDialogButton.Primary,
-            CloseButtonText = "Cancel",
-            PrimaryButtonText = "Start",
-            XamlRoot = App.MainWindow.Content.XamlRoot
-        };
-
-        var start = true;
-
-        if (_showElevatorStartDialog)
-        {
-            var result = await dialog.ShowAsync();
-            start = result == ContentDialogResult.Primary;
-            if (start)
-                _showElevatorStartDialog = !doNotShowAgainCheckBox.IsChecked == true;
-        }
-
-        if (start && ElevatorService.ElevatorStatus == ElevatorStatus.NotRunning)
-            try
-            {
-                ElevatorService.StartElevator();
-            }
-            catch (Win32Exception e)
-            {
-                _notificationManager.ShowNotification(_localizer.GetLocalizedStringOrDefault("/SettingsUi/ElevatorFailedTitle", "无法启动 Elevator"), e.Message, TimeSpan.FromSeconds(10));
-                _showElevatorStartDialog = true;
-            }
     }
 
     /// <summary>
