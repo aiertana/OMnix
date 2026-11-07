@@ -457,6 +457,14 @@ public partial class ModGridVM(
 
         var otherMods = SingleSelect ? _modsBackend.Where(mod => modVmToToggle.Id != mod.Id && mod.IsEnabled).ToArray() : [];
 
+        // 资源管理器窗口停在 Mod 文件夹里会握着目录句柄，改名必失败。
+        // 先自动把它请走（只关落在目标文件夹里的窗口），用户不用自己找窗口。
+        FileLocks.CloseExplorerWindowsInside(modEntryToToggle.Mod.FullPath);
+        foreach (var other in otherMods)
+        {
+            FileLocks.CloseExplorerWindowsInside(other.Mod.FullPath);
+        }
+
         try
         {
             await Task.Run(() =>
@@ -486,6 +494,11 @@ public partial class ModGridVM(
                 await UpdateModVmAsync(otherModEntry, false, CancellationToken.None);
                 Messenger.Send(new ModChangedMessage(this, otherModEntry, null));
             }
+        }
+        catch (UnauthorizedAccessException e)
+        {
+            var reason = FileLocks.DescribeFileLock(modEntryToToggle.Mod.FullPath);
+            _notificationService.ShowNotification("开关 Mod 时出错", reason, TimeSpan.FromSeconds(10));
         }
         catch (Exception e)
         {

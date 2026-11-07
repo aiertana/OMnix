@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Net;
+using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using OMniX.Core.Services.GameBanana.ApiModels;
 using OMniX.Core.Services.GameBanana.Models;
 using Polly;
@@ -179,9 +181,121 @@ public sealed class ApiGameBananaClient(
         }
     }
 
+    /// <inheritdoc />
+    public async Task<byte[]> GetImageAsync(string url, CancellationToken cancellationToken = default)
+    {
+        using var response = await SendRequest(new Uri(url), cancellationToken).ConfigureAwait(false);
+        return await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
+    }
+
     private Uri GetModFilesInfoUrl(GbModId gbModId)
     {
         return new Uri(ApiUrl + gbModId + "/DownloadPage");
+    }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<GbCategoryItem>> GetRootCategoriesAsync(int gameId,
+        CancellationToken cancellationToken = default)
+    {
+        var url = $"https://gamebanana.com/apiv11/Game/{gameId}/ProfilePage?_csvProperties=_aModRootCategories";
+        using var response = await SendRequest(new Uri(url), cancellationToken).ConfigureAwait(false);
+        await using var contentStream =
+            await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+
+        var payload = await JsonSerializer.DeserializeAsync<ApiModRootCategoriesPayload>(
+            contentStream, cancellationToken: cancellationToken).ConfigureAwait(false);
+
+        return payload?.RootCategories
+            .Where(c => c.Id > 0)
+            .Select(c => new GbCategoryItem(c.Id, c.Name))
+            .ToList() ?? [];
+    }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<GbCategoryItem>> GetSubCategoriesAsync(int categoryId,
+        CancellationToken cancellationToken = default)
+    {
+        var url = $"https://gamebanana.com/apiv11/ModCategory/{categoryId}/SubCategories";
+        using var response = await SendRequest(new Uri(url), cancellationToken).ConfigureAwait(false);
+        await using var contentStream =
+            await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+
+        var payload = await JsonSerializer.DeserializeAsync<List<ApiModSubCategory>>(
+            contentStream, cancellationToken: cancellationToken).ConfigureAwait(false);
+
+        var items = new List<GbCategoryItem>();
+        foreach (var sub in payload ?? [])
+        {
+            // 接口不给分类编号，从 profile url 末段解析
+            var tail = sub.Url.Split('/').LastOrDefault();
+            if (int.TryParse(tail, out var id) && id > 0)
+            {
+                items.Add(new GbCategoryItem(id, sub.Name, sub.ItemCount, sub.IconUrl));
+            }
+        }
+
+        return items;
+    }
+
+    private sealed class ApiModRootCategoriesPayload
+    {
+        [JsonPropertyName("_aModRootCategories")]
+        public ApiModRootCategory[] RootCategories { get; init; } = [];
+    }
+
+    /// <inheritdoc />
+    public async Task<ApiModSearchResult?> SearchModsAsync(int gameId, string? query, int page = 1, int perPage = 24,
+        string? sort = null, int? categoryId = null, CancellationToken cancellationToken = default)
+    {
+        // 分类浏览 > 关键词搜索 > 按游戏浏览全部（Mod/Index，分页几千条）。
+        // Subfeed 只是「最近发布动态」，只给一页，不适合当商店默认列表。
+        var sb = new StringBuilder();
+        if (categoryId is { } catId)
+        {
+            sb.Append("https://gamebanana.com/apiv11/Mod/Index")
+              .Append("?_aFilters%5BGeneric_Category%5D=").Append(catId);
+        }
+        else if (!string.IsNullOrWhiteSpace(query))
+        {
+            sb.Append("https://gamebanana.com/apiv11/Util/Search/Results")
+              .Append("?_idGameRow=").Append(gameId)
+              .Append("&_sSearchString=").Append(Uri.EscapeDataString(query))
+              .Append("&_sModelName=Mod");
+        }
+        else
+        {
+            sb.Append("https://gamebanana.com/apiv11/Mod/Index")
+              .Append("?_aFilters%5BGeneric_Game%5D=").Append(gameId);
+        }
+
+        sb.Append("&_nPage=").Append(page)
+          .Append("&_nPerpage=").Append(perPage);
+
+        if (!string.IsNullOrWhiteSpace(sort))
+        {
+            sb.Append("&_sSort=").Append(Uri.EscapeDataString(sort));
+        }
+
+        using var response = await SendRequest(new Uri(sb.ToString()), cancellationToken).ConfigureAwait(false);
+        await using var contentStream =
+            await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+
+        using var doc = await JsonDocument.ParseAsync(contentStream, cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+
+        // subfeed 返回裸数组，搜索返回带 _aMetadata 的对象 —— 统一装回 ApiModSearchResult
+        ApiModSearchResult result;
+        if (doc.RootElement.ValueKind == JsonValueKind.Array)
+        {
+            var records = doc.RootElement.Deserialize<List<ApiModSearchRecord>>() ?? [];
+            result = new ApiModSearchResult { Records = records };
+        }
+        else
+        {
+            result = doc.RootElement.Deserialize<ApiModSearchResult>() ?? new ApiModSearchResult();
+        }
+
+        return result;
     }
 
     private Uri GetModInfoUrl(GbModId gbModId)

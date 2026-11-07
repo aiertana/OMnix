@@ -23,6 +23,19 @@ public partial class ModFileInfoVm : ObservableObject
 
     public string Description => _modFileInfo.Description;
 
+    /// <summary>文件大小（人类可读），接口缺失时显示空。</summary>
+    public string FileSizeText => _modFileInfo.FileSize switch
+    {
+        < 0 => "",
+        < 1024 * 1024 => $"{_modFileInfo.FileSize / 1024.0:F1} KB",
+        < 1024L * 1024 * 1024 => $"{_modFileInfo.FileSize / 1024.0 / 1024.0:F1} MB",
+        _ => $"{_modFileInfo.FileSize / 1024.0 / 1024.0 / 1024.0:F2} GB"
+    };
+
+    /// <summary>下载次数（接口缺失时显示空）。</summary>
+    public string DownloadCountText =>
+        _modFileInfo.DownloadCount < 0 ? "" : $"↓ {_modFileInfo.DownloadCount}";
+
     public string Md5Hash => _modFileInfo.Md5Checksum;
     [ObservableProperty] private bool _isNew;
 

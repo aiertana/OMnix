@@ -13,6 +13,8 @@ public class ModFileInfo
         Description = apiModFileInfo.Description;
         DateAdded = DateTimeOffset.FromUnixTimeSeconds(apiModFileInfo.DateAdded).DateTime;
         Md5Checksum = apiModFileInfo.Md5Checksum;
+        FileSize = apiModFileInfo.FileSize;
+        DownloadCount = apiModFileInfo.DownloadCount;
         ModId = modId;
     }
 
@@ -42,4 +44,10 @@ public class ModFileInfo
     public DateTime DateAdded { get; init; }
     [JsonIgnore] public TimeSpan Age => DateTime.Now - DateAdded;
     public string Md5Checksum { get; init; }
+
+    /// <summary>文件大小（字节），接口缺失时 -1。</summary>
+    [JsonIgnore] public long FileSize { get; init; } = -1;
+
+    /// <summary>下载次数，接口缺失时 -1。</summary>
+    [JsonIgnore] public int DownloadCount { get; init; } = -1;
 }

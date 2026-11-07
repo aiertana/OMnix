@@ -10,6 +10,8 @@ public class ModPageInfo
         ModPageUrl = Uri.TryCreate(apiModProfile.ModPageUrl, UriKind.Absolute, out var modPageUrl) ? modPageUrl : null;
         ModName = apiModProfile.ModName;
         AuthorName = apiModProfile.Author?.AuthorName;
+        CategoryName = apiModProfile.Category?.Name;
+        SuperCategoryName = apiModProfile.SuperCategory?.Name;
         List<Uri> previewImageUrls = [];
         if (apiModProfile.PreviewMedia is not null)
         {
@@ -42,6 +44,13 @@ public class ModPageInfo
     public Uri? ModPageUrl { get; init; }
     public string? ModName { get; init; }
     public string? AuthorName { get; init; }
+
+    /// <summary>mod 所属子分类名（Skins 下就是角色英文名，如 Suoming）。</summary>
+    public string? CategoryName { get; init; }
+
+    /// <summary>mod 所属根分类名（Skins / UI 等）。</summary>
+    public string? SuperCategoryName { get; init; }
+
     public IReadOnlyList<Uri> PreviewImages { get; init; }
 
     public IReadOnlyList<ModFileInfo> Files { get; init; }

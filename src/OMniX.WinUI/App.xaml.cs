@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net;
 using System.Reflection;
 using System.Threading.RateLimiting;
 using OMniX.Core.Contracts.Services;
@@ -12,6 +13,7 @@ using OMniX.WinUI.Configuration;
 using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.Models.Options;
 using OMniX.WinUI.Services;
+using OMniX.WinUI.Services.GameBanana;
 using OMniX.WinUI.Services.Overlay;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Services.AppManagement.Updating;
@@ -196,6 +198,7 @@ public partial class App : Application
                 services.AddSingleton<INavigationService, NavigationService>();
 
                 services.AddSingleton<IWindowManagerService, WindowManagerService>();
+                services.AddSingleton<GameBananaStoreActivatorService>();
                 services.AddSingleton<NotificationManager>();
                 services.AddSingleton<ModNotificationManager>();
                 services.AddTransient<ModDragAndDropService>();
@@ -249,9 +252,16 @@ public partial class App : Application
                         client.DefaultRequestHeaders.Add("OmniX-Version", $"{Assembly.GetExecutingAssembly().GetName().Version!}");
                         client.DefaultRequestHeaders.Add("Accept", "application/json");
                     })
-                    .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler()
+                    .ConfigurePrimaryHttpMessageHandler(() =>
                     {
-                        PooledConnectionLifetime = TimeSpan.FromMinutes(10)
+                        // GameBanana 代理设置：无 / 跟随系统 / 手动（给没开 VPN 的用户）
+                        var proxyUri = GameBananaProxy.GetProxyUri();
+                        return new SocketsHttpHandler()
+                        {
+                            PooledConnectionLifetime = TimeSpan.FromMinutes(10),
+                            UseProxy = proxyUri is not null,
+                            Proxy = proxyUri is null ? null : new WebProxy(proxyUri)
+                        };
                     }).AddHttpMessageHandler<HttpLoggerHandler>();
 
                 // I'm preeeetty sure this is not correctly set up, not used to polly 8.x.x
@@ -458,5 +468,14 @@ public partial class App : Application
         NotImplemented.NotificationManager = GetService<NotificationManager>();
         base.OnLaunched(args);
         await GetService<IActivationService>().ActivateAsync(args).ConfigureAwait(false);
+
+        // GameBanana 独立插件：启动参数带了 --open-gamebanana 就直接开商店窗口，
+        // 并开启管道监听等插件启动器的消息
+        var activator = GetService<GameBananaStoreActivatorService>();
+        activator.Start();
+        if (GameBananaStoreActivatorService.LaunchedWithStoreFlag())
+        {
+            activator.OpenStoreWindow();
+        }
     }
 }

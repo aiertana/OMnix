@@ -57,3 +57,6 @@
 # 本地开发工具产生的日志
 logs/
 *.log
+
+# 调试运行的插件部署产物，不进仓库（游戏数据 src/GamesData 本体正常跟踪）
+src/GamesData/Plugins/

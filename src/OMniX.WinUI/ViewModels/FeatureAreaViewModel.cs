@@ -29,8 +29,7 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
     public const string GlobalId = "Global";
     // 两张开着用的插件卡统一用主色红（图标底色更淡一档），未上线的用更淡的灰。
     // 之前 Mod 加载那张是中性灰，和旁边 DLSS5 的红不一样，看着像没开，按你的要求统一了。
-    private static readonly Color ActiveTint = Color.FromArgb(0x24, 0xE5, 0x48, 0x4D);
-    private static readonly Color ActiveText = Color.FromArgb(0xFF, 0xE5, 0x48, 0x4D);
+    private static readonly Color ActiveTint = Color.FromArgb(0x24, 0xE5, 0x48, 0x4D);    private static readonly Color ActiveText = Color.FromArgb(0xFF, 0xE5, 0x48, 0x4D);
     private static readonly Color MutedTint = Color.FromArgb(0x1A, 0x9A, 0xA0, 0xAE);
     private static readonly Color MutedText = Color.FromArgb(0xFF, 0x9A, 0xA0, 0xAE);
 
@@ -339,10 +338,13 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
             PrimaryCommand = FixerPrimaryCommand
         };
 
+        // 二开：GameBanana 改为独立插件（GamesData\Plugins\GameBananaStore），
+        // 由 AddDiscoveredPlugins 扫描 plugin.json 出卡，不再内置硬编码卡片。
+
         var upcoming = new PluginCard
         {
             Name = _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_UpcomingCardName", "GameBanana 同步"),
-            Glyph = "\uE753",
+            Glyph = "\uE895",
             BadgeBackground = new SolidColorBrush(MutedTint),
             BadgeForeground = new SolidColorBrush(MutedText),
             Description = _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_UpcomingDescription", "自动检查已安装 Mod 的更新，一条列表看完全部待更新项。"),
@@ -401,13 +403,15 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
                 BadgeBackground = new SolidColorBrush(MutedTint),
                 BadgeForeground = new SolidColorBrush(MutedText),
                 Description = description,
+                // 已识别 = 可用状态，状态徽章（StatusBrush）按 IsAvailable 变绿
+                IsAvailable = !plugin.IsToggle,
                 Status = plugin.IsToggle
                     ? _localizer.GetLocalizedStringOrDefault(plugin.Enabled
                         ? "/HomePreset/Feature_StatusDeployed"
                         : "/HomePreset/Feature_StatusNotDeployed", plugin.Enabled ? "已部署" : "未部署")
                     : _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_StatusDiscovered", "已识别"),
                 PrimaryText = plugin.IsAction
-                    ? _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_RunPlugin", "运行")
+                    ? _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_RunPlugin", "浏览")
                     : _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_DetailsLabel", "详情"),
                 SecondaryText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_OpenFolderButton", "打开文件夹"),
                 SecondaryCommand = OpenPluginsFolderCommand,
@@ -787,6 +791,15 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
 
     [RelayCommand]
     private void OpenDlss5Source() => _dependencies.OpenUrl(PluginDependencyService.KitRepoUrl);
+
+    /// <summary>GameBanana 商店卡主按钮：打开商店窗口（标识固定，重复点只聚焦同一个）。</summary>
+    [RelayCommand]
+    private void OpenGameBananaStore()
+    {
+        var window = new Views.Dialogs.GameBananaStoreWindow();
+        _windowManager.CreateWindow(window, identifier: "GameBananaStore");
+        window.BringToFront();
+    }
 
     /// <summary>Mod 修复器卡主按钮：本地没有就下载最新版，已经有了就打开插件文件夹。</summary>
     [RelayCommand]

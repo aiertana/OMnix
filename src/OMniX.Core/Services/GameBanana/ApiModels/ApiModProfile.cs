@@ -13,6 +13,19 @@ public class ApiModProfile
     [JsonPropertyName("_sProfileUrl")] public string? ModPageUrl { get; init; }
 
     [JsonPropertyName("_aFiles")] public ICollection<ApiModFileInfo>? Files { get; init; }
+
+    /// <summary>mod 所属的子分类（Skins 下就是角色名，用于自动识别安装目标角色）。</summary>
+    [JsonPropertyName("_aCategory")] public ApiCategoryRef? Category { get; init; }
+
+    /// <summary>mod 所属的根分类（Skins / UI 等）。</summary>
+    [JsonPropertyName("_aSuperCategory")] public ApiCategoryRef? SuperCategory { get; init; }
+}
+
+/// <summary>分类引用（profile 里的面包屑节点）。</summary>
+public sealed class ApiCategoryRef
+{
+    [JsonPropertyName("_idRow")] public int Id { get; init; } = -1;
+    [JsonPropertyName("_sName")] public string? Name { get; init; }
 }
 
 public sealed class ApiAuthor
@@ -31,4 +44,6 @@ public sealed class ApiImageUrl
 {
     [JsonPropertyName("_sFile")] public string? ImageId { get; init; }
     [JsonPropertyName("_sBaseUrl")] public string? BaseUrl { get; init; }
+    [JsonPropertyName("_sFile530")] public string? File530 { get; init; }
+    [JsonPropertyName("_sFile220")] public string? File220 { get; init; }
 }

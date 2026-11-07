@@ -582,6 +582,9 @@ public sealed partial class ModPaneVM(
                 return;
             }
 
+            // 资源管理器窗口停在 Mod 文件夹里会握着目录句柄，改名必失败 —— 先自动请走
+            OMniX.WinUI.Helpers.FileLocks.CloseExplorerWindowsInside(dir.FullName);
+
             var newName = enable
                 ? ModFolderHelpers.GetFolderNameWithoutDisabledPrefix(dir.Name)
                 : ModFolderHelpers.GetFolderNameWithDisabledPrefix(dir.Name);

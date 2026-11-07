@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using OMniX.Core.Contracts.Services;
 using OMniX.Core.Entities;
 using OMniX.Core.Entities.Mods.Helpers;
@@ -12,6 +13,7 @@ using ModPresetService = OMniX.Core.Services.ModPresetService.ModPresetService;
 using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.Helpers;
 using OMniX.WinUI.Services;
+using OMniX.WinUI.ViewModels.CharacterDetailsViewModels;
 using Microsoft.UI.Xaml;
 using Serilog;
 
@@ -22,7 +24,7 @@ namespace OMniX.WinUI.ViewModels.Overlay;
 ///     切换 Mod 走的是和主界面同一套逻辑（给文件夹加 / 去 DISABLED_ 前缀）。
 ///     切完要在游戏里生效，得回游戏按 F10 让 3Dmigoto 重载。
 /// </summary>
-public partial class ModSwitchViewModel : ObservableObject
+public partial class ModSwitchViewModel : ObservableRecipient
 {
     private readonly IGameService _gameService;
     private readonly ILocalSettingsService _localSettingsService;
@@ -275,8 +277,17 @@ public partial class ModSwitchViewModel : ObservableObject
         {
             var modList = _skinManagerService.GetCharacterModList(item.Character);
 
+            // 资源管理器窗口停在 Mod 文件夹里的话，改名必失败（目录句柄被握着）。
+            // 先把它请走，用户不用自己找窗口。
+            var released = FileLocks.CloseExplorerWindowsInside(GetModFolderPath(item));
+
             // 改文件夹名是 IO 操作，别卡 UI
             var enabled = await Task.Run(() => modList.ToggleMod(item.ModId));
+
+            if (released > 0)
+            {
+                StatusText = $"已自动关闭 {released} 个占用该 Mod 文件夹的资源管理器窗口";
+            }
 
             // 单选模式：开一个就自动把同角色其它启用的关掉
             if (enabled && IsSingleSelect)
@@ -288,11 +299,64 @@ public partial class ModSwitchViewModel : ObservableObject
 
             UpdateTabCount(item.Character);
             StatusText = $"{(enabled ? "启用" : "停用")}：{item.Name}（回游戏按 F10 生效）";
+
+            // 告诉主窗口的 ModGridVM / ModPaneVM 刷新对应行，不然主页显示的还是旧状态
+            var entry = modList.Mods.FirstOrDefault(m => m.Id == item.ModId);
+            if (entry is not null)
+            {
+                entry.Mod.Settings.TryGetSettings(out var settings);
+                Messenger.Send(new ModChangedMessage(this, entry, settings));
+            }
+        }
+        catch (UnauthorizedAccessException e)
+        {
+            // 游戏开着时 3DMigoto 锁住 Mod 文件，重命名失败。内存状态没被改过，
+            // 把开关拨回真实状态，别让 UI 和磁盘各说各话。
+            _logger.Warning(e, "悬浮窗切换 Mod 失败（文件被占用）：{ModName}", item.Name);
+            item.IsEnabled = IsModActuallyEnabled(item);
+            LoadMods();
+
+            // 把真凶查出来给用户看，别让他对着 Access denied 干瞪眼
+            StatusText = FileLocks.DescribeFileLock(GetModFolderPath(item));
         }
         catch (Exception e)
         {
             _logger.Error(e, "悬浮窗切换 Mod 失败：{ModName}", item.Name);
+            item.IsEnabled = IsModActuallyEnabled(item);
+            LoadMods();
             StatusText = $"切换失败：{e.Message}";
+        }
+    }
+
+    /// <summary>
+    ///     取 Mod 文件夹的绝对路径（查占用者时用）。拿不到返回 null。
+    /// </summary>
+    private string? GetModFolderPath(ModSwitchItemVm item)
+    {
+        try
+        {
+            return _skinManagerService.GetCharacterModListOrDefault(item.Character.InternalName.Id)?
+                .Mods.FirstOrDefault(m => m.Id == item.ModId)?.Mod.FullPath;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    ///     回读 ModList 内存里的真实启用状态（Rename 失败时它不会被改），用于把 UI 拨回去。
+    /// </summary>
+    private bool IsModActuallyEnabled(ModSwitchItemVm item)
+    {
+        try
+        {
+            var modList = _skinManagerService.GetCharacterModListOrDefault(item.Character.InternalName.Id);
+            return modList?.Mods.FirstOrDefault(m => m.Id == item.ModId)?.IsEnabled ?? false;
+        }
+        catch
+        {
+            return item.IsEnabled;
         }
     }
 
@@ -385,6 +449,7 @@ public partial class ModSwitchViewModel : ObservableObject
 
     /// <summary>
     ///     单选模式用：把同角色除 excludeId 外所有启用的 Mod 停用。
+    ///     停一个通知一次主页；浮窗里其它开关的显示也一起刷新。
     /// </summary>
     private async Task DisableOthersAsync(ICharacter character, Guid excludeId)
     {
@@ -395,9 +460,29 @@ public partial class ModSwitchViewModel : ObservableObject
         }
 
         var toDisable = modList.Mods.Where(m => m.IsEnabled && m.Id != excludeId).ToList();
-        foreach (var mod in toDisable)
+        foreach (var entry in toDisable)
         {
-            await Task.Run(() => modList.ToggleMod(mod.Id));
+            try
+            {
+                FileLocks.CloseExplorerWindowsInside(entry.Mod.FullPath);
+                await Task.Run(() => modList.ToggleMod(entry.Id));
+                entry.Mod.Settings.TryGetSettings(out var settings);
+                Messenger.Send(new ModChangedMessage(this, entry, settings));
+            }
+            catch (Exception e)
+            {
+                _logger.Warning(e, "单选模式停用其它 Mod 失败：{Mod}", entry.Mod.Name);
+            }
+        }
+
+        // 浮窗里本角色所有开关按 ModList 的真实状态回显
+        foreach (var vm in Mods.Where(m => ReferenceEquals(m.Character, character)))
+        {
+            var entry = modList.Mods.FirstOrDefault(m => m.Id == vm.ModId);
+            if (entry is not null)
+            {
+                vm.IsEnabled = entry.IsEnabled;
+            }
         }
     }
 

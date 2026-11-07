@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMniX.Core.Contracts.Entities;
 using OMniX.Core.Contracts.Services;
+using OMniX.Core.GamesService;
 using OMniX.Core.GamesService.Interfaces;
 using OMniX.Core.Helpers;
 using OMniX.Core.Services;
@@ -56,6 +57,45 @@ public partial class ModPageVM : ObservableRecipient
 
 
     public readonly ObservableCollection<ModFileInfoVm> ModFileInfos = new();
+
+    /// <summary>安装目标角色可选列表（当前游戏的全部可装角色/NPC/物件）。</summary>
+    public ObservableCollection<IModdableObject> InstallTargets { get; } = new();
+
+    [ObservableProperty] private IModdableObject? _selectedInstallTarget;
+
+    /// <summary>识别状态提示（自动匹配成功 / 需手动选择）。</summary>
+    [ObservableProperty] private string _detectStatusText = string.Empty;
+
+    /// <summary>网页面包屑文本（如 Skins › Suoming），对齐 gamebanana.com 页头。</summary>
+    public string BreadcrumbText =>
+        string.IsNullOrWhiteSpace(SuperCategoryText)
+            ? string.Empty
+            : $"{SuperCategoryText} › {CategoryText}";
+
+    [ObservableProperty] private string _superCategoryText = string.Empty;
+    [ObservableProperty] private string _categoryText = string.Empty;
+
+    partial void OnSuperCategoryTextChanged(string value) =>
+        OnPropertyChanged(nameof(BreadcrumbText));
+
+    partial void OnCategoryTextChanged(string value) =>
+        OnPropertyChanged(nameof(BreadcrumbText));
+
+    /// <summary>当前正在下载的文件名（无下载时为空）。</summary>
+    [ObservableProperty] private string? _currentDownloadFile;
+
+    /// <summary>当前下载进度（0-100）。</summary>
+    [ObservableProperty] private int _currentDownloadProgress;
+
+    /// <summary>底部全局下载进度条可见性。</summary>
+    public Microsoft.UI.Xaml.Visibility DownloadingVisibility =>
+        CurrentDownloadFile is null
+            ? Microsoft.UI.Xaml.Visibility.Collapsed
+            : Microsoft.UI.Xaml.Visibility.Visible;
+
+    partial void OnCurrentDownloadFileChanged(string? value) =>
+        OnPropertyChanged(nameof(DownloadingVisibility));
+
     private readonly ILogger _logger = App.GetService<ILogger>().ForContext<ModUpdateVM>();
 
     public ModPageVM(Uri modPage, IModdableObject moddableObject, WindowEx window, CancellationToken ctsToken)
@@ -96,8 +136,7 @@ public partial class ModPageVM : ObservableRecipient
         else
             await LogErrorAndClose(new InvalidGameBananaUrlException($"Invalid GameBanana url: {ModPage}"));
 
-
-        _characterModList = _skinManagerService.GetCharacterModList(_moddableObject);
+        PopulateInstallTargets();
 
         if (!await _gameBananaCoreService.HealthCheckAsync(_ct))
         {
@@ -118,7 +157,12 @@ public partial class ModPageVM : ObservableRecipient
         }
 
         _window.Title = $"Downloads for: {_modPageInfo.ModName}";
-        CharacterModListPath = new Uri(_characterModList.AbsModsFolderPath);
+        ModName = _modPageInfo.ModName ?? string.Empty;
+
+        // 按网页面包屑的分类名自动识别角色（识别不到保持传入对象，可手动改）
+        SuperCategoryText = _modPageInfo.SuperCategoryName ?? "";
+        CategoryText = _modPageInfo.CategoryName ?? "";
+        AutoDetectInstallTarget();
 
         _modFiles = _modPageInfo.Files.ToList();
 
@@ -133,6 +177,116 @@ public partial class ModPageVM : ObservableRecipient
         }
 
         IsWindowBusy = false;
+    }
+
+    /// <summary>装填当前游戏全部可安装目标（角色 / NPC / 物件）。</summary>
+    private void PopulateInstallTargets()
+    {
+        try
+        {
+            var gameService = App.GetService<IGameService>();
+            var targets = gameService.GetModdableObjects(_moddableObject.ModCategory, GetOnly.Both);
+            foreach (var target in targets)
+            {
+                InstallTargets.Add(target);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.Warning(e, "加载安装目标角色列表失败");
+        }
+
+        if (InstallTargets.Count == 0)
+        {
+            InstallTargets.Add(_moddableObject);
+        }
+    }
+
+    /// <summary>
+    ///     用网页分类名（如 Suoming）匹配安装目标：InternalName / Keys（json 别名）/
+    ///     显示名三通道精确匹配（忽略大小写空格），退化前后缀；还不中就按
+    ///     InternalName 全量查（含未启用角色，锁暝这类新角色常被禁用过滤掉）。
+    /// </summary>
+    private void AutoDetectInstallTarget()
+    {
+        var gbName = _modPageInfo?.CategoryName;
+        if (string.IsNullOrWhiteSpace(gbName))
+        {
+            SelectedInstallTarget = _moddableObject;
+            DetectStatusText = string.Empty;
+            return;
+        }
+
+        var normalized = NormalizeName(gbName);
+        var target = MatchTarget(normalized);
+
+        if (target is null)
+        {
+            try
+            {
+                if (App.GetService<IGameService>()
+                        .GetCharacterByIdentifier(gbName, includeDisabledCharacters: true) is { } character)
+                {
+                    if (!InstallTargets.Contains(character))
+                    {
+                        InstallTargets.Insert(0, character);
+                    }
+
+                    target = character;
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Warning(e, "按 InternalName 兜底匹配角色失败");
+            }
+        }
+
+        SelectedInstallTarget = target ?? _moddableObject;
+        DetectStatusText = target is not null
+            ? $"已按网页分类「{gbName}」识别到角色「{target.DisplayName}」，可手动更改"
+            : $"网页分类「{gbName}」未匹配到角色，请手动选择";
+    }
+
+    private IModdableObject? MatchTarget(string normalized)
+    {
+        var exact = InstallTargets.FirstOrDefault(t =>
+            NormalizeName(TargetName(t)) == normalized
+            || (t is ICharacter character && character.Keys.Any(k => NormalizeName(k) == normalized))
+            || NormalizeName(t.DisplayName) == normalized);
+        if (exact is not null)
+        {
+            return exact;
+        }
+
+        // 前后缀退化：应对 GB 复合分类名（如 "Yangyang: Xuanling"）
+        return InstallTargets.FirstOrDefault(t =>
+            TargetName(t) is { Length: > 0 } name
+            && (normalized.StartsWith(NormalizeName(name), StringComparison.Ordinal)
+                || NormalizeName(name).StartsWith(normalized, StringComparison.Ordinal)));
+    }
+
+    private static string TargetName(IModdableObject target) =>
+        target is ICharacter character ? character.InternalName.ToString() : target.ModFilesName;
+
+    private static string NormalizeName(string name) =>
+        name.Replace(" ", "").Replace("-", "").Replace("_", "").ToLowerInvariant();
+
+    partial void OnSelectedInstallTargetChanged(IModdableObject? value)
+    {
+        if (value is null)
+        {
+            return;
+        }
+
+        try
+        {
+            _characterModList = _skinManagerService.GetCharacterModList(value);
+            CharacterModListPath = new Uri(_characterModList.AbsModsFolderPath);
+        }
+        catch (Exception e)
+        {
+            _logger.Warning(e, "切换安装目标失败");
+        }
     }
 
     private Task LogErrorAndClose(Exception e)
@@ -200,8 +354,16 @@ public partial class ModPageVM : ObservableRecipient
 
             var identifier = new GbModFileIdentifier(new GbModId(fileInfoVm.ModId), new GbModFileId(fileInfoVm.FileId));
 
+            // 进度同时喂给卡片和底部全局进度条
+            var combinedProgress = new Progress<int>(p =>
+            {
+                fileInfoVm.DownloadProgress = p;
+                CurrentDownloadFile = fileInfoVm.FileName;
+                CurrentDownloadProgress = p;
+            });
+
             var archivePath =
-                await Task.Run(() => _gameBananaCoreService.DownloadModAsync(identifier, fileInfoVm.Progress, _ct),
+                await Task.Run(() => _gameBananaCoreService.DownloadModAsync(identifier, combinedProgress, _ct),
                     _ct);
 
             fileInfoVm.ArchiveFile = new FileInfo(archivePath);
@@ -223,6 +385,7 @@ public partial class ModPageVM : ObservableRecipient
         finally
         {
             fileInfoVm.IsBusy = false;
+            CurrentDownloadFile = null;
         }
 
         void Reset()

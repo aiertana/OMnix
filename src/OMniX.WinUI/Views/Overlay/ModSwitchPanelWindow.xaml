@@ -163,6 +163,16 @@
                         Text="{Binding GameName}" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="6">
+                    <!--  单选模式开关：启用一个 Mod 自动停用同角色的其它 Mod  -->
+                    <StackPanel
+                        VerticalAlignment="Center" Orientation="Horizontal" Spacing="2"
+                        ToolTipService.ToolTip="单选模式：启用一个 Mod 时自动停用同角色的其它 Mod">
+                        <FontIcon VerticalAlignment="Center" FontSize="13" Glyph="&#xE919;" />
+                        <ToggleSwitch
+                            IsOn="{Binding IsSingleSelect, Mode=TwoWay}"
+                            Margin="0" MinWidth="0"
+                            OffContent="" OnContent="" />
+                    </StackPanel>
                     <Button Command="{Binding ZoomOutCommand}" Content="A-" FontSize="12" Style="{StaticResource IconButtonStyle}" ToolTipService.ToolTip="缩小界面" />
                     <Border
                         Width="44" Height="34"

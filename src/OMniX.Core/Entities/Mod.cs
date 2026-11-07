@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using OMniX.Core.Contracts.Entities;
 using Microsoft.VisualBasic.FileIO;
 using SearchOption = System.IO.SearchOption;
@@ -66,7 +67,23 @@ public class Mod : IMod
         _modDirectory.Refresh();
         if (newName.Equals(_modDirectory.Name, StringComparison.CurrentCultureIgnoreCase))
             return;
-        _modDirectory.MoveTo(Path.Combine(OnlyPath, newName));
+
+        // 游戏开着时偶尔会被 3DMigoto / 杀软扫描短暂握住句柄，重命名会抛
+        // UnauthorizedAccessException。句柄通常坐几秒就松开，所以退避重试。
+        const int maxAttempts = 8;
+        for (var attempt = 1; ; attempt++)
+        {
+            try
+            {
+                _modDirectory.MoveTo(Path.Combine(OnlyPath, newName));
+                return;
+            }
+            catch (Exception e) when (attempt < maxAttempts &&
+                (e is UnauthorizedAccessException or IOException))
+            {
+                Thread.Sleep(250 * attempt);
+            }
+        }
     }
 
     public void Delete(bool moveToRecycleBin = true)

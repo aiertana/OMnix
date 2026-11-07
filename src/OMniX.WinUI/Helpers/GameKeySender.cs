@@ -119,6 +119,13 @@ internal static class GameKeySender
             : (F10SendResult.Failed, "F10 发送失败（系统拒绝了模拟输入）", string.Join(" | ", diagnostics));
     }
 
+    /// <summary>
+    ///     游戏本体是否正在运行。开关 Mod 报「文件被占用」时用来给准确提示：
+    ///     3DMigoto 会持续握住已启用 Mod 的文件句柄，游戏开着时停用它必失败。
+    /// </summary>
+    public static bool IsGameRunning(IReadOnlyList<string> gameProcessNames)
+        => FindGameProcess(gameProcessNames) is not null;
+
     private static Process? FindGameProcess(IReadOnlyList<string> gameProcessNames)
     {
         Process? fallback = null;

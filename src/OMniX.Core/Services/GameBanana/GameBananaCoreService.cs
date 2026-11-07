@@ -37,6 +37,63 @@ public sealed class GameBananaCoreService(
     }
 
     /// <summary>
+    ///     按游戏搜索 / 浏览 GameBanana 的 Mod（商店用）。搜索不缓存，保持实时。
+    /// </summary>
+    public async Task<ApiModSearchResult?> SearchModsAsync(int gameId, string? query, int page = 1,
+        int perPage = 24, string? sort = null, int? categoryId = null, CancellationToken ct = default)
+    {
+        var apiGameBananaClient = CreateApiGameBananaClient();
+
+        return await apiGameBananaClient.SearchModsAsync(gameId, query, page, perPage, sort, categoryId, ct)
+            .ConfigureAwait(false);
+    }
+
+    /// <summary>
+    ///     游戏的根分类（Skins / UI 等）。结果缓存 10 分钟。
+    /// </summary>
+    public async Task<IReadOnlyList<GbCategoryItem>> GetRootCategoriesAsync(int gameId, CancellationToken ct = default)
+    {
+        var cacheKey = $"rootcats:{gameId}";
+        var cached = _cache.Get<List<GbCategoryItem>>(cacheKey);
+        if (cached is not null)
+        {
+            return cached;
+        }
+
+        var apiGameBananaClient = CreateApiGameBananaClient();
+        var items = await apiGameBananaClient.GetRootCategoriesAsync(gameId, ct).ConfigureAwait(false);
+        _cache.Set(cacheKey, items.ToList());
+        return items;
+    }
+
+    /// <summary>
+    ///     根分类下的子分类（如 Skins 下的各角色）。结果缓存 10 分钟。
+    /// </summary>
+    public async Task<IReadOnlyList<GbCategoryItem>> GetSubCategoriesAsync(int categoryId, CancellationToken ct = default)
+    {
+        var cacheKey = $"subcats:{categoryId}";
+        var cached = _cache.Get<List<GbCategoryItem>>(cacheKey);
+        if (cached is not null)
+        {
+            return cached;
+        }
+
+        var apiGameBananaClient = CreateApiGameBananaClient();
+        var items = await apiGameBananaClient.GetSubCategoriesAsync(categoryId, ct).ConfigureAwait(false);
+        _cache.Set(cacheKey, items.ToList());
+        return items;
+    }
+
+    /// <summary>
+    ///     下载网络图片字节（缩略图/头像/分类图标统一走这里，带上代理与限流重试）。
+    /// </summary>
+    public async Task<byte[]> DownloadImageAsync(string url, CancellationToken ct = default)
+    {
+        var apiGameBananaClient = CreateApiGameBananaClient();
+        return await apiGameBananaClient.GetImageAsync(url, ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Gets the profile of a mod from GameBanana. Uses caching to reduce the number of API calls.
     /// The return type <see cref="ModPageInfo"/> also contains mod files info <see cref="ModFileInfo"/>
     /// </summary>
