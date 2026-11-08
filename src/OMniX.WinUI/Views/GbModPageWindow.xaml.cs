@@ -6,6 +6,7 @@ using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.ViewModels.ModPageViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.Web.WebView2.Core;
+using System.IO;
 
 namespace OMniX.WinUI.Views;
 
@@ -25,6 +26,9 @@ public sealed partial class GbModPageWindow : WindowEx
 
         ViewModel = new ModPageVM(gameBananaUri, moddableObject, this, _cts.Token);
         InitializeComponent();
+
+        // OMniX 娘圆角图标，商店与下载窗口共用
+        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/GameBananaIcon.ico"));
 
         if (Content is FrameworkElement rootElement)
         {

@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using OMniX.Core.Services.GameBanana;
 using OMniX.WinUI.ViewModels;
+using System.IO;
 using Windows.System;
 using WinUIEx;
 
@@ -25,6 +26,8 @@ public sealed partial class GameBananaStoreWindow : WindowEx
         Title = "GameBanana";
         Width = 1080;
         Height = 720;
+        // OMniX 娘圆角图标，商店与下载窗口共用
+        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/GameBananaIcon.ico"));
     }
 
     private bool _initialized;
