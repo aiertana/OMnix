@@ -283,7 +283,7 @@ Write-Output "=== 3.5 增量补丁 ==="
 # 1.1.7 → 1.1.9 一步到位，不用再一版一版爬。
 # 装在比基准更新的版本上也没问题：补丁里那些「基准→中间版本」的文件
 # 对方已经有了，覆盖一遍内容一样，无害。
-$PatchBaseVersion = '1.1.7'
+$PatchBaseVersion = '1.4.5'
 
 $patchBaseDir = Join-Path $releases ('OMniX' + $PatchBaseVersion)
 

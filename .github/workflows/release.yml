@@ -185,7 +185,7 @@ jobs:
           #   mkrelease.ps1 的 $PatchBaseVersion
           #   MainPageVM.cs 的 PatchBaseVersion
           #   下面这个 Get-PrevPackage 'v1.1.7'
-          Get-PrevPackage 'v1.1.7'
+          Get-PrevPackage 'v1.4.5'
 
           # 上一版：基准版缺失时的退路
           $prevTag = gh release list --limit 10 --json tagName -q '.[].tagName' |

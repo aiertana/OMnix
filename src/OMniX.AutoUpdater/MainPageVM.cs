@@ -691,7 +691,7 @@ public partial class MainPageVM : ObservableRecipient
     // 二开：增量补丁的固定基准版本，要和 mkrelease.ps1 里的 $PatchBaseVersion 保持一致。
     // 补丁里放的是「基准 → 新版本」的全部变化，所以基准以及它之后的任何版本
     // 都能直接装同一个补丁（1.1.7 → 1.1.9 一步到位，不用先装 1.1.8）。
-    private const string PatchBaseVersion = "1.1.7";
+    private const string PatchBaseVersion = "1.4.5";
 
     private async Task<ApiGitHubRelease?> GetLatestVersionAsync(CancellationToken cancellationToken)
     {
