@@ -130,7 +130,7 @@
                                 <Button
                                     Padding="6"
                                     Click="GameAvatar_OnClick"
-                                    Opacity="{x:Bind ItemOpacity, Mode=OneWay}"
+                                    Opacity="{x:Bind ItemOpacity, Mode=OneTime}"
                                     Tag="{x:Bind Id}">
                                     <StackPanel
                                         Width="86"
@@ -138,25 +138,25 @@
                                         Spacing="4">
                                         <Grid Width="54" Height="54" HorizontalAlignment="Center">
                                             <Image
-                                                Source="{x:Bind Icon, Mode=OneWay}"
+                                                Source="{x:Bind Icon, Mode=OneTime}"
                                                 Stretch="Uniform" />
                                             <FontIcon
                                                 FontSize="26"
                                                 Foreground="{ThemeResource OmniXTextSecondaryBrush}"
                                                 Glyph="&#xE713;"
-                                                Visibility="{x:Bind FallbackIconVisibility, Mode=OneWay}" />
+                                                Visibility="{x:Bind FallbackIconVisibility, Mode=OneTime}" />
                                         </Grid>
                                         <TextBlock
                                             HorizontalAlignment="Center"
                                             FontSize="12"
-                                            Text="{x:Bind Name, Mode=OneWay}"
+                                            Text="{x:Bind Name, Mode=OneTime}"
                                             TextTrimming="CharacterEllipsis" />
                                         <TextBlock
                                             HorizontalAlignment="Center"
                                             FontSize="10"
                                             Opacity="0.65"
                                             Text="未下载"
-                                            Visibility="{x:Bind NotInstalledVisibility, Mode=OneWay}"
+                                            Visibility="{x:Bind NotInstalledVisibility, Mode=OneTime}"
             l:Uids.Uid="/HomePreset/Feature_NotInstalled" />
                                     </StackPanel>
                                 </Button>

@@ -68,14 +68,18 @@ public sealed partial class GameBananaStoreWindow : WindowEx
         }
     }
 
-    /// <summary>打开角色面板（顶部「角色 ▾」）：先确保数据就绪，再对齐按钮下方弹出。</summary>
+    /// <summary>打开角色面板（顶部「角色 ▾」）：先确保数据就绪，再对齐按钮下方弹出。
+    /// 面板右缘与按钮右缘对齐（按钮贴窗口右缘，按左缘对齐会溢出被裁），窄窗再往左收。</summary>
     private async void SubCategoryPicker_Click(object sender, RoutedEventArgs e)
     {
         await ViewModel.EnsureCharacterPickerCommand.ExecuteAsync(null);
 
         var transform = CharacterPickerButton.TransformToVisual(Content);
         var pos = transform.TransformPoint(new Windows.Foundation.Point(0, 0));
-        SubCategoryPopup.HorizontalOffset = pos.X;
+
+        const double panelWidth = 260;
+        var rightAligned = pos.X + CharacterPickerButton.ActualWidth - panelWidth;
+        SubCategoryPopup.HorizontalOffset = Math.Clamp(rightAligned, 4, Math.Max(4, pos.X));
         SubCategoryPopup.VerticalOffset = pos.Y + CharacterPickerButton.ActualHeight + 4;
         SubCategoryPopup.IsOpen = true;
     }
@@ -167,7 +171,54 @@ public sealed partial class GameBananaStoreWindow : WindowEx
         stack.Children.Add(modeLabel);
         stack.Children.Add(modeCombo);
         stack.Children.Add(manualBox);
+
+        // 测试连接：按弹窗当前的选择（还没保存也能测）临时开一条通道试 GameBanana
+        var testRow = new StackPanel { Spacing = 4 };
+        var testButton = new Button { Content = "测试连接", HorizontalAlignment = HorizontalAlignment.Left };
+        var testResult = new TextBlock { TextWrapping = TextWrapping.Wrap };
+        testRow.Children.Add(testButton);
+        testRow.Children.Add(testResult);
+        stack.Children.Add(testRow);
         stack.Children.Add(tip);
+
+        testButton.Click += async (s, e) =>
+        {
+            testButton.IsEnabled = false;
+            testResult.Text = "测试中…";
+
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            try
+            {
+                var mode = ((ComboBoxItem)modeCombo.SelectedItem!)?.Tag is GameBananaProxy.ProxyMode m
+                    ? m
+                    : GameBananaProxy.ProxyMode.None;
+                var proxyUri = mode switch
+                {
+                    GameBananaProxy.ProxyMode.System => GameBananaProxy.GetSystemProxyUri(),
+                    GameBananaProxy.ProxyMode.Manual when Uri.TryCreate(manualBox.Text.Trim(), UriKind.Absolute, out var u)
+                        && u.Scheme is "http" or "https" => u,
+                    _ => null
+                };
+
+                using var handler = new HttpClientHandler();
+                if (proxyUri is not null)
+                {
+                    handler.UseProxy = true;
+                    handler.Proxy = new System.Net.WebProxy(proxyUri);
+                }
+
+                using var client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(12) };
+                using var response = await client.GetAsync("https://gamebanana.com/apiv11").ConfigureAwait(true);
+                response.EnsureSuccessStatusCode();
+                testResult.Text = $"✓ 连接正常（{sw.ElapsedMilliseconds / 1000.0:F1} 秒，HTTP {(int)response.StatusCode}）";
+            }
+            catch (Exception ex)
+            {
+                testResult.Text = $"✗ 连不上：{ex.Message}\n检查加速器是否在跑、换节点，或改用手动代理地址";
+            }
+
+            testButton.IsEnabled = true;
+        };
 
         var dialog = new ContentDialog
         {

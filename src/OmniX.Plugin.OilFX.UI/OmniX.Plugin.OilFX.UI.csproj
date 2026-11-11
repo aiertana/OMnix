@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>OmniX.Plugin.OilFX.UI</RootNamespace>
+    <AssemblyName>OmniX.Plugin.OilFX.UI</AssemblyName>
+    <ApplicationIcon>..\OMniX.WinUI\Assets\OilFXIcon.ico</ApplicationIcon>
+    <Platforms>x86;x64;arm64</Platforms>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWinUI>true</UseWinUI>
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <WindowsPackageType>None</WindowsPackageType>
+    <Version>1.2.0</Version>
+    <Authors>是湫</Authors>
+    <Product>OilFX 油光效果（独立版）</Product>
+    <!-- 共享源码里的宿主服务注入用条件编译切换成独立服务 -->
+    <DefineConstants>$(DefineConstants);STANDALONE</DefineConstants>
+    <!-- 独立分发：连 Windows App SDK 运行时一起带，目标机器啥都不用装 -->
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <CsWinRTAotOptimizerEnabled>false</CsWinRTAotOptimizerEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250401001" />
+    <PackageReference Include="Polly" Version="8.5.2" />
+    <PackageReference Include="Polly.RateLimiting" Version="8.5.2" />
+    <PackageReference Include="Serilog" Version="4.2.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="WinUIEx" Version="2.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OMniX.Core\OMniX.Core.csproj" />
+  </ItemGroup>
+
+  <!-- ─── 与宿主共享的 OilFX 界面源码（改动一处两端生效） ─── -->
+  <ItemGroup>
+    <Compile Include="..\OMniX.WinUI\ViewModels\OilFXViewModel.cs" Link="ViewModels\OilFXViewModel.cs" />
+    <Compile Include="..\OMniX.WinUI\Views\Dialogs\OilFXWindow.xaml.cs" Link="Views\Dialogs\OilFXWindow.xaml.cs" />
+    <Compile Include="..\OMniX.WinUI\Views\Dialogs\OilFxRowTemplateSelector.cs" Link="Views\Dialogs\OilFxRowTemplateSelector.cs" />
+    <Page Include="..\OMniX.WinUI\Views\Dialogs\OilFXWindow.xaml" Link="Views\Dialogs\OilFXWindow.xaml" />
+    <Page Include="..\OMniX.WinUI\Styles\OmniXTheme.xaml" Link="Styles\OmniXTheme.xaml" />
+    <Page Include="..\OMniX.WinUI\Styles\FontSizes.xaml" Link="Styles\FontSizes.xaml" />
+    <Page Include="..\OMniX.WinUI\Styles\Thickness.xaml" Link="Styles\Thickness.xaml" />
+    <Page Include="..\OMniX.WinUI\Styles\TextBlock.xaml" Link="Styles\TextBlock.xaml" />
+    <Page Include="..\OMniX.WinUI\Styles\FontTypes.xaml" Link="Styles\FontTypes.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\OMniX.WinUI\Assets\OilFXIcon.ico" Link="Assets\AppIcon.ico" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

@@ -1,10 +1,12 @@
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Net.Http;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Polly.Timeout;
 using OMniX.Core.Contracts.Services;
 using OMniX.Core.GamesService;
 using OMniX.Core.GamesService.Interfaces;
@@ -501,7 +503,16 @@ public partial class GameBananaStoreVM : ObservableRecipient
         catch (Exception e)
         {
             _logger.Warning(e, "GameBanana 搜索失败");
-            StatusText = $"加载失败：{e.Message}";
+
+            // 区分网络不通和其它错误，给用户能落地的指引而不是干转
+            StatusText = e switch
+            {
+                TaskCanceledException or TimeoutRejectedException =>
+                    "GameBanana 连接超时——加速器没开或节点失效？右上角代理设置里可测试连接",
+                HttpRequestException =>
+                    "GameBanana 连接失败——检查加速器/代理设置（右上角代理图标 → 测试连接）",
+                _ => $"加载失败：{e.Message}"
+            };
             _hasMore = false;
         }
         finally

@@ -28,8 +28,9 @@
         <Grid>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10*" />
-                <ColumnDefinition Width="6*" />
+                <!--  左窄右宽（约 20/80）：文件列表窄栏 + 网页大视图，GridSplitter 可再拖  -->
+                <ColumnDefinition Width="2*" MinWidth="200" />
+                <ColumnDefinition Width="8*" MinWidth="420" />
             </Grid.ColumnDefinitions>
 
             <Grid>

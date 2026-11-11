@@ -241,10 +241,52 @@ public partial class ModPageVM : ObservableRecipient
             }
         }
 
+        // 自动识别失败时查安装记忆：这个 mod 或同网页分类以前手动选过/装过 → 直接带上
+        var fromMemory = false;
+        if (target is null)
+        {
+            var remembered = GbInstallTargetMemory.Lookup(_gbModId?.ModId, normalized);
+            if (remembered is not null && ResolveRememberedTarget(remembered) is { } rememberedTarget)
+            {
+                if (!InstallTargets.Contains(rememberedTarget))
+                {
+                    InstallTargets.Insert(0, rememberedTarget);
+                }
+
+                target = rememberedTarget;
+                fromMemory = true;
+            }
+        }
+
         SelectedInstallTarget = target ?? _moddableObject;
         DetectStatusText = target is not null
-            ? $"已按网页分类「{gbName}」识别到角色「{target.DisplayName}」，可手动更改"
+            ? fromMemory
+                ? $"已按上次安装记忆匹配到角色「{target.DisplayName}」，可手动更改"
+                : $"已按网页分类「{gbName}」识别到角色「{target.DisplayName}」，可手动更改"
             : $"网页分类「{gbName}」未匹配到角色，请手动选择";
+    }
+
+    /// <summary>按记忆里的目标名（InternalName/ModFilesName）找回角色对象。</summary>
+    private IModdableObject? ResolveRememberedTarget(string rememberedName)
+    {
+        var byList = InstallTargets.FirstOrDefault(t =>
+            NormalizeName(TargetName(t)) == NormalizeName(rememberedName));
+        if (byList is not null)
+        {
+            return byList;
+        }
+
+        try
+        {
+            // 记忆的角色可能未启用被过滤（锁暝这类），全量查兜底
+            return App.GetService<IGameService>()
+                .GetCharacterByIdentifier(rememberedName, includeDisabledCharacters: true);
+        }
+        catch (Exception e)
+        {
+            _logger.Warning(e, "按安装记忆找回角色失败: {Name}", rememberedName);
+            return null;
+        }
     }
 
     private IModdableObject? MatchTarget(string normalized)
@@ -475,6 +517,12 @@ public partial class ModPageVM : ObservableRecipient
             }
 
             fileInfoVm.Status = ModFileInfoVm.InstallStatus.Installed;
+
+            // 记住这次的安装目标：同 mod / 同网页分类下次自动匹配
+            GbInstallTargetMemory.Remember(
+                _gbModId?.ModId,
+                NormalizeName(_modPageInfo?.CategoryName ?? string.Empty),
+                TargetName(SelectedInstallTarget ?? _moddableObject));
         }
         catch (TaskCanceledException)
         {

@@ -138,13 +138,13 @@
             l:Uids.Uid="/HomePreset/Home_GameSelectorTip">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate x:DataType="models:GameSwitchItem">
-                                    <StackPanel Orientation="Horizontal" Spacing="6" Opacity="{x:Bind ItemOpacity, Mode=OneWay}">
-                                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" />
+                                    <StackPanel Orientation="Horizontal" Spacing="6" Opacity="{x:Bind ItemOpacity, Mode=OneTime}">
+                                        <TextBlock Text="{x:Bind Name, Mode=OneTime}" />
                                         <TextBlock
                                             FontSize="11"
                                             Opacity="0.7"
                                             Text="（未下载）"
-                                            Visibility="{x:Bind NotDownloadedVisibility, Mode=OneWay}"
+                                            Visibility="{x:Bind NotDownloadedVisibility, Mode=OneTime}"
                                             l:Uids.Uid="/HomePreset/Home_NotDownloadedSuffix" />
                                     </StackPanel>
                                 </DataTemplate>

@@ -14,6 +14,7 @@ using OMniX.WinUI.Contracts.Services;
 using OMniX.WinUI.Models.Options;
 using OMniX.WinUI.Services;
 using OMniX.WinUI.Services.GameBanana;
+using OMniX.WinUI.Services.OilFX;
 using OMniX.WinUI.Services.Overlay;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Services.AppManagement.Updating;
@@ -199,6 +200,7 @@ public partial class App : Application
 
                 services.AddSingleton<IWindowManagerService, WindowManagerService>();
                 services.AddSingleton<GameBananaStoreActivatorService>();
+        services.AddSingleton<Services.OilFX.OilFXActivatorService>();
                 services.AddSingleton<NotificationManager>();
                 services.AddSingleton<ModNotificationManager>();
                 services.AddTransient<ModDragAndDropService>();
@@ -288,9 +290,13 @@ public partial class App : Application
                         {
                             BackoffType = DelayBackoffType.Linear,
                             UseJitter = true,
-                            MaxRetryAttempts = 8,
+                            // 网络全断时重试 8 次会把用户晾在「加载中」半分钟以上，
+                            // 快速失败交给界面报错 + 代理测试按钮，重试只扛抖动
+                            MaxRetryAttempts = 3,
                             Delay = TimeSpan.FromMilliseconds(200)
-                        });
+                        })
+                        // 总超时兜底：连接挂死（比如加速器上游失效）最多等 20 秒
+                        .AddTimeout(TimeSpan.FromSeconds(20));
 
                     builder.TelemetryListener = null;
                     context.OnPipelineDisposed(() =>
@@ -476,6 +482,14 @@ public partial class App : Application
         if (GameBananaStoreActivatorService.LaunchedWithStoreFlag())
         {
             activator.OpenStoreWindow();
+        }
+
+        // OilFX 独立插件：同款管道 + 命令行双通道
+        var oilFxActivator = GetService<OilFXActivatorService>();
+        oilFxActivator.Start();
+        if (OilFXActivatorService.LaunchedWithOilFxFlag())
+        {
+            oilFxActivator.OpenOilFxWindow();
         }
     }
 }

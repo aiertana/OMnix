@@ -1,0 +1,423 @@
+<winex:WindowEx
+    x:Class="OMniX.WinUI.Views.Dialogs.OilFXWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winex="using:WinUIEx"
+    xmlns:vm="using:OMniX.WinUI.ViewModels"
+    xmlns:local="using:OMniX.WinUI.Views.Dialogs"
+    mc:Ignorable="d"
+    Title="OilFX 油光效果"
+    Width="760"
+    Height="680">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  自定义标题栏：右侧"置顶"按钮（避开系统 caption 按钮），空白区可拖动窗口  -->
+        <Grid x:Name="AppTitleBar" Height="38" Background="Transparent">
+            <TextBlock
+                Margin="18,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="12"
+                FontWeight="SemiBold"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Text="OilFX 油光效果" />
+            <Button
+                x:Name="PinTopButton"
+                Width="38"
+                Height="30"
+                Margin="0,0,132,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Background="Transparent"
+                BorderThickness="0"
+                Click="PinTopButton_Click"
+                ToolTipService.ToolTip="置顶窗口（游戏时不用切来切去）">
+                <FontIcon x:Name="PinIcon" FontSize="13" Glyph="&#xE718;" />
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="1" Padding="20,4,20,16" RowSpacing="12">
+            <Grid.Resources>
+        <local:OilFxRowTemplateSelector
+            x:Key="OilFxRowSelector"
+            HeaderTemplate="{StaticResource OilFxHeaderTemplate}"
+            ModTemplate="{StaticResource OilFxModTemplate}" />
+
+        <!--  角色分组头模板  -->
+        <DataTemplate x:Key="OilFxHeaderTemplate" x:DataType="vm:OilFxRowVm">
+            <Grid
+                Margin="0,3,0,3"
+                Padding="10,6"
+                Background="{ThemeResource SubtleFillColorTertiaryBrush}"
+                CornerRadius="6"
+                ColumnSpacing="12"
+                Tapped="GroupHeader_OnTapped">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border
+                    Grid.Column="0"
+                    Width="36"
+                    Height="36"
+                    CornerRadius="6">
+                    <Grid>
+                        <Image
+                            Source="{x:Bind AvatarImage, Mode=OneWay}"
+                            Stretch="UniformToFill"
+                            Visibility="{x:Bind HasAvatar, Mode=OneWay}" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="{x:Bind DisplayName, Mode=OneWay}"
+                            Visibility="{x:Bind ShowFallbackInitial, Mode=OneWay}" />
+                    </Grid>
+                </Border>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="1">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Text="{x:Bind DisplayName, Mode=OneWay}" />
+                        <Border
+                            Padding="4,1"
+                            VerticalAlignment="Center"
+                            Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                            CornerRadius="4"
+                            Visibility="{x:Bind IsManual, Mode=OneWay}">
+                            <TextBlock FontSize="10" Text="手动" />
+                        </Border>
+                    </StackPanel>
+                    <TextBlock
+                        FontSize="11"
+                        Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                        Text="{x:Bind ModsSummary, Mode=OneWay}" />
+                    <TextBlock
+                        FontSize="11"
+                        Foreground="{ThemeResource SystemFillColorCautionBrush}"
+                        Text="{x:Bind ConflictTip}"
+                        Visibility="{x:Bind HasConflict, Mode=OneWay}" />
+                </StackPanel>
+                <FontIcon
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                    Glyph="{x:Bind ChevronGlyph, Mode=OneWay}" />
+            </Grid>
+        </DataTemplate>
+
+        <!--  单个 mod（文件夹）行模板：开关管这个 mod 的全部 ini；操作中底部显示进度条  -->
+        <DataTemplate x:Key="OilFxModTemplate" x:DataType="vm:OilFxRowVm">
+            <StackPanel>
+                <Grid
+                    Margin="20,0,0,0"
+                    Padding="10,5"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="1">
+                        <TextBlock
+                            FontSize="13"
+                            Text="{x:Bind DisplayName, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis" />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="{x:Bind ModsSummary, Mode=OneWay}" />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                            Text="{x:Bind ModFolder, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis" />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{ThemeResource SystemFillColorCautionBrush}"
+                            Text="注入过但有 ini 缺 .bak，无法完整还原"
+                            Visibility="{x:Bind NotInjectedTipVisibility, Mode=OneWay}" />
+                    </StackPanel>
+                    <ToggleSwitch
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        IsEnabled="{x:Bind CanToggle, Mode=OneWay}"
+                        IsOn="{x:Bind IsEnabled, Mode=TwoWay}"
+                        OffContent=""
+                        OnContent=""
+                        Toggled="CharacterToggle_OnToggled" />
+                    <Button
+                        Grid.Column="2"
+                        Padding="5"
+                        VerticalAlignment="Center"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="RestoreModButton_Click"
+                        IsEnabled="{x:Bind CanToggle, Mode=OneWay}"
+                        ToolTipService.ToolTip="还原这个 mod（从 .bak 恢复全部 ini）">
+                        <FontIcon FontSize="14" Glyph="&#xE77B;" />
+                    </Button>
+                </Grid>
+                <!--  注入/还原进度条：操作中显示，防卡顿误点  -->
+                <ProgressBar
+                    Margin="20,3,0,0"
+                    Height="3"
+                    Maximum="100"
+                    Value="{x:Bind BusyProgress, Mode=OneWay}"
+                    Visibility="{x:Bind BusyVisibility, Mode=OneWay}" />
+                <TextBlock
+                    Margin="30,1,0,3"
+                    FontSize="11"
+                    Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                    Text="{x:Bind BusyText, Mode=OneWay}"
+                    Visibility="{x:Bind BusyVisibility, Mode=OneWay}" />
+            </StackPanel>
+        </DataTemplate>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  ⓪ 试用提示：目前仅适用于鸣潮  -->
+        <InfoBar
+            Grid.Row="0"
+            IsOpen="True"
+            IsClosable="True"
+            Severity="Warning"
+            Title="试用阶段"
+            Message="{x:Bind ViewModel.TrialTip}" />
+
+        <!--  ① 信息卡：框架状态 + 版本对比 + 一键安装/更新  -->
+        <Border
+            Grid.Row="1"
+            Padding="16,12"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="8">
+            <StackPanel Spacing="8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Spacing="2">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon
+                                FontSize="18"
+                                Foreground="{ThemeResource OmniXAccentBrush}"
+                                Glyph="&#xE773;" />
+                            <TextBlock
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                Text="OilFX 油光 / 湿身效果" />
+                        </StackPanel>
+                        <TextBlock
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="{x:Bind ViewModel.FrameworkStatus, Mode=OneWay}" />
+                        <TextBlock
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="{x:Bind ViewModel.VersionStatus, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <HyperlinkButton
+                            Content="源页面 ↗"
+                            NavigateUri="{x:Bind ViewModel.SourceUrl}" />
+                        <Button
+                            Command="{x:Bind ViewModel.InstallOrUpdateCommand}"
+                            Content="一键安装 / 更新"
+                            IsEnabled="{x:Bind ViewModel.CanInstall, Mode=OneWay}"
+                            Style="{ThemeResource AccentButtonStyle}" />
+                    </StackPanel>
+                </Grid>
+                <ProgressBar
+                    Height="4"
+                    IsIndeterminate="{x:Bind ViewModel.IsBusy, Mode=OneWay}"
+                    Value="{x:Bind ViewModel.InstallProgress, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
+                <TextBlock
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Text="{x:Bind ViewModel.BusyText, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
+            </StackPanel>
+        </Border>
+
+        <!--  ② 参数区：写进 Matcap.ini，游戏内热键仍可临时调  -->
+        <Border
+            Grid.Row="2"
+            Padding="16,10"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="8">
+            <StackPanel Spacing="6">
+                <TextBlock
+                    FontSize="12"
+                    FontWeight="SemiBold"
+                    Text="效果参数（写进 Matcap.ini，游戏内按热键仍可临时调）" />
+                <Grid ColumnSpacing="16" RowSpacing="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="强度" />
+                    <Slider
+                        Grid.Column="1"
+                        Maximum="2"
+                        Minimum="0"
+                        StepFrequency="0.1"
+                        TickFrequency="0.1"
+                        TickPlacement="Outside"
+                        Value="{x:Bind ViewModel.OilStrength, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        MinWidth="36"
+                        Text="{x:Bind ViewModel.OilStrength, Mode=OneWay}" />
+                    <ToggleSwitch
+                        Grid.Column="3"
+                        OffContent="风格化"
+                        OnContent="写实"
+                        IsOn="{x:Bind ViewModel.RealisticOil, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="款式" />
+                    <ComboBox
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        MaxWidth="220"
+                        HorizontalAlignment="Left"
+                        ItemsSource="{x:Bind ViewModel.SkinOptions, Mode=OneTime}"
+                        SelectedIndex="{x:Bind ViewModel.OilSkin, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                        Text="游戏内 Alt+0 也可循环切换" />
+                </Grid>
+                <StackPanel
+                    Orientation="Horizontal"
+                    Spacing="4">
+                    <FontIcon
+                        VerticalAlignment="Center"
+                        FontSize="13"
+                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                        Glyph="&#xE7A7;" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                        Text="游戏内热键（Alt+小键盘）：0 循环油光风格（0=禁用） · 1 增加强度 · 2 降低强度。注入 mod 后进游戏生效" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!--  ③ 角色列表：头像 + 名字 + 灯形开关（开 = 注入该角色全部 mod）  -->
+        <Border
+            Grid.Row="3"
+            Padding="8"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="8">
+            <Grid RowDefinitions="Auto,*">
+                <Grid Grid.Row="0" Margin="12,8,12,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock
+                            FontSize="12"
+                            FontWeight="SemiBold"
+                            Text="mod 注入（每个 mod 单独开关：开 = 这个 ini 注入油光，关 = 还原 .bak）" />
+                        <TextBlock
+                            FontSize="11"
+                            Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                            Text="{x:Bind ViewModel.HookStatus, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            Click="ManualFolderButton_Click"
+                            Content="手动选择文件夹" />
+                        <Button
+                            Command="{x:Bind ViewModel.RescanCommand}"
+                            ToolTipService.ToolTip="刷新扫描列表">
+                            <FontIcon FontSize="16" Glyph="&#xE72C;" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <ListView
+                    Grid.Row="1"
+                    Margin="4,0,4,4"
+                    ItemsSource="{x:Bind ViewModel.Rows, Mode=OneWay}"
+                    ItemTemplateSelector="{StaticResource OilFxRowSelector}"
+                    SelectionMode="None" />
+            </Grid>
+        </Border>
+
+        <!--  ④ 底部状态  -->
+        <StackPanel
+            Grid.Row="4"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="12">
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="11"
+                Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                Text="单个 mod 独立开关：开 = 注入（自动备份 .bak），关 = 还原" />
+            <Button
+                Command="{x:Bind ViewModel.RestoreAllCommand}"
+                Content="一键全部还原"
+                FontSize="12" />
+        </StackPanel>
+        </Grid>
+    </Grid>
+</winex:WindowEx>
