@@ -757,6 +757,10 @@
     <value>卸载区文件夹（可选）</value>
   </data>
   <data name="Feature_Preparing" xml:space="preserve"><value>正在准备…</value></data>
+  <data name="Feature_StatusNotInstalled" xml:space="preserve"><value>未安装</value></data>
+  <data name="Feature_DownloadPlugin" xml:space="preserve"><value>下载插件</value></data>
+  <data name="Feature_NotificationPluginInstalled" xml:space="preserve"><value>插件已安装</value></data>
+  <data name="Feature_NotificationPluginInstalledBody" xml:space="preserve"><value>{0} 已装进插件文件夹，功能专区重新出卡。</value></data>
   <data name="Hp_BgTip.ToolTipService.ToolTip" xml:space="preserve"><value>右键可以换背景图</value></data>
   <data name="Hp_SwitchGameTip.ToolTipService.ToolTip" xml:space="preserve"><value>切换当前游戏（会重启应用）</value></data>
   <data name="Hp_ThemeTip.ToolTipService.ToolTip" xml:space="preserve"><value>切换浅色 / 深色主题</value></data>

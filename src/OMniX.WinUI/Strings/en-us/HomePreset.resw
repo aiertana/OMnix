@@ -757,6 +757,10 @@ New location: {3}
     <value>Uninstall area folder (optional)</value>
   </data>
   <data name="Feature_Preparing" xml:space="preserve"><value>Preparing…</value></data>
+  <data name="Feature_StatusNotInstalled" xml:space="preserve"><value>Not installed</value></data>
+  <data name="Feature_DownloadPlugin" xml:space="preserve"><value>Download plugin</value></data>
+  <data name="Feature_NotificationPluginInstalled" xml:space="preserve"><value>Plugin installed</value></data>
+  <data name="Feature_NotificationPluginInstalledBody" xml:space="preserve"><value>{0} has been placed in the plugins folder.</value></data>
   <data name="Hp_BgTip.ToolTipService.ToolTip" xml:space="preserve"><value>Right-click to change the background image</value></data>
   <data name="Hp_SwitchGameTip.ToolTipService.ToolTip" xml:space="preserve"><value>Switch the current game (the app restarts)</value></data>
   <data name="Hp_ThemeTip.ToolTipService.ToolTip" xml:space="preserve"><value>Switch between light and dark theme</value></data>

@@ -14,7 +14,7 @@
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <WindowsPackageType>None</WindowsPackageType>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <Authors>是湫</Authors>
     <Product>OilFX 油光效果（独立版）</Product>
     <!-- 共享源码里的宿主服务注入用条件编译切换成独立服务 -->
@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="..\OMniX.WinUI\ViewModels\OilFXViewModel.cs" Link="ViewModels\OilFXViewModel.cs" />
     <Compile Include="..\OMniX.WinUI\Views\Dialogs\OilFXWindow.xaml.cs" Link="Views\Dialogs\OilFXWindow.xaml.cs" />
-    <Compile Include="..\OMniX.WinUI\Views\Dialogs\OilFxRowTemplateSelector.cs" Link="Views\Dialogs\OilFxRowTemplateSelector.cs" />
     <Page Include="..\OMniX.WinUI\Views\Dialogs\OilFXWindow.xaml" Link="Views\Dialogs\OilFXWindow.xaml" />
     <Page Include="..\OMniX.WinUI\Styles\OmniXTheme.xaml" Link="Styles\OmniXTheme.xaml" />
     <Page Include="..\OMniX.WinUI\Styles\FontSizes.xaml" Link="Styles\FontSizes.xaml" />

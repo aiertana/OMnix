@@ -44,84 +44,11 @@
 
         <Grid Grid.Row="1" Padding="20,4,20,16" RowSpacing="12">
             <Grid.Resources>
-        <local:OilFxRowTemplateSelector
-            x:Key="OilFxRowSelector"
-            HeaderTemplate="{StaticResource OilFxHeaderTemplate}"
-            ModTemplate="{StaticResource OilFxModTemplate}" />
-
-        <!--  角色分组头模板  -->
-        <DataTemplate x:Key="OilFxHeaderTemplate" x:DataType="vm:OilFxRowVm">
-            <Grid
-                Margin="0,3,0,3"
-                Padding="10,6"
-                Background="{ThemeResource SubtleFillColorTertiaryBrush}"
-                CornerRadius="6"
-                ColumnSpacing="12"
-                Tapped="GroupHeader_OnTapped">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Border
-                    Grid.Column="0"
-                    Width="36"
-                    Height="36"
-                    CornerRadius="6">
-                    <Grid>
-                        <Image
-                            Source="{x:Bind AvatarImage, Mode=OneWay}"
-                            Stretch="UniformToFill"
-                            Visibility="{x:Bind HasAvatar, Mode=OneWay}" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="16"
-                            FontWeight="SemiBold"
-                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                            Text="{x:Bind DisplayName, Mode=OneWay}"
-                            Visibility="{x:Bind ShowFallbackInitial, Mode=OneWay}" />
-                    </Grid>
-                </Border>
-                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="1">
-                    <StackPanel Orientation="Horizontal" Spacing="6">
-                        <TextBlock
-                            FontSize="13"
-                            FontWeight="SemiBold"
-                            Text="{x:Bind DisplayName, Mode=OneWay}" />
-                        <Border
-                            Padding="4,1"
-                            VerticalAlignment="Center"
-                            Background="{ThemeResource SubtleFillColorSecondaryBrush}"
-                            CornerRadius="4"
-                            Visibility="{x:Bind IsManual, Mode=OneWay}">
-                            <TextBlock FontSize="10" Text="手动" />
-                        </Border>
-                    </StackPanel>
-                    <TextBlock
-                        FontSize="11"
-                        Foreground="{ThemeResource TextFillColorTertiaryBrush}"
-                        Text="{x:Bind ModsSummary, Mode=OneWay}" />
-                    <TextBlock
-                        FontSize="11"
-                        Foreground="{ThemeResource SystemFillColorCautionBrush}"
-                        Text="{x:Bind ConflictTip}"
-                        Visibility="{x:Bind HasConflict, Mode=OneWay}" />
-                </StackPanel>
-                <FontIcon
-                    Grid.Column="2"
-                    VerticalAlignment="Center"
-                    FontSize="12"
-                    Foreground="{ThemeResource TextFillColorTertiaryBrush}"
-                    Glyph="{x:Bind ChevronGlyph, Mode=OneWay}" />
-            </Grid>
-        </DataTemplate>
-
-        <!--  单个 mod（文件夹）行模板：开关管这个 mod 的全部 ini；操作中底部显示进度条  -->
+        <!--  单个 mod（= 角色目录下的一个子文件夹 / 合集）行模板：开关管这个 mod 的全部 ini。
+              被启动器禁用的 mod（DISABLED_ 前缀）直接列出，名字灰掉 + 「已禁用」角标 + 整行压暗  -->
         <DataTemplate x:Key="OilFxModTemplate" x:DataType="vm:OilFxRowVm">
-            <StackPanel>
+            <StackPanel Opacity="{x:Bind RowOpacity, Mode=OneWay}">
                 <Grid
-                    Margin="20,0,0,0"
                     Padding="10,5"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -134,10 +61,26 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" VerticalAlignment="Center" Spacing="1">
-                        <TextBlock
-                            FontSize="13"
-                            Text="{x:Bind DisplayName, Mode=OneWay}"
-                            TextTrimming="CharacterEllipsis" />
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <TextBlock
+                                FontSize="13"
+                                Foreground="{x:Bind NameBrush, Mode=OneWay}"
+                                Text="{x:Bind DisplayName, Mode=OneWay}"
+                                TextTrimming="CharacterEllipsis" />
+                            <Border
+                                Padding="4,1"
+                                VerticalAlignment="Center"
+                                Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                                BorderBrush="{x:Bind DisabledBadgeBrush, Mode=OneWay}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Visibility="{x:Bind DisabledBadgeVisibility, Mode=OneWay}">
+                                <TextBlock
+                                    FontSize="10"
+                                    Foreground="{x:Bind DisabledBadgeBrush, Mode=OneWay}"
+                                    Text="已禁用" />
+                            </Border>
+                        </StackPanel>
                         <TextBlock
                             FontSize="11"
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -175,40 +118,83 @@
                 </Grid>
                 <!--  注入/还原进度条：操作中显示，防卡顿误点  -->
                 <ProgressBar
-                    Margin="20,3,0,0"
+                    Margin="0,3,0,0"
                     Height="3"
                     Maximum="100"
                     Value="{x:Bind BusyProgress, Mode=OneWay}"
                     Visibility="{x:Bind BusyVisibility, Mode=OneWay}" />
                 <TextBlock
-                    Margin="30,1,0,3"
+                    Margin="10,1,0,3"
                     FontSize="11"
                     Foreground="{ThemeResource TextFillColorTertiaryBrush}"
                     Text="{x:Bind BusyText, Mode=OneWay}"
                     Visibility="{x:Bind BusyVisibility, Mode=OneWay}" />
             </StackPanel>
         </DataTemplate>
+
+        <!--  角色头像卡（小卡，一行约 9 个）：点一张进入该角色的 mod 列表  -->
+        <DataTemplate x:Key="OilFxCharacterCardTemplate" x:DataType="vm:OilFxCharacterCardVm">
+            <Grid
+                Width="72"
+                Margin="2"
+                Padding="2"
+                RowSpacing="2"
+                ToolTipService.ToolTip="{x:Bind Summary, Mode=OneWay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border
+                    Grid.Row="0"
+                    Width="58"
+                    Height="58"
+                    CornerRadius="8">
+                    <Grid>
+                        <Image
+                            Source="{x:Bind AvatarImage, Mode=OneWay}"
+                            Stretch="UniformToFill"
+                            Visibility="{x:Bind HasAvatar, Mode=OneWay}" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="{x:Bind DisplayName, Mode=OneWay}"
+                            Visibility="{x:Bind ShowFallbackInitial, Mode=OneWay}" />
+                    </Grid>
+                </Border>
+                <StackPanel
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="2">
+                    <TextBlock
+                        MaxWidth="58"
+                        FontSize="10"
+                        Text="{x:Bind DisplayName, Mode=OneWay}"
+                        TextAlignment="Center"
+                        TextTrimming="CharacterEllipsis" />
+                    <FontIcon
+                        VerticalAlignment="Center"
+                        FontSize="9"
+                        Foreground="{ThemeResource SystemFillColorCautionBrush}"
+                        Glyph="&#xE7BA;"
+                        Visibility="{x:Bind HasConflict, Mode=OneWay}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!--  ⓪ 试用提示：目前仅适用于鸣潮  -->
-        <InfoBar
-            Grid.Row="0"
-            IsOpen="True"
-            IsClosable="True"
-            Severity="Warning"
-            Title="试用阶段"
-            Message="{x:Bind ViewModel.TrialTip}" />
-
         <!--  ① 信息卡：框架状态 + 版本对比 + 一键安装/更新  -->
         <Border
-            Grid.Row="1"
+            Grid.Row="0"
             Padding="16,12"
             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -270,7 +256,7 @@
 
         <!--  ② 参数区：写进 Matcap.ini，游戏内热键仍可临时调  -->
         <Border
-            Grid.Row="2"
+            Grid.Row="1"
             Padding="16,10"
             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -354,9 +340,9 @@
             </StackPanel>
         </Border>
 
-        <!--  ③ 角色列表：头像 + 名字 + 灯形开关（开 = 注入该角色全部 mod）  -->
+        <!--  ③ mod 注入：角色头像网格（点一个头像）⇄ 该角色的 mod 列表视图（每个 mod 单独开关）  -->
         <Border
-            Grid.Row="3"
+            Grid.Row="2"
             Padding="8"
             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -372,7 +358,7 @@
                         <TextBlock
                             FontSize="12"
                             FontWeight="SemiBold"
-                            Text="mod 注入（每个 mod 单独开关：开 = 这个 ini 注入油光，关 = 还原 .bak）" />
+                            Text="mod 注入（点角色头像，给它的 mod 单独开关油光）" />
                         <TextBlock
                             FontSize="11"
                             Foreground="{ThemeResource TextFillColorTertiaryBrush}"
@@ -393,18 +379,80 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-                <ListView
+
+                <!--  视图一：角色头像网格（一行约 9 个，小卡）  -->
+                <GridView
                     Grid.Row="1"
-                    Margin="4,0,4,4"
-                    ItemsSource="{x:Bind ViewModel.Rows, Mode=OneWay}"
-                    ItemTemplateSelector="{StaticResource OilFxRowSelector}"
-                    SelectionMode="None" />
+                    Margin="4,2,4,4"
+                    IsItemClickEnabled="True"
+                    ItemsSource="{x:Bind ViewModel.CharacterCards, Mode=OneWay}"
+                    ItemTemplate="{StaticResource OilFxCharacterCardTemplate}"
+                    SelectionMode="Single"
+                    SelectedItem="{x:Bind ViewModel.SelectedCard, Mode=TwoWay}"
+                    Visibility="{x:Bind ViewModel.GridVisibility, Mode=OneWay}" />
+
+                <!--  视图二：选中角色的 mod 列表（返回按钮 + 角色名 + 冲突提示）  -->
+                <Grid
+                    Grid.Row="1"
+                    RowDefinitions="Auto,Auto,*,Auto"
+                    Visibility="{x:Bind ViewModel.ModListVisibility, Mode=OneWay}">
+                    <StackPanel
+                        Grid.Row="0"
+                        Margin="4,0,4,2"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            Padding="8,3"
+                            Command="{x:Bind ViewModel.BackToCharactersCommand}"
+                            ToolTipService.ToolTip="返回角色网格">
+                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                <FontIcon FontSize="12" Glyph="&#xE76B;" />
+                                <TextBlock FontSize="12" Text="返回" />
+                            </StackPanel>
+                        </Button>
+                        <TextBlock
+                            MaxWidth="380"
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            Text="{x:Bind ViewModel.SelectedCardDisplayName, Mode=OneWay}"
+                            TextTrimming="CharacterEllipsis" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="11"
+                            Foreground="{ThemeResource SystemFillColorCautionBrush}"
+                            Text="{x:Bind ViewModel.SelectedConflictTip, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.SelectedConflictVisibility, Mode=OneWay}" />
+                    </StackPanel>
+                    <TextBlock
+                        Grid.Row="1"
+                        Margin="6,2,6,2"
+                        FontSize="11"
+                        Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                        Text="一个 mod 文件夹（角色目录下的子文件夹，含合集）一个开关：开 = 注入油光（自动备份 .bak），关 = 还原；灰色行 = 被启动器禁用的 mod"
+                        TextWrapping="Wrap" />
+                    <ListView
+                        Grid.Row="2"
+                        Margin="4,2,4,4"
+                        ItemsSource="{x:Bind ViewModel.ModRows, Mode=OneWay}"
+                        ItemTemplate="{StaticResource OilFxModTemplate}"
+                        SelectionMode="None" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Margin="12,20,12,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        FontSize="12"
+                        Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                        Text="这个角色目录下没有可注入的 mod"
+                        Visibility="{x:Bind ViewModel.EmptyModListVisibility, Mode=OneWay}" />
+                </Grid>
             </Grid>
         </Border>
 
         <!--  ④ 底部状态  -->
         <StackPanel
-            Grid.Row="4"
+            Grid.Row="3"
             HorizontalAlignment="Center"
             Orientation="Horizontal"
             Spacing="12">

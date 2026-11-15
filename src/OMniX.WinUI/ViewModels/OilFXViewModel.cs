@@ -18,86 +18,66 @@ using Serilog;
 
 namespace OMniX.WinUI.ViewModels;
 
-/// <summary>列表行：角色分组头 或 单个 mod（单个 .ini）。
-/// 开关在 mod 行上——注入/还原这一个 ini（教程 bat 同款逻辑），角色头只做分组展示。</summary>
+/// <summary>mod 行：角色目录下的一个 mod 开关单元（一级子文件夹，含其全部可注入 ini）。
+/// 开关在 mod 行上——注入/还原这个 mod 的全部 ini（教程 bat 同款逻辑，单位放大到 mod 文件夹）。</summary>
 public partial class OilFxRowVm : ObservableObject
 {
-    /// <summary>true = 角色分组头；false = 单个 mod 行。</summary>
-    public bool IsGroupHeader { get; init; }
-
-    public bool IsModRow => !IsGroupHeader;
-
     /// <summary>匹配到的角色库角色；目录名认不出时为 null。</summary>
     public IModdableObject? Character { get; init; }
 
-    /// <summary>mod 目录的一级目录名（玩家目录常见中文名）。</summary>
+    /// <summary>角色目录名（玩家目录常见中文名）。</summary>
     public string FolderName { get; init; } = string.Empty;
 
-    /// <summary>是否来自"手动选择文件夹"（分组头用）。</summary>
-    public bool IsManual { get; init; }
-
-    /// <summary>分组头：组下全部 mod 文件夹；mod 行：自身。</summary>
-    public IReadOnlyList<OilFxModInfo> GroupMods { get; init; } = [];
-
-    /// <summary>分组头：组内被启动器禁用（DISABLED_ 前缀）而未列出的 mod 数。</summary>
-    public int DisabledModsCount { get; init; }
-
-    /// <summary>mod 行的单个 mod 文件夹（一个 mod = 一个文件夹，含其全部可注入 ini）。</summary>
+    /// <summary>mod 开关单元（一个 mod / mod 合集 = 角色目录下的一个子文件夹）。</summary>
     public OilFxModInfo Mod { get; init; } = null!;
 
-    public string DisplayName => Character?.DisplayName is { Length: > 0 } name && IsGroupHeader
-        ? name
-        : IsGroupHeader
-            ? FolderName
-            : Mod.FolderName;
+    public string DisplayName => Mod.FolderName;
 
-    /// <summary>mod 行：相对角色目录的子路径（区分同名 mod 文件夹）。</summary>
-    public string ModFolder => IsGroupHeader ? string.Empty : Mod.SubPath;
+    /// <summary>相对角色目录的子路径（区分同名 mod 文件夹）。</summary>
+    public string ModFolder => Mod.SubPath;
 
-    public Uri? Avatar => Character?.ImageUri;
+    /// <summary>mod 文件夹带 DISABLED_ 前缀（被启动器禁用，不加载），行用不同颜色区分。</summary>
+    public bool IsDisabled => Mod.Disabled;
 
-    // Image.Source 要 ImageSource，不能直接绑 Uri，这里做一次加载
-    public ImageSource? AvatarImage => Avatar is null ? null : new BitmapImage(Avatar);
+    /// <summary>禁用标记可见性。</summary>
+    public Visibility DisabledBadgeVisibility => IsDisabled ? Visibility.Visible : Visibility.Collapsed;
 
-    public bool HasAvatar => Avatar is not null && IsGroupHeader;
+    /// <summary>禁用行整体压暗一档。</summary>
+    public double RowOpacity => IsDisabled ? 0.55 : 1.0;
 
-    /// <summary>没匹配到角色库（无头像）时显示名字首字占位。</summary>
-    public bool ShowFallbackInitial => IsGroupHeader && !HasAvatar;
+    private static readonly Brush NormalNameBrush = LoadBrush("TextFillColorPrimaryBrush");
+    private static readonly Brush DisabledNameBrush = LoadBrush("TextFillColorDisabledBrush");
+    private static readonly Brush DisabledBadgeTextBrush = LoadBrush("SystemFillColorAttentionBrush");
 
-    /// <summary>分组头：mod 数量摘要；mod 行：ini 数量摘要。</summary>
+    private static Brush LoadBrush(string key)
+    {
+        try
+        {
+            return (Brush)Application.Current.Resources[key];
+        }
+        catch
+        {
+            return new SolidColorBrush(Microsoft.UI.Colors.Gray);
+        }
+    }
+
+    /// <summary>mod 名字颜色：禁用的 mod 灰掉，正常 mod 正常颜色。</summary>
+    public Brush NameBrush => IsDisabled ? DisabledNameBrush : NormalNameBrush;
+
+    /// <summary>「已禁用」角标颜色。</summary>
+    public Brush DisabledBadgeBrush => DisabledBadgeTextBrush;
+
+    /// <summary>ini 数量摘要。</summary>
     public string ModsSummary =>
-        IsGroupHeader
-            ? GroupMods.Count == 0
-                ? "没有可注入的 mod"
-                : $"{GroupMods.Count} 个 mod · 已注入 {GroupMods.Count(m => m.Injected)}"
-                  + (DisabledModsCount > 0 ? $" · 另有 {DisabledModsCount} 个禁用的 mod 未列出" : "")
+        Mod.Inis.Count == 0
+            ? "没有可注入的 ini"
             : $"{Mod.Inis.Count} 个 ini · 已注入 {Mod.InjectedCount}"
               + (Mod.InjectedCount > 0 && !HasBackup ? " · 有 ini 未备份" : "");
 
-    public bool HasBackup => IsModRow && Mod.HasBackup;
-
-    /// <summary>冲突提示（原作者标注该角色 @发 等部位可能冲突，分组头用）。</summary>
-    public string ConflictTip { get; init; } = string.Empty;
-
-    public bool HasConflict => ConflictTip.Length > 0;
+    public bool HasBackup => Mod.HasBackup;
 
     public Visibility NotInjectedTipVisibility =>
-        IsModRow && Mod.InjectedCount > 0 && !Mod.HasBackup ? Visibility.Visible : Visibility.Collapsed;
-
-    /// <summary>mod 行所属的分组头（分组头自身为 null）。展开时子行才真正加入列表。</summary>
-    public OilFxRowVm? Group { get; init; }
-
-    /// <summary>分组头：是否展开。默认收起，点分组头切换（由 VM 增删子行实现）。</summary>
-    [ObservableProperty]
-    private bool _isExpanded;
-
-    /// <summary>分组头展开箭头：展开 ▾ / 收起 ▸。</summary>
-    public string ChevronGlyph => IsExpanded ? "\uE76C" : "\uE76B";
-
-    partial void OnIsExpandedChanged(bool value) => OnPropertyChanged(nameof(ChevronGlyph));
-
-    /// <summary>分组头持有的子 mod 行（mod 行此集合为空）。</summary>
-    public List<OilFxRowVm> ChildRows { get; } = [];
+        Mod.InjectedCount > 0 && !Mod.HasBackup ? Visibility.Visible : Visibility.Collapsed;
 
     /// <summary>mod 行当前注入状态（驱动灯开关）。</summary>
     [ObservableProperty]
@@ -132,6 +112,54 @@ public partial class OilFxRowVm : ObservableObject
     }
 }
 
+/// <summary>头像网格卡：一个角色目录（或手动文件夹）。点它，下方列出该角色的 mod 行。</summary>
+public partial class OilFxCharacterCardVm : ObservableObject
+{
+    /// <summary>匹配到的角色库角色；目录名认不出时为 null。</summary>
+    public IModdableObject? Character { get; init; }
+
+    /// <summary>mod 目录的一级目录名。</summary>
+    public string FolderName { get; init; } = string.Empty;
+
+    /// <summary>是否来自"手动选择文件夹"。</summary>
+    public bool IsManual { get; init; }
+
+    /// <summary>该角色的全部 mod 单元（含禁用的）。</summary>
+    public List<OilFxModInfo> Mods { get; init; } = [];
+
+    /// <summary>冲突提示（原作者标注该角色 @发 等部位可能冲突）。</summary>
+    public string ConflictTip { get; init; } = string.Empty;
+
+    public bool HasConflict => ConflictTip.Length > 0;
+
+    public string DisplayName => Character?.DisplayName is { Length: > 0 } name ? name : FolderName;
+
+    public Uri? Avatar => Character?.ImageUri;
+
+    // Image.Source 要 ImageSource，不能直接绑 Uri，这里做一次加载
+    public ImageSource? AvatarImage => Avatar is null ? null : new BitmapImage(Avatar) { DecodePixelWidth = 128 };
+
+    public bool HasAvatar => Avatar is not null;
+
+    /// <summary>没匹配到角色库（无头像）时显示名字首字占位。</summary>
+    public bool ShowFallbackInitial => !HasAvatar;
+
+    public int ModCount => Mods.Count;
+
+    public int InjectedCount => Mods.Count(m => m.Injected);
+
+    public int DisabledCount => Mods.Count(m => m.Disabled);
+
+    public bool HasMods => ModCount > 0;
+
+    /// <summary>卡下方摘要：mod 数 / 已注入 / 禁用。</summary>
+    public string Summary =>
+        ModCount == 0
+            ? "没有可注入的 mod"
+            : $"{ModCount} 个 mod · 已注入 {InjectedCount}"
+              + (DisabledCount > 0 ? $" · {DisabledCount} 个禁用" : "");
+}
+
 public partial class OilFXViewModel : ObservableObject
 {
     private readonly IApiGameBananaClient _apiGameBanana;
@@ -159,9 +187,6 @@ public partial class OilFXViewModel : ObservableObject
     }
 
     public string ModsRoot => _skinManagerService.ActiveModsFolderPath;
-
-    /// <summary>试用提示：目前仅适用于鸣潮。</summary>
-    public string TrialTip => "试用阶段：目前仅适用于鸣潮（WWMI），其他游戏暂不支持";
 
     [ObservableProperty] private string _frameworkStatus = "检查中…";
 
@@ -199,7 +224,26 @@ public partial class OilFXViewModel : ObservableObject
 
     public string SourceUrl => OilFxHooks.SourceUrl;
 
-    public ObservableCollection<OilFxRowVm> Rows { get; } = [];
+    /// <summary>角色头像网格（点一张卡，下方列出该角色的 mod）。</summary>
+    public ObservableCollection<OilFxCharacterCardVm> CharacterCards { get; } = [];
+
+    /// <summary>当前选中角色的 mod 行。</summary>
+    public ObservableCollection<OilFxRowVm> ModRows { get; } = [];
+
+    /// <summary>GridView 选中项（TwoWay）。选中 = 进入该角色的 mod 列表视图。</summary>
+    [ObservableProperty]
+    private OilFxCharacterCardVm? _selectedCard;
+
+    partial void OnSelectedCardChanged(OilFxCharacterCardVm? value)
+    {
+        OnPropertyChanged(nameof(GridVisibility));
+        OnPropertyChanged(nameof(ModListVisibility));
+        OnPropertyChanged(nameof(SelectedCardDisplayName));
+        RebuildModRows();
+    }
+
+    /// <summary>重建期间忽略 ToggleSwitch 重入。</summary>
+    public bool IsRebuilding { get; private set; }
 
     private async Task InitializeAsync()
     {
@@ -264,9 +308,13 @@ public partial class OilFXViewModel : ObservableObject
             }
         }
 
-        Rows.Clear();
+        // 记住当前选中角色，重建后保持
+        var previousKey = SelectedCard is null ? string.Empty : OilFxName.Normalize(SelectedCard.FolderName);
 
-        // 自动：扫整个 Mods 根，一级目录 = 一组；已注入过油光的组排在最前面
+        CharacterCards.Clear();
+        ModRows.Clear();
+
+        // 自动：扫整个 Mods 根，一级目录 = 一个角色卡；已注入过油光的排在最前面
         var groups = _oilFx.ScanModsRoot(ModsRoot);
         groups = groups
             .OrderByDescending(g => g.Mods.Any(m => m.Injected))
@@ -277,7 +325,7 @@ public partial class OilFXViewModel : ObservableObject
             ModsRoot, groups.Count, groups.Sum(g => g.Mods.Count));
         foreach (var group in groups)
         {
-            AddGroup(group.GroupName, group.Mods, conflicts, characterIndex, isManual: false, disabledCount: group.DisabledModsCount);
+            AddCard(group.GroupName, group.Mods, conflicts, characterIndex, isManual: false);
         }
 
         // 手动：用户选的文件夹
@@ -290,122 +338,106 @@ public partial class OilFXViewModel : ObservableObject
             }
 
             var groupName = Path.GetFileName(folder.TrimEnd(Path.DirectorySeparatorChar));
-            AddGroup(groupName + "（手动）", mods, conflicts, characterIndex, isManual: true);
+            AddCard(groupName + "（手动）", mods, conflicts, characterIndex, isManual: true);
         }
 
+        // 恢复选中（开关操作后重建列表时保持当前角色，不自动跳到第一张——
+        // 没选中的话就停在角色网格，等用户点头像进 mod 列表）
+        SelectedCard = CharacterCards.FirstOrDefault(c =>
+            OilFxName.Normalize(c.FolderName) == previousKey);
+
+        RebuildModRows();
         UpdateHookStatus();
     }
 
-    private void AddGroup(
+    private void AddCard(
         string groupName,
         List<OilFxModInfo> mods,
         HashSet<string> conflicts,
         Dictionary<string, IModdableObject> characterIndex,
-        bool isManual,
-        int disabledCount = 0)
+        bool isManual)
     {
         var normalized = OilFxName.Normalize(groupName);
         var matched = normalized.Length > 0 && characterIndex.TryGetValue(normalized, out var c) ? c : null;
 
-        // 分组头行（默认收起，点击展开 mod 列表）
-        var header = new OilFxRowVm
+        CharacterCards.Add(new OilFxCharacterCardVm
         {
-            IsGroupHeader = true,
             Character = matched,
             FolderName = groupName,
             IsManual = isManual,
-            GroupMods = mods,
-            DisabledModsCount = disabledCount,
+            Mods = mods,
             ConflictTip = normalized.Length > 0 && conflicts.Contains(normalized)
                 ? "与 @发 部位 mod 可能冲突"
                 : string.Empty
-        };
-        Rows.Add(header);
+        });
+    }
 
-        // 每个 mod 文件夹一行，开关管这一个 mod 的全部 ini。
-        // mod 行不直接进列表——展开分组头时才插入（收起时列表里只有分组头，不占空间）
-        foreach (var mod in mods)
+    /// <summary>按选中角色重建 mod 行（禁用的 mod 直接列出，颜色区分）。
+    /// 选中 = 进入该角色的 mod 列表视图；清空 = 回角色网格。</summary>
+    private void RebuildModRows()
+    {
+        ModRows.Clear();
+
+        var card = SelectedCard;
+        if (card is null)
         {
-            var row = new OilFxRowVm
+            EmptyModListVisibility = Visibility.Collapsed;
+            SelectedConflictTip = string.Empty;
+            OnPropertyChanged(nameof(SelectedConflictVisibility));
+            return;
+        }
+
+        EmptyModListVisibility = card.Mods.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        SelectedConflictTip = card.ConflictTip;
+        OnPropertyChanged(nameof(SelectedConflictVisibility));
+
+        foreach (var mod in card.Mods)
+        {
+            ModRows.Add(new OilFxRowVm
             {
-                IsGroupHeader = false,
-                Character = matched,
-                FolderName = groupName,
-                GroupMods = mods,
-                Group = header,
+                Character = card.Character,
+                FolderName = card.FolderName,
                 Mod = mod,
                 IsEnabled = mod.Injected
-            };
-            header.ChildRows.Add(row);
-        }
-
-        // 刷新前已展开的组保持展开
-        if (_expandedFolders.Contains(FolderKey(groupName)))
-        {
-            ExpandGroup(header);
+            });
         }
     }
 
-    /// <summary>展开状态的组名集合（刷新/重建后保持展开）。</summary>
-    private readonly HashSet<string> _expandedFolders = new(StringComparer.OrdinalIgnoreCase);
+    /// <summary>角色网格视图可见性：没选中角色时显示网格。</summary>
+    public Visibility GridVisibility =>
+        SelectedCard is null ? Visibility.Visible : Visibility.Collapsed;
 
-    private static string FolderKey(string folderName) => OilFxName.Normalize(folderName);
+    /// <summary>mod 列表视图可见性：选中角色后整个区域切成它的 mod 列表。</summary>
+    public Visibility ModListVisibility =>
+        SelectedCard is not null ? Visibility.Visible : Visibility.Collapsed;
 
-    /// <summary>展开分组头：把该组所有 mod 行插到分组头之后。</summary>
-    public void ExpandGroup(OilFxRowVm header)
-    {
-        if (!header.IsGroupHeader || header.IsExpanded)
-        {
-            return;
-        }
+    /// <summary>mod 列表视图标题：选中角色名。</summary>
+    public string SelectedCardDisplayName => SelectedCard?.DisplayName ?? string.Empty;
 
-        header.IsExpanded = true;
-        _expandedFolders.Add(FolderKey(header.FolderName));
-        var index = Rows.IndexOf(header);
-        for (var i = 0; i < header.ChildRows.Count; i++)
-        {
-            Rows.Insert(index + 1 + i, header.ChildRows[i]);
-        }
-    }
+    /// <summary>返回角色网格。</summary>
+    [RelayCommand]
+    private void BackToCharacters() => SelectedCard = null;
 
-    /// <summary>收起分组头：把该组所有 mod 行从列表移除（不占空间）。</summary>
-    public void CollapseGroup(OilFxRowVm header)
-    {
-        if (!header.IsGroupHeader || !header.IsExpanded)
-        {
-            return;
-        }
+    /// <summary>没选中角色时显示占位提示。</summary>
+    [ObservableProperty]
+    private Visibility _emptyModListVisibility = Visibility.Collapsed;
 
-        header.IsExpanded = false;
-        _expandedFolders.Remove(FolderKey(header.FolderName));
-        foreach (var row in header.ChildRows)
-        {
-            Rows.Remove(row);
-        }
-    }
+    /// <summary>选中角色的冲突提示（原作者标注 @发 部位可能冲突）。</summary>
+    [ObservableProperty]
+    private string _selectedConflictTip = string.Empty;
 
-    /// <summary>点分组头：切换展开/收起。</summary>
-    public void ToggleExpand(OilFxRowVm header)
-    {
-        if (header.IsExpanded)
-        {
-            CollapseGroup(header);
-        }
-        else
-        {
-            ExpandGroup(header);
-        }
-    }
+    /// <summary>冲突提示可见性。</summary>
+    public Visibility SelectedConflictVisibility =>
+        string.IsNullOrEmpty(SelectedConflictTip) ? Visibility.Collapsed : Visibility.Visible;
 
     private void UpdateHookStatus()
     {
-        var mods = Rows.Where(r => r.IsModRow).ToList();
-        var modCount = mods.Count;
-        var iniTotal = mods.Sum(m => m.Mod.Inis.Count);
-        var iniInjected = mods.Sum(m => m.Mod.InjectedCount);
-        HookStatus = modCount == 0
+        var allMods = CharacterCards.SelectMany(c => c.Mods).ToList();
+        var iniTotal = allMods.Sum(m => m.Inis.Count);
+        var iniInjected = allMods.Sum(m => m.InjectedCount);
+        HookStatus = allMods.Count == 0
             ? "没扫到可注入的 mod（先装角色 mod，或用「手动选择」指定文件夹）"
-            : $"共 {modCount} 个 mod / {iniTotal} 个 ini，已注入 {iniInjected} 个 ini";
+            : $"共 {CharacterCards.Count} 个角色 / {allMods.Count} 个 mod / {iniTotal} 个 ini，已注入 {iniInjected} 个 ini（灰色行 = 被启动器禁用）";
     }
 
     /// <summary>查线上最新版本，与本地已装对比。</summary>
@@ -496,7 +528,7 @@ public partial class OilFXViewModel : ObservableObject
             return;
         }
 
-        if (row is null || row.IsGroupHeader)
+        if (row is null)
         {
             return;
         }
@@ -580,7 +612,7 @@ public partial class OilFXViewModel : ObservableObject
             return;
         }
 
-        if (row is null || row.IsGroupHeader)
+        if (row is null)
         {
             return;
         }
@@ -672,7 +704,7 @@ public partial class OilFXViewModel : ObservableObject
         try
         {
             var restored = 0;
-            foreach (var mod in Rows.Where(r => r.IsModRow).Select(r => r.Mod).ToList())
+            foreach (var mod in CharacterCards.SelectMany(c => c.Mods).ToList())
             {
                 foreach (var ini in mod.Inis)
                 {
@@ -698,9 +730,6 @@ public partial class OilFXViewModel : ObservableObject
             _isToggling = false;
         }
     }
-
-    /// <summary>重建列表期间为 true——灯开关被 ListView 重建时 Toggled 会重入，需忽略。</summary>
-    public bool IsRebuilding { get; private set; }
 
     private bool _isToggling;
 

@@ -198,27 +198,19 @@ public sealed class OilFxService(
     public const string OilSkinLine = "run = CommandList\\KatFXMatcap\\OilSkin";
     public const string ClearLine = "run = CommandList\\KatFXMatcap\\Clear";
 
-    /// <summary>跳过的特殊目录（框架贴图 / 无 mod 杂物 / 禁用前缀）。</summary>
+    /// <summary>跳过的特殊目录（框架贴图 / 无 mod 杂物）。</summary>
     private static readonly string[] SkippedFolderNames = ["Oil", "Others"];
     private const string DisabledPrefix = "DISABLED";
 
-    /// <summary>路径任一段以 DISABLED 开头 = 被启动器禁用的 mod，跳过。</summary>
-    private static bool IsDisabledPath(string path)
-    {
-        foreach (var segment in path.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
-        {
-            if (segment.StartsWith(DisabledPrefix, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+    /// <summary>文件夹名带 DISABLED 前缀 = 被启动器禁用的 mod（XXMI 启动器改文件夹名实现）。</summary>
+    public static bool IsDisabledFolderName(string name) =>
+        name.StartsWith(DisabledPrefix, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     ///     扫描整个 Mods 根：每个一级子目录为一组（通常就是角色目录，中文名），
-    ///     组内递归找含 TextureOverrideComponent 段的 ini，按 mod 文件夹聚合。
+    ///     组内按一级子文件夹聚合 mod（一个子文件夹 = 一个 mod 或 mod 合集，
+    ///     无论里面还套多少层，整个子文件夹算一个开关单元）。
+    ///     禁用的 mod（DISABLED_ 前缀子文件夹）直接列出来，由界面用颜色区分。
     ///     不依赖角色库的 InternalName——玩家目录用什么名就按什么名归组。
     /// </summary>
     public List<OilFxGroupInfo> ScanModsRoot(string modsRoot)
@@ -238,28 +230,22 @@ public sealed class OilFxService(
                 continue;
             }
 
-            var disabled = 0;
-            foreach (var sub in Directory.EnumerateDirectories(dir))
-            {
-                var subName = Path.GetFileName(sub);
-                if (subName.StartsWith(DisabledPrefix, StringComparison.OrdinalIgnoreCase) &&
-                    Directory.EnumerateFiles(sub, "*.ini", SearchOption.AllDirectories).Any())
-                {
-                    disabled++;
-                }
-            }
-
             var mods = ScanFolder(dir);
-            if (mods.Count > 0 || disabled > 0)
+            if (mods.Count > 0)
             {
-                groups.Add(new OilFxGroupInfo(name, mods, disabled));
+                groups.Add(new OilFxGroupInfo(name, mods));
             }
         }
 
         return groups;
     }
 
-    /// <summary>递归扫描一个文件夹下所有"可注入"的 mod 文件夹（含 TextureOverrideComponent 段的 ini，按文件夹聚合）。</summary>
+    /// <summary>
+    ///     扫描一个角色目录：一级子文件夹 = 一个 mod（或 mod 合集），
+    ///     里面的 ini 无论套多少层都算这个 mod 的（教程 bat 的操作单位放大到 mod 文件夹）。
+    ///     DISABLED_ 前缀的子文件夹也列出来（Disabled = true），界面用颜色区分；
+    ///     角色目录根下散落的 ini 归进「（根目录）」一个单元。
+    /// </summary>
     public List<OilFxModInfo> ScanFolder(string folder)
     {
         var result = new List<OilFxModInfo>();
@@ -268,36 +254,63 @@ public sealed class OilFxService(
             return result;
         }
 
-        // 按 mod 文件夹聚合：一个文件夹 = 一个 mod（同一 mod 的多个 ini 变体算一个开关）
-        var byFolder = new Dictionary<string, OilFxModInfo>(StringComparer.OrdinalIgnoreCase);
-        foreach (var ini in Directory.EnumerateFiles(folder, "*.ini", SearchOption.AllDirectories))
+        foreach (var sub in Directory.EnumerateDirectories(folder))
         {
-            if (IsDisabledPath(ini))
+            var subName = Path.GetFileName(sub);
+            var inis = CollectInjectableInis(sub);
+            if (inis.Count == 0)
             {
                 continue;
             }
 
-            var info = ScanIniFile(ini);
-            if (info is null)
-            {
-                continue;
-            }
-
-            var dir = Path.GetDirectoryName(ini) ?? folder;
-            if (!byFolder.TryGetValue(dir, out var mod))
-            {
-                var sub = dir.Length > folder.Length
-                    ? dir[folder.Length..].TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
-                    : string.Empty;
-                mod = new OilFxModInfo(dir, Path.GetFileName(dir), sub.Length > 0 ? sub : "（根目录）", []);
-                byFolder[dir] = mod;
-            }
-
-            mod.Inis.Add(info);
+            result.Add(new OilFxModInfo(
+                sub,
+                subName,
+                subName,
+                inis,
+                Disabled: IsDisabledFolderName(subName)));
         }
 
-        result.AddRange(byFolder.Values);
-        return result;
+        // 角色目录根下直接散放的 ini（没有子文件夹结构的简单 mod）
+        var rootInis = Directory.EnumerateFiles(folder, "*.ini", SearchOption.TopDirectoryOnly)
+            .Select(ScanIniFile)
+            .Where(info => info is not null)
+            .Cast<OilFxIniInfo>()
+            .ToList();
+        if (rootInis.Count > 0)
+        {
+            result.Add(new OilFxModInfo(folder, "（根目录）", "（根目录）", rootInis, Disabled: false));
+        }
+
+        // 已注入的排前面，禁用的排最后，其余按名字
+        return result
+            .OrderByDescending(m => m.Injected)
+            .ThenBy(m => m.Disabled)
+            .ThenBy(m => m.FolderName, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+    }
+
+    /// <summary>递归收集一个文件夹下全部可注入 ini（.bak / 挂钩 / Matcap 除外）。</summary>
+    private List<OilFxIniInfo> CollectInjectableInis(string folder)
+    {
+        var inis = new List<OilFxIniInfo>();
+        try
+        {
+            foreach (var ini in Directory.EnumerateFiles(folder, "*.ini", SearchOption.AllDirectories))
+            {
+                var info = ScanIniFile(ini);
+                if (info is not null)
+                {
+                    inis.Add(info);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            logger.Warning(e, "OilFX 收集 ini 失败: {Folder}", folder);
+        }
+
+        return inis;
     }
 
     /// <summary>检查单个 ini 是否可注入；可注入返回信息，否则 null。</summary>
@@ -556,16 +569,19 @@ public sealed record OilFxIniInfo(
     bool Injected,
     bool HasBackup);
 
-/// <summary>扫描结果的分组：一级目录名（角色 mod 目录，常见中文名）+ 组内可注入 mod 文件夹。
-/// DisabledModsCount = 组内被启动器禁用（DISABLED_ 前缀）而未列出的 mod 数，供界面说明数量差异。</summary>
-public sealed record OilFxGroupInfo(string GroupName, List<OilFxModInfo> Mods, int DisabledModsCount = 0);
+/// <summary>扫描结果的分组：一级目录名（角色 mod 目录，常见中文名）+ 组内 mod 文件夹（含禁用的）。</summary>
+public sealed record OilFxGroupInfo(string GroupName, List<OilFxModInfo> Mods);
 
-/// <summary>一个 mod（= 一个 mod 文件夹，教程 bat 的操作单位）：文件夹下全部可注入 ini。</summary>
+/// <summary>
+///     一个 mod 开关单元 = 角色目录下的一级子文件夹（mod 或 mod 合集，ini 可多层嵌套），
+///     教程 bat 的操作单位。Disabled = 文件夹带 DISABLED_ 前缀（被启动器禁用，不加载）。
+/// </summary>
 public sealed record OilFxModInfo(
     string FolderPath,
     string FolderName,
     string SubPath,
-    List<OilFxIniInfo> Inis)
+    List<OilFxIniInfo> Inis,
+    bool Disabled = false)
 {
     /// <summary>已注入的 ini 数。</summary>
     public int InjectedCount => Inis.Count(i => i.Injected);

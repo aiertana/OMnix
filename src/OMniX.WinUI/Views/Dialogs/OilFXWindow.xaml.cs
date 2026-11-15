@@ -85,18 +85,9 @@ public sealed partial class OilFXWindow : WindowEx
     /// <summary>mod 行"还原"按钮：把这一个 mod 的 ini 全部从 .bak 还原。</summary>
     private void RestoreModButton_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is Button { DataContext: OilFxRowVm { IsModRow: true } vm })
+        if (sender is Button { DataContext: OilFxRowVm vm })
         {
             ViewModel.RestoreModCommand.Execute(vm);
-        }
-    }
-
-    /// <summary>角色分组头点击：展开 / 收起该组的 mod 列表（VM 增删集合行）。</summary>
-    private void GroupHeader_OnTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
-    {
-        if (sender is FrameworkElement { DataContext: OilFxRowVm { IsGroupHeader: true } vm })
-        {
-            ViewModel.ToggleExpand(vm);
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Net.Http;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
@@ -109,6 +110,7 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
 
         await LoadGamesAsync();
         Reload();
+        await CheckPluginUpdatesAsync();
     }
 
     /// <summary>头像栏：四个内核，没下载的画成灰的。</summary>
@@ -361,6 +363,7 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
         Plugins.Add(upcoming);
 
         AddDiscoveredPlugins();
+        AddRecommendedPlugins();
         RefreshCards();
     }
 
@@ -435,6 +438,220 @@ public partial class FeatureAreaViewModel : ObservableRecipient, INavigationAwar
         card.Status = plugin.Enabled
             ? _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_StatusDeployed", "已部署")
             : _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_StatusNotDeployed", "未部署");
+    }
+
+    /// <summary>
+    ///     二开：官方插件库（omnix-plugins）里我们自己的插件。
+    ///     插件不在发布包里（GamesData\Plugins 跟着用户机器走），所以别人拿到的
+    ///     OMniX 一开始没有这两张卡 —— 这里补上「未安装」状态的推荐卡，
+    ///     点「下载插件」直接从 GitHub 拉 zip 装进插件目录，装完重新扫描出正式卡。
+    /// </summary>
+    private sealed record RecommendedPlugin(
+        string Id, string Name, string Glyph, string Description, string ZipUrl, string RepoUrl, string ManifestUrl);
+
+    private static readonly RecommendedPlugin[] RecommendedPlugins =
+    {
+        new("OilFX", "OilFX 油光效果", "\uE9F0",
+            "给任意mod加油光/湿身效果：一键安装框架，按mod注入皮肤与调节项，游戏内 Alt+小键盘热调。",
+            "https://raw.githubusercontent.com/aiertana/omnix-plugins/main/OilFX/OilFX-plugin.zip",
+            "https://github.com/aiertana/omnix-plugins/tree/main/OilFX",
+            "https://raw.githubusercontent.com/aiertana/omnix-plugins/main/OilFX/plugin.json"),
+        new("GameBananaStore", "GameBanana", "\uE8F1",
+            "在线浏览/搜索/下载 GameBanana 的 Mod，点卡片打开下载页，装到选定的角色目录。",
+            "https://raw.githubusercontent.com/aiertana/omnix-plugins/main/GameBananaStore/GameBananaStore-plugin.zip",
+            "https://github.com/aiertana/omnix-plugins/tree/main/GameBananaStore",
+            "https://raw.githubusercontent.com/aiertana/omnix-plugins/main/GameBananaStore/plugin.json")
+    };
+
+    private void AddRecommendedPlugins()
+    {
+        HashSet<string> installed;
+
+        try
+        {
+            installed = Directory.EnumerateDirectories(_catalog.PluginsDirectory())
+                .Select(Path.GetFileName)
+                .Where(name => !string.IsNullOrWhiteSpace(name))
+                .Select(name => name!)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        }
+        catch (Exception)
+        {
+            return;
+        }
+
+        foreach (var plugin in RecommendedPlugins)
+        {
+            // 已装的话 AddDiscoveredPlugins 已经扫出正式卡了，别重复摆
+            if (installed.Contains(plugin.Id))
+                continue;
+
+            var card = new PluginCard
+            {
+                Name = plugin.Name,
+                Glyph = plugin.Glyph,
+                BadgeBackground = new SolidColorBrush(MutedTint),
+                BadgeForeground = new SolidColorBrush(MutedText),
+                Description = plugin.Description,
+                IsAvailable = false,
+                Status = _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_StatusNotInstalled", "未安装"),
+                PrimaryText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_DownloadPlugin", "下载插件"),
+                SecondaryText = "GitHub",
+                Manifest = null
+            };
+
+            var captured = plugin;
+            card.PrimaryCommand = new AsyncRelayCommand(() => DownloadRecommendedPluginAsync(card, captured));
+            card.SecondaryCommand = new RelayCommand(() => _dependencies.OpenUrl(captured.RepoUrl));
+
+            Plugins.Add(card);
+        }
+    }
+
+    /// <summary>
+    ///     二开：检查官方插件库有没有新版本（拉 raw plugin.json 对比本地 Version）。
+    ///     有新版本就把已安装插件的卡改成「更新 x.y.z」状态，点主按钮直接下载覆盖安装。
+    ///     网络不通就静默跳过（插件更新不是关键路径，别弹错打扰人）。
+    /// </summary>
+    private int _updateCheckInFlight;
+
+    private async Task CheckPluginUpdatesAsync()
+    {
+        // 防重入：下载完成后的 Reload 也会走到这里
+        if (Interlocked.Exchange(ref _updateCheckInFlight, 1) == 1)
+            return;
+
+        try
+        {
+            using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("OMniX");
+
+            foreach (var plugin in RecommendedPlugins)
+            {
+                try
+                {
+                    // 没装的不用查（未安装卡有「下载插件」按钮，本来就能装最新的）
+                    var localManifest = Path.Combine(_catalog.PluginsDirectory(), plugin.Id, "plugin.json");
+                    if (!File.Exists(localManifest))
+                        continue;
+
+                    var local = PluginManifest.FromJson(await File.ReadAllTextAsync(localManifest));
+                    if (local is null || !Version.TryParse(local.Version, out var localVer))
+                        continue;
+
+                    var remote = PluginManifest.FromJson(await client.GetStringAsync(plugin.ManifestUrl));
+                    if (remote is null || !Version.TryParse(remote.Version, out var remoteVer))
+                        continue;
+
+                    if (remoteVer <= localVer)
+                        continue;
+
+                    // 已安装插件的正式卡：主按钮换成「更新」，点它走同一条下载导入通道
+                    var card = Plugins.FirstOrDefault(p => p.Manifest is not null &&
+                        string.Equals(p.Manifest.Id, plugin.Id, StringComparison.OrdinalIgnoreCase));
+
+                    if (card is null)
+                        continue;
+
+                    card.IsAvailable = false;
+                    card.Status = string.Format(
+                        _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_StatusHasUpdate", "有新版本 {0}"),
+                        remoteVer);
+                    card.PrimaryText = string.Format(
+                        _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_UpdateTo", "更新到 {0}"),
+                        remoteVer);
+                    card.PrimaryCommand = new AsyncRelayCommand(() => DownloadRecommendedPluginAsync(card, plugin));
+                }
+                catch (Exception)
+                {
+                    // 单个插件检查失败不挡别的
+                }
+            }
+        }
+        catch (Exception)
+        {
+            // 静默：没有网也要能用
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _updateCheckInFlight, 0);
+        }
+    }
+
+    private async Task DownloadRecommendedPluginAsync(PluginCard card, RecommendedPlugin plugin)
+    {
+        if (card.IsDownloading)
+            return;
+
+        card.IsDownloading = true;
+        card.PrimaryEnabled = false;
+        card.DownloadIndeterminate = true;
+        card.DownloadPercent = 0;
+        card.DownloadText = _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_Preparing", "正在准备…");
+
+        var tempZip = Path.Combine(Path.GetTempPath(), $"omni-plugin-{plugin.Id}-{Guid.NewGuid():N}.zip");
+
+        try
+        {
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("OMniX");
+
+            using var response = await client.GetAsync(plugin.ZipUrl, HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+
+            var total = response.Content.Headers.ContentLength ?? -1;
+
+            await using var source = await response.Content.ReadAsStreamAsync();
+            await using var target = new FileStream(tempZip, FileMode.Create, FileAccess.Write, FileShare.None, 81920, true);
+
+            var buffer = new byte[81920];
+            long received = 0;
+            int read;
+
+            while ((read = await source.ReadAsync(buffer)) > 0)
+            {
+                await target.WriteAsync(buffer.AsMemory(0, read));
+                received += read;
+
+                if (total > 0)
+                {
+                    card.DownloadIndeterminate = false;
+                    card.DownloadPercent = received * 100.0 / total;
+                    card.DownloadText = $"{received / 1024.0 / 1024.0:F1} / {total / 1024.0 / 1024.0:F1} MB";
+                }
+                else
+                {
+                    card.DownloadText = $"{received / 1024.0 / 1024.0:F1} MB";
+                }
+            }
+
+            card.DownloadIndeterminate = true;
+            card.DownloadText = _localizer.GetLocalizedStringOrDefault("/ServicesMsg/PluginDepSvc_Extracting", "正在解压…");
+
+            // 复用离线包导入：认 plugin.json、目录名规范，和手动导入完全同一条路
+            await Task.Run(() => _catalog.ImportOfflinePackage(tempZip, GlobalId));
+
+            _notifications.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_NotificationPluginInstalled", "插件已安装"),
+                string.Format(_localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_NotificationPluginInstalledBody", "{0} 已装进插件文件夹，功能专区重新出卡。"), plugin.Name),
+                TimeSpan.FromSeconds(8));
+        }
+        catch (Exception e)
+        {
+            _notifications.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/HomePreset/Feature_NotificationDownloadFailed", "下载失败"),
+                e.Message + "\n也可以手动下载 zip 后用「导入离线包」。",
+                TimeSpan.FromSeconds(10));
+        }
+        finally
+        {
+            try { File.Delete(tempZip); } catch { /* 无所谓 */ }
+
+            card.IsDownloading = false;
+            card.PrimaryEnabled = true;
+            card.DownloadIndeterminate = false;
+            Reload();
+        }
     }
 
     private async Task RunDiscoveredAsync(PluginManifest plugin)
