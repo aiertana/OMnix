@@ -40,7 +40,18 @@ public partial class CharacterGalleryViewModel
                 await _modDragAndDropService.AddStorageItemFoldersAsync(_modList, items).ConfigureAwait(false));
 
             if (installMonitor is not null)
+            {
+                // 二开：批量拖入点「全部按默认添加」后剩余队列转静默安装（没有窗口可等），
+                // 装完触发这个事件 —— 订阅一次，刷新后即退订。
+                void OnSilentBatchFinished()
+                {
+                    App.MainWindow?.DispatcherQueue.TryEnqueue(async () => await ReloadModsAsync());
+                    _modDragAndDropService.SilentBatchInstallFinished -= OnSilentBatchFinished;
+                }
+
+                _modDragAndDropService.SilentBatchInstallFinished += OnSilentBatchFinished;
                 await installMonitor.Task;
+            }
 
             await ReloadModsAsync();
         }

@@ -48,6 +48,31 @@
 
                 <Button Margin="8,0,0,0" Command="{x:Bind ViewModel.GoToCharacterCommand}"
                     l:Uids.Uid="/CharacterManager/EditChar_ViewCharButton">查看角色</Button>
+
+                <!--  二开：「添加 Mod」按钮——和角色详情页同款：多选压缩包/文件夹，按默认设置批量添加（进度小窗）  -->
+                <Button
+                    Margin="8,0,0,0"
+                    IsEnabled="{x:Bind ViewModel.CanInstallMods, Mode=OneWay}"
+                    ToolTipService.ToolTip="选择压缩包或文件夹，按默认设置批量添加到这个角色（不再逐个弹安装窗口）">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <FontIcon FontSize="14" Glyph="&#xE710;" />
+                        <TextBlock Text="添加 Mod"/>
+                    </StackPanel>
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="选择压缩包（可多选）…" Command="{x:Bind ViewModel.InstallModsArchiveCommand}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE8B5;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Text="选择文件夹…" Command="{x:Bind ViewModel.InstallModsFolderCommand}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE8B7;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
             </StackPanel>
 
             <Button

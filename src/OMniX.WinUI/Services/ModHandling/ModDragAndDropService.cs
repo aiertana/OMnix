@@ -4,6 +4,7 @@ using Windows.Win32;
 using Windows.Win32.Media.Audio;
 using OMniX.Core.Contracts.Entities;
 using OMniX.Core.Contracts.Services;
+using OMniX.Core.Helpers;
 using OMniX.Core.Services;
 using OMniX.WinUI.Services.AppManagement;
 using OMniX.WinUI.Views;
@@ -35,6 +36,12 @@ public class ModDragAndDropService
     ///     二开：批量导入的剩余队列（只存名字，安装页左侧会列出来）。
     /// </summary>
     public static ObservableCollection<string> BatchQueueNames { get; } = new();
+
+    /// <summary>
+    ///     二开（2026-11-17）：批量拖入转「静默安装 + 进度小窗」全部装完后触发。
+    ///     静默路径没有安装窗口可等，页面（详情页 / 画廊页）订阅它来刷新 mod 列表。
+    /// </summary>
+    public event Action? SilentBatchInstallFinished;
 
     public ModDragAndDropService(ILogger logger, Notifications.NotificationManager notificationManager,
         ModInstallerService modInstallerService, IWindowManagerService windowManagerService,
@@ -193,6 +200,50 @@ public class ModDragAndDropService
                     BatchQueueNames.RemoveAt(0);
             });
 
+            // 二开（2026-11-17）：点过「全部按默认添加」之后，剩下的一个窗口都不开 ——
+            // 直接整批转「静默安装 + 进度小窗」（和工具栏「添加 Mod」按钮同一条链路
+            // InstallAllDefaultsAsync）。
+            // 注意：必须在 InstallSingleAsync 之前分流，否则第 2 个安装窗会先开出来再关，
+            // 又抢焦点又留窗（之前把 Close 放后台线程调还静默失败，窗口根本关不掉）。
+            if (AutoAddRemaining)
+            {
+                AutoAddRemaining = false;
+
+                var remaining = queue.Skip(i).ToList();
+                UpdateBatchQueue(() => BatchQueueNames.Clear());
+
+                var dispatcher = App.MainWindow?.DispatcherQueue;
+                if (dispatcher is null)
+                {
+                    // 拿不到 UI 队列就退路：直接静默装完，不弹进度窗
+                    await InstallAllDefaultsAsync(modList, remaining).ConfigureAwait(false);
+                    SilentBatchInstallFinished?.Invoke();
+                    return;
+                }
+
+                // BatchInstallProgress.RunAsync 里要弹 ContentDialog，必须在 UI 线程调用；
+                // 这里（ProcessBatchQueueAsync）跑在 Task.Run 的后台线程上，切回去。
+                dispatcher.TryEnqueue(async () =>
+                {
+                    try
+                    {
+                        await BatchInstallProgress.RunAsync(
+                            _localizer.GetLocalizedStringOrDefault("/ServicesMsg/DragDrop_BatchTitle", "批量导入"),
+                            remaining, modList, this);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(e, "Silent batch install (after auto-add) failed");
+                    }
+                    finally
+                    {
+                        // 通知页面刷新 mod 列表（静默装完时窗口都关了，页面感知不到）
+                        SilentBatchInstallFinished?.Invoke();
+                    }
+                });
+                return;
+            }
+
             var next = await InstallSingleAsync(modList, queue[i]);
 
             if (next is null)
@@ -200,29 +251,6 @@ public class ModDragAndDropService
 
             SetBatchTitle(next, queue[i].Name, i + 2, total);
             current = next;
-
-            // 二开：用户点过「全部按默认添加」时，后续这几个也自动提交，不再逐个等确认
-            if (!AutoAddRemaining)
-                continue;
-
-            await Task.Delay(2200);
-
-            try
-            {
-                var viewModel = next.Page.ViewModel;
-
-                if (!viewModel.AddModDialogCommand.CanExecute(null))
-                    continue;
-
-                await viewModel.AddModDialogCommand.ExecuteAsync(null);
-                next.Window.Close();
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e, "Auto add failed for '{Name}', stopping batch", queue[i].Name);
-                AutoAddRemaining = false;
-                return;
-            }
         }
 
         AutoAddRemaining = false;
@@ -231,18 +259,32 @@ public class ModDragAndDropService
 
     private async Task<InstallMonitor?> InstallSingleAsync(ICharacterModList modList, IStorageItem storageItem)
     {
+        // 二开：解压/复制部分抽成 ExtractItemAsync，批量静默安装（InstallAllDefaultsAsync）
+        // 也走同一套解压逻辑，行为保持一致。
+        var modFolder = await ExtractItemAsync(storageItem).ConfigureAwait(false);
+        if (modFolder is null)
+            return null;
 
-        InstallMonitor? installMonitor;
+        if (storageItem is StorageFolder)
+            DragAndDropFinished?.Invoke(this, new DragAndDropFinishedArgs(new List<ExtractPaths>()));
+
+        return await _modInstallerService.StartModInstallationAsync(modFolder, modList)
+            .ConfigureAwait(false);
+    }
+
+    /// <summary>
+    ///     二开：把拖放项（压缩包或 Mod 文件夹）处理成本地临时目录。压缩包会解压
+    ///     （带加密密码提示），文件夹会复制到临时目录。失败返回 null。
+    /// </summary>
+    private async Task<DirectoryInfo?> ExtractItemAsync(IStorageItem storageItem)
+    {
         if (storageItem is StorageFile storageFile)
         {
             var extractResult = await ScanArchiveWithPasswordAsync(storageFile.Path);
             if (extractResult is null)
                 return null;
 
-            installMonitor = await _modInstallerService.StartModInstallationAsync(
-                new DirectoryInfo(extractResult.ExtractedFolder.FullPath), modList);
-
-            return installMonitor;
+            return new DirectoryInfo(extractResult.ExtractedFolder.FullPath);
         }
 
         if (storageItem is not StorageFolder sourceFolder)
@@ -298,10 +340,88 @@ public class ModDragAndDropService
             throw;
         }
 
-        installMonitor = await _modInstallerService.StartModInstallationAsync(destDirectoryInfo.Parent!, modList)
-            .ConfigureAwait(false);
-        DragAndDropFinished?.Invoke(this, new DragAndDropFinishedArgs(new List<ExtractPaths>()));
-        return installMonitor;
+        return destDirectoryInfo.Parent!;
+    }
+
+    /// <summary>
+    ///     二开：批量「全部按默认添加」的静默安装 —— 解压后直接按默认值装进角色，
+    ///     不弹「安装 Mod」窗口。给详情页 / 角色管理页的「添加 Mod」按钮和进度小窗用。
+    ///     重名 Mod 自动改名（原名 (2)/(3)…）后添加，不弹重名对话框。
+    ///     reportProgress(index, total, name) 可能在后台线程回调，UI 更新由调用方切线程。
+    /// </summary>
+    public async Task<(int OkCount, int FailedCount)> InstallAllDefaultsAsync(
+        ICharacterModList modList, IReadOnlyList<IStorageItem> storageItems,
+        Action<int, int, string>? reportProgress = null)
+    {
+        var okCount = 0;
+        var failedCount = 0;
+
+        for (var i = 0; i < storageItems.Count; i++)
+        {
+            var item = storageItems[i];
+            try
+            {
+                reportProgress?.Invoke(i, storageItems.Count, item.Name);
+
+                var modFolder = await ExtractItemAsync(item).ConfigureAwait(false);
+                if (modFolder is null)
+                {
+                    failedCount++;
+                    continue;
+                }
+
+                var installation = ModInstallation.Start(modFolder, modList);
+                try
+                {
+                    if (installation.AutoSetModRootFolder() is null)
+                        throw new InvalidOperationException(
+                            "无法自动定位 Mod 根目录（没找到 OMniX 配置或 merged.ini）");
+
+                    var duplicate = installation.AnyDuplicateName();
+                    if (duplicate is null)
+                    {
+                        await installation.AddModAsync().ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        var baseName =
+                            ModFolderHelpers.GetFolderNameWithoutDisabledPrefix(installation.ModFolder.Name);
+                        var newName = GenerateUniqueFolderName(modList, baseName);
+                        _logger.Information("Silent install: '{Name}' duplicates '{Existing}', adding as '{New}'",
+                            installation.ModFolder.Name, duplicate.Name, newName);
+                        await installation.RenameAndAddAsync(
+                            new AddModOptions { NewModFolderName = newName }, duplicate, string.Empty)
+                            .ConfigureAwait(false);
+                    }
+
+                    okCount++;
+                }
+                finally
+                {
+                    installation.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                failedCount++;
+                _logger.Error(e, "Silent batch install failed for '{Name}'", item.Name);
+            }
+        }
+
+        _logger.Information("Silent batch install done: {Ok} ok, {Failed} failed", okCount, failedCount);
+        return (okCount, failedCount);
+    }
+
+    private static string GenerateUniqueFolderName(ICharacterModList modList, string baseName)
+    {
+        var candidate = baseName;
+        var index = 2;
+        while (modList.Mods.Any(mod => ModFolderHelpers.FolderNameEquals(mod.Mod.Name, candidate)))
+        {
+            candidate = $"{baseName} ({index++})";
+        }
+
+        return candidate;
     }
 
     /// <summary>

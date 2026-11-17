@@ -35,14 +35,25 @@ public sealed class ArchivePasswordPromptService : IArchivePasswordPromptService
                 var dialog = new ArchivePasswordDialog(Path.GetFileName(archivePath), isRetry);
 
                 ContentDialogResult result;
+                // 二开：静默批量导入的进度小窗也是 ContentDialog —— 同一个主窗口同时
+                // 只能开一个 dialog，不先藏进度窗的话密码框 ShowAsync 会直接抛异常，
+                // 加密压缩包就被静默跳过了。弹密码前先 Hide 进度窗，拿完密码恢复。
+                BatchInstallProgress.SuspendProgressForDialog();
                 try
                 {
-                    result = await _windowManagerService.ShowDialogAsync(dialog, window);
+                    try
+                    {
+                        result = await _windowManagerService.ShowDialogAsync(dialog, window);
+                    }
+                    catch (ArgumentException)
+                    {
+                        // 指定的窗口未注册，退回主窗口显示
+                        result = await _windowManagerService.ShowDialogAsync(dialog);
+                    }
                 }
-                catch (ArgumentException)
+                finally
                 {
-                    // 指定的窗口未注册，退回主窗口显示
-                    result = await _windowManagerService.ShowDialogAsync(dialog);
+                    BatchInstallProgress.ResumeProgressAfterDialog();
                 }
 
                 taskCompletionSource.TrySetResult(

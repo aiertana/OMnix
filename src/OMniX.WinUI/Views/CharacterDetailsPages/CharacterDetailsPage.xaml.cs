@@ -153,7 +153,11 @@ public sealed partial class CharacterDetailsPage : Page
         SearchModsTextBox.Visibility = Visibility.Visible;
 
         ModListArea.AllowDrop = true;
-        MainContentArea.AllowDrop = false;
+        // 二开：这里原来设回 false —— 但有 Mod 时列表下方的空白区域属于
+        // MainContentArea（ModListArea 只包着 DataGrid 本体，高度随行数），
+        // AllowDrop=false 收不到 DragEnter，拖 zip 到列表下面就是「禁止」光标。
+        // 改成 true，由 ModListArea_OnDrop 的 Handled 保证只装一次。
+        MainContentArea.AllowDrop = true;
     }
 
     private StackPanel? FindNoModsUIElement()
@@ -317,6 +321,15 @@ public sealed partial class CharacterDetailsPage : Page
                 }
             }
 
+            // 二开：接受拖放时给出「松开即可安装」提示（画廊页早就有了，详情页一直没有，
+            // 用户只能靠光标形状判断能不能松手）。
+            if (e.AcceptedOperation == DataPackageOperation.Copy)
+            {
+                e.DragUIOverride.IsCaptionVisible = true;
+                e.DragUIOverride.Caption = _localizer.GetLocalizedStringOrDefault(
+                    "/CharacterDetails/Page_DropInstallCaption", "松开即可安装到当前角色");
+            }
+
             // 二开：标记已处理。ModListArea 和 MainContentArea（空状态用）都绑了这个处理器，
             // 不置 Handled 的话父子会各判一遍、各读一次拖放内容。
             e.Handled = true;
@@ -325,6 +338,21 @@ public sealed partial class CharacterDetailsPage : Page
         {
             deferral.Complete();
         }
+    }
+
+    /// <summary>
+    ///     二开：mod 列表空白处的右键。命中 mod 行时直接返回（DataGrid.ContextFlyout
+    ///     的 ModRowFlyout 自动弹出，行为不变）；空白处原版只有一声系统提示音——
+    ///     ModRowFlyout_OnOpening 发现没有选中行就 Hide 了。这里给空白处弹
+    ///     「添加 Mod」快捷菜单。
+    /// </summary>
+    private void BlankArea_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
+    {
+        if (e.OriginalSource is FrameworkElement { DataContext: ModRowVM })
+            return; // mod 行：交给 ModRowFlyout
+
+        var target = sender == MainContentArea ? MainContentArea : ModListArea;
+        BlankAreaFlyout.ShowAt(target, e.GetPosition(target));
     }
 
     private async void ModListArea_OnDrop(object sender, DragEventArgs e)

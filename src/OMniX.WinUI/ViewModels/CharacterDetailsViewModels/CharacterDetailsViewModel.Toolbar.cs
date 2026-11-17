@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.UI.Controls;
 using OMniX.WinUI.Models.Options;
+using OMniX.WinUI.Services.ModHandling;
 
 namespace OMniX.WinUI.ViewModels.CharacterDetailsViewModels;
 
@@ -16,7 +17,8 @@ public partial class CharacterDetailsViewModel
     [ObservableProperty] private bool _isSingleModSelected;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(AddModArchiveCommand), nameof(AddModFolderCommand))]
+    [NotifyCanExecuteChangedFor(nameof(AddModArchiveCommand), nameof(AddModFolderCommand),
+        nameof(InstallModsArchiveCommand), nameof(InstallModsFolderCommand))]
     private bool _isAddingModFolder;
 
 
@@ -216,6 +218,65 @@ public partial class CharacterDetailsViewModel
             {
                 IsAddingModFolder = false;
             }
+        });
+    }
+
+    /// <summary>
+    ///     二开：「添加 Mod」按钮（进度小窗路线）—— 选多个压缩包/文件夹，
+    ///     全部按默认设置静默安装，只弹一个进度小窗，不逐个弹「安装 Mod」窗口。
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanAddModArchive))]
+    private async Task InstallModsArchiveAsync()
+    {
+        await CommandWrapperAsync(true, async () =>
+        {
+            var filePicker = new FileOpenPicker();
+            filePicker.FileTypeFilter.Add(".zip");
+            filePicker.FileTypeFilter.Add(".rar");
+            filePicker.FileTypeFilter.Add(".7z");
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+            WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
+            var files = await filePicker.PickMultipleFilesAsync();
+            if (files is null || files.Count == 0)
+            {
+                _logger.Debug("User cancelled multi file picker.");
+                return;
+            }
+
+            await BatchInstallProgress.RunAsync(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Toolbar_BatchTitle", "批量添加 Mod"),
+                new ReadOnlyCollection<IStorageItem>(new List<IStorageItem>(files)), _modList, _modDragAndDropService);
+
+            if (ModGridVM.ModdableObjectHasAnyMods)
+                await ModGridVM.ReloadAllModsAsync();
+        });
+    }
+
+    /// <summary>
+    ///     二开：「添加 Mod」按钮的文件夹路线 —— 选一个 Mod 文件夹按默认设置静默安装。
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanAddModFolder))]
+    private async Task InstallModsFolderAsync()
+    {
+        await CommandWrapperAsync(true, async () =>
+        {
+            var folderPicker = new FolderPicker();
+            folderPicker.FileTypeFilter.Add("*");
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+            WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);
+            var folder = await folderPicker.PickSingleFolderAsync();
+            if (folder is null)
+            {
+                _logger.Debug("User cancelled folder picker.");
+                return;
+            }
+
+            await BatchInstallProgress.RunAsync(
+                _localizer.GetLocalizedStringOrDefault("/CharacterDetails/Toolbar_BatchTitle", "批量添加 Mod"),
+                new ReadOnlyCollection<IStorageItem>([folder]), _modList, _modDragAndDropService);
+
+            if (ModGridVM.ModdableObjectHasAnyMods)
+                await ModGridVM.ReloadAllModsAsync();
         });
     }
 }

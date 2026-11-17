@@ -365,8 +365,28 @@ public sealed class OilFxService(
     ///     往 mod ini 注入 OilSkin/Clear 包裹（官方 bat 同款逻辑）：
     ///     Component ≥ minComp 的段内，Cleanup 行之前插 Clear、Override 行之后插 OilSkin。
     ///     首次改前自动备份 .bak。返回注入的行数。
+    ///     降级：ini 里没有 Component ≥ minComp 的段（WWMI BETA-8 新框架 mod 常见，
+    ///     Body 只拆到 Component 0/1），就退为全 Component 段注入——不然这类 mod
+    ///     永远注入不了，开关开了也「已注入 0」。
     /// </summary>
     public int InjectIni(string iniPath, int minComp = 3)
+    {
+        var patched = InjectIniCore(iniPath, minComp);
+        if (patched == 0 && minComp > 0)
+        {
+            patched = InjectIniCore(iniPath, 0);
+            if (patched > 0)
+            {
+                logger.Information(
+                    "OilFX 注入降级 {Ini}: 没有 Component >= {MinComp} 的段，改为全 Component 段注入 {Count} 行",
+                    iniPath, minComp, patched);
+            }
+        }
+
+        return patched;
+    }
+
+    private int InjectIniCore(string iniPath, int minComp)
     {
         var lines = File.ReadAllLines(iniPath);
 
@@ -464,6 +484,12 @@ public sealed class OilFxService(
         content = Regex.Replace(content, @"(\$realisticOil\s*=\s*)[\d.]+", $"${{1}}{(realisticOil ? 1 : 0)}");
         content = Regex.Replace(content, @"(global persist \$oilSkin\s*=\s*)\d+", $"${{1}}{Math.Clamp(oilSkin, 0, 6)}");
         content = ApplyKeybindings(content);
+        // 原版热键段带 condition = $object_detected == 1，但这个变量是各 mod.ini
+        // 自己的 global（跨 ini 不可见），Matcap.ini 里永远读不到 → 条件恒假，
+        // Alt+小键盘热键一次都不会触发（用户以为按键冲突）。热键本身无害
+        //（$oilSkin 只是全局持久变量），去掉 condition 让热键随时可按。幂等。
+        content = Regex.Replace(
+            content, @"(?im)^\s*condition\s*=\s*\$object_detected\s*==\s*1\s*$", string.Empty);
         // 湿身款用生成的水感贴图（Oil/Wet.png，冷灰蓝 + 天光反射 + 水珠高光），比原版 Wet.dds 湿润感强
         if (File.Exists(Path.Combine(modsRoot, "Oil", "Wet.png")))
         {

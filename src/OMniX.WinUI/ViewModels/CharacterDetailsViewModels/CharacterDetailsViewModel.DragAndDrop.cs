@@ -55,7 +55,18 @@ public partial class CharacterDetailsViewModel
                     await _modDragAndDropService.AddStorageItemFoldersAsync(_modList, items).ConfigureAwait(false), CancellationToken);
 
                 if (installMonitor is not null)
+                {
+                    // 二开：批量拖入点「全部按默认添加」后剩余队列转静默安装（没有窗口可等），
+                    // 装完触发这个事件 —— 订阅一次，刷新后即退订。
+                    void OnSilentBatchFinished()
+                    {
+                        ModGridVM.QueueModRefresh();
+                        _modDragAndDropService.SilentBatchInstallFinished -= OnSilentBatchFinished;
+                    }
+
+                    _modDragAndDropService.SilentBatchInstallFinished += OnSilentBatchFinished;
                     _ = installMonitor.Task.ContinueWith((task) => ModGridVM.QueueModRefresh(), CancellationToken);
+                }
             }
             catch (Exception e)
             {

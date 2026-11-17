@@ -120,11 +120,89 @@ public partial class EditCharacterViewModel : ObservableRecipient, INavigationAw
         var allModObjects = _gameService.GetAllModdableObjects(GetOnly.Both);
 
         Form.Initialize(character, allModObjects);
+        // 二开：CanInstallMods 依赖 CharacterStatus，导航进来后手动通知一次（否则绑定不刷新）
+        OnPropertyChanged(nameof(CanInstallMods));
         NotifyAllCommands();
     }
 
     public void OnNavigatedFrom()
     {
+    }
+
+    /// <summary>
+    ///     二开：「添加 Mod」按钮可用性 —— 禁用角色没有 mod 目录，不给装。
+    /// </summary>
+    public bool CanInstallMods => CharacterStatus.IsEnabled || CharacterStatus.IsCustomCharacter;
+
+    /// <summary>
+    ///     二开：「添加 Mod」按钮（多选压缩包）—— 和角色详情页同款：
+    ///     全部按默认设置静默安装，弹进度小窗而不是逐个弹「安装 Mod」窗口。
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanInstallMods))]
+    private async Task InstallModsArchiveAsync()
+    {
+        var filePicker = new Windows.Storage.Pickers.FileOpenPicker();
+        filePicker.FileTypeFilter.Add(".zip");
+        filePicker.FileTypeFilter.Add(".rar");
+        filePicker.FileTypeFilter.Add(".7z");
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+        WinRT.Interop.InitializeWithWindow.Initialize(filePicker, hwnd);
+        var files = await filePicker.PickMultipleFilesAsync();
+        if (files is null || files.Count == 0)
+        {
+            _logger.Debug("User cancelled multi file picker.");
+            return;
+        }
+
+        await InstallModsSilentlyAsync(new ReadOnlyCollection<Windows.Storage.IStorageItem>(
+            new List<Windows.Storage.IStorageItem>(files)));
+    }
+
+    /// <summary>
+    ///     二开：「添加 Mod」按钮的文件夹路线。
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanInstallMods))]
+    private async Task InstallModsFolderAsync()
+    {
+        var folderPicker = new Windows.Storage.Pickers.FolderPicker();
+        folderPicker.FileTypeFilter.Add("*");
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+        WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);
+        var folder = await folderPicker.PickSingleFolderAsync();
+        if (folder is null)
+        {
+            _logger.Debug("User cancelled folder picker.");
+            return;
+        }
+
+        await InstallModsSilentlyAsync(
+            new ReadOnlyCollection<Windows.Storage.IStorageItem>([folder]));
+    }
+
+    private async Task InstallModsSilentlyAsync(ReadOnlyCollection<Windows.Storage.IStorageItem> items)
+    {
+        try
+        {
+            var modList = _skinManagerService.GetCharacterModList(_character);
+            var dropService = App.GetService<OMniX.WinUI.Services.ModHandling.ModDragAndDropService>();
+
+            var (okCount, _) = await OMniX.WinUI.Services.ModHandling.BatchInstallProgress.RunAsync(
+                _localizer.GetLocalizedStringOrDefault("/CharacterManager/BatchTitle", "批量添加 Mod"),
+                items, modList, dropService);
+
+            if (okCount > 0)
+            {
+                // 装完刷新本页的 mod 列表和计数（等价于重新走一遍 OnNavigatedTo）
+                OnNavigatedTo(_character.InternalName);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, "Batch install mods failed for '{Character}'", _character.DisplayName);
+            _notificationManager.ShowNotification(
+                _localizer.GetLocalizedStringOrDefault("/CharacterManager/BatchErrorTitle", "批量添加 Mod 失败"),
+                e.Message, TimeSpan.FromSeconds(6));
+        }
     }
 
     [RelayCommand]

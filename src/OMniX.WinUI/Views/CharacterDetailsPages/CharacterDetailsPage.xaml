@@ -145,6 +145,30 @@
                 </Grid>
             </Flyout>
 
+            <!--
+                二开：mod 列表空白处（非行）的右键菜单。
+                mod 行右键仍走 ModRowFlyout（挂 DataGrid.ContextFlyout，OnOpening 里无选中会 Hide），
+                空白处 RightTapped 命中时由 code-behind 手动 ShowAt 本菜单——两套互不影响。
+            -->
+            <MenuFlyout x:Name="BlankAreaFlyout">
+                <MenuFlyoutItem Text="添加 Mod（压缩包）…" Command="{x:Bind ViewModel.InstallModsArchiveCommand}">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE8B5;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="添加 Mod（文件夹）…" Command="{x:Bind ViewModel.InstallModsFolderCommand}">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE8B7;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="刷新列表" Command="{x:Bind ViewModel.RefreshAllModsCommand}">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE72C;" />
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuFlyout>
+
         </Grid.Resources>
 
 
@@ -322,6 +346,32 @@
                             </TextBox>
                         </StackPanel>
 
+                        <!--  二开：「添加 Mod」按钮——多选压缩包/文件夹，全部按默认设置静默安装（进度小窗）；与搜索框同行  -->
+                        <Button
+                            x:Name="AddModsSilentButton"
+                            VerticalAlignment="Center"
+                            IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}"
+                            ToolTipService.ToolTip="选择压缩包或文件夹，按默认设置批量添加（不再逐个弹安装窗口）">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon FontSize="14" Glyph="&#xE710;" />
+                                <TextBlock Text="添加 Mod"/>
+                            </StackPanel>
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="选择压缩包（可多选）…" Command="{x:Bind ViewModel.InstallModsArchiveCommand}">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon Glyph="&#xE8B5;" />
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutItem Text="选择文件夹…" Command="{x:Bind ViewModel.InstallModsFolderCommand}">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon Glyph="&#xE8B7;" />
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+
 
                         <ToggleSwitch
                             x:Name="ViewToggleSwitch"
@@ -405,7 +455,8 @@
                     AllowDrop="True"
                     Background="Transparent"
                     DragEnter="ModListArea_OnDragEnter"
-                    Drop="ModListArea_OnDrop">
+                    Drop="ModListArea_OnDrop"
+                    RightTapped="BlankArea_OnRightTapped">
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -418,7 +469,8 @@
                             Background="Transparent"
                             CornerRadius="10"
                             DragEnter="ModListArea_OnDragEnter"
-                            Drop="ModListArea_OnDrop">
+                            Drop="ModListArea_OnDrop"
+                            RightTapped="BlankArea_OnRightTapped">
                             <characterDetailsPages:ModGrid x:Name="ModGrid" IsEnabled="{x:Bind ViewModel.IsNotHardBusy, Mode=OneWay}" />
 
                         </Grid>
